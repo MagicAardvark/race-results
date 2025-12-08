@@ -1,9 +1,11 @@
-export const VALID_TENANTS: string[] = [
-    "ner",
-    "ne-svt",
-    "boston-bmw"
-] as const;
+import { db } from "@/db";
+import { eq, isNull } from "drizzle-orm";
 
-export function isValidTenant(slug: string) {
-    return VALID_TENANTS.includes(slug);
+export async function isValidTenant(slug: string) {
+    return await db.query.orgs.findFirst({
+        where: (orgs, { and }) => and(
+            isNull(orgs.deletedAt),
+            eq(orgs.slug, slug)
+        )
+    });
 }
