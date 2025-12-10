@@ -8,7 +8,7 @@ export default async function Page() {
         <h1 className="text-xl font-bold">Clubs</h1>
         <div className="flex flex-col gap-4 mt-4">
             {orgs.map(org => (
-                <div key={org.id}>
+                <div key={org.org_id}>
                     <Link href={`/t/${org.slug}`} className="hover:underline hover:underline-offset-2">
                         {org.name}
                     </Link>

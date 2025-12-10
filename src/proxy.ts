@@ -1,5 +1,6 @@
-import { NextRequest, NextResponse } from "next/server";
-import { isValidTenant } from "./lib/tenants";
+import { clerkMiddleware } from '@clerk/nextjs/server';
+import { NextRequest, NextResponse } from 'next/server';
+import { isValidTenant } from './lib/tenants';
 
 const GLOBAL_TENANT = "global";
 
@@ -34,7 +35,7 @@ const parseTenantFromRequest = (req: NextRequest) => {
   return GLOBAL_TENANT;
 };
 
-export async function proxy(req: NextRequest) {
+export default clerkMiddleware(async (auth, req) => {
   const tenant = parseTenantFromRequest(req);
 
   if (tenant === GLOBAL_TENANT) {
@@ -50,8 +51,11 @@ export async function proxy(req: NextRequest) {
   }
 
   return configureResponse({ tenant: tenant });
-}
+});
 
 export const config = {
-  matcher: ["/((?!_next|static|favicon.ico).*)"]
+  matcher: [// Skip Next.js internals and all static files, unless found in search params
+    '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
+    // Always run for API routes
+    '/(api|trpc)(.*)',]
 };

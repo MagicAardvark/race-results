@@ -3,7 +3,7 @@ import { eq, isNull } from "drizzle-orm";
 import { headers } from "next/headers";
 
 export type TenantDetails = {
-    id: string;
+    org_id: string;
     name: string;
     slug: string;
 };

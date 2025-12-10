@@ -10,6 +10,7 @@
     "seed": "npx tsx src/db/seed.ts"
   },
   "dependencies": {
+    "@clerk/nextjs": "^6.36.2",
     "@neondatabase/serverless": "^1.0.2",
     "dotenv": "^17.2.3",
     "drizzle-orm": "^0.45.0",
