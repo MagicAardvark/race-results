@@ -2,7 +2,7 @@ import eslint from "@eslint/js";
 import nextVitals from "eslint-config-next/core-web-vitals";
 import nextTs from "eslint-config-next/typescript";
 import { defineConfig, globalIgnores } from "eslint/config";
-import prettier from "eslint-config-prettier/recommended";
+import prettier from "eslint-config-prettier";
 
 export default defineConfig([
     ...nextVitals,
@@ -41,5 +41,5 @@ export default defineConfig([
             "no-multiple-empty-lines": ["error", { max: 1, maxEOF: 1 }],
         },
     },
-    ...prettier,
+    prettier,
 ]);
