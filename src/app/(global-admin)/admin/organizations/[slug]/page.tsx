@@ -1,5 +1,5 @@
 import { LinkButton } from "@/components/link-button/link-button";
-import { organizationService } from "@/db/services/organizations/organization.service";
+import { organizationService } from "@/services/organizations/organization.service";
 import { ArrowLeft } from "lucide-react";
 
 export default async function Page({

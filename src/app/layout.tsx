@@ -1,13 +1,13 @@
 import { TenantProvider } from "@/context/TenantContext";
 import { UserProvider } from "@/context/UserContext";
-import { getTenant } from "@/lib/tenants/get-tenant";
 
 import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import React from "react";
 import "./globals.css";
-import { userService } from "@/db/services/users/user.service";
+import { userService } from "@/services/users/user.service";
+import { tenantService } from "@/services/tenants/tenant.service";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -29,7 +29,7 @@ export default async function RootLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
-    const tenant = await getTenant();
+    const tenant = await tenantService.getTenant();
     const user = await userService.getCurrentUser();
 
     return (

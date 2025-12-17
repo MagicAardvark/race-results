@@ -1,4 +1,4 @@
-import { userService } from "@/db/services/users/user.service";
+import { userService } from "@/services/users/user.service";
 import { ROLES } from "@/dto/users";
 import {
     SignedIn,

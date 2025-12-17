@@ -1,6 +1,6 @@
+import { Button } from "@/components/button/button";
 import Link from "next/link";
 import React, { ComponentProps } from "react";
-import { Button } from "../button/button";
 
 export const LinkButton = ({
     href,

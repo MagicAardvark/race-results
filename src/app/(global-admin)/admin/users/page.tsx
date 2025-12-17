@@ -7,7 +7,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { userService } from "@/db/services/users/user.service";
+import { userService } from "@/services/users/user.service";
 import { PencilIcon } from "lucide-react";
 
 export default async function Page() {

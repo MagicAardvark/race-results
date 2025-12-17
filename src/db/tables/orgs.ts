@@ -1,5 +1,5 @@
+import { createdAt, deletedAt, updatedAt } from "@/db/utils/columns";
 import { pgTable, text, uniqueIndex, uuid } from "drizzle-orm/pg-core";
-import { createdAt, deletedAt, updatedAt } from "../utils/columns";
 
 export const orgs = pgTable(
     "orgs",

@@ -1,8 +1,8 @@
-import { db } from "@/db";
+import { organizationService } from "@/services/organizations/organization.service";
 import Link from "next/link";
 
 export default async function Page() {
-    const orgs = await db.query.orgs.findMany();
+    const orgs = await organizationService.getAllOrganizations();
 
     return (
         <div className="lg:w-1/2 mx-auto mt-8">

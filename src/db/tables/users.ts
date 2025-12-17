@@ -1,7 +1,12 @@
+import { roles } from "@/db/schema";
+import {
+    createdAt,
+    updatedAt,
+    deletedAt,
+    effectiveAt,
+} from "@/db/utils/columns";
 import { relations } from "drizzle-orm";
 import { boolean, pgTable, text, uniqueIndex, uuid } from "drizzle-orm/pg-core";
-import { roles } from "../schema";
-import { createdAt, deletedAt, effectiveAt, updatedAt } from "../utils/columns";
 
 export const users = pgTable(
     "users",

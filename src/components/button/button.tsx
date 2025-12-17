@@ -1,5 +1,5 @@
 import React, { ComponentProps } from "react";
-import { Button as ShadButton } from "../ui/button";
+import { Button as ShadButton } from "@/components/ui/button";
 
 export const Button = ({
     children,

@@ -8,7 +8,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { organizationService } from "@/db/services/organizations/organization.service";
+import { organizationService } from "@/services/organizations/organization.service";
 import { PlusIcon } from "lucide-react";
 
 export default async function Page() {

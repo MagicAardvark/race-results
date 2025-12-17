@@ -1,9 +1,9 @@
-import { getTenant } from "@/lib/tenants/get-tenant";
+import { tenantService } from "@/services/tenants/tenant.service";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
 export default async function Page() {
-    const tenant = await getTenant();
+    const tenant = await tenantService.getTenant();
 
     if (!tenant.isValid || tenant.isGlobal) {
         redirect("/");
@@ -17,7 +17,7 @@ export default async function Page() {
             >
                 Go Back
             </Link>
-            <h1 className="text-xl font-bold mt-8">{tenant.details.name}</h1>
+            <h1 className="text-xl font-bold mt-8">{tenant.org.name}</h1>
         </div>
     );
 }

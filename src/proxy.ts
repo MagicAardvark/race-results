@@ -1,6 +1,6 @@
+import { tenantService } from "@/services/tenants/tenant.service";
 import { clerkMiddleware } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
-import { isValidTenant } from "./lib/tenants/is-valid-tenant";
 
 const GLOBAL_TENANT = "global";
 
@@ -42,7 +42,7 @@ export default clerkMiddleware(async (_auth, req) => {
         return configureResponse({ tenant: GLOBAL_TENANT });
     }
 
-    const isValid = await isValidTenant(tenant);
+    const isValid = await tenantService.isValidTenant(tenant);
 
     if (!isValid) {
         const url = req.nextUrl;
