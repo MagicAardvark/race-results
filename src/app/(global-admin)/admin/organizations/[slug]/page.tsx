@@ -1,6 +1,8 @@
+import { ManageOrgDialog } from "@/components/admin/organizations/manage-org";
+import { Button } from "@/components/button/button";
 import { LinkButton } from "@/components/link-button/link-button";
 import { organizationService } from "@/services/organizations/organization.service";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, PencilIcon } from "lucide-react";
 
 export default async function Page({
     params,
@@ -20,8 +22,16 @@ export default async function Page({
                 {org === null ? (
                     <p>Organization not found</p>
                 ) : (
-                    <div>
+                    <div className="flex gap-2">
                         <h2>{org.name}</h2>
+                        <ManageOrgDialog
+                            org={org}
+                            trigger={
+                                <Button variant={"ghost"}>
+                                    <PencilIcon />
+                                </Button>
+                            }
+                        />
                     </div>
                 )}
             </div>

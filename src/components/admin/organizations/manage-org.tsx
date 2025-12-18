@@ -1,6 +1,6 @@
 "use client";
 
-import { upsertOrg } from "@/app/(global-admin)/admin/organizations/actions";
+import { upsertOrganization } from "@/app/actions/organization.actions";
 import { Button } from "@/components/button/button";
 import {
     Dialog,
@@ -24,7 +24,7 @@ export const ManageOrgDialog = ({
     trigger: ReactNode;
 }) => {
     const [state, formAction, pending] = useActionState(
-        upsertOrg,
+        upsertOrganization,
         initialState
     );
 

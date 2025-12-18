@@ -11,3 +11,12 @@ export interface Organization {
     updatedAt: Date;
     deletedAt: Date | null;
 }
+
+export interface CreateOrgDTO {
+    name: string;
+}
+
+export interface UpdateOrgDTO {
+    orgId: string;
+    name: string;
+}

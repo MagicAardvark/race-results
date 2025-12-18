@@ -4,13 +4,14 @@ import { auth, currentUser } from "@clerk/nextjs/server";
 
 interface IUserService {
     getAllUsers(): Promise<User[]>;
-    getCurrentUser(authProviderId: string): Promise<User | null>;
+    getCurrentUser(): Promise<User | null>;
 }
 
 export class UserService implements IUserService {
     async getAllUsers() {
         return mapUsers(await usersRepository.findAll());
     }
+
     async getCurrentUser(): Promise<User | null> {
         const { userId } = await auth();
         const currUser = await currentUser();

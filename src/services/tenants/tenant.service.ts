@@ -1,4 +1,9 @@
-import { Tenant } from "@/dto/tenants";
+import {
+    GlobalTenant,
+    InvalidTenant,
+    Tenant,
+    ValidTenant,
+} from "@/dto/tenants";
 import { organizationService } from "@/services/organizations/organization.service";
 import { headers } from "next/headers";
 
@@ -15,14 +20,14 @@ export class TenantService implements ITenantService {
         if (!slug) {
             return {
                 isValid: false,
-            } as Tenant;
+            } as InvalidTenant;
         }
 
         if (slug === "global") {
             return {
                 isValid: true,
                 isGlobal: true,
-            } as Tenant;
+            } as GlobalTenant;
         }
 
         const org = await organizationService.getOrganizationBySlug(slug);
@@ -30,14 +35,14 @@ export class TenantService implements ITenantService {
         if (typeof org === "undefined") {
             return {
                 isValid: false,
-            } as Tenant;
+            } as InvalidTenant;
         }
 
         return {
             isValid: true,
             org: org,
             isGlobal: false,
-        } as Tenant;
+        } as ValidTenant;
     }
 
     async isValidTenant(slug: string): Promise<boolean> {

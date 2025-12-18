@@ -1,15 +1,15 @@
 import { Organization } from "@/dto/organizations";
 
-type InvalidTenant = {
+export type InvalidTenant = {
     isValid: false;
 };
 
-type GlobalTenant = {
+export type GlobalTenant = {
     isValid: true;
     isGlobal: true;
 };
 
-type ValidTenant = {
+export type ValidTenant = {
     isValid: true;
     isGlobal: false;
     org: Organization;
