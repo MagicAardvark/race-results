@@ -1,15 +1,12 @@
-import { TenantProvider } from "@/context/TenantContext";
 import { UserProvider } from "@/context/UserContext";
-
 import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Nunito_Sans } from "next/font/google";
+import { Geist, Geist_Mono, Noto_Sans } from "next/font/google";
 import React from "react";
 import "./globals.css";
 import { userService } from "@/services/users/user.service";
-import { tenantService } from "@/services/tenants/tenant.service";
 
-const nunitoSans = Nunito_Sans({ variable: "--font-sans" });
+const notoSans = Noto_Sans({ variable: "--font-sans" });
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -31,18 +28,15 @@ export default async function RootLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
-    const tenant = await tenantService.getTenant();
     const user = await userService.getCurrentUser();
 
     return (
         <ClerkProvider>
-            <html lang="en" className={nunitoSans.variable}>
+            <html lang="en" className={notoSans.variable}>
                 <body
                     className={`${geistSans.variable} ${geistMono.variable} antialiased`}
                 >
-                    <TenantProvider tenant={tenant}>
-                        <UserProvider user={user}>{children}</UserProvider>
-                    </TenantProvider>
+                    <UserProvider user={user}>{children}</UserProvider>
                 </body>
             </html>
         </ClerkProvider>
