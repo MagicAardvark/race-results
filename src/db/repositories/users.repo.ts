@@ -1,6 +1,5 @@
 import { UserDTO } from "@/dto/users";
-import { db, users } from "@/db";
-import { and, eq, isNull } from "drizzle-orm/sql/expressions/conditions";
+import { db } from "@/db";
 
 interface IUserRepository {
     findAll(): Promise<UserDTO[]>;
@@ -8,10 +7,19 @@ interface IUserRepository {
 }
 
 export class UsersRepository implements IUserRepository {
-    async findAll() {
+    async findAll(): Promise<UserDTO[]> {
         return db.query.users.findMany({
             with: {
-                assignedRoles: true,
+                assignedGlobalRoles: {
+                    with: {
+                        role: true,
+                    },
+                },
+                assignedOrgRoles: {
+                    with: {
+                        role: true,
+                    },
+                },
             },
             orderBy: (users, { asc }) => [asc(users.displayName)],
         });
@@ -22,12 +30,21 @@ export class UsersRepository implements IUserRepository {
     ): Promise<UserDTO | null> {
         const dbUser = await db.query.users.findFirst({
             with: {
-                assignedRoles: true,
+                assignedGlobalRoles: {
+                    with: {
+                        role: true,
+                    },
+                },
+                assignedOrgRoles: {
+                    with: {
+                        role: true,
+                    },
+                },
             },
-            where: and(
-                eq(users.authProviderId, authProviderId),
-                isNull(users.deletedAt)
-            ),
+            where: {
+                authProviderId: authProviderId,
+                deletedAt: { isNull: true },
+            },
         });
 
         return dbUser ?? null;

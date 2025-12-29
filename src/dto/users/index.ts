@@ -1,8 +1,38 @@
-import { InferResultType } from "@/db/utils/type-helpers";
+export type UserDTO = {
+    userId: string;
+    authProviderId: string;
+    createdAt: Date;
+    updatedAt: Date;
+    deletedAt: Date | null;
+    displayName: string | null;
+    assignedOrgRoles: UserOrgRolesDTO[];
+    assignedGlobalRoles: UserGlobalRolesDTO[];
+};
 
-export type UserDTO = InferResultType<"users", { assignedRoles: true }>;
+export type RoleDTO = {
+    roleId: string;
+    key: string;
+    name: string;
+    effectiveAt: Date;
+    isEnabled: boolean;
+};
 
-export type UserRoles = InferResultType<"userRoles">;
+export type UserOrgRolesDTO = {
+    userId: string;
+    roleId: string;
+    orgId: string;
+    effectiveAt: Date;
+    isNegated: boolean;
+    role: RoleDTO;
+};
+
+export type UserGlobalRolesDTO = {
+    userId: string;
+    roleId: string;
+    effectiveAt: Date;
+    isNegated: boolean;
+    role: RoleDTO;
+};
 
 export interface UserRole {
     userId: string;
@@ -23,6 +53,6 @@ export interface User {
 
 export const ROLES = {
     admin: "admin",
-    tenantOwner: "tenantOwner",
+    orgOwner: "org_owner",
     user: "user",
 } as const;

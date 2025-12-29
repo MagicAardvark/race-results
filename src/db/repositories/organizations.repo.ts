@@ -5,7 +5,7 @@ import {
     UpdateOrgDTO,
 } from "@/dto/organizations";
 import { DatabaseError } from "@/lib/errors/app-errors";
-import { and, eq, isNull } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 
 interface IOrganizationsRepository {
     findAll(publicOnly?: boolean): Promise<OrganizationDTO[]>;
@@ -20,17 +20,28 @@ interface IOrganizationsRepository {
 export class OrganizationsRepository implements IOrganizationsRepository {
     async findAll(publicOnly: boolean = true) {
         return await db.query.orgs.findMany({
-            where: and(
-                isNull(orgs.deletedAt),
-                publicOnly ? eq(orgs.isPublic, true) : undefined
-            ),
-            orderBy: orgs.name,
+            where: {
+                deletedAt: { isNull: true },
+                isPublic: publicOnly
+                    ? {
+                          eq: true,
+                      }
+                    : undefined,
+            },
+            orderBy: {
+                name: "asc",
+            },
         });
     }
 
     async findById(id: string): Promise<OrganizationDTO | null> {
         const org = await db.query.orgs.findFirst({
-            where: and(eq(orgs.orgId, id), isNull(orgs.deletedAt)),
+            where: {
+                orgId: id,
+                deletedAt: {
+                    isNull: true,
+                },
+            },
         });
 
         return org ?? null;
@@ -38,7 +49,12 @@ export class OrganizationsRepository implements IOrganizationsRepository {
 
     async findBySlug(slug: string): Promise<OrganizationDTO | null> {
         const org = await db.query.orgs.findFirst({
-            where: and(eq(orgs.slug, slug), isNull(orgs.deletedAt)),
+            where: {
+                slug: slug,
+                deletedAt: {
+                    isNull: true,
+                },
+            },
         });
 
         return org ?? null;
@@ -46,7 +62,12 @@ export class OrganizationsRepository implements IOrganizationsRepository {
 
     async findByName(name: string): Promise<OrganizationDTO | null> {
         const org = await db.query.orgs.findFirst({
-            where: and(eq(orgs.name, name), isNull(orgs.deletedAt)),
+            where: {
+                name: name,
+                deletedAt: {
+                    isNull: true,
+                },
+            },
         });
 
         return org ?? null;

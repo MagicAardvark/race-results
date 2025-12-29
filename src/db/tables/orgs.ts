@@ -1,6 +1,13 @@
 import { createdAt, deletedAt, updatedAt } from "@/db/utils/columns";
 
-import { boolean, pgTable, text, uniqueIndex, uuid } from "drizzle-orm/pg-core";
+import {
+    boolean,
+    index,
+    pgTable,
+    text,
+    uniqueIndex,
+    uuid,
+} from "drizzle-orm/pg-core";
 
 export const orgs = pgTable(
     "orgs",
@@ -14,5 +21,8 @@ export const orgs = pgTable(
         updatedAt: updatedAt,
         deletedAt: deletedAt,
     },
-    (table) => [uniqueIndex("slug_idx").on(table.slug)]
+    (table) => [
+        uniqueIndex("slug_idx").on(table.slug),
+        index("slug_with_visibility_idx").on(table.slug, table.isPublic),
+    ]
 );

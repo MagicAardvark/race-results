@@ -30,9 +30,7 @@ export default async function AdminLayout({
 }) {
     const user = await userService.getCurrentUser();
 
-    if (
-        !user?.roles.some((r) => r === ROLES.admin || r === ROLES.tenantOwner)
-    ) {
+    if (!user?.roles.some((r) => r === ROLES.admin)) {
         redirect("/");
     }
 

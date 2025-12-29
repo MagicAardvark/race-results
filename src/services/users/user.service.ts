@@ -37,9 +37,14 @@ const mapUser = (data: UserDTO) => {
         createdAt: data.createdAt,
         updatedAt: data.updatedAt,
         deletedAt: data.deletedAt,
-        roles: data.assignedRoles
-            .filter((role) => !role.isNegated)
-            .map((role) => role.role),
+        roles: [
+            ...data.assignedGlobalRoles
+                .filter((assignedRole) => !assignedRole.isNegated)
+                .map((assignedRole) => assignedRole.role.key),
+            ...data.assignedOrgRoles
+                .filter((assignedRole) => !assignedRole.isNegated)
+                .map((assignedRole) => assignedRole.role.key),
+        ],
     };
 };
 

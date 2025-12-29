@@ -1,14 +1,20 @@
 [
     {
         "name": "NER",
-        "slug": "ner"
+        "slug": "ner",
+        "description": "The New England Region is one of 116 regions that represent, host and sanction motorsports events throughout the Northeastern states under the authority of the Sports Car Club of America, Inc. It encompasses members and tracks located throughout Maine, Massachusetts, New Hampshire, Vermont, Rhode Island and Connecticut.",
+        "isPublic": true
     },
     {
         "name": "NE-SVT",
-        "slug": "ne-svt"
+        "slug": "ne-svt",
+        "description": "We have pizza.",
+        "isPublic": true
     },
     {
         "name": "Boston BMW",
-        "slug": "boston-bmw"
+        "slug": "boston-bmw",
+        "description": "For more than forty years, the Boston Chapter has served its members in the New England area.  The Chapter was started in 1970 with only fifteen members and has since grown to over 3000. Our chapter is run entirely by volunteers who donate their time and effort to benefit their fellow members. We organize and sponsor dozens of driving and social events each year, including high-performance driving schools and Cars and Coffee get togethers. These events are held at local venues, allowing members to improve their driving skills or simply interact and learn more about each other.",
+        "isPublic": true
     }
 ]

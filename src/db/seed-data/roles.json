@@ -1,0 +1,17 @@
+[
+    {
+        "key": "admin",
+        "name": "Global Administrator",
+        "isEnabled": true
+    },
+    {
+        "key": "org_owner",
+        "name": "Organization Owner",
+        "isEnabled": true
+    },
+    {
+        "key": "user",
+        "name": "Standard User",
+        "isEnabled": true
+    }
+]
