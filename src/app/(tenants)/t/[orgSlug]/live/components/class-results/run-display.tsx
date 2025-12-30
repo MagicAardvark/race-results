@@ -10,7 +10,7 @@ type RunDisplayProps = {
 const getStatusVariant = (status: string) => {
     switch (status) {
         case "CLEAN":
-            return "default";
+            return "dark";
         case "DIRTY":
             return "secondary";
         case "DNF":

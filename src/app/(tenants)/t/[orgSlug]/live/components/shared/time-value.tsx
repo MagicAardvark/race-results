@@ -1,3 +1,5 @@
+import { cn } from "@/lib/utils";
+
 type TimeValueProps = {
     label: string;
     value: number | string | null | undefined;
@@ -12,7 +14,7 @@ export function TimeValue({
     value,
     secondaryLabel,
     secondaryValue,
-    className = "col-span-2",
+    className = "col-span-4",
     formatValue = (v) => v.toFixed(3),
 }: TimeValueProps) {
     const displayValue =
@@ -23,16 +25,22 @@ export function TimeValue({
               : value;
 
     return (
-        <div className={`${className} text-center`}>
-            <div className="space-y-1">
-                <div className="text-xs text-muted-foreground">{label}</div>
-                <div className="text-sm font-semibold">{displayValue}</div>
+        <div className={cn(className, "flex flex-col justify-center items-end")}>
+            <div className="space-y-0.5 text-right">
+                <div className="text-[10px] uppercase tracking-wide text-muted-foreground font-medium">
+                    {label}
+                </div>
+                <div className="text-lg font-bold leading-none font-mono">
+                    {displayValue}
+                </div>
                 {secondaryLabel && secondaryValue !== undefined && (
                     <>
-                        <div className="text-xs text-muted-foreground">
+                        <div className="text-[10px] uppercase tracking-wide text-muted-foreground font-medium mt-1.5">
                             {secondaryLabel}
                         </div>
-                        <div className="text-sm">{secondaryValue}</div>
+                        <div className="text-sm font-semibold leading-tight font-mono">
+                            {secondaryValue}
+                        </div>
                     </>
                 )}
             </div>

@@ -14,14 +14,22 @@ export function DriverInfo({
     color,
 }: DriverInfoProps) {
     return (
-        <div className="col-span-6">
-            <div className="space-y-1">
-                <div className="text-xs font-medium">
+        <div className="col-span-6 flex flex-col justify-center">
+            <div className="space-y-0.5">
+                <div className="text-xs font-semibold text-foreground">
+                    {name}
+                </div>
+                <div className="text-[11px] text-muted-foreground font-medium">
                     {carClass} #{number}
                 </div>
-                <div className="text-sm font-semibold">{name}</div>
-                <div className="text-xs text-muted-foreground">{car}</div>
-                <div className="text-xs text-muted-foreground">{color}</div>
+                <div className="text-[11px] text-muted-foreground">
+                    {car}
+                </div>
+                {color && (
+                    <div className="text-[11px] text-muted-foreground">
+                        {color}
+                    </div>
+                )}
             </div>
         </div>
     );

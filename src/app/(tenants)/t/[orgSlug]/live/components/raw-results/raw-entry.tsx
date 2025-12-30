@@ -7,13 +7,13 @@ import { GapDisplay } from "../shared/gap-display";
 
 type RawEntryProps = {
     entry: RawResult;
-    gapBehind: number | null;
+    maxGap: number;
 };
 
-export const RawEntry = ({ entry, gapBehind }: RawEntryProps) => {
+export const RawEntry = ({ entry, maxGap }: RawEntryProps) => {
     return (
         <ResultCard>
-            <PositionBadge label="Position" value={entry.position} />
+            <PositionBadge label="Pos" value={entry.position} />
             <DriverInfo
                 carClass={entry.entryInfo.carClass}
                 number={entry.entryInfo.number}
@@ -23,8 +23,9 @@ export const RawEntry = ({ entry, gapBehind }: RawEntryProps) => {
             />
             <TimeValue label="Raw" value={entry.total} />
             <GapDisplay
-                gapAhead={entry.toNext}
-                gapBehind={gapBehind}
+                gapToFirst={entry.toFirst}
+                gapToNext={entry.toNext}
+                maxGap={maxGap}
             />
         </ResultCard>
     );

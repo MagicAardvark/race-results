@@ -12,12 +12,12 @@ import { RunTimeDisplay } from "./run-time-display";
 
 type AutocrossResultEntryProps = {
     entry: ClassResult;
-    gapBehind: number | null;
+    allEntries: ClassResult[];
 };
 
 export const AutocrossResultEntry = ({
     entry,
-    gapBehind,
+    allEntries,
 }: AutocrossResultEntryProps) => {
     const [showRuns, setShowRuns] = useState(false);
     const isPaxLeader = entry.paxPosition === 1;
@@ -32,7 +32,7 @@ export const AutocrossResultEntry = ({
             isHighlighted={isPaxLeader}
         >
             <PositionBadge
-                label="Class"
+                label="Pos"
                 value={entry.position}
                 secondaryLabel="PAX"
                 secondaryValue={entry.paxPosition}
@@ -53,8 +53,9 @@ export const AutocrossResultEntry = ({
                 }
             />
             <GapDisplay
-                gapAhead={entry.runInfo.toNextInClass}
-                gapBehind={gapBehind}
+                gapToFirst={entry.runInfo.toFirstInClass}
+                gapToNext={entry.runInfo.toNextInClass}
+                allEntries={allEntries.map((e) => ({ gapToFirst: e.runInfo.toFirstInClass }))}
             />
             {showRuns && (
                 <div className="col-span-12 mt-2 border-t pt-2">

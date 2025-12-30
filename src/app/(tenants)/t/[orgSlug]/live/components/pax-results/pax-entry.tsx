@@ -7,10 +7,10 @@ import { GapDisplay } from "../shared/gap-display";
 
 type PaxEntryProps = {
     entry: ClassResult;
-    gapBehind: number | null;
+    maxGap: number;
 };
 
-export const PaxEntry = ({ entry, gapBehind }: PaxEntryProps) => {
+export const PaxEntry = ({ entry, maxGap }: PaxEntryProps) => {
     const best = entry.runInfo.runs.find((e) => e.isBest);
 
     return (
@@ -18,8 +18,6 @@ export const PaxEntry = ({ entry, gapBehind }: PaxEntryProps) => {
             <PositionBadge
                 label="PAX"
                 value={entry.paxPosition}
-                secondaryLabel="Class"
-                secondaryValue={entry.position}
             />
             <DriverInfo
                 carClass={entry.carClass}
@@ -35,8 +33,9 @@ export const PaxEntry = ({ entry, gapBehind }: PaxEntryProps) => {
                 secondaryValue={best?.time}
             />
             <GapDisplay
-                gapAhead={entry.runInfo.toNextInPax}
-                gapBehind={gapBehind}
+                gapToFirst={entry.runInfo.toFirstInPax}
+                gapToNext={entry.runInfo.toNextInPax}
+                maxGap={maxGap}
             />
         </ResultCard>
     );

@@ -12,12 +12,12 @@ import { RunTimeDisplay } from "./run-time-display";
 
 type RallycrossResultEntryProps = {
     entry: ClassResult;
-    gapBehind: number | null;
+    allEntries: ClassResult[];
 };
 
 export const RallycrossResultEntry = ({
     entry,
-    gapBehind,
+    allEntries,
 }: RallycrossResultEntryProps) => {
     const [showRuns, setShowRuns] = useState(false);
     const isPaxLeader = entry.paxPosition === 1;
@@ -48,8 +48,9 @@ export const RallycrossResultEntry = ({
                 }
             />
             <GapDisplay
-                gapAhead={entry.runInfo.rallyCrossToNext}
-                gapBehind={gapBehind}
+                gapToFirst={entry.runInfo.rallyCrossToFirst}
+                gapToNext={entry.runInfo.rallyCrossToNext}
+                allEntries={allEntries.map((e) => ({ gapToFirst: e.runInfo.rallyCrossToFirst }))}
             />
             {showRuns && (
                 <div className="col-span-12 mt-2 border-t pt-2">

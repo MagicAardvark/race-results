@@ -1,101 +1,128 @@
 import { cn } from "@/lib/utils";
+import { Car } from "lucide-react";
 
 type GapDisplayProps = {
-    gapAhead: number | null | undefined;
-    gapBehind: number | null | undefined;
+    gapToFirst: number | null | undefined;
+    gapToNext?: number | null | undefined;
+    allEntries?: Array<{ gapToFirst: number | null | undefined }>;
+    maxGap?: number;
     className?: string;
 };
 
-// Gap color thresholds optimized for autocross (average gap: 1.5s)
-// Green shades for < 0.6s, yellow/orange/amber for 0.6-2.0s, red for > 2.0s
-const GAP_COLOR_THRESHOLDS = [
-    { max: 0.1, color: "bg-green-300" },
-    { max: 0.2, color: "bg-green-400" },
-    { max: 0.3, color: "bg-green-500" },
-    { max: 0.4, color: "bg-green-600" },
-    { max: 0.5, color: "bg-green-700" },
-    { max: 0.6, color: "bg-green-800" },
-    { max: 0.7, color: "bg-yellow-500" },
-    { max: 0.8, color: "bg-yellow-600" },
-    { max: 0.9, color: "bg-orange-400" },
-    { max: 1.0, color: "bg-orange-500" },
-    { max: 1.2, color: "bg-orange-600" },
-    { max: 1.4, color: "bg-orange-700" },
-    { max: 1.6, color: "bg-amber-600" },
-    { max: 1.8, color: "bg-amber-700" },
-    { max: 2.0, color: "bg-amber-800" },
-    { max: 2.5, color: "bg-red-500" },
-    { max: 3.0, color: "bg-red-600" },
-] as const;
-
-const MAX_GAP_FOR_VISUAL_SCALE = 1.5;
-const MIN_BAR_HEIGHT_PERCENT = 8;
-const LABEL_COLUMN_WIDTH = "40px";
-const BAR_WIDTH = "5px";
-const ROTATED_TEXT_WIDTH = "60px";
-const ROTATED_TEXT_HEIGHT = "20px";
+const BAR_HEIGHT = "32px";
+const CAR_ICON_SIZE = 16;
+const GAP_OVERLAP_THRESHOLD = 0.001;
 
 /**
- * Calculates the visual height percentage for a gap value
+ * Calculates the 70th percentile of gaps for scaling the visualization
  */
-function getGapHeight(gap: number): number {
-    const normalized = Math.min(gap / MAX_GAP_FOR_VISUAL_SCALE, 1);
-    return Math.max(normalized * 100, MIN_BAR_HEIGHT_PERCENT);
+function calculatePercentile70(gaps: number[]): number {
+    if (gaps.length === 0) return 3.0;
+    
+    const sorted = [...gaps].sort((a, b) => a - b);
+    const index = Math.ceil(sorted.length * 0.7) - 1;
+    
+    return sorted[Math.max(0, index)] || 3.0;
 }
 
 /**
- * Gets the color class for a gap value based on thresholds
+ * Calculates the horizontal position percentage for a car icon
+ * @param gap - The gap to first place in seconds
+ * @param maxGap - The maximum gap used for scaling
+ * @returns Position percentage from left (0-70%)
  */
-function getGapColor(gap: number): string {
-    const threshold = GAP_COLOR_THRESHOLDS.find((t) => gap < t.max);
-    return threshold?.color ?? "bg-red-700";
+function getGapPosition(gap: number, maxGap: number): number {
+    const normalized = Math.min(gap / maxGap, 1);
+    // Scale to 65% of width, add 8% padding, cap at 70% to leave room for labels
+    return Math.min(normalized * 65 + 8, 70);
 }
 
 export function GapDisplay({
-    gapAhead,
-    gapBehind: _gapBehind,
-    className = "col-span-2",
+    gapToFirst,
+    gapToNext,
+    allEntries = [],
+    maxGap: providedMaxGap,
+    className = "col-span-12",
 }: GapDisplayProps) {
-    // Only show if there's a gap ahead (not first place)
-    if (!gapAhead) {
-        return null;
-    }
+    const gap = gapToFirst ?? 0;
+    const isLeader = gap === 0;
+
+    // Calculate max gap: use provided maxGap, or calculate from 70th percentile of all entries
+    const maxGap = providedMaxGap ?? (() => {
+        const allGaps = allEntries
+            .map((e) => e.gapToFirst)
+            .filter((g): g is number => g != null && g > 0);
+        return calculatePercentile70(allGaps);
+    })();
+
+    const userCarPosition = isLeader ? 0 : getGapPosition(gap, maxGap);
+
+    // Filter other cars: exclude leader, current entry (same gap), and entries with no gap
+    const otherCars = allEntries
+        .map((entry, index) => ({
+            gapToFirst: entry.gapToFirst,
+            id: `${index}-${entry.gapToFirst}`,
+        }))
+        .filter(
+            (entry) =>
+                entry.gapToFirst != null &&
+                entry.gapToFirst > 0 &&
+                Math.abs(entry.gapToFirst - gap) > GAP_OVERLAP_THRESHOLD
+        );
 
     return (
-        <div className={cn(className, "flex h-full gap-1")}>
-            {/* Column 1: Time and Label */}
-            <div
-                className="flex items-start justify-start overflow-visible"
-                style={{ width: LABEL_COLUMN_WIDTH, minWidth: LABEL_COLUMN_WIDTH }}
-            >
-                <div
-                    className="flex flex-row items-center gap-2 whitespace-nowrap"
-                    style={{
-                        transform: "rotate(-90deg)",
-                        transformOrigin: "center",
-                        width: ROTATED_TEXT_WIDTH,
-                        height: ROTATED_TEXT_HEIGHT,
-                        marginTop: "auto",
-                        marginBottom: "auto",
-                    }}
-                >
-                    <div className="text-xs text-muted-foreground">Next</div>
-                    <div className="text-xs font-semibold">{gapAhead.toFixed(3)}s</div>
-                </div>
+        <div className={cn(className, "relative")} style={{ height: BAR_HEIGHT }}>
+            {/* Horizontal bar track */}
+            <div className="absolute inset-0 flex items-center pr-20">
+                <div className="w-full h-1 bg-muted rounded-full" />
             </div>
 
-            {/* Column 2: Visual Chart */}
-            <div className={cn("flex flex-col h-full relative flex-shrink-0")} style={{ width: BAR_WIDTH }}>
-                {/* Top - Car Ahead bar - grows from top */}
-                <div className="flex-1 flex items-start justify-center relative">
-                    <div
-                        className={cn("w-full transition-all", getGapColor(gapAhead))}
-                        style={{
-                            height: `${getGapHeight(gapAhead)}%`,
-                        }}
+            {!isLeader && (
+                <div className="absolute left-0 top-1/2 -translate-y-1/2 flex items-center justify-center z-10">
+                    <Car
+                        size={CAR_ICON_SIZE}
+                        className="text-foreground"
+                        style={{ transform: "scaleX(-1)" }}
                     />
                 </div>
+            )}
+
+            {otherCars.map((car) => {
+                const carPosition = getGapPosition(car.gapToFirst!, maxGap);
+                return (
+                    <div
+                        key={car.id}
+                        className="absolute top-1/2 -translate-y-1/2 flex items-center justify-center transition-all"
+                        style={{ left: `${carPosition}%` }}
+                    >
+                        <Car
+                            size={CAR_ICON_SIZE}
+                            className="text-gray-300 fill-current"
+                            style={{ transform: "scaleX(-1)", fillOpacity: 0.3 }}
+                        />
+                    </div>
+                );
+            })}
+
+            <div
+                className="absolute top-1/2 -translate-y-1/2 flex items-center justify-center transition-all z-10"
+                style={{ left: `${userCarPosition}%` }}
+            >
+                <Car
+                    size={CAR_ICON_SIZE}
+                    className="text-purple-700 fill-current transition-colors"
+                    style={{ transform: "scaleX(-1)", fillOpacity: 0.3 }}
+                />
             </div>
+
+            {!isLeader && (
+                <div className="absolute right-0 top-1/2 -translate-y-1/2 text-[10px] text-muted-foreground flex flex-col items-end ml-2">
+                    <div>First: +{gap.toFixed(3)}s</div>
+                    {gapToNext != null && gapToNext > 0 && (
+                        <div>Next: +{gapToNext.toFixed(3)}s</div>
+                    )}
+                </div>
+            )}
         </div>
     );
 }

@@ -24,8 +24,8 @@ export function ResultCard({
             )}
             onClick={onClick}
         >
-            <CardContent>
-                <div className="grid grid-cols-12 gap-2">{children}</div>
+            <CardContent className="px-4 py-0">
+                <div className="grid grid-cols-12 gap-4">{children}</div>
             </CardContent>
         </Card>
     );

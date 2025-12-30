@@ -14,30 +14,28 @@ export const IndividualClassResults = ({
     className,
     displayMode,
 }: IndividualClassResultsProps) => {
-    const { classResults, getGapBehind } = useLiveData();
+    const { classResults } = useLiveData();
     const results = classResults?.[className] ?? null;
 
     if (!results) {
         return null;
     }
 
-    const isRallycross = displayMode === "rallycross";
-    const entries = results.map((entry, index) => {
-        const gapBehind = getGapBehind(entry, results, isRallycross);
-        // Use position, number, and name to create unique key
+    const entries = results.map((entry) => {
         const uniqueKey = `${className}-${entry.position}-${entry.number}-${entry.name}`;
+        
         return (
             <ClassResultsEntry
-                entry={entry}
-                gapBehind={gapBehind}
                 key={uniqueKey}
+                entry={entry}
+                allEntries={results}
                 displayMode={displayMode}
             />
         );
     });
 
     return (
-        <div key={className} id={className} className="space-y-2">
+        <div id={className} className="space-y-2">
             <h2 className="cursor-pointer p-2 text-center text-lg font-bold tracking-widest">
                 <Link href={`#${className}`} className="hover:underline">
                     {className}

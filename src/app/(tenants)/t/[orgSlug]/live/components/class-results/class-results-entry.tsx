@@ -6,19 +6,19 @@ import { RallycrossResultEntry } from "./rallycross-result-entry";
 
 type ClassResultsEntryProps = {
     entry: ClassResult;
-    gapBehind: number | null;
+    allEntries: ClassResult[];
     displayMode: DisplayMode;
 };
 
 export const ClassResultsEntry = ({
     entry,
-    gapBehind,
+    allEntries,
     displayMode,
 }: ClassResultsEntryProps) => {
-    return displayMode == DisplayMode.rallycross ? (
-        <RallycrossResultEntry entry={entry} gapBehind={gapBehind} />
+    return displayMode === DisplayMode.rallycross ? (
+        <RallycrossResultEntry entry={entry} allEntries={allEntries} />
     ) : (
-        <AutocrossResultEntry entry={entry} gapBehind={gapBehind} />
+        <AutocrossResultEntry entry={entry} allEntries={allEntries} />
     );
 };
 

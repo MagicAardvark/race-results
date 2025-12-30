@@ -1,3 +1,5 @@
+import { cn } from "@/lib/utils";
+
 type PositionBadgeProps = {
     label: string;
     value: string | number;
@@ -14,16 +16,18 @@ export function PositionBadge({
     className = "col-span-2",
 }: PositionBadgeProps) {
     return (
-        <div className={`${className} text-center`}>
-            <div className="space-y-1">
-                <div className="text-xs text-muted-foreground">{label}</div>
-                <div className="text-lg font-semibold">{value}</div>
+        <div className={cn(className, "flex flex-col justify-center")}>
+            <div className="space-y-0.5">
+                <div className="text-[10px] uppercase tracking-wide text-muted-foreground font-medium">
+                    {label}
+                </div>
+                <div className="text-xl font-bold leading-none">{value}</div>
                 {secondaryLabel && secondaryValue !== undefined && (
                     <>
-                        <div className="text-xs text-muted-foreground">
+                        <div className="text-[10px] uppercase tracking-wide text-muted-foreground font-medium mt-1.5">
                             {secondaryLabel}
                         </div>
-                        <div className="text-sm font-medium">
+                        <div className="text-sm font-semibold leading-tight">
                             {secondaryValue}
                         </div>
                     </>

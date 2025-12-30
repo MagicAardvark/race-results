@@ -28,19 +28,18 @@ export const ClassResults = () => {
         setFilteredClasses([]);
     };
 
-    const classResultsElements = classNames.map((classKey) => {
-        // hide elements that are not selected filters
-        if (filteredClasses.length > 0 && !filteredClasses.includes(classKey)) {
-            return null;
-        }
-        return (
+    const classResultsElements = classNames
+        .filter((classKey) => {
+            // Hide elements that are not selected filters
+            return filteredClasses.length === 0 || filteredClasses.includes(classKey);
+        })
+        .map((classKey) => (
             <IndividualClassResults
-                className={classKey}
                 key={classKey}
+                className={classKey}
                 displayMode={displayMode}
             />
-        );
-    });
+        ));
 
     return (
         <div>
