@@ -9,6 +9,7 @@ type LiveResultsData = {
     rawResults: RawResult[] | null;
     runWork: RunWork | null;
     displayMode: DisplayMode;
+    featureFlags: Record<string, boolean>;
 };
 
 const LiveResultsContext = createContext<LiveResultsData | null>(null);
@@ -19,6 +20,7 @@ type LiveResultsProviderProps = {
     rawResults: RawResult[] | null;
     runWork: RunWork | null;
     displayMode: DisplayMode;
+    featureFlags?: Record<string, boolean>;
     children: React.ReactNode;
 };
 
@@ -28,6 +30,7 @@ export function LiveResultsProvider({
     rawResults,
     runWork,
     displayMode,
+    featureFlags = {},
     children,
 }: LiveResultsProviderProps) {
     const value = useMemo(
@@ -37,8 +40,9 @@ export function LiveResultsProvider({
             rawResults,
             runWork,
             displayMode,
+            featureFlags,
         }),
-        [classResults, paxResults, rawResults, runWork, displayMode]
+        [classResults, paxResults, rawResults, runWork, displayMode, featureFlags]
     );
 
     return (

@@ -3,6 +3,7 @@
 import { Organization } from "@/dto/organizations";
 import { nameof } from "@/lib/utils";
 import { organizationService } from "@/services/organizations/organization.service";
+import { featureFlagsService } from "@/services/feature-flags/feature-flags.service";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
@@ -60,6 +61,10 @@ export async function updateOrganization(
         null;
     const isPublic = formData.get(nameof<Organization>("isPublic")) === "on";
 
+    // Feature flags
+    const paxEnabled = formData.get("feature.liveTiming.paxEnabled") === "on";
+    const workRunEnabled = formData.get("feature.liveTiming.workRunEnabled") === "on";
+
     if (!orgId) {
         return { isError: true, message: "Organization ID is required" };
     }
@@ -77,6 +82,10 @@ export async function updateOrganization(
             motorsportregOrgId,
             description,
             isPublic,
+            featureFlags: {
+                "feature.liveTiming.paxEnabled": paxEnabled,
+                "feature.liveTiming.workRunEnabled": workRunEnabled,
+            },
         });
     } catch (error) {
         return {

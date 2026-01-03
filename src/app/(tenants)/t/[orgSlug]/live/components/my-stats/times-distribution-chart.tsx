@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { Button } from "@/components/library/ui/button";
 import {
     ComposedChart,
@@ -13,6 +13,7 @@ import {
     Cell,
 } from "recharts";
 import { useLiveData } from "../../hooks/useLiveData";
+import { FEATURE_FLAGS } from "../../lib/feature-flags";
 
 type TimesDistributionChartProps = {
     selectedDriverId: string;
@@ -21,8 +22,18 @@ type TimesDistributionChartProps = {
 export function TimesDistributionChart({
     selectedDriverId,
 }: TimesDistributionChartProps) {
-    const { paxResults, rawResults, createDriverId } = useLiveData();
-    const [timeType, setTimeType] = useState<"raw" | "pax">("pax");
+    const { paxResults, rawResults, featureFlags, createDriverId } = useLiveData();
+    const isPaxEnabled = featureFlags[FEATURE_FLAGS.PAX_ENABLED] === true;
+    const [timeType, setTimeType] = useState<"raw" | "pax">(
+        isPaxEnabled ? "pax" : "raw"
+    );
+
+    // Reset to "raw" if PAX becomes disabled
+    useEffect(() => {
+        if (!isPaxEnabled && timeType === "pax") {
+            setTimeType("raw");
+        }
+    }, [isPaxEnabled, timeType]);
 
     // Get all drivers based on selected time type
     const chartData = useMemo(() => {
@@ -74,7 +85,7 @@ export function TimesDistributionChart({
 
         // Sort by time (fastest first)
         return data.sort((a, b) => a.time - b.time);
-    }, [timeType, paxResults, rawResults, selectedDriverId]);
+    }, [timeType, paxResults, rawResults, selectedDriverId, createDriverId]);
 
     // Calculate histogram data with 0.5-second buckets
     const histogramData = useMemo(() => {
@@ -129,22 +140,24 @@ export function TimesDistributionChart({
         <div className="space-y-4">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <h3 className="text-base font-semibold sm:text-lg">Time Distribution</h3>
-                <div className="flex gap-2">
-                    <Button
-                        variant={timeType === "pax" ? "default" : "outline"}
-                        size="sm"
-                        onClick={() => setTimeType("pax")}
-                    >
-                        PAX
-                    </Button>
-                    <Button
-                        variant={timeType === "raw" ? "default" : "outline"}
-                        size="sm"
-                        onClick={() => setTimeType("raw")}
-                    >
-                        Raw
-                    </Button>
-                </div>
+                {isPaxEnabled && (
+                    <div className="flex gap-2">
+                        <Button
+                            variant={timeType === "pax" ? "default" : "outline"}
+                            size="sm"
+                            onClick={() => setTimeType("pax")}
+                        >
+                            PAX
+                        </Button>
+                        <Button
+                            variant={timeType === "raw" ? "default" : "outline"}
+                            size="sm"
+                            onClick={() => setTimeType("raw")}
+                        >
+                            Raw
+                        </Button>
+                    </div>
+                )}
             </div>
             <div className="w-full overflow-x-auto">
                 <div

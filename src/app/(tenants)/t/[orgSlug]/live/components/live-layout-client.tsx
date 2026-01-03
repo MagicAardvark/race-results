@@ -5,6 +5,7 @@ import { usePathname, useParams, useRouter } from "next/navigation";
 import { Button } from "@/components/library/ui/button";
 import { RefreshCw } from "lucide-react";
 import { getNavigationPages } from "../lib/navigation";
+import { useLiveData } from "../hooks/useLiveData";
 import { useState } from "react";
 
 export function LiveLayoutClient({
@@ -15,10 +16,11 @@ export function LiveLayoutClient({
     const pathname = usePathname();
     const params = useParams();
     const router = useRouter();
+    const { featureFlags } = useLiveData();
     const [isRefreshing, setIsRefreshing] = useState(false);
     const orgSlug = params.orgSlug as string;
     const basePath = `/t/${orgSlug}/live`;
-    const navigationPages = getNavigationPages(basePath);
+    const navigationPages = getNavigationPages(basePath, featureFlags);
 
     const handleRefresh = async () => {
         setIsRefreshing(true);

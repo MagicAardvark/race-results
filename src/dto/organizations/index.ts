@@ -25,4 +25,5 @@ export interface UpdateOrgDTO {
     motorsportregOrgId?: string | null;
     description: string | null;
     isPublic: boolean;
+    featureFlags?: Record<string, boolean>;
 }

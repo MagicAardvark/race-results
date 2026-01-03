@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useMemo } from "react";
 import { useLiveData } from "../../hooks/useLiveData";
+import { FEATURE_FLAGS } from "../../lib/feature-flags";
 import { DriverSelect } from "./driver-select";
 import { ClassPositionTimeCard } from "./class-position-time-card";
 import { PositionTimeCard } from "./position-time-card";
@@ -17,6 +18,7 @@ export function MyStats() {
         paxResults,
         rawResults,
         displayMode,
+        featureFlags,
         getAllDrivers,
         findDriverInClassResults,
         findDriverInPaxResults,
@@ -94,14 +96,15 @@ export function MyStats() {
                             />
                         )}
 
-                        {paxResult && (
-                            <PositionTimeCard
-                                title="PAX"
-                                position={paxResult.paxPosition}
-                                time={paxResult.runInfo.paxTime}
-                                gapToFirst={paxResult.runInfo.toFirstInPax}
-                            />
-                        )}
+                        {paxResult &&
+                            featureFlags[FEATURE_FLAGS.PAX_ENABLED] && (
+                                <PositionTimeCard
+                                    title="PAX"
+                                    position={paxResult.paxPosition}
+                                    time={paxResult.runInfo.paxTime}
+                                    gapToFirst={paxResult.runInfo.toFirstInPax}
+                                />
+                            )}
 
                         <RunStatisticsCard
                             classResult={classResult}

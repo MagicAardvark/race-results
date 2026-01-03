@@ -2,6 +2,19 @@ import { defineRelations } from "drizzle-orm";
 import * as schema from "./schema";
 
 export const relations = defineRelations(schema, (r) => ({
+    orgs: {
+        featureFlags: r.many.featureFlags({
+            from: r.orgs.orgId,
+            to: r.featureFlags.orgId,
+        }),
+    },
+    featureFlags: {
+        org: r.one.orgs({
+            from: r.featureFlags.orgId,
+            to: r.orgs.orgId,
+            optional: false,
+        }),
+    },
     users: {
         assignedOrgRoles: r.many.userOrgRoles({
             from: r.users.userId,

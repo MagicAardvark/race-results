@@ -5,6 +5,7 @@ import {
     UpdateOrgDTO,
 } from "@/dto/organizations";
 import { organizationsRepository } from "@/db/repositories/organizations.repo";
+import { featureFlagsService } from "@/services/feature-flags/feature-flags.service";
 import { ValidationError } from "@/lib/errors/app-errors";
 
 interface IOrganizationService {
@@ -70,9 +71,18 @@ export class OrganizationService implements IOrganizationService {
                 "Organization with this name already exists"
             );
         }
-        console.log("dto", dto);
 
-        return await organizationsRepository.update(dto);
+        const org = await organizationsRepository.update(dto);
+
+        // Update feature flags if provided
+        if (dto.featureFlags) {
+            await featureFlagsService.updateOrgFeatureFlags(
+                dto.orgId,
+                dto.featureFlags
+            );
+        }
+
+        return org;
     }
 
     async deleteOrganization(orgId: string): Promise<void> {

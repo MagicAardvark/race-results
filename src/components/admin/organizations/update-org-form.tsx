@@ -15,14 +15,74 @@ import { Input } from "@/components/library/ui/input";
 import { Textarea } from "@/components/library/ui/textarea";
 
 import { Organization } from "@/dto/organizations";
+import { OrgFeatureFlags } from "@/dto/feature-flags";
 import { nameof } from "@/lib/utils";
-import { useActionState } from "react";
+import { useActionState, useMemo } from "react";
 
-export const UpdateOrgForm = ({ org }: { org: Organization }) => {
+type FeatureFlagGroup = {
+    namespace: string;
+    namespaceLabel: string;
+    flags: Array<{
+        key: string;
+        label: string;
+        enabled: boolean;
+    }>;
+};
+
+// Convert camelCase to Title Case
+const formatLabel = (text: string): string => {
+    return text
+        .replace(/([A-Z])/g, " $1")
+        .replace(/^./, (str) => str.toUpperCase())
+        .trim();
+};
+
+export const UpdateOrgForm = ({
+    org,
+    featureFlags,
+}: {
+    org: Organization;
+    featureFlags: OrgFeatureFlags;
+}) => {
     const [state, formAction, pending] = useActionState(updateOrganization, {
         isError: false,
         message: "",
     });
+
+    // Group feature flags by namespace
+    const groupedFlags = useMemo(() => {
+        const groups = new Map<string, FeatureFlagGroup["flags"]>();
+
+        for (const [key, enabled] of Object.entries(featureFlags)) {
+            const parts = key.split(".");
+            if (parts.length >= 3) {
+                const namespace = parts.slice(0, -1).join(".");
+                const flagName = parts[parts.length - 1];
+
+                if (!groups.has(namespace)) {
+                    groups.set(namespace, []);
+                }
+                groups.get(namespace)!.push({
+                    key,
+                    label: formatLabel(flagName),
+                    enabled,
+                });
+            }
+        }
+
+        return Array.from(groups.entries()).map(([namespace, flags]) => {
+            const namespaceParts = namespace.split(".");
+            // Show only middle part(s) - skip first part (e.g., "feature")
+            const middleParts = namespaceParts.slice(1);
+            const namespaceLabel = middleParts.map(formatLabel).join(" → ");
+
+            return {
+                namespace,
+                namespaceLabel,
+                flags,
+            };
+        });
+    }, [featureFlags]);
 
     return (
         <Card className="w-full">
@@ -116,6 +176,46 @@ export const UpdateOrgForm = ({ org }: { org: Organization }) => {
                                     Publicly Viewable
                                 </FieldLabel>
                             </Field>
+                        </div>
+                        <div className="mt-6 border-t pt-6">
+                            <h3 className="mb-4 text-lg font-semibold">
+                                Feature Flags
+                            </h3>
+                            {groupedFlags.length > 0 ? (
+                                <div className="space-y-4">
+                                    {groupedFlags.map((group) => (
+                                        <div
+                                            key={group.namespace}
+                                            className="rounded-lg border p-4"
+                                        >
+                                            <h4 className="mb-3 text-lg font-semibold">
+                                                {group.namespaceLabel}
+                                            </h4>
+                                            <div className="grid grid-cols-1 gap-3">
+                                                {group.flags.map((flag) => (
+                                                    <Field
+                                                        key={flag.key}
+                                                        orientation="horizontal"
+                                                    >
+                                                        <Checkbox
+                                                            defaultChecked={flag.enabled}
+                                                            id={flag.key}
+                                                            name={flag.key}
+                                                        />
+                                                        <FieldLabel htmlFor={flag.key}>
+                                                            {flag.label}
+                                                        </FieldLabel>
+                                                    </Field>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            ) : (
+                                <p className="text-sm text-muted-foreground">
+                                    No feature flags configured
+                                </p>
+                            )}
                         </div>
                         <Field orientation="horizontal">
                             <Button variant="outline" type="button">

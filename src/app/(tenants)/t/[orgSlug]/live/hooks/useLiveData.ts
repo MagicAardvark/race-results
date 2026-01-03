@@ -147,6 +147,7 @@ export function useLiveData() {
             rawResults: context.rawResults,
             runWork: context.runWork,
             displayMode: context.displayMode,
+            featureFlags: context.featureFlags,
             classNames,
             // Utility functions
             getAllDrivers: () =>
@@ -165,6 +166,7 @@ export function useLiveData() {
             context.rawResults,
             context.runWork,
             context.displayMode,
+            context.featureFlags,
             classNames,
         ]
     );
