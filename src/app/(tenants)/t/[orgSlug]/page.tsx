@@ -11,7 +11,19 @@ import {
     TableRow,
 } from "@/ui/table";
 import { Button } from "@/ui/button";
-import { ExternalLinkIcon, CalendarIcon } from "lucide-react";
+import {
+    ExternalLinkIcon,
+    CalendarIcon,
+    ArrowLeftIcon,
+} from "lucide-react";
+import { CgMediaLive as LiveIcon } from "react-icons/cg";
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from "@/ui/card";
 
 function formatDate(dateString: string): string {
     const date = new Date(dateString);
@@ -54,97 +66,170 @@ export default async function Page() {
     }
 
     return (
-        <div className="mx-auto mt-8 lg:w-1/2">
-            <Link
-                href={"/"}
-                className="rounded border border-gray-200 p-2 shadow hover:border-gray-300"
-            >
-                Go Back
-            </Link>
-            <h1 className="mt-8 text-xl font-bold">{tenant.org.name}</h1>
+        <div className="container mx-auto px-4 py-8">
+            {/* Back Button */}
+            <Button variant="ghost" size="sm" asChild className="mb-6">
+                <Link href="/">
+                    <ArrowLeftIcon className="mr-2 h-4 w-4" />
+                    Back to Organizations
+                </Link>
+            </Button>
 
-            {tenant.org.motorsportregOrgId && (
-                <div className="mt-8">
-                    <h2 className="mb-4 text-lg font-semibold flex items-center gap-2">
-                        <CalendarIcon className="h-5 w-5" />
-                        Upcoming Events
-                    </h2>
-
-                    {events.length === 0 ? (
-                        <p className="text-muted-foreground">
-                            No upcoming events found.
-                        </p>
-                    ) : (
-                        <div className="rounded-md border">
-                            <Table>
-                                <TableHeader>
-                                    <TableRow>
-                                        <TableHead>Event</TableHead>
-                                        <TableHead>Type</TableHead>
-                                        <TableHead>Date</TableHead>
-                                        <TableHead>Venue</TableHead>
-                                        <TableHead className="text-right">
-                                            Actions
-                                        </TableHead>
-                                    </TableRow>
-                                </TableHeader>
-                                <TableBody>
-                                    {events.map((event) => {
-                                        const singleDay = isSingleDay(
-                                            event.start,
-                                            event.end
-                                        );
-
-                                        return (
-                                            <TableRow key={event.id}>
-                                                <TableCell className="font-medium">
-                                                    {event.name}
-                                                </TableCell>
-                                                <TableCell>{event.type}</TableCell>
-                                                <TableCell>
-                                                    {singleDay ? (
-                                                        formatDate(event.start)
-                                                    ) : (
-                                                        <span>
-                                                            {formatDate(
-                                                                event.start
-                                                            )}{" "}
-                                                            -{" "}
-                                                            {formatDate(
-                                                                event.end
-                                                            )}
-                                                        </span>
-                                                    )}
-                                                </TableCell>
-                                                <TableCell>
-                                                    {event.venue.name},{" "}
-                                                    {event.venue.city},{" "}
-                                                    {event.venue.region}
-                                                </TableCell>
-                                                <TableCell className="text-right">
-                                                    <Button
-                                                        variant="outline"
-                                                        size="sm"
-                                                        asChild
-                                                    >
-                                                        <Link
-                                                            href={event.detailuri}
-                                                            target="_blank"
-                                                            rel="noopener noreferrer"
-                                                        >
-                                                            View Event
-                                                            <ExternalLinkIcon className="ml-2 h-4 w-4" />
-                                                        </Link>
-                                                    </Button>
-                                                </TableCell>
-                                            </TableRow>
-                                        );
-                                    })}
-                                </TableBody>
-                            </Table>
-                        </div>
-                    )}
+            {/* Organization Header */}
+            <div className="mb-8">
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                    <div>
+                        <h1 className="text-3xl font-bold sm:text-4xl">
+                            {tenant.org.name}
+                        </h1>
+                        {tenant.org.motorsportregOrgId && (
+                            <p className="mt-2 text-muted-foreground">
+                                View upcoming events and results for this
+                                organization
+                            </p>
+                        )}
+                    </div>
+                    <Button size="lg" asChild>
+                        <Link href={`/t/${tenant.org.slug}/live`}>
+                            <LiveIcon className="mr-2 h-5 w-5 animate-pulse text-white" />
+                            Live Timing
+                        </Link>
+                    </Button>
                 </div>
+            </div>
+
+            {/* Events Section */}
+            {tenant.org.motorsportregOrgId ? (
+                <Card>
+                    <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                            <CalendarIcon className="h-5 w-5" />
+                            Upcoming Events
+                        </CardTitle>
+                        <CardDescription>
+                            Events scheduled for this organization
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        {events.length === 0 ? (
+                            <div className="py-8 text-center">
+                                <p className="text-muted-foreground">
+                                    No upcoming events found.
+                                </p>
+                            </div>
+                        ) : (
+                            <div className="overflow-x-auto">
+                                <Table>
+                                    <TableHeader>
+                                        <TableRow>
+                                            <TableHead className="min-w-[200px]">
+                                                Event
+                                            </TableHead>
+                                            <TableHead className="hidden sm:table-cell">
+                                                Type
+                                            </TableHead>
+                                            <TableHead className="min-w-[150px]">
+                                                Date
+                                            </TableHead>
+                                            <TableHead className="hidden lg:table-cell">
+                                                Venue
+                                            </TableHead>
+                                            <TableHead className="text-right">
+                                                Actions
+                                            </TableHead>
+                                        </TableRow>
+                                    </TableHeader>
+                                    <TableBody>
+                                        {events.map((event) => {
+                                            const singleDay = isSingleDay(
+                                                event.start,
+                                                event.end
+                                            );
+
+                                            return (
+                                                <TableRow key={event.id}>
+                                                    <TableCell className="font-medium">
+                                                        {event.name}
+                                                        {event.type && (
+                                                            <span className="ml-2 block text-xs text-muted-foreground sm:hidden">
+                                                                {event.type}
+                                                            </span>
+                                                        )}
+                                                    </TableCell>
+                                                    <TableCell className="hidden sm:table-cell">
+                                                        {event.type}
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        {singleDay ? (
+                                                            formatDate(event.start)
+                                                        ) : (
+                                                            <span>
+                                                                {formatDate(
+                                                                    event.start
+                                                                )}
+                                                                <span className="hidden sm:inline">
+                                                                    {" "}
+                                                                    -{" "}
+                                                                    {formatDate(
+                                                                        event.end
+                                                                    )}
+                                                                </span>
+                                                                <span className="block text-xs text-muted-foreground sm:hidden">
+                                                                    to{" "}
+                                                                    {formatDate(
+                                                                        event.end
+                                                                    )}
+                                                                </span>
+                                                            </span>
+                                                        )}
+                                                    </TableCell>
+                                                    <TableCell className="hidden lg:table-cell">
+                                                        {event.venue.name},{" "}
+                                                        {event.venue.city},{" "}
+                                                        {event.venue.region}
+                                                    </TableCell>
+                                                    <TableCell className="text-right">
+                                                        <Button
+                                                            variant="outline"
+                                                            size="sm"
+                                                            asChild
+                                                            className="w-full sm:w-auto"
+                                                        >
+                                                            <Link
+                                                                href={
+                                                                    event.detailuri
+                                                                }
+                                                                target="_blank"
+                                                                rel="noopener noreferrer"
+                                                            >
+                                                                <span className="hidden sm:inline">
+                                                                    View Event
+                                                                </span>
+                                                                <span className="sm:hidden">
+                                                                    View
+                                                                </span>
+                                                                <ExternalLinkIcon className="ml-2 h-4 w-4" />
+                                                            </Link>
+                                                        </Button>
+                                                    </TableCell>
+                                                </TableRow>
+                                            );
+                                        })}
+                                    </TableBody>
+                                </Table>
+                            </div>
+                        )}
+                    </CardContent>
+                </Card>
+            ) : (
+                <Card>
+                    <CardContent className="py-8 text-center">
+                        <p className="text-muted-foreground">
+                            No MotorsportReg integration configured for this
+                            organization.
+                        </p>
+                    </CardContent>
+                </Card>
             )}
         </div>
     );

@@ -16,7 +16,8 @@ export default async function Page() {
 
     return (
         <div className="flex w-full flex-col gap-4">
-            <div>
+            <div className="flex items-center justify-between">
+                <h1 className="text-2xl font-semibold">Organizations</h1>
                 <CreateOrgDialog
                     trigger={
                         <Button>

@@ -43,14 +43,13 @@ export default async function Page({
     const featureFlags = await featureFlagsService.getOrgFeatureFlags(org.orgId);
 
     return (
-        <div>
-            <div className="mt-4 flex flex-col gap-4">
-                <div>
-                    <LinkButton href="/admin/organizations">Go Back</LinkButton>
-                </div>
-                <UpdateOrgForm org={org} featureFlags={featureFlags} />
-                <ApiKeyManagement org={org} />
+        <div className="flex w-full flex-col gap-4">
+            <div className="flex items-center justify-between">
+                <h1 className="text-2xl font-semibold">{org.name}</h1>
+                <LinkButton href="/admin/organizations">Go Back</LinkButton>
             </div>
+            <UpdateOrgForm org={org} featureFlags={featureFlags} />
+            <ApiKeyManagement org={org} />
         </div>
     );
 }
