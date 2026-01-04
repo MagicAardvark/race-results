@@ -1,11 +1,11 @@
-# Feature: Live Timing System with Personal Stats Dashboard
+# Live Timing System
 
 ## Overview
-This PR introduces a comprehensive live timing system for race events, allowing real-time viewing of class results, PAX standings, raw times, work/run assignments, and a personalized "Me" dashboard. The implementation includes extensive refactoring to ensure maintainable, DRY, and performant code.
+A comprehensive live timing system for race events, allowing real-time viewing of class results, PAX standings, raw times, work/run assignments, and a personalized "Me" dashboard.
 
-## 🎯 New Features
+## 🎯 Features
 
-### Live Timing Pages
+### Pages
 
 #### 1. **Class Results** (`/live`)
 - Displays results grouped by car class
@@ -71,63 +71,81 @@ This PR introduces a comprehensive live timing system for race events, allowing 
 - Supports autocross and rallycross modes
 - Handles missing/null data gracefully
 
-## 🔧 Refactoring & Code Quality
+## 🔧 Code Organization
 
-### Code Consolidation
-- **Merged duplicate components**: Combined `AutocrossResultEntry` and `RallycrossResultEntry` into unified `ClassResultEntry`
-- **Extracted shared utilities**:
-  - `utils/gap-calculator.ts` - Gap calculation logic
-  - `utils/key-generators.ts` - Consistent React key generation
-- **Created reusable components**:
-  - `FilterButtons` - Shared filter button component
-  - Various shared UI components (PositionBadge, DriverInfo, TimeValue, etc.)
+### Components
+- **ClassResultEntry**: Unified component for displaying class results (supports both autocross and rallycross)
+- **FilterButtons**: Shared filter button component for class filtering
+- **Shared UI Components**: PositionBadge, DriverInfo, TimeValue, etc. used across result pages
 
-### Custom Hooks
-- **`useUrlFilters`**: Centralized URL search param management
-- **`useLiveData`**: Improved with internal utility functions (non-exported)
-- Better memoization with granular dependencies
+### Hooks
+- **`useLiveData()`**: Provides access to all live results data and utility functions
+- **`useUrlFilters()`**: Manages URL search params for filters and driver selection
 
-### Performance Optimizations
-- Memoized context values to prevent unnecessary re-renders
-- Optimized gap calculations with `useMemo`
-- Efficient key generation for React lists
-
-### Simplified Architecture
-- Removed unnecessary `PageWrapper` component
-- Simplified all `page.tsx` files to directly export components
-- Moved layout concerns to `LiveLayoutClient`
+### Utilities
+- **`utils/gap-calculator.ts`**: Calculates time gaps between drivers
+- **`utils/key-generators.ts`**: Generates consistent React keys for driver identification
+- **`utils/is-today.ts`**: Date utilities for work/run order visibility
 
 ## 📁 File Structure
 
-### New Directories
 ```
 live/
-├── data/             # Data fetching utilities
-├── components/       # React components
-│   ├── class-results/
-│   ├── my-stats/
-│   ├── pax-results/
-│   ├── raw-results/
-│   ├── shared/
-│   └── work-run/
-├── context/          # React Context providers
-├── hooks/            # Custom React hooks
-├── lib/              # Utilities and configuration
-├── utils/            # Pure utility functions
-├── me/               # Personal stats page
-├── pax/              # PAX results page
-├── raw/              # Raw results page
-└── workrun/          # Work/run order page
+├── data/             # Data fetching utilities (server-side)
+│   └── results.ts  # Fetches class, PAX, raw, and work/run data
+├── components/      # React components (page-specific)
+│   ├── class-results/    # Class results display
+│   ├── my-stats/         # Personal stats dashboard
+│   ├── pax-results/      # PAX results display
+│   ├── raw-results/      # Raw results display
+│   ├── shared/           # Shared components within live timing
+│   └── work-run/         # Work/run order display
+├── context/         # React Context providers
+│   └── live-results-context.tsx  # Provides data to all pages
+├── hooks/           # Custom React hooks
+│   ├── useLiveData.ts    # Access live results data
+│   └── useUrlFilters.ts  # URL search param management
+├── lib/             # Utilities and configuration
+│   ├── api-client.ts     # API client for fetching data
+│   ├── config.ts         # API endpoint configuration
+│   ├── feature-flags.ts  # Feature flag constants
+│   ├── navigation.ts     # Navigation page definitions
+│   ├── rallycross-calculator.ts  # Rallycross time calculations
+│   └── tenant-guard.ts   # Tenant validation
+├── utils/           # Pure utility functions
+│   ├── gap-calculator.ts    # Time gap calculations
+│   ├── is-today.ts         # Date utilities
+│   └── key-generators.ts   # React key generation
+├── layout.tsx       # Server layout (data fetching)
+├── page.tsx         # Class results page
+├── me/              # Personal stats page
+├── pax/             # PAX results page
+├── raw/             # Raw results page
+├── workrun/         # Work/run order page
+└── types.ts         # TypeScript type definitions
 ```
 
-## 📊 Statistics
+## 🔧 Implementation Details
 
-- **67 files changed**
-- **3,672 insertions**, 4 deletions
-- **50+ new components** created
-- **5 new pages** added
-- **2 custom hooks** created
-- **3 utility modules** extracted
+### Data Fetching
+- All data is fetched server-side in `layout.tsx` using `Promise.all` for parallel requests
+- Data includes: class results, PAX results, raw results, run work, and feature flags
+- Data is provided to client components via `LiveResultsProvider` context
+
+### Display Modes
+The system supports two display modes:
+- **Autocross**: Standard autocross timing with individual run times
+- **Rallycross**: Rallycross timing with calculated times
+
+Display mode is currently hardcoded but can be configured per event/tenant.
+
+### Driver Identification
+Drivers are identified by a combination of:
+- Name
+- Number
+- Car Class
+
+This creates a unique `driverId` for each driver across all result types.
 
 ## 🎨 UI/UX Features
 
@@ -145,22 +163,14 @@ live/
 - **Empty states**: Helpful messages when no data
 - **Mobile-optimized**: Touch-friendly interface
 
-## 🔄 Related Changes
+## 🔄 Related Features
 
-### Database
-- Added migration for organization updates
-- New fields for MSR integration
+### Feature Flags
+The live timing system respects organization-level feature flags:
+- `feature.liveTiming.paxEnabled` - Controls PAX results visibility
+- `feature.liveTiming.workRunEnabled` - Controls work/run order visibility
 
-### MSR Integration
-- Enhanced organization service
-- Updated DTOs and repositories
-- Test utilities added
-
-### UI Components
-- Enhanced Badge component
-- New shared components library
-- Design system components moved to top-level `/src/ui/` directory
-- Page-centric organization: components live alongside their pages
+These flags are configured in the global admin panel and affect navigation visibility and data display.
 
 ## 🧪 Testing Considerations
 
@@ -174,19 +184,27 @@ live/
 - [x] Empty states display appropriately
 - [x] Both autocross and rallycross modes work
 
-## 🚀 Migration Notes
+## 🚀 Setup & Configuration
 
-### For Users
-- New navigation item "Live" appears in tenant navigation
-- All existing functionality remains unchanged
-- No breaking changes to existing features
+### API Endpoints
+Live timing data is fetched from external API endpoints. Configure these in `lib/config.ts`:
 
-### For Developers
-- New live timing API endpoints must be configured
-- Context provider wraps all live timing pages
-- Server-side data fetching in layout component
-- **Component Organization**: Live timing components are page-centric, located at `app/(tenants)/t/[orgSlug]/live/components/`
-- **Design System**: UI components imported from `@/ui/*` (top-level design system)
+```typescript
+export const LIVE_TIMING_CONFIG = {
+    classResults: process.env.CLASS_RESULTS_JSON_URL || "...",
+    paxResults: process.env.PAX_RESULTS_JSON_URL || "...",
+    rawResults: process.env.RAW_RESULTS_JSON_URL || "...",
+    runWork: process.env.RUN_WORK_JSON_URL || "...",
+};
+```
+
+### Environment Variables
+Set these environment variables to configure the API endpoints:
+- `CLASS_RESULTS_JSON_URL` - Class results endpoint
+- `PAX_RESULTS_JSON_URL` - PAX results endpoint
+- `RAW_RESULTS_JSON_URL` - Raw results endpoint
+- `RUN_WORK_JSON_URL` - Work/run order endpoint
+- `EXPECTED_RUNS` - Expected number of runs per driver (default: 4)
 
 ## 📝 Technical Details
 
@@ -207,13 +225,10 @@ live/
 
 ## 🎯 Future Enhancements
 
-Potential improvements for future PRs:
+Potential improvements:
 - Real-time updates via WebSocket
-- Historical data comparison
 - Export functionality
 - Additional chart types
 - Performance metrics dashboard
-
----
-
-**Note**: This PR represents a significant feature addition with extensive refactoring. All changes maintain backward compatibility and follow established patterns in the codebase.
+- Event-specific display mode configuration
+- Customizable refresh intervals

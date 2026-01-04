@@ -113,6 +113,10 @@ src/
 │       ├── confirmation-dialog.tsx
 │       └── shared/
 │           └── layout/          # Shared layout components
+│               ├── app-header.tsx      # Shared header (all pages)
+│               ├── app-footer.tsx      # Footer (public pages)
+│               ├── configuration-layout.tsx  # Admin layout with sidebar
+│               └── sidebar-navigation.tsx     # Sidebar navigation
 ├── db/                          # Database
 │   ├── tables/                  # Drizzle table definitions
 │   ├── repositories/            # Data access layer
@@ -160,6 +164,23 @@ src/
 - **Global admin**: `/(global-admin)/admin/*`
 - **Global API**: `/(global-api)/api/*` - Public API endpoints for data ingestion
 - **Route guards**: Enforced in `layout.tsx` files
+
+### Shared Layout System
+
+The application uses a consistent header across all pages for unified navigation and branding:
+
+- **AppHeader** (`app/components/shared/layout/app-header.tsx`): 
+  - Shared header component used by all layouts
+  - Includes branding, navigation links, admin button, and user authentication
+  - Supports optional sidebar trigger for mobile navigation
+- **Layout Structure**:
+  - **Public Layout**: Header + Footer (for public pages)
+  - **Tenant Layout**: Header only (for tenant pages)
+  - **Admin Layout**: Header + Sidebar (for admin pages with mobile support)
+- **Responsive Design**: 
+  - Mobile sidebar trigger integrated into header
+  - Sidebar positioned below header (no overlap)
+  - Consistent navigation across all screen sizes
 
 ## 🚀 Getting Started
 
@@ -252,7 +273,7 @@ src/
 ### Organization Management
 
 #### Creating an Organization
-1. Navigate to global admin: `/(global-admin)/admin/organizations`
+1. Navigate to global admin: `/admin/organizations`
 2. Click "Create Organization"
 3. Fill in organization details
 4. Set MotorsportReg ID if applicable
@@ -263,7 +284,7 @@ src/
 3. Manage users within the organization
 
 #### Configuring Feature Flags
-1. Navigate to global admin: `/(global-admin)/admin/organizations/[slug]`
+1. Navigate to global admin: `/admin/organizations/[slug]`
 2. Scroll to the "Feature Flags" section
 3. Toggle features on/off for the organization:
    - **Enable PAX Results** - Shows PAX navigation and statistics
@@ -271,14 +292,20 @@ src/
 4. Click "Save" to apply changes
 
 #### Managing API Keys
-1. Navigate to global admin: `/(global-admin)/admin/organizations/[slug]`
+1. Navigate to global admin: `/admin/organizations/[slug]`
 2. Scroll to the "API Keys" section
 3. **Generate New Key**: Creates a new API key and disables the previous one
 4. **Disable Access**: Generates a new disabled key, revoking API access
 5. **View History**: See all previous API keys for the organization
 6. **Copy Key**: Click the copy button to copy the current API key to clipboard
 
-**Note**: Only the most recent API key is active. Generating a new key automatically disables the previous one.
+**Note**: Only the most recent API key is active. Generating a new key automatically disables the previous one. API keys must be enabled (`api_key_enabled = true`) to work.
+
+#### Using API Keys
+API keys are used to authenticate requests to the data ingestion endpoints:
+- **Header**: `X-API-Key: <your-api-key>`
+- **Endpoints**: `/api/ingest/[orgSlug]/live` and `/api/ingest/[orgSlug]/results`
+- **Security**: Keys are validated against the organization slug and must be enabled
 
 ## 🔧 Development
 
@@ -312,6 +339,11 @@ pnpm seed             # Seed database with sample data
   - Page-specific components live alongside their pages
   - Shared components at app level: `app/components/shared/`
   - Design system components at top level: `ui/`
+- **Shared Layout Components**: 
+  - `AppHeader` - Consistent header across all pages (public, tenant, admin)
+  - `AppFooter` - Footer for public pages
+  - `ConfigurationLayout` - Admin layout with sidebar and header
+  - All layouts use the shared header for consistency
 - **Server Components by Default**: Prefer server components
 - **Client Components When Necessary**: Only use `"use client"` when needed
 - **Isolated Computation**: Heavy computation (scoring, parsing) isolated from request/response
@@ -372,14 +404,14 @@ Organizations can access their data via API using API keys:
 #### Authentication
 API requests must include a valid API key in the request header:
 ```
-Authorization: Bearer <api-key>
+X-API-Key: <api-key>
 ```
 
 #### API Key Validation
 The platform validates API keys by:
 - Checking the organization slug matches the key
-- Verifying the key is the most recent (enabled) key for the organization
-- Ensuring the key is enabled
+- Verifying the key is the most recent key for the organization
+- Ensuring the key is enabled (`api_key_enabled = true`)
 
 See `src/db/repositories/organizations.api.repo.ts` for validation logic.
 
@@ -392,14 +424,22 @@ The platform provides public API endpoints for ingesting live timing and results
 - **POST** `/api/ingest/[orgSlug]/results` - Ingest results data
 
 #### Authentication
-These endpoints are public and do not require authentication. They are designed for external systems to push data into the platform.
+These endpoints require API key authentication via the `X-API-Key` header. The API key must:
+- Match the organization slug in the URL path
+- Be the most recent key for that organization
+- Be enabled (`api_key_enabled = true`)
+
+**Note**: API key validation is enforced by middleware in `src/proxy.ts` before requests reach the route handlers.
 
 #### Usage
 ```typescript
 // Example: Ingest live timing data
 const response = await fetch('/api/ingest/my-org/live', {
   method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
+  headers: {
+    'Content-Type': 'application/json',
+    'X-API-Key': 'rr_api_key_<your-api-key>'
+  },
   body: JSON.stringify(liveTimingData)
 });
 ```
@@ -426,8 +466,11 @@ See `src/app/(global-api)/api/ingest/` for implementation details.
 - [ ] Feature flags persist across page refreshes
 - [ ] API key generation works correctly
 - [ ] API key disable/enable functionality works
-- [ ] API key validation works for API requests
+- [ ] API key validation works for API requests (checks enabled status)
 - [ ] Previous API keys are displayed correctly
+- [ ] Shared header appears on all pages
+- [ ] Mobile sidebar trigger works correctly
+- [ ] Responsive design works across all pages
 
 ## 📦 Deployment
 
