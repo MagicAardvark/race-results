@@ -1,4 +1,9 @@
-import { createdAt, deletedAt, updatedAt } from "@/db/utils/columns";
+import {
+    createdAt,
+    deletedAt,
+    effectiveAt,
+    updatedAt,
+} from "@/db/utils/columns";
 
 import {
     boolean,
@@ -25,5 +30,22 @@ export const orgs = pgTable(
     (table) => [
         uniqueIndex("slug_idx").on(table.slug),
         index("slug_with_visibility_idx").on(table.slug, table.isPublic),
+    ]
+);
+
+export const orgApiKeys = pgTable(
+    "org_api_keys",
+    {
+        apiKeyId: uuid("id").primaryKey().defaultRandom(),
+        orgId: uuid("org_id")
+            .notNull()
+            .references(() => orgs.orgId, { onDelete: "cascade" }),
+        apiKey: text("api_key").notNull(),
+        apiKeyEnabled: boolean("api_key_enabled").notNull().default(true),
+        effectiveAt: effectiveAt,
+    },
+    (table) => [
+        uniqueIndex("org_api_key_idx").on(table.orgId, table.apiKey),
+        index("api_key_enabled_idx").on(table.apiKeyEnabled),
     ]
 );
