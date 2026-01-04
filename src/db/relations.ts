@@ -7,6 +7,10 @@ export const relations = defineRelations(schema, (r) => ({
             from: r.orgs.orgId,
             to: r.featureFlags.orgId,
         }),
+        orgApiKeys: r.many.orgApiKeys({
+            from: r.orgs.orgId,
+            to: r.orgApiKeys.orgId,
+        }),
     },
     featureFlags: {
         org: r.one.orgs({
@@ -52,12 +56,6 @@ export const relations = defineRelations(schema, (r) => ({
             from: r.userGlobalRoles.roleId,
             to: r.roles.roleId,
             optional: false,
-        }),
-    },
-    orgs: {
-        orgApiKeys: r.many.orgApiKeys({
-            from: r.orgs.orgId,
-            to: r.orgApiKeys.orgId,
         }),
     },
     orgApiKeys: {
