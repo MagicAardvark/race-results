@@ -1,3 +1,4 @@
+import { ApiKeyManagement } from "@/components/admin/organizations/api-key-management/api-key-management";
 import { UpdateOrgForm } from "@/components/admin/organizations/update-org-form";
 import {
     Empty,
@@ -8,7 +9,7 @@ import {
     EmptyTitle,
 } from "@/components/library/ui/empty";
 import { LinkButton } from "@/components/link-button/link-button";
-import { organizationService } from "@/services/organizations/organization.service";
+import { organizationAdminService } from "@/services/organizations/organization.admin.service";
 import { featureFlagsService } from "@/services/feature-flags/feature-flags.service";
 import { TriangleAlert } from "lucide-react";
 
@@ -18,7 +19,7 @@ export default async function Page({
     params: Promise<{ slug: string }>;
 }) {
     const { slug } = await params;
-    const org = await organizationService.getOrganizationBySlug(slug);
+    const org = await organizationAdminService.findBySlug(slug);
 
     if (org === null) {
         return (
@@ -48,6 +49,7 @@ export default async function Page({
                     <LinkButton href="/admin/organizations">Go Back</LinkButton>
                 </div>
                 <UpdateOrgForm org={org} featureFlags={featureFlags} />
+                <ApiKeyManagement org={org} />
             </div>
         </div>
     );

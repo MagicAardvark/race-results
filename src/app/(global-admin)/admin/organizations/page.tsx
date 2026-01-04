@@ -8,11 +8,11 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/library/ui/table";
-import { organizationService } from "@/services/organizations/organization.service";
+import { organizationAdminService } from "@/services/organizations/organization.admin.service";
 import { PlusIcon } from "lucide-react";
 
 export default async function Page() {
-    const orgs = await organizationService.getAllOrganizations(false);
+    const orgs = await organizationAdminService.getAll();
 
     return (
         <div className="flex w-full flex-col gap-4">

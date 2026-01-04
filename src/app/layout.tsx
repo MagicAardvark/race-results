@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Noto_Sans } from "next/font/google";
 import "./globals.css";
 import { userService } from "@/services/users/user.service";
+import { Toaster } from "sonner";
 
 const notoSans = Noto_Sans({ variable: "--font-sans" });
 
@@ -36,6 +37,7 @@ export default async function RootLayout({
                     className={`${geistSans.variable} ${geistMono.variable} antialiased`}
                 >
                     <UserProvider user={user}>{children}</UserProvider>
+                    <Toaster position="top-center" richColors />
                 </body>
             </html>
         </ClerkProvider>

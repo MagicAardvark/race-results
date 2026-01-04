@@ -14,7 +14,7 @@ import { Field, FieldGroup, FieldLabel } from "@/components/library/ui/field";
 import { Input } from "@/components/library/ui/input";
 import { Textarea } from "@/components/library/ui/textarea";
 
-import { Organization } from "@/dto/organizations";
+import { OrganizationExtended } from "@/dto/organizations";
 import { OrgFeatureFlags } from "@/dto/feature-flags";
 import { nameof } from "@/lib/utils";
 import { useActionState, useMemo } from "react";
@@ -41,7 +41,7 @@ export const UpdateOrgForm = ({
     org,
     featureFlags,
 }: {
-    org: Organization;
+    org: OrganizationExtended;
     featureFlags: OrgFeatureFlags;
 }) => {
     const [state, formAction, pending] = useActionState(updateOrganization, {
@@ -97,7 +97,7 @@ export const UpdateOrgForm = ({
 
                     <input
                         type="hidden"
-                        name={nameof<Organization>("orgId")}
+                        name={nameof<OrganizationExtended>("orgId")}
                         value={org.orgId}
                     />
 
@@ -105,36 +105,40 @@ export const UpdateOrgForm = ({
                         <div className="grid grid-cols-2 gap-4">
                             <Field>
                                 <FieldLabel
-                                    htmlFor={nameof<Organization>("name")}
+                                    htmlFor={nameof<OrganizationExtended>(
+                                        "name"
+                                    )}
                                 >
                                     Name
                                 </FieldLabel>
                                 <Input
                                     type="text"
-                                    id={nameof<Organization>("name")}
-                                    name={nameof<Organization>("name")}
+                                    id={nameof<OrganizationExtended>("name")}
+                                    name={nameof<OrganizationExtended>("name")}
                                     defaultValue={org.name}
                                     required
                                 />
                             </Field>
                             <Field>
                                 <FieldLabel
-                                    htmlFor={nameof<Organization>("slug")}
+                                    htmlFor={nameof<OrganizationExtended>(
+                                        "slug"
+                                    )}
                                 >
                                     URL Slug
                                 </FieldLabel>
                                 <Input
                                     className="pointer-events-none bg-gray-100"
                                     type="text"
-                                    id={nameof<Organization>("slug")}
-                                    name={nameof<Organization>("slug")}
+                                    id={nameof<OrganizationExtended>("slug")}
+                                    name={nameof<OrganizationExtended>("slug")}
                                     defaultValue={org.slug}
                                     readOnly
                                 />
                             </Field>
                             <Field>
                                 <FieldLabel
-                                    htmlFor={nameof<Organization>(
+                                    htmlFor={nameof<OrganizationExtended>(
                                         "motorsportregOrgId"
                                     )}
                                 >
@@ -142,8 +146,10 @@ export const UpdateOrgForm = ({
                                 </FieldLabel>
                                 <Input
                                     type="text"
-                                    id={nameof<Organization>("motorsportregOrgId")}
-                                    name={nameof<Organization>(
+                                    id={nameof<OrganizationExtended>(
+                                        "motorsportregOrgId"
+                                    )}
+                                    name={nameof<OrganizationExtended>(
                                         "motorsportregOrgId"
                                     )}
                                     defaultValue={org.motorsportregOrgId || ""}
@@ -152,7 +158,7 @@ export const UpdateOrgForm = ({
                             </Field>
                             <Field className="col-span-2">
                                 <FieldLabel
-                                    htmlFor={nameof<Organization>(
+                                    htmlFor={nameof<OrganizationExtended>(
                                         "description"
                                     )}
                                 >
@@ -160,18 +166,28 @@ export const UpdateOrgForm = ({
                                 </FieldLabel>
                                 <Textarea
                                     defaultValue={org.description || ""}
-                                    id={nameof<Organization>("description")}
-                                    name={nameof<Organization>("description")}
+                                    id={nameof<OrganizationExtended>(
+                                        "description"
+                                    )}
+                                    name={nameof<OrganizationExtended>(
+                                        "description"
+                                    )}
                                 ></Textarea>
                             </Field>
                             <Field orientation="horizontal">
                                 <Checkbox
                                     defaultChecked={org.isPublic}
-                                    id={nameof<Organization>("isPublic")}
-                                    name={nameof<Organization>("isPublic")}
+                                    id={nameof<OrganizationExtended>(
+                                        "isPublic"
+                                    )}
+                                    name={nameof<OrganizationExtended>(
+                                        "isPublic"
+                                    )}
                                 />
                                 <FieldLabel
-                                    htmlFor={nameof<Organization>("isPublic")}
+                                    htmlFor={nameof<OrganizationExtended>(
+                                        "isPublic"
+                                    )}
                                 >
                                     Publicly Viewable
                                 </FieldLabel>

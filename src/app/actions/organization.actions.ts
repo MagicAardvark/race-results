@@ -2,9 +2,9 @@
 
 import { Organization } from "@/dto/organizations";
 import { nameof } from "@/lib/utils";
-import { organizationService } from "@/services/organizations/organization.service";
+import { organizationAdminService } from "@/services/organizations/organization.admin.service";
 import { featureFlagsService } from "@/services/feature-flags/feature-flags.service";
-import { revalidatePath } from "next/cache";
+import { refresh, revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 type ActionState = {
@@ -22,10 +22,10 @@ export async function createOrganization(
         return { isError: true, message: "Name cannot be empty" };
     }
 
-    let org = null;
+    let slug = null;
 
     try {
-        org = await organizationService.createOrganization({ name });
+        slug = await organizationAdminService.createOrganization({ name });
     } catch (error) {
         return {
             isError: true,
@@ -36,7 +36,7 @@ export async function createOrganization(
         };
     }
 
-    if (org === null) {
+    if (slug === null) {
         return {
             isError: true,
             message: "Organization could not be found after save",
@@ -44,7 +44,7 @@ export async function createOrganization(
     }
 
     revalidatePath("/admin/organizations/");
-    redirect(`/admin/organizations/${org.slug}`);
+    redirect(`/admin/organizations/${slug}`);
 }
 
 export async function updateOrganization(
@@ -54,8 +54,10 @@ export async function updateOrganization(
     const orgId = formData.get(nameof<Organization>("orgId"))?.toString();
     const name = formData.get(nameof<Organization>("name"))?.toString().trim();
     const motorsportregOrgId =
-        formData.get(nameof<Organization>("motorsportregOrgId"))?.toString().trim() ||
-        null;
+        formData
+            .get(nameof<Organization>("motorsportregOrgId"))
+            ?.toString()
+            .trim() || null;
     const description =
         formData.get(nameof<Organization>("description"))?.toString().trim() ||
         null;
@@ -73,10 +75,10 @@ export async function updateOrganization(
         return { isError: true, message: "Name cannot be empty" };
     }
 
-    let org = null;
+    let slug = null;
 
     try {
-        org = await organizationService.updateOrganization({
+        slug = await organizationAdminService.updateOrganization({
             orgId,
             name,
             motorsportregOrgId,
@@ -97,7 +99,7 @@ export async function updateOrganization(
         };
     }
 
-    if (org === null) {
+    if (slug === null) {
         return {
             isError: true,
             message: "Organization could not be found after save",
@@ -105,5 +107,16 @@ export async function updateOrganization(
     }
 
     revalidatePath("/admin/organizations/");
-    redirect(`/admin/organizations/${org.slug}`);
+    redirect(`/admin/organizations/${slug}`);
+}
+
+export async function updateApiKey(
+    orgId: string,
+    options: {
+        isEnabled: boolean;
+    }
+) {
+    await organizationAdminService.createApiKey(orgId, options.isEnabled);
+
+    refresh();
 }

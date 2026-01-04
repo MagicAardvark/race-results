@@ -1,14 +1,82 @@
+import { organizationsAPIService } from "@/services/organizations/organizations.api.service";
 import { tenantService } from "@/services/tenants/tenant.service";
 import { clerkMiddleware } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 
 const GLOBAL_TENANT = "global";
 
-const configureResponse = ({ tenant }: { tenant: string }) => {
+type Area = "public" | "tenants" | "api" | "admin" | "unknown";
+
+const configureTenantResponse = ({ tenant }: { tenant: string }) => {
     const res = NextResponse.next();
     res.headers.set("x-tenant-slug", tenant);
 
     return res;
+};
+
+const handleTenantRequest = async (req: NextRequest) => {
+    const tenant = parseTenantFromRequest(req);
+
+    const isValid = await tenantService.isValidTenant(tenant);
+
+    if (!isValid) {
+        const url = req.nextUrl;
+        url.pathname = "/tenant-not-found";
+        return NextResponse.rewrite(url);
+    }
+
+    return configureTenantResponse({ tenant: tenant });
+};
+
+const handleApiRequest = async (req: NextRequest) => {
+    const apiKey = req.headers.get("x-api-key");
+
+    if (!apiKey) {
+        return NextResponse.json(
+            { error: "Missing X-API-Key header" },
+            { status: 401 }
+        );
+    }
+
+    const ingestRegex = /\/api\/ingest\/(.*)\/(.*)/;
+
+    const match = req.nextUrl.pathname.match(ingestRegex);
+
+    if (match) {
+        const orgSlug = match[1];
+
+        const isValid = await organizationsAPIService.validateApiRequest(
+            orgSlug,
+            apiKey
+        );
+
+        if (isValid) {
+            return NextResponse.next();
+        }
+    }
+
+    return NextResponse.json(
+        { error: "Invalid API key or organization" },
+        { status: 401 }
+    );
+};
+
+const determineArea = (req: NextRequest): Area => {
+    const pathname = req.nextUrl.pathname;
+
+    if (pathname.startsWith("/admin")) {
+        return "admin";
+    }
+
+    if (pathname.startsWith("/api")) {
+        return "api";
+    }
+
+    if (pathname.startsWith("/t/")) {
+        return "tenants";
+    }
+
+    return "public";
 };
 
 const parseTenantFromRequest = (req: NextRequest) => {
@@ -36,21 +104,18 @@ const parseTenantFromRequest = (req: NextRequest) => {
 };
 
 export default clerkMiddleware(async (_auth, req) => {
-    const tenant = parseTenantFromRequest(req);
+    const area = determineArea(req);
 
-    if (tenant === GLOBAL_TENANT) {
-        return configureResponse({ tenant: GLOBAL_TENANT });
+    switch (area) {
+        case "api":
+            return await handleApiRequest(req);
+        case "tenants":
+            return await handleTenantRequest(req);
+        case "admin":
+        case "public":
+        default:
+            return configureTenantResponse({ tenant: GLOBAL_TENANT });
     }
-
-    const isValid = await tenantService.isValidTenant(tenant);
-
-    if (!isValid) {
-        const url = req.nextUrl;
-        url.pathname = "/tenant-not-found";
-        return NextResponse.rewrite(url);
-    }
-
-    return configureResponse({ tenant: tenant });
 });
 
 export const config = {

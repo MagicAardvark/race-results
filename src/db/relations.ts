@@ -54,26 +54,17 @@ export const relations = defineRelations(schema, (r) => ({
             optional: false,
         }),
     },
+    orgs: {
+        orgApiKeys: r.many.orgApiKeys({
+            from: r.orgs.orgId,
+            to: r.orgApiKeys.orgId,
+        }),
+    },
+    orgApiKeys: {
+        org: r.one.orgs({
+            from: r.orgApiKeys.orgId,
+            to: r.orgs.orgId,
+            optional: false,
+        }),
+    },
 }));
-
-// export const usersRelations = relations(users, ({ many }) => ({
-//     assignedRoles: many(userRoles, { relationName: "assigned_user_roles" }),
-// }));
-
-// export const userRolesRelations = relations(userRoles, ({ one }) => ({
-//     user: one(users, {
-//         fields: [userRoles.userId],
-//         references: [users.userId],
-//         relationName: "assigned_user_roles",
-//     }),
-//     org: one(orgs, {
-//         fields: [userRoles.orgId],
-//         references: [orgs.orgId],
-//         relationName: "assigned_user_role_to_org",
-//     }),
-//     role: one(roles, {
-//         fields: [userRoles.roleId],
-//         references: [roles.roleId],
-//         relationName: "assigned_role_details",
-//     }),
-// }));

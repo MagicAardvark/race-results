@@ -12,7 +12,7 @@ import {
 } from "@/components/library/ui/dialog";
 import { Field, FieldGroup, FieldLabel } from "@/components/library/ui/field";
 import { Input } from "@/components/library/ui/input";
-import { Organization } from "@/dto/organizations";
+import { OrganizationExtended } from "@/dto/organizations";
 import { nameof } from "@/lib/utils";
 import { ReactElement, useActionState } from "react";
 
@@ -35,13 +35,15 @@ export const CreateOrgDialog = ({ trigger }: { trigger: ReactElement }) => {
 
                     <FieldGroup>
                         <Field>
-                            <FieldLabel htmlFor={nameof<Organization>("name")}>
+                            <FieldLabel
+                                htmlFor={nameof<OrganizationExtended>("name")}
+                            >
                                 Name
                             </FieldLabel>
                             <Input
                                 type="text"
-                                id={nameof<Organization>("name")}
-                                name={nameof<Organization>("name")}
+                                id={nameof<OrganizationExtended>("name")}
+                                name={nameof<OrganizationExtended>("name")}
                                 placeholder="Pizza Club"
                                 defaultValue={""}
                                 required

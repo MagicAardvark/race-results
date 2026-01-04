@@ -1,7 +1,10 @@
-import { orgs } from "@/db";
-import { Infer } from "next/dist/compiled/superstruct";
+import { orgApiKeys, orgs } from "@/db";
 
-export type OrganizationDTO = Infer<typeof orgs>;
+export type OrganizationDTO = typeof orgs.$inferSelect;
+
+export type OrganizationAdminDTO = OrganizationDTO & {
+    orgApiKeys: (typeof orgApiKeys.$inferSelect)[];
+};
 
 export interface Organization {
     orgId: string;
@@ -13,6 +16,17 @@ export interface Organization {
     createdAt: Date;
     updatedAt: Date;
     deletedAt: Date | null;
+}
+
+export interface OrganizationExtended extends Organization {
+    orgApiKeys: OrgApiKey[];
+}
+
+export interface OrgApiKey {
+    apiKeyId: string;
+    apiKey: string;
+    apiKeyEnabled: boolean;
+    effectiveAt: Date;
 }
 
 export interface CreateOrgDTO {

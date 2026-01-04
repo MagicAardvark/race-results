@@ -1,9 +1,9 @@
 import { LinkButton } from "@/components/link-button/link-button";
 import { TableCell, TableRow } from "@/components/library/ui/table";
-import { Organization } from "@/dto/organizations";
+import { OrganizationExtended } from "@/dto/organizations";
 import { PencilIcon } from "lucide-react";
 
-export const OrganizationEntry = ({ org }: { org: Organization }) => {
+export const OrganizationEntry = ({ org }: { org: OrganizationExtended }) => {
     return (
         <TableRow key={org.orgId}>
             <TableCell>{org.name}</TableCell>
