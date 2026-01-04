@@ -13,7 +13,7 @@ import {
     Cell,
 } from "recharts";
 import { useLiveData } from "../../hooks/useLiveData";
-import { FEATURE_FLAGS } from "../../lib/feature-flags";
+import { FEATURE_FLAGS } from "../../config/feature-flags";
 
 type TimesDistributionChartProps = {
     selectedDriverId: string;

@@ -1,6 +1,6 @@
 import type { ClassResult } from "../types";
 import { DisplayMode } from "../types";
-import { LIVE_TIMING_CONFIG } from "./config";
+import { LIVE_TIMING_CONFIG } from "../config/config";
 
 /**
  * Calculates rallycross times and positions for a class

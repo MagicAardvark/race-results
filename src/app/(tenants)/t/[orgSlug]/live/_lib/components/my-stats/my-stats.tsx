@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useMemo } from "react";
 import { useLiveData } from "../../hooks/useLiveData";
-import { FEATURE_FLAGS } from "../../lib/feature-flags";
+import { FEATURE_FLAGS } from "../../config/feature-flags";
 import { DriverSelect } from "./driver-select";
 import { ClassPositionTimeCard } from "./class-position-time-card";
 import { PositionTimeCard } from "./position-time-card";

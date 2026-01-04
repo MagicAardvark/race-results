@@ -82,47 +82,56 @@ A comprehensive live timing system for race events, allowing real-time viewing o
 - **`useLiveData()`**: Provides access to all live results data and utility functions
 - **`useUrlFilters()`**: Manages URL search params for filters and driver selection
 
-### Utilities
-- **`utils/gap-calculator.ts`**: Calculates time gaps between drivers
-- **`utils/key-generators.ts`**: Generates consistent React keys for driver identification
-- **`utils/is-today.ts`**: Date utilities for work/run order visibility
+### Utilities (`_lib/utils/`)
+- **`api-client.ts`**: Generic API client for fetching data from endpoints
+- **`gap-calculator.ts`**: Calculates time gaps between drivers
+- **`is-today.ts`**: Date utilities for work/run order visibility
+- **`key-generators.ts`**: Generates consistent React keys for driver identification
+- **`navigation.ts`**: Generates navigation pages based on feature flags
+- **`rallycross-calculator.ts`**: Calculates rallycross times and positions
+- **`tenant-guard.ts`**: Validates tenant context and redirects if invalid
+
+### Configuration (`_lib/config/`)
+- **`config.ts`**: API endpoint configuration and defaults
+- **`feature-flags.ts`**: Feature flag key constants
 
 ## 📁 File Structure
 
 ```
 live/
-├── data/             # Data fetching utilities (server-side)
-│   └── results.ts  # Fetches class, PAX, raw, and work/run data
-├── components/      # React components (page-specific)
-│   ├── class-results/    # Class results display
-│   ├── my-stats/         # Personal stats dashboard
-│   ├── pax-results/      # PAX results display
-│   ├── raw-results/      # Raw results display
-│   ├── shared/           # Shared components within live timing
-│   └── work-run/         # Work/run order display
-├── context/         # React Context providers
-│   └── live-results-context.tsx  # Provides data to all pages
-├── hooks/           # Custom React hooks
-│   ├── useLiveData.ts    # Access live results data
-│   └── useUrlFilters.ts  # URL search param management
-├── lib/             # Utilities and configuration
-│   ├── api-client.ts     # API client for fetching data
-│   ├── config.ts         # API endpoint configuration
-│   ├── feature-flags.ts  # Feature flag constants
-│   ├── navigation.ts     # Navigation page definitions
-│   ├── rallycross-calculator.ts  # Rallycross time calculations
-│   └── tenant-guard.ts   # Tenant validation
-├── utils/           # Pure utility functions
-│   ├── gap-calculator.ts    # Time gap calculations
-│   ├── is-today.ts         # Date utilities
-│   └── key-generators.ts   # React key generation
+├── _lib/            # Page-specific code (underscore prefix prevents Next.js routing)
+│   ├── components/   # React components (page-specific)
+│   │   ├── class-results/    # Class results display
+│   │   ├── my-stats/         # Personal stats dashboard
+│   │   ├── pax-results/      # PAX results display
+│   │   ├── raw-results/      # Raw results display
+│   │   ├── shared/           # Shared components within live timing
+│   │   └── work-run/         # Work/run order display
+│   ├── config/      # Configuration files
+│   │   ├── config.ts         # API endpoint configuration
+│   │   └── feature-flags.ts  # Feature flag constants
+│   ├── context/     # React Context providers
+│   │   └── live-results-context.tsx  # Provides data to all pages
+│   ├── data/        # Data fetching utilities (server-side)
+│   │   └── results.ts        # Fetches class, PAX, raw, and work/run data
+│   ├── hooks/       # Custom React hooks
+│   │   ├── useLiveData.ts    # Access live results data
+│   │   └── useUrlFilters.ts  # URL search param management
+│   ├── types.ts     # TypeScript type definitions
+│   └── utils/       # Utility functions
+│       ├── api-client.ts          # API client for fetching data
+│       ├── gap-calculator.ts     # Time gap calculations
+│       ├── is-today.ts           # Date utilities
+│       ├── key-generators.ts     # React key generation
+│       ├── navigation.ts         # Navigation page definitions
+│       ├── rallycross-calculator.ts  # Rallycross time calculations
+│       └── tenant-guard.ts       # Tenant validation
 ├── layout.tsx       # Server layout (data fetching)
 ├── page.tsx         # Class results page
 ├── me/              # Personal stats page
 ├── pax/             # PAX results page
 ├── raw/             # Raw results page
-├── workrun/         # Work/run order page
-└── types.ts         # TypeScript type definitions
+└── workrun/         # Work/run order page
 ```
 
 ## 🔧 Implementation Details
@@ -187,7 +196,7 @@ These flags are configured in the global admin panel and affect navigation visib
 ## 🚀 Setup & Configuration
 
 ### API Endpoints
-Live timing data is fetched from external API endpoints. Configure these in `lib/config.ts`:
+Live timing data is fetched from external API endpoints. Configure these in `_lib/config/config.ts`:
 
 ```typescript
 export const LIVE_TIMING_CONFIG = {

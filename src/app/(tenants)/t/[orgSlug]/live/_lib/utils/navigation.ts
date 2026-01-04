@@ -1,4 +1,4 @@
-import { FEATURE_FLAGS } from "./feature-flags";
+import { FEATURE_FLAGS } from "../config/feature-flags";
 
 /**
  * Navigation configuration for live timing pages
