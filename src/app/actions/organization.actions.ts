@@ -3,7 +3,6 @@
 import { Organization } from "@/dto/organizations";
 import { nameof } from "@/lib/utils";
 import { organizationAdminService } from "@/services/organizations/organization.admin.service";
-import { featureFlagsService } from "@/services/feature-flags/feature-flags.service";
 import { refresh, revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
