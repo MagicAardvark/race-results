@@ -1,22 +1,24 @@
 import { db } from "@/db";
 import "dotenv/config";
-import { orgs, roles, users } from "./schema";
-import { featureFlagsRepository } from "./repositories/feature-flags.repo";
+import { featureFlags, orgApiKeys, orgs, roles, userGlobalRoles, users } from "./schema";
+import {
+    baseClasses,
+    classGroups,
+    classIndexValues,
+    classGroupClasses,
+} from "@/db/tables/classes";
+import { generateApiKey } from "@/lib/auth/generate-api-key";
 
 async function main() {
     await db.delete(orgs);
-    await db.delete(roles);
-    await db.delete(users);
 
     const insertedOrgs = await db
         .insert(orgs)
         .values((await import("@/db/seed-data/orgs.json")).default)
         .returning();
 
-    await db
-        .insert(roles)
-        .values((await import("@/db/seed-data/roles.json")).default)
-        .returning();
+    const orgDefaultFeatureFlags = [];
+    const orgDefaultApiKeys = [];
 
     // Set feature flags for organizations
     for (const org of insertedOrgs) {
@@ -35,22 +37,120 @@ async function main() {
         }
         // ner (and any others): both enabled (defaults)
 
-        // Set the feature flags
-        await featureFlagsRepository.upsert({
+        // Default feature flags
+        orgDefaultFeatureFlags.push({
             orgId: org.orgId,
             featureKey: "feature.liveTiming.paxEnabled",
             enabled: paxEnabled,
         });
 
-        await featureFlagsRepository.upsert({
+        orgDefaultFeatureFlags.push(
+            {
             orgId: org.orgId,
             featureKey: "feature.liveTiming.workRunEnabled",
             enabled: workRunEnabled,
         });
+
+        // Create an API key
+        orgDefaultApiKeys.push({
+            orgId: org.orgId,
+            apiKey: generateApiKey(),
+        });
     }
+
+    await db.insert(featureFlags).values(orgDefaultFeatureFlags);
+    await db.insert(orgApiKeys).values(orgDefaultApiKeys);
+
+    await configureUsers();
+
+    await configureClasses();
 
     // eslint-disable-next-line no-console
     console.log("Seed completed successfully!");
+}
+
+async function configureUsers() {
+    await db.delete(users);
+    await db.delete(roles);
+
+    const userData = (await import("@/db/seed-data/users.json")).default;
+    const roleData = (await import("@/db/seed-data/roles.json")).default;
+
+    await db.insert(users).values(
+        userData.map((user) => ({
+            userId: user.userId,
+            displayName: user.displayName,
+            authProviderId:
+                process.env[
+                    `AUTHPROVIDER_ID_${user.displayName.replaceAll(" ", "")}`
+                ]!,
+        }))
+    );
+
+    await db.insert(roles).values(roleData).returning();
+
+    const userglobalRoleMapping = userData.flatMap((user) =>
+        user.globalRoles.map((key) => ({
+            userId: userData.find((u) => u.displayName === user.displayName)!
+                .userId,
+            roleId: roleData.find((r) => r.key === key)!.roleId,
+        }))
+    );
+
+    await db.insert(userGlobalRoles).values(userglobalRoleMapping);
+}
+
+async function configureClasses() {
+    await db.delete(baseClasses);
+    await db.delete(classGroups);
+
+    const baseClassData = (await import("@/db/seed-data/base-classes.json"))
+        .default;
+
+    await db.insert(baseClasses).values(
+        baseClassData.map((bc) => ({
+            classId: bc.classId,
+            shortName: bc.shortName,
+            longName: bc.longName,
+            isEnabled: true,
+        }))
+    );
+
+    const indexValueInserts = baseClassData.flatMap((bc) =>
+        bc.indexValues.map((v) => ({
+            classId: bc.classId,
+            effectiveFrom: new Date(`${v.year}-01-01T00:00:00-05:00`),
+            effectiveTo: new Date(`${v.year}-12-31T23:59:59-05:00`),
+            indexValue: v.value.toString(),
+        }))
+    );
+
+    await db.insert(classIndexValues).values(indexValueInserts);
+
+    const classGroupData = (await import("@/db/seed-data/class-groups.json"))
+        .default;
+
+    await db.insert(classGroups).values(
+        classGroupData.map((cg) => ({
+            classGroupId: cg.classGroupId,
+            shortName: cg.shortName,
+            longName: cg.longName,
+            isEnabled: true,
+            orgId: cg.orgId
+        }))
+    );
+
+    const classGroupClassMappings = [];
+    for (const bc of baseClassData) {
+        for (const cg of classGroupData) {
+            classGroupClassMappings.push({
+                classGroupId: cg.classGroupId,
+                classId: bc.classId,
+            });
+        }
+    }
+
+    await db.insert(classGroupClasses).values(classGroupClassMappings);
 }
 
 main();

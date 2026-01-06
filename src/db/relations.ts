@@ -65,4 +65,34 @@ export const relations = defineRelations(schema, (r) => ({
             optional: false,
         }),
     },
+    baseClasses: {
+        classIndexValues: r.many.classIndexValues({
+            from: r.baseClasses.classId,
+            to: r.classIndexValues.classId,
+        }),
+    },
+    classIndexValues: {
+        baseClass: r.one.baseClasses({
+            from: r.classIndexValues.classId,
+            to: r.baseClasses.classId,
+            optional: false,
+        }),
+    },
+    classGroups: {
+        classes: r.many.classGroupClasses({
+            from: r.classGroups.classGroupId,
+            to: r.classGroupClasses.classGroupId,
+        }),
+    },
+    classGroupClasses: {
+        classGroup: r.one.classGroups({
+            from: r.classGroupClasses.classGroupId,
+            to: r.classGroups.classGroupId,
+        }),
+        baseClass: r.one.baseClasses({
+            from: r.classGroupClasses.classId,
+            to: r.baseClasses.classId,
+            optional: false,
+        }),
+    },
 }));

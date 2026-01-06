@@ -10,3 +10,9 @@ export const deletedAt = timestamp("deleted_at", { withTimezone: true });
 export const effectiveAt = timestamp("effective_at", { withTimezone: true })
     .notNull()
     .defaultNow();
+export const effectiveFrom = timestamp("effective_from", { withTimezone: true })
+    .notNull()
+    .defaultNow();
+export const effectiveTo = timestamp("effective_to", { withTimezone: true })
+    .notNull()
+    .defaultNow();

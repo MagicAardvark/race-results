@@ -163,7 +163,7 @@ src/
 - **Tenant admin**: `/t/[orgSlug]/admin/*`
 - **Global admin**: `/(global-admin)/admin/*`
 - **Global API**: `/(global-api)/api/*` - Public API endpoints for data ingestion
-- **Route guards**: Enforced in `layout.tsx` files
+- **Route guards**: Enforced in `layout.tsx` files as well as `proxy.ts`
 
 ### Shared Layout System
 
@@ -226,6 +226,25 @@ The application uses a consistent header across all pages for unified navigation
    ```
 
 4. **Set up the database**
+
+`users.json` seeding data requires `.env` variables containing the values for `authProviderId`.
+
+Envrionment variables will be matched in the format of `AUTHPROVIDER_ID_DisplayName`.
+
+Example:
+
+`users.json`:
+```
+{
+  "displayName": "Ryan F"
+}
+```
+
+`.env`:
+```
+AUTHPROVIDER_ID_RyanF=<clerk user id>
+```
+
    ```bash
    # Run migrations
    pnpm drizzle-kit push
@@ -373,6 +392,7 @@ pnpm drizzle-kit push
 - **Roles** (`roles`): User roles and permissions
 - **Feature Flags** (`feature_flags`): Organization-level feature toggles
 - **Organization API Keys** (`org_api_keys`): API keys for organization authentication
+- **Car Classes** (`classes_*`): Car class configuration
 
 ## 🔌 API Integration
 

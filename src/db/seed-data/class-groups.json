@@ -1,0 +1,14 @@
+[
+    {
+        "classGroupId": "0a94184a-2b17-4679-a7a9-d20fe198cff0",
+        "shortName": "P",
+        "longName": "Pro",
+        "orgId": "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
+    },
+    {
+        "classGroupId": "3fe6cc29-8672-4835-ae4a-a2194cd684a5",
+        "shortName": "N",
+        "longName": "Novice",
+        "orgId": "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
+    }
+]

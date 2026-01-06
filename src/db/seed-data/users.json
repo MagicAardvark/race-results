@@ -1,0 +1,12 @@
+[
+    {
+        "userId": "f49e7320-097d-4dde-86a2-7e8727796181",
+        "displayName": "Ryan",
+        "globalRoles": ["admin"]
+    },
+    {
+        "userId": "6e5c6470-1342-4a2e-88ee-7b538d7ddd14",
+        "displayName": "Kyle",
+        "globalRoles": ["admin"]
+    }
+]
