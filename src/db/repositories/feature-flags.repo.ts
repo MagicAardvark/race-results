@@ -8,7 +8,10 @@ import { DatabaseError } from "@/lib/errors/app-errors";
 
 interface IFeatureFlagsRepository {
     findByOrgId(orgId: string): Promise<OrgFeatureFlags>;
-    findByOrgIdAndKey(orgId: string, featureKey: string): Promise<FeatureFlagDTO | null>;
+    findByOrgIdAndKey(
+        orgId: string,
+        featureKey: string
+    ): Promise<FeatureFlagDTO | null>;
     upsert(dto: UpdateFeatureFlagDTO): Promise<FeatureFlagDTO>;
     upsertMany(orgId: string, flags: OrgFeatureFlags): Promise<void>;
 }
@@ -84,4 +87,3 @@ export class FeatureFlagsRepository implements IFeatureFlagsRepository {
 }
 
 export const featureFlagsRepository = new FeatureFlagsRepository();
-

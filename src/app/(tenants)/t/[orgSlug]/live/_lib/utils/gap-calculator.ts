@@ -12,4 +12,3 @@ export function calculateMaxGapFromTimes(times: number[]): number {
 
     return Math.max(percentile70Time - fastestTime, 0.1);
 }
-

@@ -22,4 +22,3 @@ export function formatRunTime(run: Run): string {
 
     return `${run.time?.toFixed(3)} (${run.status})`;
 }
-

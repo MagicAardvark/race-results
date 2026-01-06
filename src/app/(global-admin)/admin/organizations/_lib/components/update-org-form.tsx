@@ -2,12 +2,7 @@
 
 import { updateOrganization } from "@/app/actions/organization.actions";
 import { Button } from "@/ui/button";
-import {
-    Card,
-    CardContent,
-    CardHeader,
-    CardTitle,
-} from "@/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/ui/card";
 import { Checkbox } from "@/ui/checkbox";
 
 import { Field, FieldGroup, FieldLabel } from "@/ui/field";
@@ -214,11 +209,15 @@ export const UpdateOrgForm = ({
                                                         orientation="horizontal"
                                                     >
                                                         <Checkbox
-                                                            defaultChecked={flag.enabled}
+                                                            defaultChecked={
+                                                                flag.enabled
+                                                            }
                                                             id={flag.key}
                                                             name={flag.key}
                                                         />
-                                                        <FieldLabel htmlFor={flag.key}>
+                                                        <FieldLabel
+                                                            htmlFor={flag.key}
+                                                        >
                                                             {flag.label}
                                                         </FieldLabel>
                                                     </Field>
@@ -228,7 +227,7 @@ export const UpdateOrgForm = ({
                                     ))}
                                 </div>
                             ) : (
-                                <p className="text-sm text-muted-foreground">
+                                <p className="text-muted-foreground text-sm">
                                     No feature flags configured
                                 </p>
                             )}

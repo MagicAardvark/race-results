@@ -17,20 +17,28 @@ export function PositionTimeCard({
 }: PositionTimeCardProps) {
     return (
         <div className="rounded-lg border p-3 sm:p-4">
-            <h3 className="text-xs sm:text-sm font-medium text-muted-foreground">{title}</h3>
+            <h3 className="text-muted-foreground text-xs font-medium sm:text-sm">
+                {title}
+            </h3>
             <div className="mt-2 space-y-1">
                 <div>
-                    <p className="text-xs text-muted-foreground">Position</p>
-                    <p className="text-2xl sm:text-3xl font-bold">{position || "N/A"}</p>
+                    <p className="text-muted-foreground text-xs">Position</p>
+                    <p className="text-2xl font-bold sm:text-3xl">
+                        {position || "N/A"}
+                    </p>
                 </div>
                 {time !== null && time !== undefined && (
                     <div>
-                        <p className="text-xs text-muted-foreground">{timeLabel}</p>
-                        <p className="text-xl sm:text-2xl font-bold">{time.toFixed(3)}</p>
+                        <p className="text-muted-foreground text-xs">
+                            {timeLabel}
+                        </p>
+                        <p className="text-xl font-bold sm:text-2xl">
+                            {time.toFixed(3)}
+                        </p>
                     </div>
                 )}
                 {gapToFirst !== null && gapToFirst !== undefined && (
-                    <p className="mt-1 text-xs sm:text-sm text-muted-foreground">
+                    <p className="text-muted-foreground mt-1 text-xs sm:text-sm">
                         {gapToFirst > 0
                             ? `+${gapToFirst.toFixed(3)}s from first`
                             : gapLabel || "Leading"}
@@ -40,4 +48,3 @@ export function PositionTimeCard({
         </div>
     );
 }
-

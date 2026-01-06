@@ -24,8 +24,10 @@ export function ClassTimesVisualization({
                 const driverId = createDriverId(driver);
                 const time =
                     displayMode === "rallycross"
-                        ? driver.runInfo.rallyCrossTime
-                        : driver.runInfo.runs.find((r) => r.isBest)?.time || driver.runInfo.total;
+                        ? (driver.runInfo.rallyCrossTime ??
+                          driver.runInfo.total)
+                        : driver.runInfo.runs.find((r) => r.isBest)?.time ||
+                          driver.runInfo.total;
 
                 return {
                     driverId,
@@ -36,12 +38,23 @@ export function ClassTimesVisualization({
                     isSelected: driverId === selectedDriverId,
                 };
             })
-            .filter((d) => d.time != null && !isNaN(d.time))
+            .filter(
+                (d): d is typeof d & { time: number } =>
+                    d.time != null && !isNaN(d.time)
+            )
             .sort((a, b) => a.time - b.time);
-    }, [classResult, classResults, selectedDriverId, displayMode, createDriverId]);
+    }, [
+        classResult,
+        classResults,
+        selectedDriverId,
+        displayMode,
+        createDriverId,
+    ]);
 
     if (classDrivers.length === 0) {
-        return <p className="text-sm text-muted-foreground">No times available</p>;
+        return (
+            <p className="text-muted-foreground text-sm">No times available</p>
+        );
     }
 
     const fastestTime = classDrivers[0]?.time || 0;
@@ -55,7 +68,9 @@ export function ClassTimesVisualization({
                     <div
                         key={driver.driverId}
                         className={`relative flex items-center gap-3 rounded-md p-2 transition-colors ${
-                            driver.isSelected ? "bg-primary/10 border-2 border-primary" : ""
+                            driver.isSelected
+                                ? "bg-primary/10 border-primary border-2"
+                                : ""
                         }`}
                     >
                         <div className="flex w-12 shrink-0 items-center justify-center text-xs font-semibold">
@@ -68,16 +83,22 @@ export function ClassTimesVisualization({
                                 >
                                     {driver.name}
                                 </span>
-                                <span className="text-muted-foreground">#{driver.number}</span>
+                                <span className="text-muted-foreground">
+                                    #{driver.number}
+                                </span>
                             </div>
-                            <div className="flex shrink-0 items-center gap-2 text-sm font-mono">
+                            <div className="flex shrink-0 items-center gap-2 font-mono text-sm">
                                 <span
-                                    className={driver.isSelected ? "font-bold text-primary" : ""}
+                                    className={
+                                        driver.isSelected
+                                            ? "text-primary font-bold"
+                                            : ""
+                                    }
                                 >
                                     {driver.time.toFixed(3)}
                                 </span>
                                 {timeDiff > 0 && (
-                                    <span className="text-xs text-muted-foreground">
+                                    <span className="text-muted-foreground text-xs">
                                         +{timeDiff.toFixed(3)}
                                     </span>
                                 )}
@@ -89,4 +110,3 @@ export function ClassTimesVisualization({
         </div>
     );
 }
-

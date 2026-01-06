@@ -28,4 +28,3 @@ export const featureFlags = pgTable(
         index("feature_key_idx").on(table.featureKey),
     ]
 );
-

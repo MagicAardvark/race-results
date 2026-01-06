@@ -17,4 +17,3 @@ export const RunTimeDisplay = ({ run }: RunTimeDisplayProps) => {
         </span>
     );
 };
-

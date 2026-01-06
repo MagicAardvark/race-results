@@ -123,4 +123,3 @@ export interface AuthenticatedCalendarParams extends OrganizationCalendarParams 
     precise_timestamps?: boolean;
     fields?: "questions" | "packages" | "questions,packages";
 }
-

@@ -22,11 +22,14 @@ type TimesDistributionChartProps = {
 export function TimesDistributionChart({
     selectedDriverId,
 }: TimesDistributionChartProps) {
-    const { paxResults, rawResults, featureFlags, createDriverId } = useLiveData();
+    const { paxResults, rawResults, featureFlags, createDriverId } =
+        useLiveData();
     const isPaxEnabled = featureFlags[FEATURE_FLAGS.PAX_ENABLED] === true;
-    
+
     // When PAX is disabled, always use "raw". When enabled, allow user selection.
-    const [userSelectedTimeType, setUserSelectedTimeType] = useState<"raw" | "pax">("pax");
+    const [userSelectedTimeType, setUserSelectedTimeType] = useState<
+        "raw" | "pax"
+    >("pax");
     const timeType = isPaxEnabled ? userSelectedTimeType : "raw";
 
     // Get all drivers based on selected time type
@@ -105,7 +108,11 @@ export function TimesDistributionChart({
         });
 
         // Create histogram data - one bar per time bucket
-        const data: Array<{ timeBucket: number; count: number; label: string }> = [];
+        const data: Array<{
+            timeBucket: number;
+            count: number;
+            label: string;
+        }> = [];
         for (let i = 0; i < numBuckets; i++) {
             const bucketStart = min + i * 0.5;
             const bucketEnd = bucketStart + 0.5;
@@ -120,7 +127,9 @@ export function TimesDistributionChart({
     }, [chartData]);
 
     if (chartData.length === 0) {
-        return <p className="text-sm text-muted-foreground">No times available</p>;
+        return (
+            <p className="text-muted-foreground text-sm">No times available</p>
+        );
     }
 
     // Find max count for X-axis domain
@@ -133,7 +142,9 @@ export function TimesDistributionChart({
     return (
         <div className="space-y-4">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                <h3 className="text-base font-semibold sm:text-lg">Time Distribution</h3>
+                <h3 className="text-base font-semibold sm:text-lg">
+                    Time Distribution
+                </h3>
                 {isPaxEnabled && (
                     <div className="flex gap-2">
                         <Button
@@ -171,7 +182,10 @@ export function TimesDistributionChart({
                                 left: 5,
                             }}
                         >
-                            <CartesianGrid strokeDasharray="3 3" strokeOpacity={0.2} />
+                            <CartesianGrid
+                                strokeDasharray="3 3"
+                                strokeOpacity={0.2}
+                            />
                             <XAxis
                                 type="number"
                                 dataKey="count"
@@ -184,7 +198,9 @@ export function TimesDistributionChart({
                                 }}
                                 domain={[0, maxCount * 1.1]}
                                 tick={{ fontSize: 10 }}
-                                tickFormatter={(value) => Math.round(value).toString()}
+                                tickFormatter={(value) =>
+                                    Math.round(value).toString()
+                                }
                             />
                             <YAxis
                                 type="category"
@@ -208,21 +224,32 @@ export function TimesDistributionChart({
                                     if (active && payload && payload.length) {
                                         const data = payload[0].payload;
                                         return (
-                                            <div className="rounded-lg border bg-background p-2 shadow-md">
-                                                <p className="mb-2 font-semibold">{data.label}</p>
+                                            <div className="bg-background rounded-lg border p-2 shadow-md">
+                                                <p className="mb-2 font-semibold">
+                                                    {data.label}
+                                                </p>
                                                 <p className="text-sm">
                                                     Drivers:{" "}
-                                                    <span className="font-mono">{data.count}</span>
+                                                    <span className="font-mono">
+                                                        {data.count}
+                                                    </span>
                                                 </p>
                                                 {selectedDriverData &&
-                                                    Math.floor(selectedTime * 2) ===
-                                                        Math.floor(data.timeBucket * 2) && (
+                                                    Math.floor(
+                                                        selectedTime * 2
+                                                    ) ===
+                                                        Math.floor(
+                                                            data.timeBucket * 2
+                                                        ) && (
                                                         <p className="mt-2 border-t pt-2 text-sm">
                                                             <span className="font-semibold text-[#ef4444]">
                                                                 You:
                                                             </span>{" "}
                                                             <span className="font-mono">
-                                                                {selectedTime.toFixed(3)}s
+                                                                {selectedTime.toFixed(
+                                                                    3
+                                                                )}
+                                                                s
                                                             </span>
                                                         </p>
                                                     )}
@@ -267,4 +294,3 @@ export function TimesDistributionChart({
         </div>
     );
 }
-

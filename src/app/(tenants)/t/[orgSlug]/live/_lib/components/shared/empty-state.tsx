@@ -13,7 +13,7 @@ export function EmptyState({
         <main className="mt-4">
             <Card>
                 <CardContent className="py-8">
-                    <p className="text-center text-muted-foreground">
+                    <p className="text-muted-foreground text-center">
                         {message}
                     </p>
                     {children}
@@ -22,4 +22,3 @@ export function EmptyState({
         </main>
     );
 }
-

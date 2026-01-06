@@ -22,9 +22,9 @@ export type RunInfo = {
     toFirstInPax: number;
     toNextInPax: number;
     runs: Run[];
-    rallyCrossTime: number;
-    rallyCrossToFirst: number;
-    rallyCrossToNext: number;
+    rallyCrossTime?: number;
+    rallyCrossToFirst?: number;
+    rallyCrossToNext?: number;
 };
 
 export type ClassResult = {
@@ -82,4 +82,3 @@ export type RunWork = {
     numberOfHeats: number;
     timestamp: Date;
 };
-

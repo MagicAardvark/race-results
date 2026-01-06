@@ -19,7 +19,10 @@ export class FeatureFlagsService implements IFeatureFlagsService {
         await featureFlagsRepository.upsertMany(orgId, flags);
     }
 
-    async isFeatureEnabled(orgId: string, featureKey: string): Promise<boolean> {
+    async isFeatureEnabled(
+        orgId: string,
+        featureKey: string
+    ): Promise<boolean> {
         const flag = await featureFlagsRepository.findByOrgIdAndKey(
             orgId,
             featureKey
@@ -29,4 +32,3 @@ export class FeatureFlagsService implements IFeatureFlagsService {
 }
 
 export const featureFlagsService = new FeatureFlagsService();
-

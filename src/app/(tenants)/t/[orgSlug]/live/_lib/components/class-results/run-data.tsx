@@ -24,4 +24,3 @@ export const RunData = ({ runInfo }: RunDataProps) => {
         </div>
     );
 };
-

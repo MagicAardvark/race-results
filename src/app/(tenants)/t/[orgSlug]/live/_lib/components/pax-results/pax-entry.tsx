@@ -15,10 +15,7 @@ export const PaxEntry = ({ entry, maxGap }: PaxEntryProps) => {
 
     return (
         <ResultCard>
-            <PositionBadge
-                label="PAX"
-                value={entry.paxPosition}
-            />
+            <PositionBadge label="PAX" value={entry.paxPosition} />
             <DriverInfo
                 carClass={entry.carClass}
                 number={entry.number}
@@ -40,4 +37,3 @@ export const PaxEntry = ({ entry, maxGap }: PaxEntryProps) => {
         </ResultCard>
     );
 };
-

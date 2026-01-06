@@ -25,20 +25,22 @@ export function TimeValue({
               : value;
 
     return (
-        <div className={cn(className, "flex flex-col justify-center items-end")}>
+        <div
+            className={cn(className, "flex flex-col items-end justify-center")}
+        >
             <div className="space-y-0.5 text-right">
-                <div className="text-[10px] uppercase tracking-wide text-muted-foreground font-medium">
+                <div className="text-muted-foreground text-[10px] font-medium tracking-wide uppercase">
                     {label}
                 </div>
-                <div className="text-lg font-bold leading-none font-mono">
+                <div className="font-mono text-lg leading-none font-bold">
                     {displayValue}
                 </div>
                 {secondaryLabel && secondaryValue !== undefined && (
                     <>
-                        <div className="text-[10px] uppercase tracking-wide text-muted-foreground font-medium mt-1.5">
+                        <div className="text-muted-foreground mt-1.5 text-[10px] font-medium tracking-wide uppercase">
                             {secondaryLabel}
                         </div>
-                        <div className="text-sm font-semibold leading-tight font-mono">
+                        <div className="font-mono text-sm leading-tight font-semibold">
                             {secondaryValue}
                         </div>
                     </>
@@ -47,4 +49,3 @@ export function TimeValue({
         </div>
     );
 }
-

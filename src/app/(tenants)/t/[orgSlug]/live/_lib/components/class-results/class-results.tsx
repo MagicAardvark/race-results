@@ -33,7 +33,10 @@ export const ClassResults = () => {
     const classResultsElements = classNames
         .filter((classKey) => {
             // Hide elements that are not selected filters
-            return filteredClasses.length === 0 || filteredClasses.includes(classKey);
+            return (
+                filteredClasses.length === 0 ||
+                filteredClasses.includes(classKey)
+            );
         })
         .map((classKey) => (
             <IndividualClassResults key={classKey} className={classKey} />

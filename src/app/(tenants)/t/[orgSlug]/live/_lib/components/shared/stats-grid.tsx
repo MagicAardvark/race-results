@@ -17,15 +17,11 @@ const columnClasses = {
     4: "grid-cols-4",
 };
 
-export function StatsGrid({
-    stats,
-    columns = 3,
-    className,
-}: StatsGridProps) {
+export function StatsGrid({ stats, columns = 3, className }: StatsGridProps) {
     return (
         <div
             className={cn(
-                "grid gap-2 rounded-md bg-muted p-2",
+                "bg-muted grid gap-2 rounded-md p-2",
                 columnClasses[columns],
                 className
             )}
@@ -39,4 +35,3 @@ export function StatsGrid({
         </div>
     );
 }
-

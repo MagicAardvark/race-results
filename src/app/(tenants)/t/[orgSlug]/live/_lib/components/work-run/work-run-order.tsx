@@ -21,7 +21,7 @@ export const WorkRunOrder = () => {
 
     if (!isToday(eventDate)) {
         return (
-            <div className="mx-2 mb-5 mt-5 text-center">
+            <div className="mx-2 mt-5 mb-5 text-center">
                 <p className="text-muted-foreground">
                     Work/Run order will be available on the day of the event.
                 </p>
@@ -31,23 +31,23 @@ export const WorkRunOrder = () => {
 
     return (
         <div>
-            <div className="mb-5 mt-5 text-center space-y-2">
-                <p className="text-sm text-muted-foreground">
+            <div className="mt-5 mb-5 space-y-2 text-center">
+                <p className="text-muted-foreground text-sm">
                     Please select your class from the filters below.
                 </p>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-muted-foreground text-sm">
                     If you are a Novice, you will run with your base class.
                 </p>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-muted-foreground text-sm">
                     i.e. NDS runs with DS.
                 </p>
 
                 {numberOfHeats == 2 ? (
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-muted-foreground text-sm">
                         This event will run as <strong>two heats.</strong>
                     </p>
                 ) : (
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-muted-foreground text-sm">
                         This event will run as{" "}
                         <strong>{numberOfHeats} heats</strong>. You are off
                         during the heat(s) not listed as running or working. Use
@@ -57,7 +57,7 @@ export const WorkRunOrder = () => {
                     </p>
                 )}
 
-                <p className="text-sm text-muted-foreground">
+                <p className="text-muted-foreground text-sm">
                     <strong>
                         You must check in for work both morning and afternoon
                     </strong>
@@ -96,4 +96,3 @@ export const WorkRunOrder = () => {
         </div>
     );
 };
-

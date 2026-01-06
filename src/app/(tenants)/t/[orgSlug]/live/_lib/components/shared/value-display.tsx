@@ -19,9 +19,8 @@ export function ValueDisplay({
 
     return (
         <div className={`text-center ${className}`}>
-            <div className="text-xs text-muted-foreground">{label}</div>
+            <div className="text-muted-foreground text-xs">{label}</div>
             <div className={`${sizeClasses[size]} font-bold`}>{value}</div>
         </div>
     );
 }
-

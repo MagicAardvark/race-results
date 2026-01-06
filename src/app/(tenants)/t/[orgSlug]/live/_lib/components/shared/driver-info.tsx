@@ -16,17 +16,15 @@ export function DriverInfo({
     return (
         <div className="col-span-6 flex flex-col justify-center">
             <div className="space-y-0.5">
-                <div className="text-xs font-semibold text-foreground">
+                <div className="text-foreground text-xs font-semibold">
                     {name}
                 </div>
-                <div className="text-[11px] text-muted-foreground font-medium">
+                <div className="text-muted-foreground text-[11px] font-medium">
                     {carClass} #{number}
                 </div>
-                <div className="text-[11px] text-muted-foreground">
-                    {car}
-                </div>
+                <div className="text-muted-foreground text-[11px]">{car}</div>
                 {color && (
-                    <div className="text-[11px] text-muted-foreground">
+                    <div className="text-muted-foreground text-[11px]">
                         {color}
                     </div>
                 )}
@@ -34,4 +32,3 @@ export function DriverInfo({
         </div>
     );
 }
-

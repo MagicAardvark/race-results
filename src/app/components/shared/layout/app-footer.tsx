@@ -26,12 +26,18 @@ export function AppFooter() {
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/events" className="hover:underline">
+                                <Link
+                                    href="/events"
+                                    className="hover:underline"
+                                >
                                     Events
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/results" className="hover:underline">
+                                <Link
+                                    href="/results"
+                                    className="hover:underline"
+                                >
                                     Results
                                 </Link>
                             </li>
@@ -73,4 +79,3 @@ export function AppFooter() {
         </footer>
     );
 }
-

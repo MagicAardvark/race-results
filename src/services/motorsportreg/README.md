@@ -83,7 +83,8 @@ import { motorsportRegService } from "@/services/motorsportreg/motorsportreg.ser
 import { ApiError } from "@/lib/errors/app-errors";
 
 try {
-    const calendar = await motorsportRegService.getOrganizationCalendar("org-id");
+    const calendar =
+        await motorsportRegService.getOrganizationCalendar("org-id");
 } catch (error) {
     if (error instanceof ApiError) {
         console.error(`API Error (${error.statusCode}):`, error.message);
@@ -146,5 +147,3 @@ import type {
     // ... other types
 } from "@/dto/motorsportreg";
 ```
-
-

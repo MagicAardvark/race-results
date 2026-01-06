@@ -41,7 +41,8 @@ export function getNavigationPages(
     // Filter pages based on feature flags
     if (featureFlags) {
         return pages.filter(
-            (page) => !page.featureFlag || featureFlags[page.featureFlag] === true
+            (page) =>
+                !page.featureFlag || featureFlags[page.featureFlag] === true
         );
     }
 
