@@ -7,9 +7,9 @@ import type {
     RunWork,
 } from "../types";
 import { DisplayMode } from "../types";
-import { fetchJson } from "../lib/api-client";
-import { LIVE_TIMING_CONFIG } from "../lib/config";
-import { processClassResults } from "../lib/rallycross-calculator";
+import { fetchJson } from "../utils/api-client";
+import { LIVE_TIMING_CONFIG } from "../config/config";
+import { processClassResults } from "../utils/rallycross-calculator";
 
 /**
  * Fetches and processes class results

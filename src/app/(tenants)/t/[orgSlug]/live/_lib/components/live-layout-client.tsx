@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname, useParams, useRouter } from "next/navigation";
 import { Button } from "@/ui/button";
 import { RefreshCw } from "lucide-react";
-import { getNavigationPages } from "../lib/navigation";
+import { getNavigationPages } from "../utils/navigation";
 import { useLiveData } from "../hooks/useLiveData";
 import { useState } from "react";
 

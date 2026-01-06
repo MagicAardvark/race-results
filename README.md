@@ -103,11 +103,14 @@ src/
 │   ├── (tenants)/               # Tenant-scoped routes
 │   │   └── t/[orgSlug]/
 │   │       ├── live/            # Live timing system
-│   │       │   ├── data/        # Data fetching utilities
-│   │       │   ├── components/ # Page-specific components
-│   │       │   ├── context/    # React Context
-│   │       │   ├── hooks/      # Custom hooks
-│   │       │   └── lib/        # Utilities & feature flags
+│   │       │   ├── _lib/        # Page-specific code (underscore prevents routing)
+│   │       │   │   ├── components/ # Page-specific components
+│   │       │   │   ├── config/    # Configuration (API endpoints, feature flags)
+│   │       │   │   ├── context/   # React Context
+│   │       │   │   ├── data/      # Data fetching utilities
+│   │       │   │   ├── hooks/     # Custom hooks
+│   │       │   │   ├── types.ts   # TypeScript types
+│   │       │   │   └── utils/     # Utility functions
 │   │       └── page.tsx        # Tenant home page
 │   └── components/              # App-level shared components
 │       ├── confirmation-dialog.tsx
@@ -140,8 +143,8 @@ src/
 #### Architecture Principles
 
 - **Page-Centric**: Components are organized near the pages that use them
-  - Admin components: `app/(global-admin)/admin/components/`
-  - Live timing components: `app/(tenants)/t/[orgSlug]/live/components/`
+  - Admin components: `app/(global-admin)/admin/organizations/_lib/components/`
+  - Live timing components: `app/(tenants)/t/[orgSlug]/live/_lib/components/`
   - App-level shared: `app/components/shared/`
 - **Design System at Top Level**: All reusable UI components in `/src/ui/`
 - **Import Paths**: Use `@/ui/*` for design system, `@/app/*` for page components
