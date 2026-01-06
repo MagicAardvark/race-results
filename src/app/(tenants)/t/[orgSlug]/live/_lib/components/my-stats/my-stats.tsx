@@ -25,7 +25,8 @@ export function MyStats() {
 
     // Get valid stored driver ID from localStorage
     const getStoredDriverId = () => {
-        if (typeof window === "undefined" || allDrivers.length === 0) return null;
+        if (typeof window === "undefined" || allDrivers.length === 0)
+            return null;
         const stored = localStorage.getItem(STORAGE_KEY);
         if (stored && allDrivers.some((d) => d.id === stored)) {
             return stored;
@@ -34,8 +35,10 @@ export function MyStats() {
     };
 
     // Use state for user selection, but derive initial value from localStorage
-    const [userSelectedDriverId, setUserSelectedDriverId] = useState<string | null>(null);
-    
+    const [userSelectedDriverId, setUserSelectedDriverId] = useState<
+        string | null
+    >(null);
+
     // The actual selected driver ID: user selection takes precedence, otherwise use stored value
     const selectedDriverId = userSelectedDriverId ?? getStoredDriverId();
 

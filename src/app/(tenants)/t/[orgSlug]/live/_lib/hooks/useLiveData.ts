@@ -13,7 +13,11 @@ export type DriverIdentifier = {
     color: string;
 };
 
-function createDriverId(driver: { name: string; number: string; carClass: string }): string {
+function createDriverId(driver: {
+    name: string;
+    number: string;
+    carClass: string;
+}): string {
     return `${driver.name}|${driver.number}|${driver.carClass}`;
 }
 
@@ -151,7 +155,11 @@ export function useLiveData() {
             classNames,
             // Utility functions
             getAllDrivers: () =>
-                getAllDrivers(context.classResults, context.paxResults, context.rawResults),
+                getAllDrivers(
+                    context.classResults,
+                    context.paxResults,
+                    context.rawResults
+                ),
             findDriverInClassResults: (driverId: string) =>
                 findDriverInClassResults(driverId, context.classResults),
             findDriverInPaxResults: (driverId: string) =>
@@ -171,4 +179,3 @@ export function useLiveData() {
         ]
     );
 }
-

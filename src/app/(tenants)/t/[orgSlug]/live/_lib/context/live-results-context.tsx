@@ -42,7 +42,14 @@ export function LiveResultsProvider({
             displayMode,
             featureFlags,
         }),
-        [classResults, paxResults, rawResults, runWork, displayMode, featureFlags]
+        [
+            classResults,
+            paxResults,
+            rawResults,
+            runWork,
+            displayMode,
+            featureFlags,
+        ]
     );
 
     return (

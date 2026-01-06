@@ -16,11 +16,7 @@ import {
     SheetTitle,
 } from "@/ui/sheet";
 import { Skeleton } from "@/ui/skeleton";
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
-} from "@/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/tooltip";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { PanelLeftIcon } from "lucide-react";
 

@@ -13,18 +13,26 @@ type DriverSelectProps = {
     onDriverChange: (driverId: string) => void;
 };
 
-export function DriverSelect({ drivers, selectedDriverId, onDriverChange }: DriverSelectProps) {
+export function DriverSelect({
+    drivers,
+    selectedDriverId,
+    onDriverChange,
+}: DriverSelectProps) {
     return (
         <div className="flex flex-col gap-4">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                <Select value={selectedDriverId || ""} onValueChange={onDriverChange}>
+                <Select
+                    value={selectedDriverId || ""}
+                    onValueChange={onDriverChange}
+                >
                     <SelectTrigger className="w-full sm:max-w-md">
                         <SelectValue placeholder="Select a driver" />
                     </SelectTrigger>
                     <SelectContent>
                         {drivers.map((driver) => (
                             <SelectItem key={driver.id} value={driver.id}>
-                                {driver.name} - {driver.carClass} #{driver.number}
+                                {driver.name} - {driver.carClass} #
+                                {driver.number}
                             </SelectItem>
                         ))}
                     </SelectContent>
@@ -33,4 +41,3 @@ export function DriverSelect({ drivers, selectedDriverId, onDriverChange }: Driv
         </div>
     );
 }
-

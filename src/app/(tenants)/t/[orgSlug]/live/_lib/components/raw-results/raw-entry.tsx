@@ -30,4 +30,3 @@ export const RawEntry = ({ entry, maxGap }: RawEntryProps) => {
         </ResultCard>
     );
 };
-

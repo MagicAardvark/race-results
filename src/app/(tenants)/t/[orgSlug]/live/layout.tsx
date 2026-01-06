@@ -1,5 +1,10 @@
 import { LiveResultsProvider } from "./_lib/context/live-results-context";
-import { getClassResults, getPaxResults, getRawResults, getRunWork } from "./_lib/data/results";
+import {
+    getClassResults,
+    getPaxResults,
+    getRawResults,
+    getRunWork,
+} from "./_lib/data/results";
 import { DisplayMode } from "./_lib/types";
 import { requireValidTenant } from "./_lib/utils/tenant-guard";
 import { LiveLayoutClient } from "./_lib/components/live-layout-client";
@@ -25,7 +30,8 @@ export default async function LiveLayout({
             : Promise.resolve({}),
     ]);
 
-    const [classResults, paxResults, rawResults, runWork, featureFlags] = results;
+    const [classResults, paxResults, rawResults, runWork, featureFlags] =
+        results;
 
     return (
         <LiveResultsProvider
@@ -40,4 +46,3 @@ export default async function LiveLayout({
         </LiveResultsProvider>
     );
 }
-

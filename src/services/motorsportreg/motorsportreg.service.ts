@@ -34,9 +34,7 @@ export class MotorsportRegService {
 
     constructor(config?: MotorsportRegConfig) {
         this.config = {
-            apiKey:
-                config?.apiKey ||
-                process.env.MOTORSPORTREG_API_KEY,
+            apiKey: config?.apiKey || process.env.MOTORSPORTREG_API_KEY,
             format: config?.format || "json",
             ...config,
         };
@@ -130,7 +128,10 @@ export class MotorsportRegService {
             }
 
             // Handle different response formats
-            if (this.config.format === "json" || this.config.format === "jsonp") {
+            if (
+                this.config.format === "json" ||
+                this.config.format === "jsonp"
+            ) {
                 const data = await response.json();
                 return data as T;
             }
@@ -283,13 +284,12 @@ export class MotorsportRegService {
         params?: {
             fields?: "questions" | "packages" | "questions,packages";
         }
-    ): Promise<MotorsportRegResponse<{ attendee: AttendeesResponse["attendees"][0] }>> {
-        return this.request(
-            `/rest/events/${eventId}/attendees/${attendeeId}`,
-            {
-                params: params as Record<string, string | number | boolean>,
-            }
-        );
+    ): Promise<
+        MotorsportRegResponse<{ attendee: AttendeesResponse["attendees"][0] }>
+    > {
+        return this.request(`/rest/events/${eventId}/attendees/${attendeeId}`, {
+            params: params as Record<string, string | number | boolean>,
+        });
     }
 
     /**
@@ -303,14 +303,13 @@ export class MotorsportRegService {
             notes?: string;
             metadata?: Record<string, unknown>;
         }
-    ): Promise<MotorsportRegResponse<{ attendee: AttendeesResponse["attendees"][0] }>> {
-        return this.request(
-            `/rest/events/${eventId}/attendees/${attendeeId}`,
-            {
-                method: "PUT",
-                body: data,
-            }
-        );
+    ): Promise<
+        MotorsportRegResponse<{ attendee: AttendeesResponse["attendees"][0] }>
+    > {
+        return this.request(`/rest/events/${eventId}/attendees/${attendeeId}`, {
+            method: "PUT",
+            body: data,
+        });
     }
 
     /**
@@ -325,10 +324,7 @@ export class MotorsportRegService {
     /**
      * Delete an attendee (authenticated)
      */
-    async deleteAttendee(
-        eventId: string,
-        attendeeId: string
-    ): Promise<void> {
+    async deleteAttendee(eventId: string, attendeeId: string): Promise<void> {
         await this.request(`/rest/events/${eventId}/attendees/${attendeeId}`, {
             method: "DELETE",
         });
@@ -341,7 +337,9 @@ export class MotorsportRegService {
         eventId: string,
         attendeeId: string
     ): Promise<MotorsportRegResponse<{ checkin: unknown }>> {
-        return this.request(`/rest/events/${eventId}/attendees/${attendeeId}/checkin`);
+        return this.request(
+            `/rest/events/${eventId}/attendees/${attendeeId}/checkin`
+        );
     }
 
     /**
@@ -404,7 +402,9 @@ export class MotorsportRegService {
         eventId: string,
         assignmentId: string
     ): Promise<MotorsportRegResponse<{ assignment: Assignment }>> {
-        return this.request(`/rest/events/${eventId}/assignments/${assignmentId}`);
+        return this.request(
+            `/rest/events/${eventId}/assignments/${assignmentId}`
+        );
     }
 
     /**
@@ -422,17 +422,21 @@ export class MotorsportRegService {
     /**
      * Get user profile and organization memberships (OAuth authenticated)
      */
-    async getMe(): Promise<MotorsportRegResponse<{
-        profile: unknown;
-        organizations: unknown[];
-    }>> {
+    async getMe(): Promise<
+        MotorsportRegResponse<{
+            profile: unknown;
+            organizations: unknown[];
+        }>
+    > {
         return this.request("/rest/me");
     }
 
     /**
      * Get user's vehicles (OAuth authenticated)
      */
-    async getMyVehicles(): Promise<MotorsportRegResponse<{ vehicles: unknown[] }>> {
+    async getMyVehicles(): Promise<
+        MotorsportRegResponse<{ vehicles: unknown[] }>
+    > {
         return this.request("/rest/me/vehicles");
     }
 
@@ -483,4 +487,3 @@ export function createMotorsportRegService(
 ): MotorsportRegService {
     return new MotorsportRegService(config);
 }
-

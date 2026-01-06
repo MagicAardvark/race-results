@@ -11,11 +11,7 @@ import {
     TableRow,
 } from "@/ui/table";
 import { Button } from "@/ui/button";
-import {
-    ExternalLinkIcon,
-    CalendarIcon,
-    ArrowLeftIcon,
-} from "lucide-react";
+import { ExternalLinkIcon, CalendarIcon, ArrowLeftIcon } from "lucide-react";
 import { CgMediaLive as LiveIcon } from "react-icons/cg";
 import {
     Card,
@@ -24,19 +20,7 @@ import {
     CardHeader,
     CardTitle,
 } from "@/ui/card";
-
-function formatDate(dateString: string): string {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-    });
-}
-
-function isSingleDay(start: string, end: string): boolean {
-    return start === end;
-}
+import { formatDate, isSingleDay } from "./_lib/utils/date-utils";
 
 export default async function Page() {
     const tenant = await tenantService.getTenant();
@@ -83,7 +67,7 @@ export default async function Page() {
                             {tenant.org.name}
                         </h1>
                         {tenant.org.motorsportregOrgId && (
-                            <p className="mt-2 text-muted-foreground">
+                            <p className="text-muted-foreground mt-2">
                                 View upcoming events and results for this
                                 organization
                             </p>
@@ -151,7 +135,7 @@ export default async function Page() {
                                                     <TableCell className="font-medium">
                                                         {event.name}
                                                         {event.type && (
-                                                            <span className="ml-2 block text-xs text-muted-foreground sm:hidden">
+                                                            <span className="text-muted-foreground ml-2 block text-xs sm:hidden">
                                                                 {event.type}
                                                             </span>
                                                         )}
@@ -161,7 +145,9 @@ export default async function Page() {
                                                     </TableCell>
                                                     <TableCell>
                                                         {singleDay ? (
-                                                            formatDate(event.start)
+                                                            formatDate(
+                                                                event.start
+                                                            )
                                                         ) : (
                                                             <span>
                                                                 {formatDate(
@@ -174,7 +160,7 @@ export default async function Page() {
                                                                         event.end
                                                                     )}
                                                                 </span>
-                                                                <span className="block text-xs text-muted-foreground sm:hidden">
+                                                                <span className="text-muted-foreground block text-xs sm:hidden">
                                                                     to{" "}
                                                                     {formatDate(
                                                                         event.end

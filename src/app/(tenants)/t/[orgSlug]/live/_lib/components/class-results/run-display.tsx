@@ -24,13 +24,9 @@ export const RunDisplay = ({ run }: RunDisplayProps) => {
     return (
         <Badge
             variant={getStatusVariant(run.status)}
-            className={cn(
-                "text-xs",
-                run.isBest && "ring-2 ring-green-500"
-            )}
+            className={cn("text-xs", run.isBest && "ring-2 ring-green-500")}
         >
             Run {run.number}: {formatRunTime(run)}
         </Badge>
     );
 };
-

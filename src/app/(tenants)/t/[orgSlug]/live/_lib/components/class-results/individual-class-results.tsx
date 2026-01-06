@@ -3,13 +3,15 @@
 import Link from "next/link";
 import { useLiveData } from "../../hooks/useLiveData";
 import { getClassResultKey } from "../../utils/key-generators";
-import { ClassResultsEntry } from "./class-results-entry";
+import { ClassResultEntry } from "./class-result-entry";
 
 type IndividualClassResultsProps = {
     className: string;
 };
 
-export const IndividualClassResults = ({ className }: IndividualClassResultsProps) => {
+export const IndividualClassResults = ({
+    className,
+}: IndividualClassResultsProps) => {
     const { classResults } = useLiveData();
     const results = classResults?.[className] ?? null;
 
@@ -26,7 +28,7 @@ export const IndividualClassResults = ({ className }: IndividualClassResultsProp
             </h2>
             <div className="space-y-2">
                 {results.map((entry) => (
-                    <ClassResultsEntry
+                    <ClassResultEntry
                         key={getClassResultKey(entry, className)}
                         entry={entry}
                         allEntries={results}
@@ -36,4 +38,3 @@ export const IndividualClassResults = ({ className }: IndividualClassResultsProp
         </div>
     );
 };
-

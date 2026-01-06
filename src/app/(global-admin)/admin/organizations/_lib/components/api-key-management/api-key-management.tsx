@@ -8,12 +8,7 @@ import { CurrentApiKeyDisplay } from "./current-api-key-display";
 import { KeyControlPanel } from "./key-control-panel";
 import { PreviousApiKeysTable } from "./previous-api-keys-table";
 import { Button } from "@/ui/button";
-import {
-    Card,
-    CardContent,
-    CardHeader,
-    CardTitle,
-} from "@/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/ui/card";
 import {
     Empty,
     EmptyContent,

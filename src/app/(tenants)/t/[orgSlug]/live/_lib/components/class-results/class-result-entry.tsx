@@ -17,7 +17,10 @@ type ClassResultEntryProps = {
     allEntries: ClassResult[];
 };
 
-export const ClassResultEntry = ({ entry, allEntries }: ClassResultEntryProps) => {
+export const ClassResultEntry = ({
+    entry,
+    allEntries,
+}: ClassResultEntryProps) => {
     const { displayMode } = useLiveData();
     const [showRuns, setShowRuns] = useState(false);
     const isPaxLeader = entry.paxPosition === 1;
@@ -48,9 +51,15 @@ export const ClassResultEntry = ({ entry, allEntries }: ClassResultEntryProps) =
             />
             <TimeValue
                 label={isRallycross ? "Total" : "Best"}
-                value={isRallycross ? entry.runInfo.rallyCrossTime : entry.runInfo.total}
+                value={
+                    isRallycross
+                        ? entry.runInfo.rallyCrossTime
+                        : entry.runInfo.total
+                }
                 secondaryLabel="Last"
-                secondaryValue={lastRun ? <RunTimeDisplay run={lastRun} /> : "N/A"}
+                secondaryValue={
+                    lastRun ? <RunTimeDisplay run={lastRun} /> : "N/A"
+                }
             />
             <GapDisplay
                 gapToFirst={
@@ -77,4 +86,3 @@ export const ClassResultEntry = ({ entry, allEntries }: ClassResultEntryProps) =
         </ResultCard>
     );
 };
-

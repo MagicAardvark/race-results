@@ -21,11 +21,16 @@ export function useUrlFilters() {
             params.delete(paramName);
         }
         startTransition(() => {
-            router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+            router.replace(`${pathname}?${params.toString()}`, {
+                scroll: false,
+            });
         });
     };
 
-    const getFilters = (paramName: string, validValues?: string[]): string[] => {
+    const getFilters = (
+        paramName: string,
+        validValues?: string[]
+    ): string[] => {
         const param = searchParams.get(paramName);
         if (!param) return [];
         const values = param.split(",");
@@ -41,4 +46,3 @@ export function useUrlFilters() {
         searchParams,
     };
 }
-

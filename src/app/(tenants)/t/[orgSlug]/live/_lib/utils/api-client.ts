@@ -27,4 +27,3 @@ export async function fetchJson<T>(
         throw error;
     }
 }
-

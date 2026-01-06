@@ -18,10 +18,10 @@ const GAP_OVERLAP_THRESHOLD = 0.001;
  */
 function calculatePercentile70(gaps: number[]): number {
     if (gaps.length === 0) return 3.0;
-    
+
     const sorted = [...gaps].sort((a, b) => a - b);
     const index = Math.ceil(sorted.length * 0.7) - 1;
-    
+
     return sorted[Math.max(0, index)] || 3.0;
 }
 
@@ -48,12 +48,14 @@ export function GapDisplay({
     const isLeader = gap === 0;
 
     // Calculate max gap: use provided maxGap, or calculate from 70th percentile of all entries
-    const maxGap = providedMaxGap ?? (() => {
-        const allGaps = allEntries
-            .map((e) => e.gapToFirst)
-            .filter((g): g is number => g != null && g > 0);
-        return calculatePercentile70(allGaps);
-    })();
+    const maxGap =
+        providedMaxGap ??
+        (() => {
+            const allGaps = allEntries
+                .map((e) => e.gapToFirst)
+                .filter((g): g is number => g != null && g > 0);
+            return calculatePercentile70(allGaps);
+        })();
 
     const userCarPosition = isLeader ? 0 : getGapPosition(gap, maxGap);
 
@@ -71,14 +73,17 @@ export function GapDisplay({
         );
 
     return (
-        <div className={cn(className, "relative")} style={{ height: BAR_HEIGHT }}>
+        <div
+            className={cn(className, "relative")}
+            style={{ height: BAR_HEIGHT }}
+        >
             {/* Horizontal bar track */}
             <div className="absolute inset-0 flex items-center pr-20">
-                <div className="w-full h-1 bg-muted rounded-full" />
+                <div className="bg-muted h-1 w-full rounded-full" />
             </div>
 
             {!isLeader && (
-                <div className="absolute left-0 top-1/2 -translate-y-1/2 flex items-center justify-center z-10">
+                <div className="absolute top-1/2 left-0 z-10 flex -translate-y-1/2 items-center justify-center">
                     <Car
                         size={CAR_ICON_SIZE}
                         className="text-foreground"
@@ -92,31 +97,34 @@ export function GapDisplay({
                 return (
                     <div
                         key={car.id}
-                        className="absolute top-1/2 -translate-y-1/2 flex items-center justify-center transition-all"
+                        className="absolute top-1/2 flex -translate-y-1/2 items-center justify-center transition-all"
                         style={{ left: `${carPosition}%` }}
                     >
                         <Car
                             size={CAR_ICON_SIZE}
-                            className="text-gray-300 fill-current"
-                            style={{ transform: "scaleX(-1)", fillOpacity: 0.3 }}
+                            className="fill-current text-gray-300"
+                            style={{
+                                transform: "scaleX(-1)",
+                                fillOpacity: 0.3,
+                            }}
                         />
                     </div>
                 );
             })}
 
             <div
-                className="absolute top-1/2 -translate-y-1/2 flex items-center justify-center transition-all z-10"
+                className="absolute top-1/2 z-10 flex -translate-y-1/2 items-center justify-center transition-all"
                 style={{ left: `${userCarPosition}%` }}
             >
                 <Car
                     size={CAR_ICON_SIZE}
-                    className="text-purple-700 fill-current transition-colors"
+                    className="fill-current text-purple-700 transition-colors"
                     style={{ transform: "scaleX(-1)", fillOpacity: 0.3 }}
                 />
             </div>
 
             {!isLeader && (
-                <div className="absolute right-0 top-1/2 -translate-y-1/2 text-[10px] text-muted-foreground flex flex-col items-end ml-2">
+                <div className="text-muted-foreground absolute top-1/2 right-0 ml-2 flex -translate-y-1/2 flex-col items-end text-[10px]">
                     <div>First: +{gap.toFixed(3)}s</div>
                     {gapToNext != null && gapToNext > 0 && (
                         <div>Next: +{gapToNext.toFixed(3)}s</div>

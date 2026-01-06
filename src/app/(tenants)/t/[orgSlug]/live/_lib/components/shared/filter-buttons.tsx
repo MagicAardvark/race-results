@@ -32,7 +32,9 @@ export function FilterButtons({
                 return (
                     <Button
                         key={item}
-                        variant={isSelected || noSelected ? "default" : "outline"}
+                        variant={
+                            isSelected || noSelected ? "default" : "outline"
+                        }
                         size="sm"
                         onClick={() => onToggle(item)}
                     >
@@ -48,4 +50,3 @@ export function FilterButtons({
         </div>
     );
 }
-

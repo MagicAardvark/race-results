@@ -25,9 +25,12 @@ export const RawResults = () => {
     return (
         <div className="space-y-2">
             {rawResults.map((entry) => (
-                <RawEntry key={getRawResultKey(entry)} entry={entry} maxGap={maxGap} />
+                <RawEntry
+                    key={getRawResultKey(entry)}
+                    entry={entry}
+                    maxGap={maxGap}
+                />
             ))}
         </div>
     );
 };
-

@@ -40,7 +40,9 @@ export default async function Page({
         );
     }
 
-    const featureFlags = await featureFlagsService.getOrgFeatureFlags(org.orgId);
+    const featureFlags = await featureFlagsService.getOrgFeatureFlags(
+        org.orgId
+    );
 
     return (
         <div className="flex w-full flex-col gap-4">

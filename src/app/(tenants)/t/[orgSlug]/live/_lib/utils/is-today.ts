@@ -7,4 +7,3 @@ export function isToday(date: Date): boolean {
         date.getFullYear() === now.getFullYear()
     );
 }
-

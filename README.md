@@ -5,6 +5,7 @@ A multi-tenant motorsports results and live-timing platform built with Next.js, 
 ## 🎯 Overview
 
 This platform enables motorsports organizations to:
+
 - Display live timing and results for autocross and rallycross events
 - Manage multiple organizations (tenants) with isolated data
 - Integrate with MotorsportReg.com for event data
@@ -14,45 +15,50 @@ This platform enables motorsports organizations to:
 ## ✨ Features
 
 ### Live Timing System
+
 - **Class Results** - View results grouped by car class with expandable run details
 - **PAX Results** - PAX-adjusted standings across all classes (configurable per organization)
 - **Raw Results** - Raw time standings for all drivers
 - **Work/Run Order** - Display work and run assignments by class (configurable per organization)
 - **Personal Stats Dashboard** - Individual driver statistics with visualizations
-  - Position tracking (Class, PAX, Raw)
-  - Run statistics (total runs, clean runs, cones, DNFs)
-  - Time distribution charts
-  - Class times visualization
+    - Position tracking (Class, PAX, Raw)
+    - Run statistics (total runs, clean runs, cones, DNFs)
+    - Time distribution charts
+    - Class times visualization
 - **Feature Flags** - Organization-level feature toggles for customizing available functionality
 
 ### Multi-Tenancy
+
 - **Organization Isolation** - Each organization has isolated data and configuration
 - **Path-based Routing** - `/t/[orgSlug]` for tenant-scoped routes
 - **Global Configuration** - Shared settings with org-specific overrides
 - **Tenant Guards** - Automatic tenant validation and routing
 
 ### Event Management
+
 - **MotorsportReg Integration** - Fetch events and calendars from MotorsportReg.com
 - **Event Calendar** - View upcoming events for organizations
 - **Event Details** - Comprehensive event information
 
 ### Administration
+
 - **Global Admin** - Platform-wide administration
-  - Organization management
-  - User management
-  - Feature flag configuration per organization
-  - API key management for organizations
+    - Organization management
+    - User management
+    - Feature flag configuration per organization
+    - API key management for organizations
 - **Tenant Admin** - Organization-specific administration
-  - Organization settings
-  - User management within organization
-  - Feature flag toggles (PAX Results, Work/Run Order)
+    - Organization settings
+    - User management within organization
+    - Feature flag toggles (PAX Results, Work/Run Order)
 
 ### API Access
+
 - **API Key Management** - Secure API access for organizations
-  - Generate and manage API keys per organization
-  - Enable/disable API access
-  - View API key history
-  - Secure key validation for API requests
+    - Generate and manage API keys per organization
+    - Enable/disable API access
+    - View API key history
+    - Secure key validation for API requests
 
 ## 🏗️ Architecture
 
@@ -143,25 +149,28 @@ src/
 #### Architecture Principles
 
 - **Page-Centric**: Components are organized near the pages that use them
-  - Admin components: `app/(global-admin)/admin/organizations/_lib/components/`
-  - Live timing components: `app/(tenants)/t/[orgSlug]/live/_lib/components/`
-  - App-level shared: `app/components/shared/`
+    - Admin components: `app/(global-admin)/admin/organizations/_lib/components/`
+    - Live timing components: `app/(tenants)/t/[orgSlug]/live/_lib/components/`
+    - App-level shared: `app/components/shared/`
 - **Design System at Top Level**: All reusable UI components in `/src/ui/`
 - **Import Paths**: Use `@/ui/*` for design system, `@/app/*` for page components
 
 ### Multi-Tenancy Architecture
 
 #### Tenant Resolution
+
 - **Path-based**: `/t/[orgSlug]` routes
 - **Header-based**: `x-tenant-slug` request header
 - **Future**: Subdomain-based routing support
 
 #### Data Isolation
+
 - `org_id = NULL` represents global/default configuration
 - Org-specific rows override global rows
 - Tenant context passed via headers, never inferred from URL in components
 
 #### Routing Conventions
+
 - **Tenant routes**: `/t/[orgSlug]/*`
 - **Tenant admin**: `/t/[orgSlug]/admin/*`
 - **Global admin**: `/(global-admin)/admin/*`
@@ -172,18 +181,18 @@ src/
 
 The application uses a consistent header across all pages for unified navigation and branding:
 
-- **AppHeader** (`app/components/shared/layout/app-header.tsx`): 
-  - Shared header component used by all layouts
-  - Includes branding, navigation links, admin button, and user authentication
-  - Supports optional sidebar trigger for mobile navigation
+- **AppHeader** (`app/components/shared/layout/app-header.tsx`):
+    - Shared header component used by all layouts
+    - Includes branding, navigation links, admin button, and user authentication
+    - Supports optional sidebar trigger for mobile navigation
 - **Layout Structure**:
-  - **Public Layout**: Header + Footer (for public pages)
-  - **Tenant Layout**: Header only (for tenant pages)
-  - **Admin Layout**: Header + Sidebar (for admin pages with mobile support)
-- **Responsive Design**: 
-  - Mobile sidebar trigger integrated into header
-  - Sidebar positioned below header (no overlap)
-  - Consistent navigation across all screen sizes
+    - **Public Layout**: Header + Footer (for public pages)
+    - **Tenant Layout**: Header only (for tenant pages)
+    - **Admin Layout**: Header + Sidebar (for admin pages with mobile support)
+- **Responsive Design**:
+    - Mobile sidebar trigger integrated into header
+    - Sidebar positioned below header (no overlap)
+    - Consistent navigation across all screen sizes
 
 ## 🚀 Getting Started
 
@@ -198,49 +207,55 @@ The application uses a consistent header across all pages for unified navigation
 ### Installation
 
 1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd race-results
-   ```
+
+    ```bash
+    git clone <repository-url>
+    cd race-results
+    ```
 
 2. **Install dependencies**
-   ```bash
-   pnpm install
-   ```
+
+    ```bash
+    pnpm install
+    ```
 
 3. **Set up environment variables**
-   ```bash
-   cp .env.example .env.local
-   ```
-   
-   Required environment variables:
-   ```env
-   # Database
-   DATABASE_URL=postgresql://...
 
-   # Clerk Authentication
-   NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_...
-   CLERK_SECRET_KEY=sk_...
+    ```bash
+    cp .env.example .env.local
+    ```
 
-   # MotorsportReg (optional)
-   MOTORSPORTREG_API_KEY=...
-   MOTORSPORTREG_USERNAME=...
-   MOTORSPORTREG_PASSWORD=...
-   ```
+    Required environment variables:
+
+    ```env
+    # Database
+    DATABASE_URL=postgresql://...
+
+    # Clerk Authentication
+    NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_...
+    CLERK_SECRET_KEY=sk_...
+
+    # MotorsportReg (optional)
+    MOTORSPORTREG_API_KEY=...
+    MOTORSPORTREG_USERNAME=...
+    MOTORSPORTREG_PASSWORD=...
+    ```
 
 4. **Set up the database**
-   ```bash
-   # Run migrations
-   pnpm drizzle-kit push
 
-   # Seed database (optional)
-   pnpm seed
-   ```
+    ```bash
+    # Run migrations
+    pnpm drizzle-kit push
+
+    # Seed database (optional)
+    pnpm seed
+    ```
 
 5. **Start the development server**
-   ```bash
-   pnpm dev
-   ```
+
+    ```bash
+    pnpm dev
+    ```
 
 6. **Open your browser**
    Navigate to [http://localhost:3000](http://localhost:3000)
@@ -250,25 +265,28 @@ The application uses a consistent header across all pages for unified navigation
 ### Live Timing
 
 #### Accessing Live Timing
+
 1. Navigate to `/t/[orgSlug]/live` for a specific organization
 2. Use the navigation to switch between:
-   - **Class** - Class results
-   - **PAX** - PAX standings (if enabled for organization)
-   - **Raw** - Raw times
-   - **Work/Run** - Work/run assignments (if enabled for organization)
-   - **Me** - Personal stats dashboard
+    - **Class** - Class results
+    - **PAX** - PAX standings (if enabled for organization)
+    - **Raw** - Raw times
+    - **Work/Run** - Work/run assignments (if enabled for organization)
+    - **Me** - Personal stats dashboard
 
 **Note**: PAX and Work/Run navigation items only appear if enabled for your organization.
 
 #### Personal Stats Dashboard
+
 1. Navigate to `/t/[orgSlug]/live/me`
 2. Select your name from the dropdown
 3. View your:
-   - Positions in class, PAX, and raw
-   - Run statistics
-   - Time distribution visualizations
+    - Positions in class, PAX, and raw
+    - Run statistics
+    - Time distribution visualizations
 
 #### Class Filtering
+
 - Click class buttons to filter results
 - Filter state persists in URL (shareable/bookmarkable)
 - Click "Clear" to reset filters
@@ -276,25 +294,29 @@ The application uses a consistent header across all pages for unified navigation
 ### Organization Management
 
 #### Creating an Organization
+
 1. Navigate to global admin: `/admin/organizations`
 2. Click "Create Organization"
 3. Fill in organization details
 4. Set MotorsportReg ID if applicable
 
 #### Managing Organization Settings
+
 1. Navigate to tenant admin: `/t/[orgSlug]/admin`
 2. Update organization settings
 3. Manage users within the organization
 
 #### Configuring Feature Flags
+
 1. Navigate to global admin: `/admin/organizations/[slug]`
 2. Scroll to the "Feature Flags" section
 3. Toggle features on/off for the organization:
-   - **Enable PAX Results** - Shows PAX navigation and statistics
-   - **Enable Work/Run Order** - Shows Work/Run navigation and assignments
+    - **Enable PAX Results** - Shows PAX navigation and statistics
+    - **Enable Work/Run Order** - Shows Work/Run navigation and assignments
 4. Click "Save" to apply changes
 
 #### Managing API Keys
+
 1. Navigate to global admin: `/admin/organizations/[slug]`
 2. Scroll to the "API Keys" section
 3. **Generate New Key**: Creates a new API key and disables the previous one
@@ -305,7 +327,9 @@ The application uses a consistent header across all pages for unified navigation
 **Note**: Only the most recent API key is active. Generating a new key automatically disables the previous one. API keys must be enabled (`api_key_enabled = true`) to work.
 
 #### Using API Keys
+
 API keys are used to authenticate requests to the data ingestion endpoints:
+
 - **Header**: `X-API-Key: <your-api-key>`
 - **Endpoints**: `/api/ingest/[orgSlug]/live` and `/api/ingest/[orgSlug]/results`
 - **Security**: Keys are validated against the organization slug and must be enabled
@@ -323,7 +347,14 @@ pnpm build            # Build for production
 pnpm start            # Start production server
 
 # Code Quality
-pnpm lint             # Run ESLint
+pnpm lint             # Run ESLint, TypeScript check, and Prettier check
+pnpm prettier:fix     # Format code with Prettier
+pnpm prettier:check   # Check code formatting
+
+# Testing
+pnpm test             # Run tests once
+pnpm test:watch       # Run tests in watch mode
+pnpm test:coverage    # Run tests with coverage
 
 # Database
 pnpm seed             # Seed database with sample data
@@ -336,17 +367,44 @@ pnpm seed             # Seed database with sample data
 - **Prettier**: Code formatting
 - **Tailwind CSS**: Utility-first styling
 
+### Pre-commit Hook
+
+The project uses [husky](https://typicode.github.io/husky/) to run quality checks before each commit. The pre-commit hook automatically runs:
+
+1. **Main Branch Check** - Warns if committing to `main` or `master` branch and prompts for confirmation
+2. **Prettier** (`prettier:fix`) - Formats all code files
+3. **Lint** (`lint`) - Runs ESLint, TypeScript type checking, and Prettier checks
+4. **Tests** (`test`) - Runs the test suite
+
+#### Setup
+
+The pre-commit hook is automatically set up when you run `pnpm install`. If you need to manually set it up:
+
+```bash
+pnpm exec husky install
+```
+
+#### Bypassing the Hook
+
+If you need to bypass the pre-commit hook (e.g., for emergency hotfixes or WIP commits), you can use the `--no-verify` flag:
+
+```bash
+git commit --no-verify -m "Your commit message"
+```
+
+**⚠️ Warning**: Only bypass the hook when absolutely necessary. The checks help maintain code quality and prevent broken code from being committed.
+
 ### Architecture Guidelines
 
 - **Page-Centric Structure**: Organize components near the pages that use them
-  - Page-specific components live alongside their pages
-  - Shared components at app level: `app/components/shared/`
-  - Design system components at top level: `ui/`
-- **Shared Layout Components**: 
-  - `AppHeader` - Consistent header across all pages (public, tenant, admin)
-  - `AppFooter` - Footer for public pages
-  - `ConfigurationLayout` - Admin layout with sidebar and header
-  - All layouts use the shared header for consistency
+    - Page-specific components live alongside their pages
+    - Shared components at app level: `app/components/shared/`
+    - Design system components at top level: `ui/`
+- **Shared Layout Components**:
+    - `AppHeader` - Consistent header across all pages (public, tenant, admin)
+    - `AppFooter` - Footer for public pages
+    - `ConfigurationLayout` - Admin layout with sidebar and header
+    - All layouts use the shared header for consistency
 - **Server Components by Default**: Prefer server components
 - **Client Components When Necessary**: Only use `"use client"` when needed
 - **Isolated Computation**: Heavy computation (scoring, parsing) isolated from request/response
@@ -355,13 +413,14 @@ pnpm seed             # Seed database with sample data
 - **No Magic Globals**: Avoid global state inference
 - **Tenant Context**: Always passed via headers, never inferred from URL
 - **Import Conventions**:
-  - Design system: `@/ui/*`
-  - Page components: `@/app/(route-group)/path/components/*`
-  - Shared components: `@/app/components/shared/*`
+    - Design system: `@/ui/*`
+    - Page components: `@/app/(route-group)/path/components/*`
+    - Shared components: `@/app/components/shared/*`
 
 ### Database
 
 #### Migrations
+
 ```bash
 # Generate migration
 pnpm drizzle-kit generate
@@ -371,6 +430,7 @@ pnpm drizzle-kit push
 ```
 
 #### Schema
+
 - **Organizations** (`orgs`): Organization data
 - **Users** (`users`): User accounts
 - **Roles** (`roles`): User roles and permissions
@@ -384,6 +444,7 @@ pnpm drizzle-kit push
 The platform integrates with MotorsportReg.com for event data.
 
 #### Configuration
+
 ```typescript
 import { motorsportRegService } from "@/services/motorsportreg/motorsportreg.service";
 
@@ -398,6 +459,7 @@ See [MotorsportReg Service README](./src/services/motorsportreg/README.md) for f
 ### Live Timing API
 
 Live timing data is fetched from external API endpoints configured in:
+
 - `src/app/(tenants)/t/[orgSlug]/live/lib/config.ts`
 
 ### Organization API
@@ -405,13 +467,17 @@ Live timing data is fetched from external API endpoints configured in:
 Organizations can access their data via API using API keys:
 
 #### Authentication
+
 API requests must include a valid API key in the request header:
+
 ```
 X-API-Key: <api-key>
 ```
 
 #### API Key Validation
+
 The platform validates API keys by:
+
 - Checking the organization slug matches the key
 - Verifying the key is the most recent key for the organization
 - Ensuring the key is enabled (`api_key_enabled = true`)
@@ -423,11 +489,14 @@ See `src/db/repositories/organizations.api.repo.ts` for validation logic.
 The platform provides public API endpoints for ingesting live timing and results data:
 
 #### Endpoints
+
 - **POST** `/api/ingest/[orgSlug]/live` - Ingest live timing data
 - **POST** `/api/ingest/[orgSlug]/results` - Ingest results data
 
 #### Authentication
+
 These endpoints require API key authentication via the `X-API-Key` header. The API key must:
+
 - Match the organization slug in the URL path
 - Be the most recent key for that organization
 - Be enabled (`api_key_enabled = true`)
@@ -435,21 +504,95 @@ These endpoints require API key authentication via the `X-API-Key` header. The A
 **Note**: API key validation is enforced by middleware in `src/proxy.ts` before requests reach the route handlers.
 
 #### Usage
+
 ```typescript
 // Example: Ingest live timing data
-const response = await fetch('/api/ingest/my-org/live', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-    'X-API-Key': 'rr_api_key_<your-api-key>'
-  },
-  body: JSON.stringify(liveTimingData)
+const response = await fetch("/api/ingest/my-org/live", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json",
+        "X-API-Key": "rr_api_key_<your-api-key>",
+    },
+    body: JSON.stringify(liveTimingData),
 });
 ```
 
 See `src/app/(global-api)/api/ingest/` for implementation details.
 
 ## 🧪 Testing
+
+The project has comprehensive test coverage. Tests are co-located with the files they test and follow best practices for React and Next.js testing.
+
+### Test Framework
+
+- **Vitest** - Fast unit and integration testing
+- **React Testing Library** - Component testing with user-centric approach
+- **MSW (Mock Service Worker)** - API mocking for integration tests
+- **Playwright** - End-to-end testing
+
+### Test Coverage
+
+The test suite provides coverage for:
+
+- Page and layout components
+- Utility functions and hooks
+- Services and repositories
+- Context providers
+- UI components
+- Middleware and API routes
+
+### End-to-End Testing
+
+The project includes end-to-end tests using Playwright located in the `e2e/` directory:
+
+- **`live-timing.spec.ts`** - Comprehensive smoke test for the live timing system
+    - Tests all live timing pages (Class, PAX, Raw, Me, Work/Run)
+    - Verifies navigation and URL persistence
+    - Tests refresh functionality
+    - Validates responsive design
+    - Designed as a single smoke test to minimize server calls
+
+#### Running E2E Tests
+
+```bash
+# Run all e2e tests
+pnpm test:e2e
+
+# Run specific test file
+pnpm test:e2e e2e/live-timing.spec.ts
+
+# Run in UI mode (interactive test runner)
+pnpm test:e2e:ui
+
+# Run in debug mode (step through tests)
+pnpm test:e2e:debug
+```
+
+The e2e tests are configured to automatically start the development server before running tests. See `playwright.config.ts` for configuration details.
+
+### Reusable Test Mocks
+
+The project includes reusable mock data in `src/__tests__/mocks/`:
+
+- **`mock-tenants.ts`** - Reusable tenant mocks (ValidTenant, GlobalTenant, InvalidTenant)
+- **`mock-clerk.tsx`** - Clerk authentication mocks
+- **`mock-db.ts`** - Database mocks
+- **`mock-handlers.ts`** - MSW API request handlers
+- **`mock-server.ts`** - MSW server configuration
+
+Example usage:
+
+```typescript
+import {
+    mockValidTenant,
+    mockGlobalTenant,
+} from "@/__tests__/mocks/mock-tenants";
+
+// Use in tests
+const tenant = mockValidTenant;
+```
+
+See `src/__tests__/README.md` for detailed testing guidelines.
 
 ### Manual Testing Checklist
 
@@ -491,9 +634,11 @@ Ensure all required environment variables are set in your deployment environment
 
 1. Create a feature branch
 2. Make your changes
-3. Ensure code passes linting
-4. Test thoroughly
+3. The pre-commit hook will automatically format, lint, and test your code before committing
+4. If checks fail, fix the issues and try committing again
 5. Submit a pull request
+
+**Note**: The pre-commit hook runs `prettier:fix`, `lint`, and `test` automatically. Make sure all checks pass before pushing your changes.
 
 ### Code Review Guidelines
 

@@ -18,16 +18,16 @@ export function PositionBadge({
     return (
         <div className={cn(className, "flex flex-col justify-center")}>
             <div className="space-y-0.5">
-                <div className="text-[10px] uppercase tracking-wide text-muted-foreground font-medium">
+                <div className="text-muted-foreground text-[10px] font-medium tracking-wide uppercase">
                     {label}
                 </div>
-                <div className="text-xl font-bold leading-none">{value}</div>
+                <div className="text-xl leading-none font-bold">{value}</div>
                 {secondaryLabel && secondaryValue !== undefined && (
                     <>
-                        <div className="text-[10px] uppercase tracking-wide text-muted-foreground font-medium mt-1.5">
+                        <div className="text-muted-foreground mt-1.5 text-[10px] font-medium tracking-wide uppercase">
                             {secondaryLabel}
                         </div>
-                        <div className="text-sm font-semibold leading-tight">
+                        <div className="text-sm leading-tight font-semibold">
                             {secondaryValue}
                         </div>
                     </>
@@ -36,4 +36,3 @@ export function PositionBadge({
         </div>
     );
 }
-

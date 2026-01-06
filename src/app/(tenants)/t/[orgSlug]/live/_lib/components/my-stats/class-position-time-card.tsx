@@ -20,7 +20,9 @@ export function ClassPositionTimeCard({
             : classResult?.runInfo.runs
                   .filter((r) => r.isBest)
                   .map((r) => r.time)
-                  .reduce((a, b) => Math.min(a, b), Infinity) || rawResult?.time || null;
+                  .reduce((a, b) => Math.min(a, b), Infinity) ||
+              rawResult?.time ||
+              null;
 
     const gapToFirst =
         displayMode === "autocross"
@@ -32,9 +34,10 @@ export function ClassPositionTimeCard({
             title="Class"
             position={classResult?.position}
             time={bestTime}
-            timeLabel={displayMode === "rallycross" ? "Rallycross Time" : "Best Time"}
+            timeLabel={
+                displayMode === "rallycross" ? "Rallycross Time" : "Best Time"
+            }
             gapToFirst={gapToFirst}
         />
     );
 }
-

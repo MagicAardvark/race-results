@@ -18,7 +18,7 @@ export function ResultCard({
     return (
         <Card
             className={cn(
-                onClick && "cursor-pointer transition-colors hover:bg-muted/50",
+                onClick && "hover:bg-muted/50 cursor-pointer transition-colors",
                 isHighlighted && "bg-orange-50 dark:bg-orange-950/20",
                 className
             )}
@@ -30,4 +30,3 @@ export function ResultCard({
         </Card>
     );
 }
-

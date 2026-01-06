@@ -8,11 +8,7 @@ import { getNavigationPages } from "../utils/navigation";
 import { useLiveData } from "../hooks/useLiveData";
 import { useState } from "react";
 
-export function LiveLayoutClient({
-    children,
-}: {
-    children: React.ReactNode;
-}) {
+export function LiveLayoutClient({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
     const params = useParams();
     const router = useRouter();
@@ -31,7 +27,7 @@ export function LiveLayoutClient({
 
     return (
         <div className="flex flex-col items-center justify-center pb-[100px]">
-            <nav className="mb-2 mt-4 flex w-full max-w-7xl items-center justify-between gap-2 px-4">
+            <nav className="mt-4 mb-2 flex w-full max-w-7xl items-center justify-between gap-2 px-4">
                 <div className="flex flex-wrap items-center gap-2">
                     {navigationPages.map((page) => {
                         const isActive =
