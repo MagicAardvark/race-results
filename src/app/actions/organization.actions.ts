@@ -66,7 +66,8 @@ export async function updateOrganization(
 
     // Feature flags
     const paxEnabled = formData.get("feature.liveTiming.paxEnabled") === "on";
-    const workRunEnabled = formData.get("feature.liveTiming.workRunEnabled") === "on";
+    const workRunEnabled =
+        formData.get("feature.liveTiming.workRunEnabled") === "on";
 
     if (!orgId) {
         return { isError: true, message: "Organization ID is required" };

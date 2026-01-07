@@ -1,5 +1,10 @@
 import { orgs } from "./orgs";
-import { createdAt, effectiveFrom, effectiveTo, updatedAt } from "@/db/utils/columns";
+import {
+    createdAt,
+    effectiveFrom,
+    effectiveTo,
+    updatedAt,
+} from "@/db/utils/columns";
 import {
     boolean,
     index,
@@ -101,4 +106,3 @@ export const classGroupClasses = pgTable(
         index("class_group_class_group_idx").on(table.classGroupId),
     ]
 );
-

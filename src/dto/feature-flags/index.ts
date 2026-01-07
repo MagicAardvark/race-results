@@ -29,4 +29,3 @@ export interface UpdateFeatureFlagDTO {
 export interface OrgFeatureFlags {
     [featureKey: string]: boolean;
 }
-

@@ -2,18 +2,21 @@ import { effectiveFrom, effectiveTo } from "@/db/utils/columns";
 import { sql } from "drizzle-orm";
 import { numeric, pgView, text, uuid } from "drizzle-orm/pg-core";
 
-export const effectiveBaseClassIndexValues = pgView("classes_effective_index_values_vw", {
-    classId: uuid("class_id").notNull(),
-    shortName: text("short_name").notNull(),
-    longName: text("long_name").notNull(),
-    indexValue: numeric("index_value", {
-        precision: 5,
-        scale: 4,
-    }).notNull(),
-    orgId: uuid("org_id"),
-    effectiveFrom: effectiveFrom,
-    effectiveTo: effectiveTo
-}).as(sql`
+export const effectiveBaseClassIndexValues = pgView(
+    "classes_effective_index_values_vw",
+    {
+        classId: uuid("class_id").notNull(),
+        shortName: text("short_name").notNull(),
+        longName: text("long_name").notNull(),
+        indexValue: numeric("index_value", {
+            precision: 5,
+            scale: 4,
+        }).notNull(),
+        orgId: uuid("org_id"),
+        effectiveFrom: effectiveFrom,
+        effectiveTo: effectiveTo,
+    }
+).as(sql`
 SELECT
     base.id as class_id,
     base.short_name,
@@ -31,13 +34,16 @@ INNER JOIN classes_index_values index_values
     )
 `);
 
-export const flattenedClassGroupClasses = pgView("classes_flattened_group_classes_vw", {
-    classGroupId: uuid("class_group_id").notNull(),
-    classId: uuid("class_id").notNull(),
-    orgId: uuid("org_id"),
-    groupShortName: text("group_short_name").notNull(),
-    groupLongName: text("group_long_name").notNull(),
-}).as(sql`
+export const flattenedClassGroupClasses = pgView(
+    "classes_flattened_group_classes_vw",
+    {
+        classGroupId: uuid("class_group_id").notNull(),
+        classId: uuid("class_id").notNull(),
+        orgId: uuid("org_id"),
+        groupShortName: text("group_short_name").notNull(),
+        groupLongName: text("group_long_name").notNull(),
+    }
+).as(sql`
 SELECT
     cg.id as class_group_id,
     cgc.class_id,
@@ -49,21 +55,24 @@ INNER JOIN classes_group_classes cgc
     ON cg.id = cgc.class_group_id
 `);
 
-export const effectiveClassGroupIndexValues = pgView("classes_group_effective_index_values_vw", {
-    classGroupId: uuid("class_group_id").notNull(),
-    classId: uuid("class_id").notNull(),
-    shortName: text("short_name").notNull(),
-    longName: text("long_name").notNull(),
-    groupShortName: text("group_short_name").notNull(),
-    groupLongName: text("group_long_name").notNull(),
-    orgId: uuid("org_id"),
-    indexValue: numeric("index_value", {
-        precision: 5,
-        scale: 4,
-    }).notNull(),
-    effectiveFrom: effectiveFrom,
-    effectiveTo: effectiveTo
-}).as(sql`
+export const effectiveClassGroupIndexValues = pgView(
+    "classes_group_effective_index_values_vw",
+    {
+        classGroupId: uuid("class_group_id").notNull(),
+        classId: uuid("class_id").notNull(),
+        shortName: text("short_name").notNull(),
+        longName: text("long_name").notNull(),
+        groupShortName: text("group_short_name").notNull(),
+        groupLongName: text("group_long_name").notNull(),
+        orgId: uuid("org_id"),
+        indexValue: numeric("index_value", {
+            precision: 5,
+            scale: 4,
+        }).notNull(),
+        effectiveFrom: effectiveFrom,
+        effectiveTo: effectiveTo,
+    }
+).as(sql`
 SELECT
     base.class_id,
     CONCAT(cgc.group_short_name, base.short_name) as short_name,
@@ -80,21 +89,24 @@ INNER JOIN classes_flattened_group_classes_vw cgc
   ON base.class_id = cgc.class_id
 `);
 
-export const classesWithEffectiveIndexValues = pgView("classes_with_effective_index_values_vw", {
-    classGroupId: uuid("class_group_id").notNull(),
-    classId: uuid("class_id").notNull(),
-    shortName: text("short_name").notNull(),
-    longName: text("long_name").notNull(),
-    groupShortName: text("group_short_name").notNull(),
-    groupLongName: text("group_long_name").notNull(),
-    orgId: uuid("org_id"),
-    indexValue: numeric("index_value", {
-        precision: 5,
-        scale: 4,
-    }).notNull(),
-    effectiveFrom: effectiveFrom,
-    effectiveTo: effectiveTo
-}).as(sql`
+export const classesWithEffectiveIndexValues = pgView(
+    "classes_with_effective_index_values_vw",
+    {
+        classGroupId: uuid("class_group_id").notNull(),
+        classId: uuid("class_id").notNull(),
+        shortName: text("short_name").notNull(),
+        longName: text("long_name").notNull(),
+        groupShortName: text("group_short_name").notNull(),
+        groupLongName: text("group_long_name").notNull(),
+        orgId: uuid("org_id"),
+        indexValue: numeric("index_value", {
+            precision: 5,
+            scale: 4,
+        }).notNull(),
+        effectiveFrom: effectiveFrom,
+        effectiveTo: effectiveTo,
+    }
+).as(sql`
 SELECT
   class_id,
   short_name,

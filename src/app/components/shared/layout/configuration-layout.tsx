@@ -17,7 +17,7 @@ export async function ConfigurationLayout({
     return (
         <TenantProvider tenant={tenant}>
             <SidebarProvider>
-                <div className="flex min-h-screen flex-col w-full">
+                <div className="flex min-h-screen w-full flex-col">
                     <AppHeader
                         sidebarTrigger={
                             <div className="md:hidden">

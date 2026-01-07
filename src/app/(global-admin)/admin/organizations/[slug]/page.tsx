@@ -1,5 +1,5 @@
-import { ApiKeyManagement } from "@/app/(global-admin)/admin/components/organizations/api-key-management/api-key-management";
-import { UpdateOrgForm } from "@/app/(global-admin)/admin/components/organizations/update-org-form";
+import { ApiKeyManagement } from "@/app/(global-admin)/admin/organizations/_lib/components/api-key-management/api-key-management";
+import { UpdateOrgForm } from "@/app/(global-admin)/admin/organizations/_lib/components/update-org-form";
 import {
     Empty,
     EmptyContent,
@@ -40,7 +40,9 @@ export default async function Page({
         );
     }
 
-    const featureFlags = await featureFlagsService.getOrgFeatureFlags(org.orgId);
+    const featureFlags = await featureFlagsService.getOrgFeatureFlags(
+        org.orgId
+    );
 
     return (
         <div className="flex w-full flex-col gap-4">

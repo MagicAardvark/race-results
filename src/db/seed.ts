@@ -1,6 +1,13 @@
 import { db } from "@/db";
 import "dotenv/config";
-import { featureFlags, orgApiKeys, orgs, roles, userGlobalRoles, users } from "./schema";
+import {
+    featureFlags,
+    orgApiKeys,
+    orgs,
+    roles,
+    userGlobalRoles,
+    users,
+} from "./schema";
 import {
     baseClasses,
     classGroups,
@@ -44,8 +51,7 @@ async function main() {
             enabled: paxEnabled,
         });
 
-        orgDefaultFeatureFlags.push(
-            {
+        orgDefaultFeatureFlags.push({
             orgId: org.orgId,
             featureKey: "feature.liveTiming.workRunEnabled",
             enabled: workRunEnabled,
@@ -136,7 +142,7 @@ async function configureClasses() {
             shortName: cg.shortName,
             longName: cg.longName,
             isEnabled: true,
-            orgId: cg.orgId
+            orgId: cg.orgId,
         }))
     );
 
