@@ -5,7 +5,6 @@
     "scripts": {
         "dev": "next dev",
         "build": "next build",
-        "build:vercel": "prettier --write vercel.json && eslint && pnpm prettier:check && tsc && pnpm test && pnpm build",
         "start": "next start",
         "lint": "eslint && tsc && prettier --check .",
         "seed": "npx tsx src/db/seed.ts",

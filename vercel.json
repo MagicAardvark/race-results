@@ -1,7 +1,6 @@
 {
     "framework": "nextjs",
     "regions": ["iad1"],
-    "buildCommand": "pnpm build:vercel",
     "functions": {
         "app/api/**": {
             "maxDuration": 30
