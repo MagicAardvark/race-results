@@ -52,4 +52,6 @@ jobs:
 
             - name: Run tests
               run: pnpm test
+              env:
+                  DATABASE_URL: postgresql://test:test@localhost:5432/test
 

@@ -45,7 +45,8 @@ describe("PreviousApiKeysTable", () => {
     it("renders effective dates", () => {
         render(<PreviousApiKeysTable keys={mockKeys} />);
 
-        // Dates should be formatted
-        expect(screen.getByText(/2024/)).toBeVisible();
+        // Dates should be formatted - check for specific date format
+        const dates = screen.getAllByText(/Jan \d+, 2024/);
+        expect(dates.length).toBeGreaterThan(0);
     });
 });

@@ -1,5 +1,18 @@
 import { vi } from "vitest";
 
+// Mock Neon database client to prevent connection attempts
+vi.mock("@neondatabase/serverless", () => ({
+    neon: vi.fn(() => {
+        // Return a mock SQL client function
+        return vi.fn();
+    }),
+}));
+
+// Set dummy DATABASE_URL if not already set
+if (!process.env.DATABASE_URL) {
+    process.env.DATABASE_URL = "postgresql://test:test@localhost:5432/test";
+}
+
 // Mock database connection
 export const mockDb = {
     execute: vi.fn(),

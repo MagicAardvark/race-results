@@ -4,6 +4,8 @@ import { afterEach, beforeAll, afterAll, vi } from "vitest";
 import React from "react";
 import { act } from "react";
 import { server } from "./mocks/mock-server";
+// Import mock-db to set up database mocks before any db imports
+import "./mocks/mock-db";
 
 // React 19 compatibility for @testing-library/react
 // This tells React that we're in a testing environment where act() is expected
