@@ -5,7 +5,7 @@
     "scripts": {
         "dev": "next dev",
         "build": "next build",
-        "build:vercel": "pnpm lint && pnpm test && pnpm build",
+        "build:vercel": "eslint && pnpm prettier:check && tsc && pnpm test && pnpm build",
         "start": "next start",
         "lint": "eslint && tsc && prettier --check .",
         "seed": "npx tsx src/db/seed.ts",
@@ -17,7 +17,7 @@
         "test:e2e": "playwright test",
         "test:e2e:ui": "playwright test --ui",
         "test:e2e:debug": "playwright test --debug",
-        "prettier:check": "prettier --check .",
+        "prettier:check": "sh scripts/prettier-check-diff.sh",
         "prettier:fix": "prettier --write .",
         "prepare": "husky"
     },
