@@ -1,6 +1,4 @@
 #!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-
 # Check if user is on main branch
 CURRENT_BRANCH=$(git branch --show-current)
 
