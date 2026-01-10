@@ -175,7 +175,7 @@ src/
 - **Tenant admin**: `/t/[orgSlug]/admin/*`
 - **Global admin**: `/(global-admin)/admin/*`
 - **Global API**: `/(global-api)/api/*` - Public API endpoints for data ingestion
-- **Route guards**: Enforced in `layout.tsx` files
+- **Route guards**: Enforced in `layout.tsx` files as well as `proxy.ts`
 
 ### Shared Layout System
 
@@ -243,22 +243,42 @@ The application uses a consistent header across all pages for unified navigation
 
 4. **Set up the database**
 
-    ```bash
-    # Run migrations
-    pnpm drizzle-kit push
+`users.json` seeding data requires `.env` variables containing the values for `authProviderId`.
 
-    # Seed database (optional)
-    pnpm seed
-    ```
+Envrionment variables will be matched in the format of `AUTHPROVIDER_ID_DisplayName`.
+
+Example:
+
+`users.json`:
+
+```
+{
+  "displayName": "Ryan F"
+}
+```
+
+`.env`:
+
+```
+AUTHPROVIDER_ID_RyanF=<clerk user id>
+```
+
+````bash
+# Run migrations
+pnpm drizzle-kit push
+
+ # Seed database (optional)
+ pnpm seed
+ ```
 
 5. **Start the development server**
 
-    ```bash
-    pnpm dev
-    ```
+ ```bash
+ pnpm dev
+ ```
 
 6. **Open your browser**
-   Navigate to [http://localhost:3000](http://localhost:3000)
+Navigate to [http://localhost:3000](http://localhost:3000)
 
 ## 📖 Usage
 
@@ -268,11 +288,11 @@ The application uses a consistent header across all pages for unified navigation
 
 1. Navigate to `/t/[orgSlug]/live` for a specific organization
 2. Use the navigation to switch between:
-    - **Class** - Class results
-    - **PAX** - PAX standings (if enabled for organization)
-    - **Raw** - Raw times
-    - **Work/Run** - Work/run assignments (if enabled for organization)
-    - **Me** - Personal stats dashboard
+ - **Class** - Class results
+ - **PAX** - PAX standings (if enabled for organization)
+ - **Raw** - Raw times
+ - **Work/Run** - Work/run assignments (if enabled for organization)
+ - **Me** - Personal stats dashboard
 
 **Note**: PAX and Work/Run navigation items only appear if enabled for your organization.
 
@@ -281,9 +301,9 @@ The application uses a consistent header across all pages for unified navigation
 1. Navigate to `/t/[orgSlug]/live/me`
 2. Select your name from the dropdown
 3. View your:
-    - Positions in class, PAX, and raw
-    - Run statistics
-    - Time distribution visualizations
+ - Positions in class, PAX, and raw
+ - Run statistics
+ - Time distribution visualizations
 
 #### Class Filtering
 
@@ -311,8 +331,8 @@ The application uses a consistent header across all pages for unified navigation
 1. Navigate to global admin: `/admin/organizations/[slug]`
 2. Scroll to the "Feature Flags" section
 3. Toggle features on/off for the organization:
-    - **Enable PAX Results** - Shows PAX navigation and statistics
-    - **Enable Work/Run Order** - Shows Work/Run navigation and assignments
+ - **Enable PAX Results** - Shows PAX navigation and statistics
+ - **Enable Work/Run Order** - Shows Work/Run navigation and assignments
 4. Click "Save" to apply changes
 
 #### Managing API Keys
@@ -358,7 +378,7 @@ pnpm test:coverage    # Run tests with coverage
 
 # Database
 pnpm seed             # Seed database with sample data
-```
+````
 
 ### Code Style
 
@@ -436,6 +456,7 @@ pnpm drizzle-kit push
 - **Roles** (`roles`): User roles and permissions
 - **Feature Flags** (`feature_flags`): Organization-level feature toggles
 - **Organization API Keys** (`org_api_keys`): API keys for organization authentication
+- **Car Classes** (`classes_*`): Car class configuration
 
 ## 🔌 API Integration
 

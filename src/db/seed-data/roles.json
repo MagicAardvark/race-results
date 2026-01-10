@@ -1,15 +1,18 @@
 [
     {
+        "roleId": "8a46b290-49c3-4a82-9f95-516bc8649796",
         "key": "admin",
         "name": "Global Administrator",
         "isEnabled": true
     },
     {
+        "roleId": "edfe3f16-45ad-4c55-a312-200f64857bf7",
         "key": "org_owner",
         "name": "Organization Owner",
         "isEnabled": true
     },
     {
+        "roleId": "74df6244-5fac-49f1-b8a3-6f8c6ce23df3",
         "key": "user",
         "name": "Standard User",
         "isEnabled": true
