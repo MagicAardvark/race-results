@@ -45,6 +45,10 @@ This platform enables motorsports organizations to:
 - **Global Admin** - Platform-wide administration
     - Organization management
     - User management
+        - View all users
+        - Edit user display names
+        - Manage user roles (assign/remove global roles)
+        - Delete users (soft delete)
     - Feature flag configuration per organization
     - API key management for organizations
 - **Tenant Admin** - Organization-specific administration
@@ -326,6 +330,17 @@ Navigate to [http://localhost:3000](http://localhost:3000)
 2. Update organization settings
 3. Manage users within the organization
 
+#### Managing Users (Global Admin)
+
+1. Navigate to global admin: `/admin/users`
+2. View all users in the system
+3. Click on a user to edit:
+    - Update display name
+    - Assign or remove roles (Standard User, Admin, etc.)
+    - Delete user (soft delete - prevents self-deletion)
+4. Users are automatically created when they register via Clerk webhook
+5. All new users are automatically assigned the 'user' role
+
 #### Configuring Feature Flags
 
 1. Navigate to global admin: `/admin/organizations/[slug]`
@@ -452,8 +467,10 @@ pnpm drizzle-kit push
 #### Schema
 
 - **Organizations** (`orgs`): Organization data
-- **Users** (`users`): User accounts
+- **Users** (`users`): User accounts (soft-deletable via `deletedAt`)
 - **Roles** (`roles`): User roles and permissions
+- **User Global Roles** (`user_global_roles`): Global role assignments for users
+- **User Org Roles** (`user_org_roles`): Organization-specific role assignments
 - **Feature Flags** (`feature_flags`): Organization-level feature toggles
 - **Organization API Keys** (`org_api_keys`): API keys for organization authentication
 - **Car Classes** (`classes_*`): Car class configuration
@@ -635,6 +652,10 @@ See `src/__tests__/README.md` for detailed testing guidelines.
 - [ ] API key disable/enable functionality works
 - [ ] API key validation works for API requests (checks enabled status)
 - [ ] Previous API keys are displayed correctly
+- [ ] User management works correctly
+- [ ] User roles can be assigned and removed
+- [ ] User deletion works (soft delete)
+- [ ] Self-deletion is prevented
 - [ ] Shared header appears on all pages
 - [ ] Mobile sidebar trigger works correctly
 - [ ] Responsive design works across all pages

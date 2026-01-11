@@ -41,11 +41,44 @@ vi.mock("@/db", () => ({
 }));
 
 // Mock Drizzle ORM functions
+const mockSql = vi.fn((strings, ...values) => ({ strings, values }));
+// Add inlineParams method that Drizzle views need
+(mockSql as { inlineParams?: typeof mockSql }).inlineParams = vi.fn(
+    (strings, ...values) => ({
+        strings,
+        values,
+    })
+);
+
 vi.mock("drizzle-orm", () => ({
     eq: vi.fn((a, b) => ({ a, b })),
     and: vi.fn((...args) => args),
     or: vi.fn((...args) => args),
-    sql: vi.fn((strings, ...values) => ({ strings, values })),
+    sql: mockSql,
     desc: vi.fn((field) => ({ field, direction: "desc" })),
     asc: vi.fn((field) => ({ field, direction: "asc" })),
 }));
+
+// Mock Drizzle view builder to prevent view creation errors in tests
+vi.mock("drizzle-orm/pg-core", async () => {
+    const actual = await vi.importActual<typeof import("drizzle-orm/pg-core")>(
+        "drizzle-orm/pg-core"
+    );
+    return {
+        ...actual,
+        pgView: vi.fn((name: string, columns: Record<string, unknown>) => {
+            const mockView = {
+                _: {
+                    name,
+                    columns,
+                    schema: undefined,
+                },
+            };
+            // Mock the .as() method to return the view object
+            (mockView as { as?: () => typeof mockView }).as = vi.fn(
+                () => mockView
+            );
+            return mockView;
+        }),
+    };
+});

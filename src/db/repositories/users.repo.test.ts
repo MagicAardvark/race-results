@@ -3,7 +3,7 @@ import { usersRepository } from "./users.repo";
 import { db } from "@/db";
 import type { UserDTO } from "@/dto/users";
 
-// Mock db.query
+// Mock db.query and db.update
 vi.mock("@/db", () => ({
     db: {
         query: {
@@ -12,6 +12,10 @@ vi.mock("@/db", () => ({
                 findFirst: vi.fn(),
             },
         },
+        update: vi.fn(),
+    },
+    users: {
+        userId: "userId",
     },
 }));
 
@@ -52,7 +56,9 @@ describe("UsersRepository", () => {
                         },
                     },
                 },
-                orderBy: expect.any(Function),
+                orderBy: {
+                    displayName: "asc",
+                },
             });
         });
 
@@ -64,12 +70,12 @@ describe("UsersRepository", () => {
             expect(result).toEqual([]);
         });
 
-        it("uses orderBy function for sorting", async () => {
+        it("uses orderBy object for sorting", async () => {
             vi.mocked(db.query.users.findMany).mockResolvedValue([mockUser]);
 
             await usersRepository.findAll();
 
-            // Verify orderBy is a function in the call
+            // Verify orderBy is an object with displayName: "asc"
             const callArgs = vi.mocked(db.query.users.findMany).mock
                 .calls[0]?.[0];
             if (
@@ -77,9 +83,9 @@ describe("UsersRepository", () => {
                 typeof callArgs === "object" &&
                 "orderBy" in callArgs
             ) {
-                expect(callArgs.orderBy).toBeDefined();
-                // orderBy can be a function or an object, just verify it exists
-                expect(callArgs.orderBy).toBeDefined();
+                expect(callArgs.orderBy).toEqual({
+                    displayName: "asc",
+                });
             }
         });
     });
@@ -119,6 +125,30 @@ describe("UsersRepository", () => {
                 await usersRepository.findByAuthProviderId("non-existent");
 
             expect(result).toBeNull();
+        });
+    });
+
+    describe("delete", () => {
+        it("soft deletes user by setting deletedAt", async () => {
+            const mockWhere = vi.fn().mockResolvedValue(undefined);
+            const mockSet = vi.fn().mockReturnValue({
+                where: mockWhere,
+            });
+            vi.mocked(db.update).mockReturnValue({
+                set: mockSet,
+            } as never);
+
+            await usersRepository.delete("user-1");
+
+            expect(db.update).toHaveBeenCalled();
+            // Verify it was called with the users table (check by checking the call was made)
+            const updateCall = vi.mocked(db.update).mock.calls[0];
+            expect(updateCall).toBeDefined();
+            expect(updateCall?.[0]).toBeDefined();
+            expect(mockSet).toHaveBeenCalledWith({
+                deletedAt: expect.any(Date),
+            });
+            expect(mockWhere).toHaveBeenCalled();
         });
     });
 });
