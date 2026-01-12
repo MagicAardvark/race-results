@@ -367,6 +367,7 @@ pnpm build            # Build for production
 pnpm start            # Start production server
 
 # Code Quality
+pnpm precheck         # Run all quality checks (format, lint, prettier check, and tests)
 pnpm lint             # Run ESLint, TypeScript check, and Prettier check
 pnpm prettier:fix     # Format code with Prettier
 pnpm prettier:check   # Check code formatting
@@ -374,10 +375,12 @@ pnpm prettier:check   # Check code formatting
 # Testing
 pnpm test             # Run tests once
 pnpm test:watch       # Run tests in watch mode
+pnpm test:ui          # Run tests with UI
 pnpm test:coverage    # Run tests with coverage
 
 # Database
 pnpm seed             # Seed database with sample data
+pnpm db:studio        # Open Drizzle Studio for database management
 ````
 
 ### Code Style
@@ -387,32 +390,22 @@ pnpm seed             # Seed database with sample data
 - **Prettier**: Code formatting
 - **Tailwind CSS**: Utility-first styling
 
-### Pre-commit Hook
+### Code Quality Checks
 
-The project uses [husky](https://typicode.github.io/husky/) to run quality checks before each commit. The pre-commit hook automatically runs:
-
-1. **Main Branch Check** - Warns if committing to `main` or `master` branch and prompts for confirmation
-2. **Prettier** (`prettier:fix`) - Formats all code files
-3. **Lint** (`lint`) - Runs ESLint, TypeScript type checking, and Prettier checks
-4. **Tests** (`test`) - Runs the test suite
-
-#### Setup
-
-The pre-commit hook is automatically set up when you run `pnpm install`. If you need to manually set it up:
+Before committing, it's recommended to run the following checks manually:
 
 ```bash
-pnpm exec husky install
+# Format code
+pnpm prettier:fix
+
+# Run linting and type checking
+pnpm lint
+
+# Run tests
+pnpm test
 ```
 
-#### Bypassing the Hook
-
-If you need to bypass the pre-commit hook (e.g., for emergency hotfixes or WIP commits), you can use the `--no-verify` flag:
-
-```bash
-git commit --no-verify -m "Your commit message"
-```
-
-**⚠️ Warning**: Only bypass the hook when absolutely necessary. The checks help maintain code quality and prevent broken code from being committed.
+These checks help maintain code quality and prevent broken code from being committed.
 
 ### Architecture Guidelines
 
@@ -655,11 +648,16 @@ Ensure all required environment variables are set in your deployment environment
 
 1. Create a feature branch
 2. Make your changes
-3. The pre-commit hook will automatically format, lint, and test your code before committing
-4. If checks fail, fix the issues and try committing again
+3. Run code quality checks before committing:
+    ```bash
+    pnpm prettier:fix  # Format code
+    pnpm lint          # Run linting and type checking
+    pnpm test          # Run tests
+    ```
+4. If checks fail, fix the issues and try again
 5. Submit a pull request
 
-**Note**: The pre-commit hook runs `prettier:fix`, `lint`, and `test` automatically. Make sure all checks pass before pushing your changes.
+**Note**: Make sure all checks pass before pushing your changes.
 
 ### Code Review Guidelines
 
