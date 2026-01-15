@@ -11,7 +11,8 @@
         "name": "NE-SVT",
         "slug": "ne-svt",
         "description": "We have pizza.",
-        "isPublic": true
+        "isPublic": true,
+        "motorsportregOrgId": "F9EADF5D-F9F5-4B6C-4951013B365A2F87"
     },
     {
         "orgId": "c3d4e5f6-a7b8-4c9d-0e1f-2a3b4c5d6e7f",

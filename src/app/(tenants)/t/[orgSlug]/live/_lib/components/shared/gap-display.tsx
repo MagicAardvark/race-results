@@ -12,17 +12,27 @@ type GapDisplayProps = {
 const BAR_HEIGHT = "32px";
 const CAR_ICON_SIZE = 16;
 const GAP_OVERLAP_THRESHOLD = 0.001;
+const PERCENTILE_THRESHOLD = 0.7;
+const DEFAULT_MAX_GAP = 3.0;
+const POSITION_SCALE = 65;
+const POSITION_PADDING = 8;
+const MAX_POSITION = 70;
+
+const CAR_ICON_STYLE = {
+    transform: "scaleX(-1)",
+    fillOpacity: 0.3,
+} as const;
 
 /**
  * Calculates the 70th percentile of gaps for scaling the visualization
  */
 function calculatePercentile70(gaps: number[]): number {
-    if (gaps.length === 0) return 3.0;
+    if (gaps.length === 0) return DEFAULT_MAX_GAP;
 
     const sorted = [...gaps].sort((a, b) => a - b);
-    const index = Math.ceil(sorted.length * 0.7) - 1;
+    const index = Math.ceil(sorted.length * PERCENTILE_THRESHOLD) - 1;
 
-    return sorted[Math.max(0, index)] || 3.0;
+    return sorted[Math.max(0, index)] || DEFAULT_MAX_GAP;
 }
 
 /**
@@ -33,8 +43,10 @@ function calculatePercentile70(gaps: number[]): number {
  */
 function getGapPosition(gap: number, maxGap: number): number {
     const normalized = Math.min(gap / maxGap, 1);
-    // Scale to 65% of width, add 8% padding, cap at 70% to leave room for labels
-    return Math.min(normalized * 65 + 8, 70);
+    return Math.min(
+        normalized * POSITION_SCALE + POSITION_PADDING,
+        MAX_POSITION
+    );
 }
 
 export function GapDisplay({
@@ -47,19 +59,16 @@ export function GapDisplay({
     const gap = gapToFirst ?? 0;
     const isLeader = gap === 0;
 
-    // Calculate max gap: use provided maxGap, or calculate from 70th percentile of all entries
     const maxGap =
         providedMaxGap ??
-        (() => {
-            const allGaps = allEntries
+        calculatePercentile70(
+            allEntries
                 .map((e) => e.gapToFirst)
-                .filter((g): g is number => g != null && g > 0);
-            return calculatePercentile70(allGaps);
-        })();
+                .filter((g): g is number => g != null && g > 0)
+        );
 
     const userCarPosition = isLeader ? 0 : getGapPosition(gap, maxGap);
 
-    // Filter other cars: exclude leader, current entry (same gap), and entries with no gap
     const otherCars = allEntries
         .map((entry, index) => ({
             gapToFirst: entry.gapToFirst,
@@ -86,8 +95,8 @@ export function GapDisplay({
                 <div className="absolute top-1/2 left-0 z-10 flex -translate-y-1/2 items-center justify-center">
                     <Car
                         size={CAR_ICON_SIZE}
-                        className="text-foreground"
-                        style={{ transform: "scaleX(-1)" }}
+                        className="fill-current text-gray-300"
+                        style={CAR_ICON_STYLE}
                     />
                 </div>
             )}
@@ -103,10 +112,7 @@ export function GapDisplay({
                         <Car
                             size={CAR_ICON_SIZE}
                             className="fill-current text-gray-300"
-                            style={{
-                                transform: "scaleX(-1)",
-                                fillOpacity: 0.3,
-                            }}
+                            style={CAR_ICON_STYLE}
                         />
                     </div>
                 );
@@ -119,7 +125,7 @@ export function GapDisplay({
                 <Car
                     size={CAR_ICON_SIZE}
                     className="fill-current text-purple-700 transition-colors"
-                    style={{ transform: "scaleX(-1)", fillOpacity: 0.3 }}
+                    style={CAR_ICON_STYLE}
                 />
             </div>
 

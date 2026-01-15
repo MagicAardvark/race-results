@@ -14,7 +14,8 @@ vi.mock("@/db/repositories/users.repo", () => ({
     usersRepository: {
         findAll: vi.fn(),
         findByAuthProviderId: vi.fn(),
-        findById: vi.fn(),
+        findByUserId: vi.fn(),
+        delete: vi.fn(),
     },
 }));
 
@@ -206,6 +207,16 @@ describe("UserService", () => {
             const result = await userService.getCurrentUser();
 
             expect(result).toBeNull();
+        });
+    });
+
+    describe("deleteUser", () => {
+        it("calls repository delete method", async () => {
+            vi.mocked(usersRepository.delete).mockResolvedValue(undefined);
+
+            await userService.deleteUser("user-1");
+
+            expect(usersRepository.delete).toHaveBeenCalledWith("user-1");
         });
     });
 });
