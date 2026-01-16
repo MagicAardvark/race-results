@@ -41,6 +41,18 @@ jobs:
             - name: Install dependencies
               run: pnpm install --frozen-lockfile
 
+            - name: Verify lockfile integrity
+              run: |
+                  # Install without --frozen-lockfile to check if lockfile would change
+                  pnpm install
+                  if [ -n "$(git status --porcelain pnpm-lock.yaml)" ]; then
+                      echo "❌ Error: pnpm-lock.yaml is out of sync with package.json"
+                      echo "Please run 'pnpm install' locally and commit the updated lockfile"
+                      git diff pnpm-lock.yaml
+                      exit 1
+                  fi
+                  echo "✅ pnpm-lock.yaml is in sync with package.json"
+
             - name: Run ESLint
               run: pnpm eslint
 
