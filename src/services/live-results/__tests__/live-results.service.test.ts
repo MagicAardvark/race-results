@@ -25,6 +25,7 @@ import { getCacheKey } from "@/services/live-results/lib/util";
 const mockSnapshot: LiveResultsSnapshot = [
     {
         msrId: "",
+        email: "",
         class: "as",
         carNumber: "23",
         driverName: "Test Driver",

@@ -7,6 +7,7 @@ import { ConfiguredCarClass } from "@/dto/classing";
 const mockSnapshot: LiveResultsSnapshot = [
     {
         msrId: "",
+        email: "",
         class: "as",
         carNumber: "123",
         driverName: "Jane Doe",
@@ -27,6 +28,7 @@ const mockSnapshot: LiveResultsSnapshot = [
     },
     {
         msrId: "",
+        email: "",
         class: "as",
         carNumber: "23",
         driverName: "John Smith",

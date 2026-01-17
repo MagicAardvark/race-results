@@ -67,6 +67,7 @@ export class LiveResultsParser {
             const resultEntry = {
                 entryKey: `${normalizedClassKey}-${entry.carNumber}-${entry.driverName}`,
                 msrId: entry.msrId,
+                email: entry.email,
                 class: normalizedClassKey,
                 carNumber: entry.carNumber,
                 driverName: entry.driverName,
@@ -190,6 +191,7 @@ export class LiveResultsParser {
         return {
             entryKey: entry.entryKey,
             msrId: entry.msrId,
+            email: entry.email,
             class: entry.class,
             carNumber: entry.carNumber,
             driverName: entry.driverName,

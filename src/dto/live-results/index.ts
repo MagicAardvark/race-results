@@ -3,6 +3,7 @@ export type RunStatus = "clean" | "dirty" | "dnf" | "dsq";
 export interface EntryDetails {
     entryKey: string;
     msrId: string;
+    email: string;
     class: string;
     carNumber: string;
     driverName: string;

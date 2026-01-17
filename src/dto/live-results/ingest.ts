@@ -22,6 +22,7 @@ export const RawRunSegmentSchema = z.array(RawRunDataSchema);
 export const LiveResultsSnapshotSchema = z.array(
     z.object({
         msrId: z.string(),
+        email: z.string(),
         class: z.string(),
         carNumber: z.string(),
         driverName: z.string(),

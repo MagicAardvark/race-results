@@ -140,6 +140,7 @@ describe("scoring-utils", () => {
         const createEntry = (time: number | null): InterimProcessedEntry => ({
             entryKey: "test",
             msrId: "",
+            email: "",
             class: "AS",
             carNumber: "1",
             driverName: "Test",
@@ -196,6 +197,7 @@ describe("scoring-utils", () => {
             {
                 entryKey: "first",
                 msrId: "",
+                email: "",
                 class: "AS",
                 carNumber: "1",
                 driverName: "First",
@@ -212,6 +214,7 @@ describe("scoring-utils", () => {
             {
                 entryKey: "second",
                 msrId: "",
+                email: "",
                 class: "AS",
                 carNumber: "2",
                 driverName: "Second",
@@ -228,6 +231,7 @@ describe("scoring-utils", () => {
             {
                 entryKey: "third",
                 msrId: "",
+                email: "",
                 class: "AS",
                 carNumber: "3",
                 driverName: "Third",
@@ -273,6 +277,7 @@ describe("scoring-utils", () => {
             {
                 entryKey: "entry-3",
                 msrId: "",
+                email: "",
                 class: "AS",
                 carNumber: "3",
                 driverName: "Third",
@@ -289,6 +294,7 @@ describe("scoring-utils", () => {
             {
                 entryKey: "entry-1",
                 msrId: "",
+                email: "",
                 class: "AS",
                 carNumber: "1",
                 driverName: "First",
@@ -305,6 +311,7 @@ describe("scoring-utils", () => {
             {
                 entryKey: "entry-2",
                 msrId: "",
+                email: "",
                 class: "AS",
                 carNumber: "2",
                 driverName: "Second",
