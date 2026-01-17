@@ -1,0 +1,2346 @@
+[
+    {
+        "msrId": "",
+        "email": "",
+        "class": "as",
+        "carNumber": "23",
+        "driverName": "Eliot Shanabrook",
+        "carModel": "2008 Chevrolet Corvette Z06",
+        "carColor": "Blue",
+        "sponsor": "",
+        "runs": [
+            [
+                [58.112, 0, "clean"],
+                [54.997, 1, "dirty"],
+                [54.869, 0, "clean"],
+                [55.137, 0, "clean"],
+                [53.923, 0, "clean"],
+                [53.884, 1, "dirty"],
+                [53.903, 1, "dirty"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "as",
+        "carNumber": "123",
+        "driverName": "Reid Shanabrook",
+        "carModel": "2008 Chevrolet Corvette Z06",
+        "carColor": "Blue",
+        "sponsor": "",
+        "runs": [
+            [
+                [56.562, 0, "clean"],
+                [55.084, 0, "clean"],
+                [56.745, 0, "clean"],
+                [56.475, 0, "clean"],
+                [55.041, 0, "clean"],
+                [54.95, 0, "clean"],
+                [54.793, 0, "clean"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "as",
+        "carNumber": "42",
+        "driverName": "Russ Siggelkoe",
+        "carModel": "2005 Lotus Elise",
+        "carColor": "Green",
+        "sponsor": "Duff Beer",
+        "runs": [
+            [
+                [91.681, 1, "dirty"],
+                [58.644, 0, "clean"],
+                [57.719, 0, "clean"],
+                [57.659, 0, "clean"],
+                [57.031, 0, "clean"],
+                [56.629, 0, "clean"],
+                [56.483, 1, "dirty"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "bs",
+        "carNumber": "3",
+        "driverName": "Will Koscielny",
+        "carModel": "2024 Honda Civic Type R",
+        "carColor": "Blue",
+        "sponsor": "",
+        "runs": [
+            [
+                [56.635, 0, "clean"],
+                [55.21, 0, "clean"],
+                [54.687, 0, "clean"],
+                [54.824, 1, "dirty"],
+                [54.667, 0, "clean"],
+                [54.888, 0, "clean"],
+                [54.184, 0, "clean"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "bs",
+        "carNumber": "8",
+        "driverName": "Jason Fair",
+        "carModel": "Toyota GR Corolla",
+        "carColor": "White",
+        "sponsor": "Pig Racing",
+        "runs": [[]]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "cs",
+        "carNumber": "171",
+        "driverName": "Jeff Seeger",
+        "carModel": "2019 Mazda Miata",
+        "carColor": "So very Red",
+        "sponsor": "Thanks Barb!",
+        "runs": [
+            [
+                [57.608, 0, "clean"],
+                [58.215, 0, "clean"],
+                [57.663, 0, "clean"],
+                [56.701, 0, "clean"],
+                [57.809, 0, "clean"],
+                [56.003, 0, "clean"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "cs",
+        "carNumber": "71",
+        "driverName": "Barbara Seeger",
+        "carModel": "2019 Mazda MX-5",
+        "carColor": "Red",
+        "sponsor": "",
+        "runs": [
+            [
+                [59.447, 0, "clean"],
+                [58.651, 0, "clean"],
+                [57.559, 0, "clean"],
+                [58.588, 0, "clean"],
+                [59.331, 0, "clean"],
+                [57.679, 0, "clean"],
+                [58.402, 0, "clean"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "ds",
+        "carNumber": "5",
+        "driverName": "Harry Chartoff",
+        "carModel": "2022 Hyundai Veloster N",
+        "carColor": "Blue",
+        "sponsor": "KBT Army LLC",
+        "runs": [
+            [
+                [62.003, 1, "dirty"],
+                [77.572, 0, "clean"],
+                [58.792, 0, "clean"],
+                [59.961, 0, "clean"],
+                [58.18, 0, "clean"],
+                [58.306, 0, "clean"],
+                [58.043, 1, "dirty"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "ds",
+        "carNumber": "116",
+        "driverName": "Tristan Carlson",
+        "carModel": "2023 Subaru WRX",
+        "carColor": "White",
+        "sponsor": "",
+        "runs": [
+            [
+                [61.643, 0, "dnf"],
+                [60.152, 1, "dirty"],
+                [59.308, 0, "clean"],
+                [59.384, 2, "dirty"],
+                [59.118, 1, "dirty"],
+                [59.851, 0, "clean"],
+                [58.938, 0, "clean"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "ds",
+        "carNumber": "75",
+        "driverName": "Mark Scharf",
+        "carModel": "2019 Volkswagen Golf R",
+        "carColor": "White",
+        "sponsor": "",
+        "runs": [
+            [
+                [65.333, 0, "dnf"],
+                [60.499, 0, "clean"],
+                [61.927, 0, "clean"],
+                [60.618, 0, "clean"],
+                [60.283, 1, "dirty"],
+                [62.585, 0, "clean"],
+                [59.165, 0, "clean"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "ds",
+        "carNumber": "14",
+        "driverName": "Scott Jessurun",
+        "carModel": "2013 Scion FR-S",
+        "carColor": "Blue",
+        "sponsor": "Motortown NAPA / Small Fortune Racing",
+        "runs": [
+            [
+                [68.999, 0, "clean"],
+                [65.737, 0, "clean"],
+                [65.244, 0, "clean"],
+                [64.582, 0, "clean"],
+                [64.698, 0, "dnf"],
+                [64.902, 0, "clean"],
+                [63.648, 0, "clean"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "es",
+        "carNumber": "51",
+        "driverName": "Charles Sinkler",
+        "carModel": "1999 Mazda Miata",
+        "carColor": "Green",
+        "sponsor": "",
+        "runs": [
+            [
+                [57.705, 0, "clean"],
+                [56.926, 1, "dirty"],
+                [56.801, 0, "clean"],
+                [56.515, 0, "clean"],
+                [56.57, 0, "clean"],
+                [55.913, 1, "dirty"],
+                [56.456, 0, "clean"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "es",
+        "carNumber": "123",
+        "driverName": "Melanie Kwong",
+        "carModel": "2002 Mazda Miata",
+        "carColor": "Multichrome",
+        "sponsor": "Audra and the Multichrome Miata",
+        "runs": [
+            [
+                [61.787, 1, "dirty"],
+                [61.171, 0, "clean"],
+                [59.368, 0, "clean"],
+                [60.297, 0, "clean"],
+                [58.901, 0, "clean"],
+                [59.445, 0, "clean"],
+                [59.525, 1, "dirty"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "es",
+        "carNumber": "18",
+        "driverName": "Elbert Clark",
+        "carModel": "1992 Mazda miata",
+        "carColor": "mater",
+        "sponsor": "CBC Design",
+        "runs": [
+            [
+                [61.12, 0, "clean"],
+                [60.122, 0, "clean"],
+                [59.882, 0, "clean"],
+                [59.435, 0, "clean"],
+                [72.965, 0, "clean"],
+                [60.023, 0, "clean"],
+                [60.44, 3, "dirty"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "es",
+        "carNumber": "69",
+        "driverName": "Jaiden Ziminsky",
+        "carModel": "1996 Mazda Miata",
+        "carColor": "Black",
+        "sponsor": "",
+        "runs": [
+            [
+                [65.804, 0, "clean"],
+                [63.422, 0, "clean"],
+                [62.914, 0, "clean"],
+                [63.125, 0, "clean"],
+                [62.289, 0, "clean"],
+                [60.531, 0, "clean"],
+                [60.985, 0, "clean"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "es",
+        "carNumber": "23",
+        "driverName": "Audra Paradie",
+        "carModel": "2002 Mazda Miata",
+        "carColor": "Blurple",
+        "sponsor": "Magikarp and Multichrome",
+        "runs": [
+            [
+                [61.968, 2, "dirty"],
+                [61.248, 0, "clean"],
+                [61.124, 0, "clean"],
+                [61.94, 0, "clean"],
+                [69.722, 0, "clean"],
+                [60.711, 0, "clean"],
+                [60.877, 0, "clean"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "fs",
+        "carNumber": "20",
+        "driverName": "Ralph Zajac",
+        "carModel": "2013 BMW M3",
+        "carColor": "Gray",
+        "sponsor": "",
+        "runs": [
+            [
+                [61.69, 0, "clean"],
+                [60.349, 0, "clean"],
+                [58.907, 0, "clean"],
+                [62.053, 0, "clean"],
+                [58.176, 0, "clean"],
+                [57.595, 0, "clean"],
+                [57.528, 0, "clean"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "fs",
+        "carNumber": "162",
+        "driverName": "Tyrel Gagnon",
+        "carModel": "2014 BMW 435i",
+        "carColor": "Black",
+        "sponsor": "",
+        "runs": [
+            [
+                [61.539, 0, "clean"],
+                [59.605, 0, "dnf"],
+                [59.479, 1, "dirty"],
+                [60.174, 1, "dirty"],
+                [58.511, 0, "clean"],
+                [58.879, 0, "clean"],
+                [58.657, 0, "clean"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "fs",
+        "carNumber": "62",
+        "driverName": "Lou Confrancisco",
+        "carModel": "2014 BMW 435i",
+        "carColor": "Black",
+        "sponsor": "",
+        "runs": [
+            [
+                [66.049, 1, "dirty"],
+                [62.669, 0, "clean"],
+                [62.982, 1, "dirty"],
+                [62.528, 0, "clean"],
+                [62.034, 0, "clean"],
+                [62.466, 2, "dirty"],
+                [61.419, 0, "clean"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "gs",
+        "carNumber": "1",
+        "driverName": "John Swig",
+        "carModel": "2019 Honda Civic Si",
+        "carColor": "Aegean Blue",
+        "sponsor": "NE-SVT Has Pizza | Project.Devens | Welcome to Earf Dreamz",
+        "runs": [
+            [
+                [61.582, 0, "clean"],
+                [58.279, 2, "dirty"],
+                [58.018, 1, "dirty"],
+                [57.923, 0, "clean"],
+                [57.095, 0, "clean"],
+                [57.504, 0, "clean"],
+                [56.573, 0, "clean"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "gs",
+        "carNumber": "114",
+        "driverName": "John Rappa",
+        "carModel": "2019 Volkswagen GTI",
+        "carColor": "Black",
+        "sponsor": "",
+        "runs": [
+            [
+                [61.41, 1, "dirty"],
+                [59.033, 0, "clean"],
+                [58.491, 1, "dirty"],
+                [57.051, 2, "dirty"],
+                [56.494, 3, "dirty"],
+                [56.627, 0, "clean"],
+                [56.639, 1, "dirty"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "gs",
+        "carNumber": "172",
+        "driverName": "Chang Ho Kim",
+        "carModel": "2016 Volkswagen GTi",
+        "carColor": "Grey",
+        "sponsor": "Thanks Ken!",
+        "runs": [
+            [
+                [65.625, 0, "clean"],
+                [62.741, 0, "clean"],
+                [61.205, 0, "clean"],
+                [60.992, 0, "clean"],
+                [60.131, 0, "clean"],
+                [59.382, 0, "clean"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "gs",
+        "carNumber": "49",
+        "driverName": "Jeff McNeil",
+        "carModel": "2020 Honda Civic Si",
+        "carColor": "Black",
+        "sponsor": "",
+        "runs": [
+            [
+                [72.797, 0, "dnf"],
+                [69.368, 0, "clean"],
+                [64.217, 0, "clean"],
+                [61.136, 0, "clean"],
+                [60.282, 0, "clean"],
+                [60.123, 0, "clean"],
+                [59.065, 1, "dirty"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "gs",
+        "carNumber": "19",
+        "driverName": "Terrence Sturm",
+        "carModel": "2004 BMW 330i",
+        "carColor": "Blue",
+        "sponsor": "",
+        "runs": [
+            [
+                [69.483, 0, "clean"],
+                [66.229, 0, "clean"],
+                [62.957, 0, "clean"],
+                [63.351, 0, "clean"],
+                [61.941, 2, "dirty"],
+                [61.752, 0, "clean"],
+                [62.512, 0, "clean"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "gs",
+        "carNumber": "72",
+        "driverName": "Ken Neuhauser",
+        "carModel": "2016 Volkswagen GTI",
+        "carColor": "grey",
+        "sponsor": "",
+        "runs": [
+            [
+                [68.331, 0, "clean"],
+                [65.895, 0, "clean"],
+                [65.43, 0, "clean"],
+                [64.135, 1, "dirty"],
+                [62.035, 1, "dirty"],
+                [63.596, 0, "clean"],
+                [66.23, 1, "dirty"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "gs",
+        "carNumber": "119",
+        "driverName": "Davidson Sturm",
+        "carModel": "2004 BMW 330i",
+        "carColor": "Blue",
+        "sponsor": "",
+        "runs": [
+            [
+                [75.106, 0, "clean"],
+                [71.854, 1, "dirty"],
+                [69.379, 1, "dirty"],
+                [67.051, 1, "dirty"],
+                [65.765, 0, "clean"],
+                [64.907, 0, "clean"],
+                [66, 0, "clean"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "gs",
+        "carNumber": "25",
+        "driverName": "Michael Fairbank",
+        "carModel": "2016 Volkswagen Jetta GLI",
+        "carColor": "Black",
+        "sponsor": "Snail mail",
+        "runs": [
+            [
+                [69.979, 0, "clean"],
+                [67.522, 0, "clean"],
+                [66.932, 0, "clean"],
+                [66.775, 2, "dirty"],
+                [66.925, 0, "clean"],
+                [67.554, 0, "clean"],
+                [68.703, 2, "dirty"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "hs",
+        "carNumber": "21",
+        "driverName": "Zackary Brennan",
+        "carModel": "2012 Mazda 3 sedan",
+        "carColor": "Green",
+        "sponsor": "",
+        "runs": [
+            [
+                [59.821, 1, "dirty"],
+                [58.53, 0, "dnf"],
+                [57.6, 0, "clean"],
+                [58.244, 1, "dirty"],
+                [58.644, 1, "dirty"],
+                [58.081, 0, "clean"],
+                [58.528, 0, "clean"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "hs",
+        "carNumber": "89",
+        "driverName": "Josh Brockman",
+        "carModel": "2020 Honda Civic Sport Hatchback",
+        "carColor": "Sonic Grey",
+        "sponsor": "",
+        "runs": [
+            [
+                [80.383, 1, "dirty"],
+                [58.512, 4, "dirty"],
+                [58.051, 0, "clean"],
+                [58.17, 1, "dirty"],
+                [58.088, 1, "dirty"],
+                [58.018, 2, "dirty"],
+                [57.359, 1, "dirty"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "hs",
+        "carNumber": "26",
+        "driverName": "Thomas Asson",
+        "carModel": "2023 Chevrolet Bolt EV",
+        "carColor": "Gray",
+        "sponsor": "",
+        "runs": [
+            [
+                [65.304, 1, "dirty"],
+                [60.669, 2, "dirty"],
+                [60.428, 0, "clean"],
+                [62.363, 0, "clean"],
+                [60.078, 1, "dirty"],
+                [59.648, 0, "clean"],
+                [60.377, 0, "dnf"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "hs",
+        "carNumber": "48",
+        "driverName": "allen parker",
+        "carModel": "1988 Honda  crx si",
+        "carColor": "black",
+        "sponsor": "",
+        "runs": [
+            [
+                [68.405, 2, "dirty"],
+                [73.422, 0, "dnf"],
+                [66.201, 0, "clean"],
+                [66.892, 0, "clean"],
+                [65.991, 1, "dirty"],
+                [65.416, 1, "dirty"],
+                [64.236, 0, "clean"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "hs",
+        "carNumber": "177",
+        "driverName": "Gordon Richardson",
+        "carModel": "2010 Acura TSX",
+        "carColor": "",
+        "sponsor": "",
+        "runs": [
+            [
+                [72.485, 0, "clean"],
+                [91.104, 0, "dnf"],
+                [67.258, 0, "clean"],
+                [66.896, 0, "clean"],
+                [66.648, 0, "clean"],
+                [66.075, 0, "clean"],
+                [65.193, 0, "clean"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "sth",
+        "carNumber": "52",
+        "driverName": "William Platt",
+        "carModel": "2017 Ford Fiesta ST",
+        "carColor": "Black",
+        "sponsor": "",
+        "runs": [
+            [
+                [61.911, 0, "clean"],
+                [58.866, 1, "dirty"],
+                [58.267, 0, "clean"],
+                [58.122, 1, "dirty"],
+                [56.53, 1, "dirty"],
+                [56.805, 3, "dirty"],
+                [56.669, 0, "clean"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "sth",
+        "carNumber": "85",
+        "driverName": "Carlos Disla",
+        "carModel": "1997 Subaru Legacy GT-B",
+        "carColor": "White",
+        "sponsor": "Auto Shop Turbo",
+        "runs": [
+            [
+                [69.922, 0, "clean"],
+                [61.101, 0, "dnf"],
+                [61.167, 0, "clean"],
+                [61.524, 0, "clean"],
+                [64.072, 0, "clean"],
+                [60.775, 0, "clean"],
+                [60.377, 0, "clean"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "sts",
+        "carNumber": "79",
+        "driverName": "Eric Scholz",
+        "carModel": "1992 Mazda Miata",
+        "carColor": "No Soul Red",
+        "sponsor": "PROJECT.Devens | MOTORSPORT RACING TEAM",
+        "runs": [
+            [
+                [55.397, 0, "clean"],
+                [55.126, 0, "clean"],
+                [54.211, 0, "clean"],
+                [53.83, 0, "clean"],
+                [54.306, 1, "dirty"],
+                [53.634, 0, "clean"],
+                [53.713, 0, "clean"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "sts",
+        "carNumber": "14",
+        "driverName": "Jacob Ronald",
+        "carModel": "1988 Mazda 323 GTX",
+        "carColor": "Rust",
+        "sponsor": "Poor Impulse Control, Casie's extreme patience",
+        "runs": [
+            [
+                [57.388, 0, "clean"],
+                [55.264, 0, "clean"],
+                [55.052, 0, "clean"],
+                [55.069, 0, "clean"],
+                [54.568, 0, "clean"],
+                [54.237, 1, "dirty"],
+                [53.438, 0, "dsq"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "sts",
+        "carNumber": "13",
+        "driverName": "Nathaniel Stanwood",
+        "carModel": "1993 Honda",
+        "carColor": "Teal -Nate",
+        "sponsor": "",
+        "runs": [
+            [
+                [59.366, 0, "dnf"],
+                [57.091, 1, "dirty"],
+                [56.424, 0, "clean"],
+                [56.216, 1, "dirty"],
+                [55.714, 0, "clean"],
+                [57.193, 0, "clean"],
+                [55.493, 0, "clean"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "sts",
+        "carNumber": "134",
+        "driverName": "Sam Creasey",
+        "carModel": "1988 Honda CRX Si",
+        "carColor": "Yellow",
+        "sponsor": "Big Budget Racing",
+        "runs": [
+            [
+                [57.379, 0, "clean"],
+                [56.322, 1, "dirty"],
+                [57.18, 0, "clean"],
+                [57.514, 2, "dirty"],
+                [55.984, 0, "clean"],
+                [56.869, 0, "dnf"],
+                [56.57, 1, "dirty"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "sts",
+        "carNumber": "113",
+        "driverName": "John Stanwood",
+        "carModel": "1990 Mazda Miata",
+        "carColor": "red",
+        "sponsor": "Woody's NERT",
+        "runs": [
+            [
+                [66.732, 0, "clean"],
+                [63.003, 3, "dirty"],
+                [61.812, 0, "clean"],
+                [61.329, 2, "dirty"],
+                [61.683, 0, "dnf"],
+                [60.947, 0, "clean"],
+                [61.432, 2, "dirty"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "sts",
+        "carNumber": "32",
+        "driverName": "Tyler Scott",
+        "carModel": "2009 Subaru Impreza",
+        "carColor": "Blue",
+        "sponsor": "",
+        "runs": [
+            [
+                [65.062, 0, "clean"],
+                [64.862, 0, "clean"],
+                [72.78, 0, "clean"],
+                [64.906, 0, "clean"],
+                [64.433, 0, "dnf"],
+                [64.589, 0, "clean"],
+                [68.391, 0, "out"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "stx",
+        "carNumber": "102",
+        "driverName": "John Frongillo",
+        "carModel": "2015 Scion Special Tofu Delivery",
+        "carColor": "",
+        "sponsor": "",
+        "runs": [
+            [
+                [55.132, 0, "clean"],
+                [53.597, 1, "dirty"],
+                [53.066, 0, "clean"],
+                [53.329, 0, "clean"],
+                [53.031, 2, "dirty"],
+                [52.628, 1, "dirty"],
+                [52.97, 2, "dirty"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "stx",
+        "carNumber": "6",
+        "driverName": "Jake Hellman",
+        "carModel": "2013 Scion FR-S",
+        "carColor": "Black",
+        "sponsor": "",
+        "runs": [
+            [
+                [71.196, 0, "clean"],
+                [63.062, 0, "clean"],
+                [60.943, 0, "clean"],
+                [60.811, 1, "dirty"],
+                [59.931, 0, "clean"],
+                [59.344, 0, "clean"],
+                [59.488, 0, "clean"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "stx",
+        "carNumber": "86",
+        "driverName": "James Fiske",
+        "carModel": "2015 Subaru Brz Series.Blue",
+        "carColor": "Blue",
+        "sponsor": "The Bank Everyone Loves ❤️",
+        "runs": [[]]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "str",
+        "carNumber": "174",
+        "driverName": "Ryan Field",
+        "carModel": "2017 Mazda Miata",
+        "carColor": "White",
+        "sponsor": "",
+        "runs": [
+            [
+                [56.093, 1, "dirty"],
+                [52.855, 0, "clean"],
+                [63.799, 0, "dnf"],
+                [53.424, 0, "clean"],
+                [52.62, 0, "clean"],
+                [52.344, 0, "clean"],
+                [52.355, 0, "clean"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "str",
+        "carNumber": "74",
+        "driverName": "Brad Fiore",
+        "carModel": "2017 Mazda Slowpoke",
+        "carColor": "White",
+        "sponsor": "",
+        "runs": [
+            [
+                [55.351, 3, "dirty"],
+                [53.156, 5, "dirty"],
+                [52.988, 0, "clean"],
+                [52.463, 0, "clean"],
+                [51.867, 1, "dirty"],
+                [52.059, 2, "dirty"],
+                [52.419, 0, "clean"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "str",
+        "carNumber": "18",
+        "driverName": "Kyle Murray",
+        "carModel": "2022 Toyota GR86",
+        "carColor": "Pavement Grey",
+        "sponsor": "Make-A-Wish: Oil Pressure Division",
+        "runs": [
+            [
+                [58.59, 2, "dirty"],
+                [55.823, 2, "dirty"],
+                [54.617, 0, "clean"],
+                [53.727, 0, "clean"],
+                [53.447, 0, "clean"],
+                [53.823, 0, "clean"],
+                [53.571, 1, "dirty"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "str",
+        "carNumber": "8",
+        "driverName": "William Brundige",
+        "carModel": "2022 Toyota GR86",
+        "carColor": "Gray",
+        "sponsor": "Marvel Jesus Educated Wishes",
+        "runs": [
+            [
+                [56.679, 2, "dirty"],
+                [55.61, 0, "clean"],
+                [54.174, 0, "dnf"],
+                [54.281, 0, "clean"],
+                [53.922, 0, "clean"],
+                [53.665, 1, "dirty"],
+                [53.526, 0, "clean"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "str",
+        "carNumber": "73",
+        "driverName": "Joshua Parker",
+        "carModel": "Mazda Miata club",
+        "carColor": "Black",
+        "sponsor": "Stacey is the best!",
+        "runs": [
+            [
+                [66.089, 0, "clean"],
+                [61.087, 0, "clean"],
+                [58.455, 0, "clean"],
+                [57.109, 0, "clean"],
+                [56.657, 0, "clean"],
+                [56.26, 0, "clean"],
+                [55.707, 1, "dirty"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "str",
+        "carNumber": "71",
+        "driverName": "Theresa Doyon",
+        "carModel": "2020 Mazda Miata",
+        "carColor": "Red",
+        "sponsor": "Caustic B. Racing",
+        "runs": [
+            [
+                [63.275, 1, "dirty"],
+                [59.96, 0, "clean"],
+                [58.853, 0, "clean"],
+                [58.263, 1, "dirty"],
+                [56.971, 0, "clean"],
+                [57.895, 0, "clean"],
+                [57.738, 0, "clean"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "str",
+        "carNumber": "26",
+        "driverName": "Brent Haskins",
+        "carModel": "1999 Mazda Miata",
+        "carColor": "Green",
+        "sponsor": "",
+        "runs": [
+            [
+                [62.645, 0, "clean"],
+                [59.412, 0, "clean"],
+                [59.43, 0, "dnf"],
+                [60.198, 0, "clean"],
+                [57.998, 0, "clean"],
+                [58.133, 0, "clean"],
+                [58.481, 0, "clean"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "str",
+        "carNumber": "173",
+        "driverName": "Stacey Strout",
+        "carModel": "2013 Mazda Miata",
+        "carColor": "Black",
+        "sponsor": "",
+        "runs": [
+            [
+                [65.396, 2, "dirty"],
+                [64.392, 0, "clean"],
+                [60.799, 0, "clean"],
+                [60.21, 0, "clean"],
+                [59.535, 0, "clean"],
+                [58.79, 0, "clean"],
+                [59.305, 0, "clean"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "str",
+        "carNumber": "87",
+        "driverName": "Matthew Gosselin",
+        "carModel": "2013 Subaru BRZ",
+        "carColor": "Silver",
+        "sponsor": "",
+        "runs": [
+            [
+                [72.826, 0, "clean"],
+                [68.434, 0, "clean"],
+                [67.284, 0, "clean"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "stu",
+        "carNumber": "39",
+        "driverName": "Nathan Draper",
+        "carModel": "2011 BMW 335i",
+        "carColor": "Grey",
+        "sponsor": "",
+        "runs": [
+            [
+                [62.857, 0, "clean"],
+                [61.037, 0, "dnf"],
+                [60.039, 0, "clean"],
+                [59.775, 0, "clean"],
+                [59.919, 0, "clean"],
+                [58.163, 0, "clean"],
+                [58.336, 1, "dirty"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "stu",
+        "carNumber": "14",
+        "driverName": "Jeffrey Porter",
+        "carModel": "2018 Volkswagen Golf R",
+        "carColor": "",
+        "sponsor": "",
+        "runs": [
+            [
+                [69.609, 0, "clean"],
+                [66.433, 0, "clean"],
+                [65.529, 0, "clean"],
+                [63.272, 0, "clean"],
+                [61.854, 0, "clean"],
+                [61.022, 0, "clean"],
+                [61.188, 0, "clean"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "stu",
+        "carNumber": "139",
+        "driverName": "James Draper",
+        "carModel": "2011 BMW 335i",
+        "carColor": "Grey",
+        "sponsor": "",
+        "runs": [
+            [
+                [65.71, 0, "clean"],
+                [62.214, 0, "clean"],
+                [62.732, 0, "clean"],
+                [61.109, 2, "dirty"],
+                [61.528, 0, "clean"],
+                [61.138, 0, "dnf"],
+                [60.514, 0, "dnf"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "ssp",
+        "carNumber": "8",
+        "driverName": "Brendan Wong",
+        "carModel": "2023 Porsche GT4RS",
+        "carColor": "Silver",
+        "sponsor": "PROJECT.Devens",
+        "runs": [
+            [
+                [63.394, 0, "clean"],
+                [58.563, 0, "clean"],
+                [57.016, 0, "clean"],
+                [57.465, 0, "clean"],
+                [56.993, 0, "clean"],
+                [56.221, 0, "clean"],
+                [56.081, 0, "clean"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "csp",
+        "carNumber": "68",
+        "driverName": "George Farrar",
+        "carModel": "1985 Mazda green goblin",
+        "carColor": "green",
+        "sponsor": "HOT racing",
+        "runs": [
+            [
+                [67.736, 0, "clean"],
+                [63.139, 0, "clean"],
+                [61.001, 0, "clean"],
+                [61.382, 0, "clean"],
+                [60.475, 0, "clean"],
+                [60.198, 0, "clean"],
+                [59.827, 0, "clean"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "csp",
+        "carNumber": "19",
+        "driverName": "Michael Medici",
+        "carModel": "2000 Porsche Boxster",
+        "carColor": "silver",
+        "sponsor": "AJs  Army",
+        "runs": [
+            [
+                [69.079, 0, "dnf"],
+                [60.878, 0, "clean"],
+                [62.602, 0, "clean"],
+                [61.374, 0, "clean"],
+                [60.869, 1, "dirty"],
+                [61.182, 0, "clean"],
+                [61.181, 0, "clean"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "esp",
+        "carNumber": "49",
+        "driverName": "Daryush Dehnavi",
+        "carModel": "2004 BMW 325xiT",
+        "carColor": "Oxford Green",
+        "sponsor": "Woosta Racing Team",
+        "runs": [
+            [
+                [63.335, 1, "dirty"],
+                [59.704, 1, "dirty"],
+                [60.227, 1, "dirty"],
+                [59.507, 3, "dirty"],
+                [58.57, 1, "dirty"],
+                [58.491, 1, "dirty"],
+                [58.575, 0, "clean"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "cams",
+        "carNumber": "57",
+        "driverName": "Stephanie Reeve",
+        "carModel": "2003 Corvette Z06",
+        "carColor": "Black",
+        "sponsor": "KaroppiRacing",
+        "runs": [
+            [
+                [57.585, 1, "dirty"],
+                [55.353, 1, "dirty"],
+                [54.929, 0, "clean"],
+                [55.51, 0, "clean"],
+                [54.422, 1, "dirty"],
+                [54.562, 0, "clean"],
+                [54.132, 0, "clean"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "cams",
+        "carNumber": "147",
+        "driverName": "Shaun Moore",
+        "carModel": "1999 Chevrolet Corvette",
+        "carColor": "Black",
+        "sponsor": "Moore Power",
+        "runs": [
+            [
+                [56.961, 1, "dirty"],
+                [58.294, 0, "dnf"],
+                [55.594, 1, "dirty"],
+                [56.382, 1, "dirty"],
+                [55.688, 0, "clean"],
+                [58.296, 1, "dirty"],
+                [56.069, 0, "clean"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "cams",
+        "carNumber": "7",
+        "driverName": "Michael Reiser",
+        "carModel": "2003 Chevrolet Corvette",
+        "carColor": "Black",
+        "sponsor": "",
+        "runs": [
+            [
+                [71.633, 1, "dirty"],
+                [59.92, 0, "clean"],
+                [59.14, 1, "dirty"],
+                [59.379, 1, "dirty"],
+                [57.447, 3, "dirty"],
+                [58.173, 0, "clean"],
+                [59.871, 0, "dnf"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "cams",
+        "carNumber": "28",
+        "driverName": "James Cocossa",
+        "carModel": "2007 Ford Mustang",
+        "carColor": "Red",
+        "sponsor": "",
+        "runs": [
+            [
+                [61.962, 0, "clean"],
+                [61.683, 3, "dirty"],
+                [60.816, 0, "clean"],
+                [62.015, 2, "dirty"],
+                [60.526, 0, "clean"],
+                [60.37, 0, "clean"],
+                [59.93, 1, "dirty"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "cams",
+        "carNumber": "47",
+        "driverName": "Thomas Moore",
+        "carModel": "1999 Chevrolet Corvette",
+        "carColor": "Black",
+        "sponsor": "Moore Power",
+        "runs": [
+            [
+                [64.75, 0, "clean"],
+                [62.037, 0, "clean"],
+                [60.605, 0, "clean"],
+                [61.326, 0, "clean"],
+                [62.205, 0, "clean"],
+                [60.746, 4, "dirty"],
+                [60.917, 0, "clean"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "xa",
+        "carNumber": "1",
+        "driverName": "Jeff Bakken",
+        "carModel": "2019 Honda Insight",
+        "carColor": "orange",
+        "sponsor": "I use chrome sockets on impact guns",
+        "runs": [
+            [
+                [53.463, 0, "clean"],
+                [53.961, 0, "clean"],
+                [52.656, 0, "clean"],
+                [52.804, 0, "clean"],
+                [53.605, 3, "dirty"],
+                [52.639, 0, "clean"],
+                [51.957, 2, "dirty"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "xa",
+        "carNumber": "101",
+        "driverName": "Brandon Dryer",
+        "carModel": "2025 Honda NSX",
+        "carColor": "Orange",
+        "sponsor": "I anti-seize my lug nuts",
+        "runs": [
+            [
+                [53.738, 1, "dirty"],
+                [52.219, 4, "dirty"],
+                [51.701, 3, "dirty"],
+                [52.582, 2, "dirty"],
+                [52.879, 0, "clean"],
+                [54.311, 0, "clean"],
+                [51.886, 0, "dnf"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "xa",
+        "carNumber": "47",
+        "driverName": "Shawn Pan",
+        "carModel": "2004 Honda S2000",
+        "carColor": "Yellow",
+        "sponsor": "PROJECT.Devens | KARCEPTS | baero.tech",
+        "runs": [
+            [
+                [55.571, 0, "clean"],
+                [54.396, 0, "clean"],
+                [54.554, 2, "dirty"],
+                [54.689, 3, "dirty"],
+                [54.218, 1, "dirty"],
+                [54.157, 5, "dirty"],
+                [54.115, 1, "dirty"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "xa",
+        "carNumber": "11",
+        "driverName": "Matt Emanouil",
+        "carModel": "2011 Subaru STI",
+        "carColor": "White",
+        "sponsor": "",
+        "runs": [
+            [
+                [61.293, 1, "dirty"],
+                [61.3, 1, "dirty"],
+                [61.053, 0, "clean"],
+                [60.872, 0, "dnf"],
+                [59.605, 1, "dirty"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "xa",
+        "carNumber": "7",
+        "driverName": "Patrick Longo",
+        "carModel": "2013 Scion FR-S",
+        "carColor": "Grey",
+        "sponsor": "",
+        "runs": [
+            [
+                [77.563, 0, "dnf"],
+                [72.118, 0, "clean"],
+                [68.714, 0, "clean"],
+                [68.008, 0, "clean"],
+                [66.783, 0, "dnf"],
+                [65.443, 0, "dnf"],
+                [65.846, 0, "clean"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "xb",
+        "carNumber": "4",
+        "driverName": "Pavels Danilovs",
+        "carModel": "2006 Mazda MX-5",
+        "carColor": "Galaxy Gray",
+        "sponsor": "PROJECT.Devens",
+        "runs": [
+            [
+                [61.305, 0, "dnf"],
+                [57.978, 0, "dnf"],
+                [62.771, 0, "clean"],
+                [55.252, 0, "clean"],
+                [54.381, 1, "dirty"],
+                [53.696, 0, "dnf"],
+                [54.41, 0, "clean"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "xb",
+        "carNumber": "71",
+        "driverName": "Walter Zak",
+        "carModel": "1999 Mazda Miata",
+        "carColor": "Green",
+        "sponsor": "L.U. 103 Pension Plan",
+        "runs": [
+            [
+                [65.385, 0, "clean"],
+                [60.546, 0, "clean"],
+                [60.168, 0, "clean"],
+                [61.656, 0, "clean"],
+                [59.382, 0, "clean"],
+                [59.863, 2, "dirty"],
+                [59.132, 0, "clean"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "dp",
+        "carNumber": "56",
+        "driverName": "Eric Brown",
+        "carModel": "1994 Mazda Miata",
+        "carColor": "Grey",
+        "sponsor": "Schadenfreude",
+        "runs": [
+            [
+                [73.22, 0, "dnf"],
+                [60.47, 0, "clean"],
+                [57.862, 1, "dirty"],
+                [57.055, 1, "dirty"],
+                [55.905, 0, "clean"],
+                [55.803, 0, "clean"],
+                [55.14, 0, "clean"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "dp",
+        "carNumber": "39",
+        "driverName": "Donald Allen",
+        "carModel": "1979 MG B",
+        "carColor": "black",
+        "sponsor": "",
+        "runs": [
+            [
+                [69.769, 0, "clean"],
+                [78.833, 0, "clean"],
+                [64.968, 0, "dnf"],
+                [64.996, 0, "dnf"],
+                [65.399, 0, "dnf"],
+                [63.836, 0, "clean"],
+                [65.417, 0, "clean"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "ep",
+        "carNumber": "50",
+        "driverName": "Paul Krysiak",
+        "carModel": "1985 Honda CIVIC",
+        "carColor": "WHITE",
+        "sponsor": "Canine Companions",
+        "runs": [
+            [
+                [67.284, 1, "dirty"],
+                [65.682, 0, "clean"],
+                [64.772, 0, "dnf"],
+                [80.884, 1, "dirty"],
+                [65.639, 2, "dirty"],
+                [66.135, 0, "clean"],
+                [63.385, 0, "clean"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "ep",
+        "carNumber": "150",
+        "driverName": "Kathy Barnes",
+        "carModel": "1985 Honda Civic",
+        "carColor": "White",
+        "sponsor": "With the help of my friends!",
+        "runs": [
+            [
+                [67.172, 0, "clean"],
+                [66.083, 0, "clean"],
+                [64.595, 0, "clean"],
+                [64.327, 0, "clean"],
+                [63.032, 1, "dirty"],
+                [63.208, 1, "dirty"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "fp",
+        "carNumber": "99",
+        "driverName": "Trevor Frey",
+        "carModel": "2000 Subaru Impreza",
+        "carColor": "Purple",
+        "sponsor": "West Auto Repair, Modern Auto & Tire",
+        "runs": [
+            [
+                [62.512, 0, "clean"],
+                [62.455, 0, "dnf"],
+                [62.358, 0, "dnf"],
+                [63.16, 1, "dirty"],
+                [61.38, 0, "clean"],
+                [61.538, 0, "clean"],
+                [59.754, 1, "dirty"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "smf",
+        "carNumber": "37",
+        "driverName": "Don Kuehl",
+        "carModel": "2018 Honda Civic Type R",
+        "carColor": "Red",
+        "sponsor": "RV6,Redshift,K-Spec Automotive",
+        "runs": [
+            [
+                [62.747, 0, "clean"],
+                [59.222, 0, "clean"],
+                [56.855, 0, "clean"],
+                [55.26, 1, "dirty"],
+                [54.079, 0, "clean"],
+                [53.587, 0, "clean"],
+                [53.494, 2, "dirty"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "smf",
+        "carNumber": "6",
+        "driverName": "Samuel Vaihinger",
+        "carModel": "2009 Volkswagen rabbit",
+        "carColor": "silver",
+        "sponsor": "Senior moment racing. Thanks Bill",
+        "runs": [
+            [
+                [78.387, 0, "clean"],
+                [67.557, 0, "clean"],
+                [66.927, 0, "clean"],
+                [73.75, 1, "dirty"],
+                [68.064, 1, "dirty"],
+                [66.521, 0, "dnf"],
+                [65.609, 0, "dnf"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "sm",
+        "carNumber": "154",
+        "driverName": "Sandi Mickle",
+        "carModel": "2007 Subaru STi",
+        "carColor": "Black",
+        "sponsor": "Mickle Motorsports",
+        "runs": [
+            [
+                [104.165, 0, "clean"],
+                [72.099, 0, "clean"],
+                [70.176, 0, "clean"],
+                [71.433, 0, "clean"],
+                [69.323, 0, "dnf"],
+                [71.643, 0, "clean"],
+                [68.922, 1, "dirty"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "am",
+        "carNumber": "64",
+        "driverName": "Robert Barone",
+        "carModel": "1995 CK/Dragon CK/Dragon",
+        "carColor": "White/Black/Red",
+        "sponsor": "Small Fortune Racing",
+        "runs": [
+            [
+                [67.18, 0, "clean"],
+                [56.131, 0, "dnf"],
+                [54.053, 0, "clean"],
+                [54.831, 0, "clean"],
+                [53.475, 0, "clean"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "bm",
+        "carNumber": "185",
+        "driverName": "Tamra Krystinik",
+        "carModel": "2000 Legrand Dragon SR1 Mk25",
+        "carColor": "Blue Camo",
+        "sponsor": "",
+        "runs": [
+            [
+                [50.975, 1, "dirty"],
+                [48.976, 0, "clean"],
+                [47.695, 1, "dirty"],
+                [49.341, 0, "clean"],
+                [46.677, 0, "clean"],
+                [47.135, 1, "dirty"],
+                [999.999, 0, "off"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "bm",
+        "carNumber": "85",
+        "driverName": "Andrew Krystinik",
+        "carModel": "2000 Legrand Dragon SR1 Mk25",
+        "carColor": "Blue Camo",
+        "sponsor": "",
+        "runs": [
+            [
+                [56.489, 0, "dnf"],
+                [51.313, 0, "clean"],
+                [49.237, 0, "clean"],
+                [51.16, 0, "clean"],
+                [49.609, 0, "clean"],
+                [48.417, 0, "clean"],
+                [47.962, 0, "clean"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "km",
+        "carNumber": "8",
+        "driverName": "Pavel Chumak",
+        "carModel": "2004 Margay Kart",
+        "carColor": "Gray",
+        "sponsor": "",
+        "runs": [
+            [
+                [78.479, 0, "clean"],
+                [69.745, 0, "clean"],
+                [66.422, 0, "dnf"],
+                [65.313, 0, "clean"],
+                [64.598, 0, "clean"],
+                [62.854, 1, "dirty"],
+                [64.429, 1, "dirty"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "nds",
+        "carNumber": "78",
+        "driverName": "Jeffrey Cheng",
+        "carModel": "2024 Toyota GR86",
+        "carColor": "Neptune Blue",
+        "sponsor": "",
+        "runs": [
+            [
+                [62.292, 0, "clean"],
+                [65.056, 0, "clean"],
+                [61.465, 0, "clean"],
+                [62.041, 0, "clean"],
+                [60.473, 0, "clean"],
+                [60.901, 0, "clean"],
+                [59.877, 1, "dirty"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "ngs",
+        "carNumber": "14",
+        "driverName": "Emily Rappa",
+        "carModel": "2019 Volkswagen GTI",
+        "carColor": "Black",
+        "sponsor": "",
+        "runs": [
+            [
+                [70.289, 1, "dirty"],
+                [68.132, 2, "dirty"],
+                [63.946, 0, "clean"],
+                [65.287, 2, "dirty"],
+                [62.85, 1, "dirty"],
+                [61.327, 3, "dirty"],
+                [61.778, 0, "clean"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "ngs",
+        "carNumber": "73",
+        "driverName": "Ryan Smith",
+        "carModel": "2008 Mazda Mazdaspeed 3",
+        "carColor": "Red",
+        "sponsor": "",
+        "runs": [
+            [
+                [68.984, 0, "clean"],
+                [65.814, 0, "clean"],
+                [62.866, 2, "dirty"],
+                [63.05, 0, "clean"],
+                [64.063, 0, "clean"],
+                [62.828, 0, "clean"],
+                [62.658, 2, "dirty"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "nhs",
+        "carNumber": "121",
+        "driverName": "Thomas Warren",
+        "carModel": "2012 Mazda 3",
+        "carColor": "Green",
+        "sponsor": "",
+        "runs": [
+            [
+                [78.241, 0, "dnf"],
+                [70.453, 0, "dnf"],
+                [66.574, 0, "clean"],
+                [72.235, 0, "clean"],
+                [64.406, 0, "clean"],
+                [65.18, 0, "clean"],
+                [68.4, 0, "dnf"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "nbs",
+        "carNumber": "54",
+        "driverName": "Richard DeNitto",
+        "carModel": "2024 Toyota GR Corolla",
+        "carColor": "White",
+        "sponsor": "",
+        "runs": [
+            [
+                [83.246, 0, "dnf"],
+                [73.512, 0, "dnf"],
+                [71.349, 0, "dnf"],
+                [70.994, 0, "clean"],
+                [67.574, 0, "clean"],
+                [67.721, 0, "clean"],
+                [65.885, 0, "clean"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "nbs",
+        "carNumber": "154",
+        "driverName": "Markie Palermo",
+        "carModel": "2024 Toyota GR Corolla",
+        "carColor": "White",
+        "sponsor": "",
+        "runs": [
+            [
+                [88.096, 0, "dnf"],
+                [71.829, 0, "clean"],
+                [67.539, 0, "clean"],
+                [67.428, 0, "clean"],
+                [66.002, 0, "clean"],
+                [65.658, 1, "dirty"],
+                [73.793, 0, "clean"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "nxp",
+        "carNumber": "44",
+        "driverName": "Warner Ogden",
+        "carModel": "1994 Chevrolet Corvette",
+        "carColor": "Black",
+        "sponsor": "",
+        "runs": [
+            [
+                [73.403, 0, "clean"],
+                [67.145, 0, "clean"],
+                [63.076, 0, "clean"],
+                [62.454, 0, "clean"],
+                [60.987, 0, "clean"],
+                [60.391, 1, "dirty"],
+                [60.622, 0, "dnf"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "nhs",
+        "carNumber": "77",
+        "driverName": "Matthew Tran",
+        "carModel": "2010 Acura TSX",
+        "carColor": "",
+        "sponsor": "",
+        "runs": [
+            [
+                [79.549, 0, "clean"],
+                [76.864, 0, "clean"],
+                [73.298, 0, "clean"],
+                [72.185, 0, "clean"],
+                [71.729, 0, "clean"],
+                [70.49, 0, "clean"],
+                [68.849, 0, "clean"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "ngs",
+        "carNumber": "11",
+        "driverName": "Diana Lu",
+        "carModel": "2019 Honda Civic Si",
+        "carColor": "Aegean Blue",
+        "sponsor": "NE-SVT Has Pizza | Project.Devens | Welcome to Earf Dreamz",
+        "runs": [
+            [
+                [81.394, 0, "clean"],
+                [75.739, 0, "clean"],
+                [84.699, 0, "clean"],
+                [72.175, 0, "clean"],
+                [70.19, 0, "clean"],
+                [66.452, 2, "dirty"],
+                [65.697, 2, "dirty"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "nhs",
+        "carNumber": "36",
+        "driverName": "Jose Nogueras",
+        "carModel": "2016 Mazda Mazda3",
+        "carColor": "Red",
+        "sponsor": "",
+        "runs": [
+            [
+                [89.844, 0, "clean"],
+                [75.457, 0, "clean"],
+                [70.725, 2, "dirty"],
+                [74.462, 0, "clean"],
+                [72.528, 0, "clean"],
+                [70.855, 0, "clean"],
+                [70.715, 0, "clean"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "nsmf",
+        "carNumber": "77",
+        "driverName": "Ryan Condon",
+        "carModel": "2007 Mazda Mazdaspeed3",
+        "carColor": "Silver",
+        "sponsor": "",
+        "runs": [
+            [
+                [79.494, 0, "dnf"],
+                [69.932, 0, "dnf"],
+                [72.033, 1, "dirty"],
+                [69.078, 0, "dnf"],
+                [65.05, 2, "dirty"],
+                [63.55, 1, "dirty"],
+                [64.348, 1, "dirty"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "ngs",
+        "carNumber": "17",
+        "driverName": "Noah Moroze",
+        "carModel": "2019 Volkswagen Golf GTI",
+        "carColor": "White",
+        "sponsor": "",
+        "runs": [
+            [
+                [98.976, 0, "clean"],
+                [81.496, 0, "clean"],
+                [81.189, 0, "clean"],
+                [76.055, 0, "clean"],
+                [76.881, 0, "clean"],
+                [74.246, 0, "dnf"],
+                [68.622, 1, "dirty"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "nsts",
+        "carNumber": "7",
+        "driverName": "Noah Jaffe",
+        "carModel": "2003 Acura RSX Type S",
+        "carColor": "Silver",
+        "sponsor": "",
+        "runs": [
+            [
+                [84.165, 0, "dnf"],
+                [73.4, 0, "clean"],
+                [71.118, 0, "dnf"],
+                [72.48, 0, "clean"],
+                [70.749, 0, "clean"],
+                [70.687, 0, "clean"],
+                [70.916, 0, "clean"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "ngs",
+        "carNumber": "24",
+        "driverName": "Christopher ONeil",
+        "carModel": "2019 Chevrolet Malibu",
+        "carColor": "Blue",
+        "sponsor": "",
+        "runs": [
+            [
+                [78.093, 0, "clean"],
+                [78.228, 0, "clean"],
+                [75.539, 0, "clean"],
+                [73.269, 0, "clean"],
+                [73.964, 0, "clean"],
+                [74.759, 0, "clean"],
+                [74.964, 0, "clean"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "nas",
+        "carNumber": "1",
+        "driverName": "Bharath Venkatram",
+        "carModel": "2023 Chevrolet Camaro LT Convertible",
+        "carColor": "Black",
+        "sponsor": "",
+        "runs": [
+            [
+                [73.828, 1, "dirty"],
+                [73.327, 0, "clean"],
+                [71.567, 0, "clean"],
+                [71.052, 0, "clean"],
+                [66.914, 0, "dnf"],
+                [71.455, 1, "dirty"],
+                [70.692, 1, "dirty"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "nstr",
+        "carNumber": "4",
+        "driverName": "Dov Jaffe",
+        "carModel": "1985 Mazda RX7 GSL-SE",
+        "carColor": "Blue",
+        "sponsor": "",
+        "runs": [
+            [
+                [94.667, 0, "clean"],
+                [85.077, 0, "dnf"],
+                [77.212, 0, "clean"],
+                [80.84, 0, "dnf"],
+                [76.671, 0, "clean"],
+                [76.407, 0, "clean"],
+                [72.295, 0, "clean"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "nds",
+        "carNumber": "16",
+        "driverName": "Sj Munsi",
+        "carModel": "2023 Subaru WRX",
+        "carColor": "White",
+        "sponsor": "",
+        "runs": [
+            [
+                [122.783, 0, "clean"],
+                [97.33, 0, "clean"],
+                [90.994, 0, "clean"],
+                [86.917, 0, "clean"],
+                [82.129, 0, "clean"],
+                [81.599, 0, "clean"],
+                [77.018, 0, "clean"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "nssm",
+        "carNumber": "15",
+        "driverName": "Jeff Rich",
+        "carModel": "1996 Dodge Viper",
+        "carColor": "Blue",
+        "sponsor": "",
+        "runs": [[[72.47, 0, "clean"]]]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "ngs",
+        "carNumber": "124",
+        "driverName": "Cassandra ONeil",
+        "carModel": "Chevrolet malibu",
+        "carColor": "blue",
+        "sponsor": "",
+        "runs": [
+            [
+                [100.739, 0, "dnf"],
+                [85.174, 0, "dnf"],
+                [89.178, 0, "clean"],
+                [89.321, 0, "dnf"],
+                [91.241, 0, "clean"],
+                [88.486, 0, "clean"],
+                [86.612, 0, "clean"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "nssm",
+        "carNumber": "115",
+        "driverName": "Jackson Fefferman",
+        "carModel": "1996 Dodge Viper",
+        "carColor": "Blue",
+        "sponsor": "",
+        "runs": [[]]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "pstx",
+        "carNumber": "2",
+        "driverName": "Evan LeBlanc",
+        "carModel": "2015 Scion FR-S",
+        "carColor": "Blue",
+        "sponsor": "",
+        "runs": [
+            [
+                [55.95, 3, "dirty"],
+                [52.831, 0, "clean"],
+                [52.721, 0, "clean"],
+                [53.492, 1, "dirty"],
+                [59.14, 0, "dnf"],
+                [52.403, 0, "clean"],
+                [56.046, 0, "dnf"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "psts",
+        "carNumber": "65",
+        "driverName": "Brandon Dean",
+        "carModel": "1990 Mazda Miata",
+        "carColor": "Primer",
+        "sponsor": "PROJECT.Devens/ Redshift Motorsports/ Panusky HP Sauce",
+        "runs": [
+            [
+                [54.051, 1, "dirty"],
+                [53.46, 0, "clean"],
+                [53.107, 0, "clean"],
+                [53.301, 0, "clean"],
+                [53.384, 2, "dirty"],
+                [53.379, 0, "clean"],
+                [57.824, 0, "dnf"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "psst",
+        "carNumber": "157",
+        "driverName": "Grant Reeve",
+        "carModel": "2003 Corvette Z06",
+        "carColor": "Black",
+        "sponsor": "iRacing.com / KaroppiRacing",
+        "runs": [
+            [
+                [53.867, 0, "clean"],
+                [53.008, 0, "clean"],
+                [52.669, 0, "clean"],
+                [53.033, 0, "clean"],
+                [52.207, 0, "clean"],
+                [52.298, 0, "clean"],
+                [52.749, 0, "clean"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "psst",
+        "carNumber": "187",
+        "driverName": "Mark Sarcevicz",
+        "carModel": "2002 Chevrolet Corvette Z06",
+        "carColor": "Blue",
+        "sponsor": "",
+        "runs": [
+            [
+                [57.43, 0, "dnf"],
+                [54.834, 2, "dirty"],
+                [53.255, 0, "clean"],
+                [54.232, 1, "dirty"],
+                [52.392, 3, "dirty"],
+                [52.821, 5, "dirty"],
+                [53.131, 1, "dirty"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "pss",
+        "carNumber": "35",
+        "driverName": "Rachel Baker",
+        "carModel": "2022 Porsche GT4",
+        "carColor": "Frozen Berry",
+        "sponsor": "Driving Forward Together | Flute Fixation",
+        "runs": [
+            [
+                [54.576, 1, "dirty"],
+                [53.554, 0, "clean"],
+                [54.687, 0, "clean"],
+                [53.703, 1, "dirty"],
+                [53.869, 0, "clean"],
+                [53.532, 0, "clean"],
+                [53.724, 1, "dirty"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "psmf",
+        "carNumber": "137",
+        "driverName": "Brian Kuehl",
+        "carModel": "2018 Honda Civic",
+        "carColor": "Red",
+        "sponsor": "K-Spec Automotive, Redshift Motorsports",
+        "runs": [
+            [
+                [52.626, 3, "dirty"],
+                [52.91, 3, "dirty"],
+                [51.961, 1, "dirty"],
+                [52.007, 2, "dirty"],
+                [51.66, 1, "dirty"],
+                [51.476, 1, "dirty"],
+                [52.708, 0, "clean"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "pss",
+        "carNumber": "44",
+        "driverName": "Daniel Quaroni",
+        "carModel": "2021 Porsche 718 Spyder",
+        "carColor": "Gentian blue",
+        "sponsor": "PROJECT.Devens",
+        "runs": [
+            [
+                [56.37, 1, "dirty"],
+                [54.834, 0, "clean"],
+                [55.713, 2, "dirty"],
+                [55.189, 1, "dirty"],
+                [60.356, 3, "dirty"],
+                [54.539, 1, "dirty"],
+                [54.433, 0, "clean"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "psmf",
+        "carNumber": "37",
+        "driverName": "Shamit Som",
+        "carModel": "2018 Honda Civic Type R",
+        "carColor": "Red",
+        "sponsor": "Thanks Don!",
+        "runs": [
+            [
+                [56.166, 1, "dirty"],
+                [63.675, 0, "dnf"],
+                [54.194, 2, "dirty"],
+                [53.629, 2, "dirty"],
+                [54.859, 4, "dirty"],
+                [53.103, 1, "dirty"],
+                [53.028, 1, "dirty"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "pcsp",
+        "carNumber": "55",
+        "driverName": "Rob MacAlpine",
+        "carModel": "1999 Mazda Miata",
+        "carColor": "black",
+        "sponsor": "",
+        "runs": [
+            [
+                [58.076, 0, "dnf"],
+                [55.757, 1, "dirty"],
+                [55.103, 0, "clean"],
+                [64.531, 0, "dnf"],
+                [56.925, 1, "dirty"],
+                [54.43, 1, "dirty"],
+                [54.469, 0, "clean"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "psm",
+        "carNumber": "54",
+        "driverName": "Matthew Mickle",
+        "carModel": "2007 Subaru STi",
+        "carColor": "Black",
+        "sponsor": "Mickle Motorsports",
+        "runs": [
+            [
+                [57.402, 0, "clean"],
+                [57.014, 1, "dirty"],
+                [56.093, 1, "dirty"],
+                [56.174, 0, "clean"],
+                [56.109, 1, "dirty"],
+                [54.901, 0, "clean"],
+                [57.823, 0, "clean"]
+            ]
+        ]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "psm",
+        "carNumber": "40",
+        "driverName": "Chris St. Mary",
+        "carModel": "1998 BMW 328i",
+        "carColor": "Blue",
+        "sponsor": "",
+        "runs": [[[103.306, 0, "dnf"]]]
+    },
+    {
+        "msrId": "",
+        "email": "",
+        "class": "psm",
+        "carNumber": "140",
+        "driverName": "Heather Ciribassi",
+        "carModel": "1998 BMW 328i",
+        "carColor": "Blue",
+        "sponsor": "",
+        "runs": [[]]
+    }
+]
