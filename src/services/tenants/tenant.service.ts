@@ -1,3 +1,4 @@
+import { HEADERS } from "@/constants/global";
 import {
     GlobalTenant,
     InvalidTenant,
@@ -15,7 +16,7 @@ interface ITenantService {
 export class TenantService implements ITenantService {
     async getTenant(): Promise<Tenant> {
         const h = await headers();
-        const slug = h.get("x-tenant-slug");
+        const slug = h.get(HEADERS.TENANT_SLUG);
 
         if (!slug) {
             return {
