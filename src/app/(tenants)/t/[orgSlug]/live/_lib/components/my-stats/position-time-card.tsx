@@ -48,7 +48,7 @@ export function PositionTimeCard({
                     <p className="text-muted-foreground mt-1 text-xs sm:text-sm">
                         {gapToFirst === 0
                             ? gapLabel || ""
-                            : `+${Math.abs(gapToFirst).toFixed(3)}s from first`}
+                            : `${gapToFirst.toFixed(3)}s from first`}
                     </p>
                 )}
             </div>

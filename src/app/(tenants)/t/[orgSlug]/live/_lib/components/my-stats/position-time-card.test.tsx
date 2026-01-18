@@ -48,7 +48,7 @@ describe("PositionTimeCard", () => {
             />
         );
 
-        expect(screen.getByText(/\+0\.500s from first/i)).toBeVisible();
+        expect(screen.getByText(/0\.500s from first/i)).toBeVisible();
     });
 
     it("renders empty string when gap is zero and no gapLabel provided", () => {
