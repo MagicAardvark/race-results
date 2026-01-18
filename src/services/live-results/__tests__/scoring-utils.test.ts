@@ -161,7 +161,7 @@ describe("scoring-utils", () => {
 
             const gap = calculateGap(current, other, "indexedTotalTime");
 
-            expect(gap).toBe(-2.0);
+            expect(gap).toBe(2.0);
         });
 
         it("calculates negative gap when current is faster", () => {
@@ -170,7 +170,7 @@ describe("scoring-utils", () => {
 
             const gap = calculateGap(current, other, "indexedTotalTime");
 
-            expect(gap).toBe(2.0);
+            expect(gap).toBe(-2.0);
         });
 
         it("returns null when current time is null", () => {
@@ -259,16 +259,16 @@ describe("scoring-utils", () => {
             const result = getPositionData(2, 1, entries, "indexedTotalTime");
 
             expect(result.position).toBe(2);
-            expect(result.toNext).toBe(-2.0); // 50 - 52
-            expect(result.toFirst).toBe(-2.0); // 50 - 52
+            expect(result.toNext).toBe(2.0); // 52 - 50
+            expect(result.toFirst).toBe(2.0); // 52 - 50
         });
 
         it("calculates position data for third place", () => {
             const result = getPositionData(3, 2, entries, "indexedTotalTime");
 
             expect(result.position).toBe(3);
-            expect(result.toNext).toBe(-3.0); // 52 - 55
-            expect(result.toFirst).toBe(-5.0); // 50 - 55
+            expect(result.toNext).toBe(3.0); // 55 - 52
+            expect(result.toFirst).toBe(5.0); // 55 - 50
         });
     });
 

@@ -2,7 +2,7 @@ export type ScoringModes = "singlebest";
 
 export type TrophyModes = "topn" | "percentage";
 
-export interface TrohpyConfiguration {
+export interface TrophyConfiguration {
     mode: TrophyModes;
     value: number;
 }
@@ -10,5 +10,5 @@ export interface TrohpyConfiguration {
 export interface EventConfiguration {
     scoringMode: ScoringModes;
     conePenaltyInSeconds: number;
-    trophyConfiguration: TrohpyConfiguration;
+    trophyConfiguration: TrophyConfiguration;
 }
