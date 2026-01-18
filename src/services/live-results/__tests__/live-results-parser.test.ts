@@ -133,8 +133,8 @@ describe("LiveResultsParser", () => {
 
             // Second place
             expect(second.classPosition.position).toBe(2);
-            expect(second.classPosition.toFirst).toBeCloseTo(-0.722, 3);
-            expect(second.classPosition.toNext).toBeCloseTo(-0.722, 3);
+            expect(second.classPosition.toFirst).toBeCloseTo(0.722, 3);
+            expect(second.classPosition.toNext).toBeCloseTo(0.722, 3);
         });
 
         it("calculates trophy status with percentage mode", async () => {

@@ -153,7 +153,7 @@ export function calculateGap(
         return null;
     }
 
-    return other[key] - current[key];
+    return current[key] - other[key];
 }
 
 export function sortEntriesByTime(
