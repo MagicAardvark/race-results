@@ -1,3 +1,4 @@
+import { HEADERS } from "@/constants/global";
 import { organizationsAPIService } from "@/services/organizations/organizations.api.service";
 import { tenantService } from "@/services/tenants/tenant.service";
 import { clerkMiddleware } from "@clerk/nextjs/server";
@@ -5,11 +6,11 @@ import { NextRequest, NextResponse } from "next/server";
 
 const GLOBAL_TENANT = "global";
 
-type Area = "public" | "tenants" | "api" | "admin" | "unknown";
+type Area = "public" | "tenants" | "ingest" | "admin" | "unknown";
 
 const configureTenantResponse = ({ tenant }: { tenant: string }) => {
     const res = NextResponse.next();
-    res.headers.set("x-tenant-slug", tenant);
+    res.headers.set(HEADERS.TENANT_SLUG, tenant);
 
     return res;
 };
@@ -28,17 +29,17 @@ const handleTenantRequest = async (req: NextRequest) => {
     return configureTenantResponse({ tenant: tenant });
 };
 
-const handleApiRequest = async (req: NextRequest) => {
-    const apiKey = req.headers.get("x-api-key");
+const handleIngestRequest = async (req: NextRequest) => {
+    const apiKey = req.headers.get(HEADERS.API.INGEST_API_KEY);
 
     if (!apiKey) {
         return NextResponse.json(
-            { error: "Missing X-API-Key header" },
+            { error: `Missing ${HEADERS.API.INGEST_API_KEY} header` },
             { status: 401 }
         );
     }
 
-    const ingestRegex = /\/api\/ingest\/(.*)\/(.*)/;
+    const ingestRegex = /\/api\/ingest\/([^\/]+)\/(.*)/;
 
     const match = req.nextUrl.pathname.match(ingestRegex);
 
@@ -56,9 +57,17 @@ const handleApiRequest = async (req: NextRequest) => {
     }
 
     return NextResponse.json(
-        { error: "Invalid API key or organization" },
+        { error: `Invalid ${HEADERS.API.INGEST_API_KEY} or organization` },
         { status: 401 }
     );
+};
+
+const handleIngestApiRequest = async (req: NextRequest) => {
+    if (req.nextUrl.pathname.startsWith("/api/ingest")) {
+        return handleIngestRequest(req);
+    }
+
+    return NextResponse.next();
 };
 
 const determineArea = (req: NextRequest): Area => {
@@ -68,8 +77,8 @@ const determineArea = (req: NextRequest): Area => {
         return "admin";
     }
 
-    if (pathname.startsWith("/api")) {
-        return "api";
+    if (pathname.startsWith("/api/ingest")) {
+        return "ingest";
     }
 
     if (pathname.startsWith("/t/")) {
@@ -107,8 +116,8 @@ export default clerkMiddleware(async (_auth, req) => {
     const area = determineArea(req);
 
     switch (area) {
-        case "api":
-            return await handleApiRequest(req);
+        case "ingest":
+            return await handleIngestApiRequest(req);
         case "tenants":
             return await handleTenantRequest(req);
         case "admin":

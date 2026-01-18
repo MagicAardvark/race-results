@@ -92,10 +92,10 @@ INNER JOIN classes_flattened_group_classes_vw cgc
 export const classesWithEffectiveIndexValues = pgView(
     "classes_with_effective_index_values_vw",
     {
-        classGroupId: uuid("class_group_id").notNull(),
         classId: uuid("class_id").notNull(),
         shortName: text("short_name").notNull(),
         longName: text("long_name").notNull(),
+        classGroupId: uuid("class_group_id"),
         groupShortName: text("group_short_name").notNull(),
         groupLongName: text("group_long_name").notNull(),
         orgId: uuid("org_id"),

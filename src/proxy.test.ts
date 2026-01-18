@@ -3,6 +3,7 @@ import { NextRequest, NextFetchEvent } from "next/server";
 import middleware from "./proxy";
 import { tenantService } from "@/services/tenants/tenant.service";
 import { organizationsAPIService } from "@/services/organizations/organizations.api.service";
+import { HEADERS } from "@/constants/global";
 
 // Mock dependencies
 vi.mock("@/services/tenants/tenant.service", () => ({
@@ -41,7 +42,7 @@ describe("proxy middleware", () => {
             const response = await middleware(request, {} as NextFetchEvent);
 
             expect(response).toBeDefined();
-            expect(response?.headers.get("x-tenant-slug")).toBe("global");
+            expect(response?.headers.get(HEADERS.TENANT_SLUG)).toBe("global");
         });
 
         it("identifies api area", async () => {
@@ -49,7 +50,7 @@ describe("proxy middleware", () => {
                 "http://localhost/api/ingest/test-org/live",
                 {
                     headers: {
-                        "x-api-key": "test-key",
+                        [HEADERS.API.INGEST_API_KEY]: "test-key",
                     },
                 }
             );
@@ -92,7 +93,7 @@ describe("proxy middleware", () => {
             const response = await middleware(request, {} as NextFetchEvent);
 
             expect(response).toBeDefined();
-            expect(response?.headers.get("x-tenant-slug")).toBe("global");
+            expect(response?.headers.get(HEADERS.TENANT_SLUG)).toBe("global");
         });
     });
 
@@ -136,7 +137,7 @@ describe("proxy middleware", () => {
 
             expect(response).toBeDefined();
             // Subdomain parsing should extract "test-org" from host
-            const tenantSlug = response?.headers.get("x-tenant-slug");
+            const tenantSlug = response?.headers.get(HEADERS.TENANT_SLUG);
             expect(tenantSlug).toBeTruthy();
             if (tenantSlug && tenantSlug !== "global") {
                 expect(tenantSlug).toBe("test-org");
@@ -160,7 +161,7 @@ describe("proxy middleware", () => {
 
             const response = await middleware(request, {} as NextFetchEvent);
 
-            expect(response?.headers.get("x-tenant-slug")).toBe("global");
+            expect(response?.headers.get(HEADERS.TENANT_SLUG)).toBe("global");
         });
     });
 
@@ -174,7 +175,9 @@ describe("proxy middleware", () => {
             const json = await response?.json();
 
             expect(response?.status).toBe(401);
-            expect(json).toEqual({ error: "Missing X-API-Key header" });
+            expect(json).toEqual({
+                error: `Missing ${HEADERS.API.INGEST_API_KEY} header`,
+            });
         });
 
         it("validates API key for ingest endpoints", async () => {
@@ -182,7 +185,7 @@ describe("proxy middleware", () => {
                 "http://localhost/api/ingest/test-org/live",
                 {
                     headers: {
-                        "x-api-key": "valid-key",
+                        [HEADERS.API.INGEST_API_KEY]: "valid-key",
                     },
                 }
             );
@@ -204,7 +207,7 @@ describe("proxy middleware", () => {
                 "http://localhost/api/ingest/test-org/live",
                 {
                     headers: {
-                        "x-api-key": "invalid-key",
+                        [HEADERS.API.INGEST_API_KEY]: "invalid-key",
                     },
                 }
             );
@@ -218,7 +221,7 @@ describe("proxy middleware", () => {
 
             expect(response?.status).toBe(401);
             expect(json).toEqual({
-                error: "Invalid API key or organization",
+                error: `Invalid ${HEADERS.API.INGEST_API_KEY} or organization`,
             });
         });
 
@@ -227,7 +230,7 @@ describe("proxy middleware", () => {
                 "http://localhost/api/ingest/test-org/results",
                 {
                     headers: {
-                        "x-api-key": "valid-key",
+                        [HEADERS.API.INGEST_API_KEY]: "valid-key",
                     },
                 }
             );
@@ -256,7 +259,7 @@ describe("proxy middleware", () => {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const response = await (middleware as any)(request, {} as any);
 
-            expect(response?.headers.get("x-tenant-slug")).toBe("global");
+            expect(response?.headers.get(HEADERS.TENANT_SLUG)).toBe("global");
         });
 
         it("ignores www subdomain", async () => {
@@ -269,7 +272,7 @@ describe("proxy middleware", () => {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const response = await (middleware as any)(request, {} as any);
 
-            expect(response?.headers.get("x-tenant-slug")).toBe("global");
+            expect(response?.headers.get(HEADERS.TENANT_SLUG)).toBe("global");
         });
 
         it("ignores vercel.app domains", async () => {
@@ -282,7 +285,7 @@ describe("proxy middleware", () => {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const response = await (middleware as any)(request, {} as any);
 
-            expect(response?.headers.get("x-tenant-slug")).toBe("global");
+            expect(response?.headers.get(HEADERS.TENANT_SLUG)).toBe("global");
         });
     });
 });
