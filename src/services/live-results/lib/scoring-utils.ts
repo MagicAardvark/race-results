@@ -1,4 +1,4 @@
-import { ScoringModes, TrohpyConfiguration } from "@/dto/events";
+import { ScoringModes, TrophyConfiguration } from "@/dto/events";
 import { EventSegment, Run, RunStatus } from "@/dto/live-results";
 import { RawRunData, RawRunStatus } from "@/dto/live-results/ingest";
 import { InterimProcessedEntry } from "@/services/live-results/lib/types";
@@ -106,7 +106,7 @@ export function consolidateRunStatusFromAxware(
 }
 
 export function determineTrophyStatus(
-    trophyConfig: TrohpyConfiguration,
+    trophyConfig: TrophyConfiguration,
     classPosition: number,
     totalEntries: number
 ): boolean {
