@@ -1,63 +1,11 @@
 import { describe, it, expect } from "vitest";
 import { renderWithProviders, screen, userEvent } from "@/__tests__/test-utils";
 import { ClassResultEntry } from "./class-result-entry";
-import type { ClassResult } from "../../types";
+import type { ResultsEntry } from "@/dto/live-results";
 import { DisplayMode } from "../../types";
+import { mockClassResults } from "@/__tests__/mocks/mock-class-results";
 
-const mockEntry: ClassResult = {
-    car: "2022 Porsche GT4",
-    carClassGroup: "SS",
-    carClass: "SS",
-    color: "Frozen Berry",
-    name: "Sarah Johnson",
-    number: "35",
-    position: "1T",
-    paxPosition: 6,
-    runInfo: {
-        cleanCount: 4,
-        coneCount: 9,
-        dnfCount: 1,
-        toFirstInClass: 0,
-        toNextInClass: 0,
-        toFirstInPax: 0.961,
-        toNextInPax: 0.195,
-        runs: [
-            {
-                number: 1,
-                status: "CLEAN",
-                time: 58.524,
-                coneCount: 0,
-                isBest: false,
-            },
-            {
-                number: 2,
-                status: "CLEAN",
-                time: 57.646,
-                coneCount: 0,
-                isBest: false,
-            },
-            {
-                number: 3,
-                status: "CLEAN",
-                time: 57.414,
-                coneCount: 0,
-                isBest: false,
-            },
-            {
-                number: 4,
-                status: "CLEAN",
-                time: 57.222,
-                coneCount: 0,
-                isBest: true,
-            },
-        ],
-        total: 57.222,
-        paxTime: 47.837,
-        rallyCrossTime: 0,
-        rallyCrossToFirst: 0,
-        rallyCrossToNext: 0,
-    },
-};
+const mockEntry: ResultsEntry = mockClassResults.results[0]!.entries[0]!;
 
 describe("ClassResultEntry", () => {
     it("renders driver information", () => {
@@ -79,6 +27,7 @@ describe("ClassResultEntry", () => {
             }
         );
 
+        // Position shows "1T" because isTrophy is true
         expect(screen.getByText("1T")).toBeVisible();
         expect(screen.getByText("6")).toBeVisible();
     });
@@ -100,9 +49,12 @@ describe("ClassResultEntry", () => {
     });
 
     it("highlights PAX leader", () => {
-        const paxLeader: ClassResult = {
+        const paxLeader: ResultsEntry = {
             ...mockEntry,
-            paxPosition: 1,
+            indexedPosition: {
+                ...mockEntry.indexedPosition,
+                position: 1,
+            },
         };
 
         const { container } = renderWithProviders(
@@ -140,12 +92,19 @@ describe("ClassResultEntry", () => {
     });
 
     it("shows N/A when no runs exist", () => {
-        const entryWithoutRuns: ClassResult = {
+        const entryWithoutRuns: ResultsEntry = {
             ...mockEntry,
-            runInfo: {
-                ...mockEntry.runInfo,
-                runs: [],
-            },
+            segments: [
+                {
+                    name: "Segment 1",
+                    indexedTotalTime: null,
+                    rawTotalTime: null,
+                    totalClean: 0,
+                    totalCones: 0,
+                    totalDNF: 0,
+                    runs: {},
+                },
+            ],
         };
 
         renderWithProviders(
@@ -155,25 +114,15 @@ describe("ClassResultEntry", () => {
             />
         );
 
-        expect(screen.getByText("N/A")).toBeVisible();
+        // N/A appears multiple times (best time and last run), check that at least one is visible
+        const naElements = screen.getAllByText("N/A");
+        expect(naElements.length).toBeGreaterThan(0);
+        expect(naElements[0]).toBeVisible();
     });
 
     it("renders rallycross mode correctly", () => {
-        const rallycrossEntry: ClassResult = {
-            ...mockEntry,
-            runInfo: {
-                ...mockEntry.runInfo,
-                rallyCrossTime: 60.5,
-                rallyCrossToFirst: 0,
-                rallyCrossToNext: 1.2,
-            },
-        };
-
         renderWithProviders(
-            <ClassResultEntry
-                entry={rallycrossEntry}
-                allEntries={[rallycrossEntry]}
-            />,
+            <ClassResultEntry entry={mockEntry} allEntries={[mockEntry]} />,
             {
                 liveData: {
                     displayMode: DisplayMode.rallycross,
@@ -186,19 +135,8 @@ describe("ClassResultEntry", () => {
     });
 
     it("renders position badge without PAX in rallycross mode", () => {
-        const rallycrossEntry: ClassResult = {
-            ...mockEntry,
-            runInfo: {
-                ...mockEntry.runInfo,
-                rallyCrossTime: 60.5,
-            },
-        };
-
         renderWithProviders(
-            <ClassResultEntry
-                entry={rallycrossEntry}
-                allEntries={[rallycrossEntry]}
-            />,
+            <ClassResultEntry entry={mockEntry} allEntries={[mockEntry]} />,
             {
                 liveData: {
                     displayMode: DisplayMode.rallycross,

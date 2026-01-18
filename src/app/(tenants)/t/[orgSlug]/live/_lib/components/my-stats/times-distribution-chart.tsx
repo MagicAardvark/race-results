@@ -44,40 +44,44 @@ export function TimesDistributionChart({
             driverId: string;
         }> = [];
 
-        if (timeType === "pax" && paxResults) {
-            data = paxResults
+        if (timeType === "pax" && paxResults?.results) {
+            data = paxResults.results
                 .map((driver) => {
-                    const driverId = createDriverId(driver);
-                    return {
-                        time: driver.runInfo.paxTime,
-                        name: driver.name,
-                        number: driver.number,
-                        carClass: driver.carClass,
-                        position: driver.paxPosition,
-                        isSelected: driverId === selectedDriverId,
-                        driverId,
-                    };
-                })
-                .filter((d) => d.time != null && !isNaN(d.time));
-        } else if (timeType === "raw" && rawResults) {
-            data = rawResults
-                .map((result) => {
                     const driverId = createDriverId({
-                        name: result.entryInfo.name,
-                        number: result.entryInfo.number.toString(),
-                        carClass: result.entryInfo.carClass,
+                        name: driver.driverName,
+                        number: driver.carNumber,
+                        carClass: driver.class,
                     });
                     return {
-                        time: result.time,
-                        name: result.entryInfo.name,
-                        number: result.entryInfo.number.toString(),
-                        carClass: result.entryInfo.carClass,
-                        position: result.position,
+                        time: driver.indexedTotalTime ?? 0,
+                        name: driver.driverName,
+                        number: driver.carNumber,
+                        carClass: driver.class,
+                        position: driver.indexedPosition.position,
                         isSelected: driverId === selectedDriverId,
                         driverId,
                     };
                 })
-                .filter((d) => d.time != null && !isNaN(d.time));
+                .filter((d) => d.time != null && !isNaN(d.time) && d.time > 0);
+        } else if (timeType === "raw" && rawResults?.results) {
+            data = rawResults.results
+                .map((result) => {
+                    const driverId = createDriverId({
+                        name: result.driverName,
+                        number: result.carNumber,
+                        carClass: result.class,
+                    });
+                    return {
+                        time: result.rawTotalTime ?? 0,
+                        name: result.driverName,
+                        number: result.carNumber,
+                        carClass: result.class,
+                        position: result.rawPosition.position,
+                        isSelected: driverId === selectedDriverId,
+                        driverId,
+                    };
+                })
+                .filter((d) => d.time != null && !isNaN(d.time) && d.time > 0);
         }
 
         // Sort by time (fastest first)

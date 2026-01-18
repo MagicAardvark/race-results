@@ -32,7 +32,7 @@ describe("ClassResults", () => {
     it("renders class links when results are available", () => {
         renderWithProviders(<ClassResults />, {
             liveData: {
-                classResults: mockClassResults.results,
+                classResults: mockClassResults,
             },
         });
 
@@ -44,11 +44,13 @@ describe("ClassResults", () => {
     it("renders all class results when no filters are applied", () => {
         renderWithProviders(<ClassResults />, {
             liveData: {
-                classResults: mockClassResults.results,
+                classResults: mockClassResults,
             },
         });
 
-        const ssHeadings = screen.getAllByRole("heading", { name: /SS/i });
+        const ssHeadings = screen.getAllByRole("heading", {
+            name: /Super Street/i,
+        });
         expect(ssHeadings.length).toBeGreaterThan(0);
     });
 
@@ -56,7 +58,7 @@ describe("ClassResults", () => {
         const user = userEvent.setup();
         renderWithProviders(<ClassResults />, {
             liveData: {
-                classResults: mockClassResults.results,
+                classResults: mockClassResults,
             },
         });
 

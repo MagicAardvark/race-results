@@ -1,7 +1,7 @@
 type PositionTimeCardProps = {
     title: string;
     position: string | number | null | undefined;
-    time: number | null | undefined;
+    time: number | string | null | undefined;
     timeLabel?: string;
     gapToFirst?: number | null;
     gapLabel?: string;
@@ -15,6 +15,13 @@ export function PositionTimeCard({
     gapToFirst,
     gapLabel,
 }: PositionTimeCardProps) {
+    const displayTime =
+        time === null || time === undefined
+            ? "N/A"
+            : typeof time === "string"
+              ? time
+              : time.toFixed(3);
+
     return (
         <div className="rounded-lg border p-3 sm:p-4">
             <h3 className="text-muted-foreground text-xs font-medium sm:text-sm">
@@ -32,16 +39,16 @@ export function PositionTimeCard({
                         <p className="text-muted-foreground text-xs">
                             {timeLabel}
                         </p>
-                        <p className="text-xl font-bold sm:text-2xl">
-                            {time.toFixed(3)}
+                        <p className="font-mono text-xl font-bold sm:text-2xl">
+                            {displayTime}
                         </p>
                     </div>
                 )}
                 {gapToFirst !== null && gapToFirst !== undefined && (
                     <p className="text-muted-foreground mt-1 text-xs sm:text-sm">
-                        {gapToFirst > 0
-                            ? `+${gapToFirst.toFixed(3)}s from first`
-                            : gapLabel || "Leading"}
+                        {gapToFirst === 0
+                            ? gapLabel || ""
+                            : `+${Math.abs(gapToFirst).toFixed(3)}s from first`}
                     </p>
                 )}
             </div>

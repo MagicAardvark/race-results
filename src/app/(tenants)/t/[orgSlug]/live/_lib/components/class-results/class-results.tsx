@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo, useCallback } from "react";
 import { useLiveData } from "../../hooks/useLiveData";
 import { useUrlFilters } from "../../hooks/useUrlFilters";
 import { ClassLinks } from "./class-links";
@@ -11,36 +12,49 @@ export const ClassResults = () => {
     const { getFilters, updateFilters } = useUrlFilters();
 
     // Get filtered classes from URL search params
-    const filteredClasses = getFilters("classes", classNames);
+    const filteredClasses = useMemo(
+        () => getFilters("classes", classNames),
+        [getFilters, classNames]
+    );
+
+    const handleFilteredClasses = useCallback(
+        (toggleClass: string) => {
+            const index = filteredClasses.indexOf(toggleClass);
+            const newFilters =
+                index === -1
+                    ? [...filteredClasses, toggleClass]
+                    : filteredClasses.filter((c) => c !== toggleClass);
+            updateFilters("classes", newFilters);
+        },
+        [filteredClasses, updateFilters]
+    );
+
+    const clearFilteredClasses = useCallback(() => {
+        updateFilters("classes", []);
+    }, [updateFilters]);
+
+    const classResultsElements = useMemo(
+        () =>
+            classNames
+                .filter((classKey) => {
+                    // Hide elements that are not selected filters
+                    return (
+                        filteredClasses.length === 0 ||
+                        filteredClasses.includes(classKey)
+                    );
+                })
+                .map((classKey) => (
+                    <IndividualClassResults
+                        key={classKey}
+                        className={classKey}
+                    />
+                )),
+        [classNames, filteredClasses]
+    );
 
     if (!classResults) {
         return <EmptyState message="No results available" />;
     }
-
-    const handleFilteredClasses = (toggleClass: string) => {
-        const index = filteredClasses.indexOf(toggleClass);
-        const newFilters =
-            index === -1
-                ? [...filteredClasses, toggleClass]
-                : filteredClasses.filter((c) => c !== toggleClass);
-        updateFilters("classes", newFilters);
-    };
-
-    const clearFilteredClasses = () => {
-        updateFilters("classes", []);
-    };
-
-    const classResultsElements = classNames
-        .filter((classKey) => {
-            // Hide elements that are not selected filters
-            return (
-                filteredClasses.length === 0 ||
-                filteredClasses.includes(classKey)
-            );
-        })
-        .map((classKey) => (
-            <IndividualClassResults key={classKey} className={classKey} />
-        ));
 
     return (
         <div>

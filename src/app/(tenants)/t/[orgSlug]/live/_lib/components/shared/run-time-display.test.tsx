@@ -1,15 +1,16 @@
 import { describe, it, expect } from "vitest";
 import { renderWithProviders, screen } from "@/__tests__/test-utils";
 import { RunTimeDisplay } from "./run-time-display";
-import type { Run } from "../../types";
+import type { Run } from "@/dto/live-results";
 
 describe("RunTimeDisplay", () => {
     it("renders clean run time", () => {
         const run: Run = {
-            number: 1,
-            status: "CLEAN",
+            status: "clean",
             time: 57.222,
-            coneCount: 0,
+            penalty: 0,
+            indexedTotalTime: 57.222,
+            rawTotalTime: 57.222,
             isBest: false,
         };
 
@@ -20,10 +21,11 @@ describe("RunTimeDisplay", () => {
 
     it("renders dirty run time", () => {
         const run: Run = {
-            number: 2,
-            status: "DIRTY",
+            status: "dirty",
             time: 58.524,
-            coneCount: 2,
+            penalty: 2,
+            indexedTotalTime: 60.524,
+            rawTotalTime: 60.524,
             isBest: false,
         };
 
@@ -32,12 +34,13 @@ describe("RunTimeDisplay", () => {
         expect(screen.getByText(/58\.524/i)).toBeVisible();
     });
 
-    it("renders DNF run", () => {
+    it("renders dnf run", () => {
         const run: Run = {
-            number: 3,
-            status: "DNF",
+            status: "dnf",
             time: 0,
-            coneCount: 0,
+            penalty: 0,
+            indexedTotalTime: null,
+            rawTotalTime: null,
             isBest: false,
         };
 
@@ -48,10 +51,11 @@ describe("RunTimeDisplay", () => {
 
     it("applies bold styling for best run", () => {
         const run: Run = {
-            number: 4,
-            status: "CLEAN",
+            status: "clean",
             time: 57.222,
-            coneCount: 0,
+            penalty: 0,
+            indexedTotalTime: 57.222,
+            rawTotalTime: 57.222,
             isBest: true,
         };
 
@@ -63,10 +67,11 @@ describe("RunTimeDisplay", () => {
 
     it("does not apply bold styling for non-best run", () => {
         const run: Run = {
-            number: 1,
-            status: "CLEAN",
+            status: "clean",
             time: 57.222,
-            coneCount: 0,
+            penalty: 0,
+            indexedTotalTime: 57.222,
+            rawTotalTime: 57.222,
             isBest: false,
         };
 

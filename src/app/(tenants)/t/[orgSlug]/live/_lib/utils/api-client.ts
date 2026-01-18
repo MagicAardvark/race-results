@@ -4,6 +4,7 @@
 type FetchOptions = {
     cache?: RequestCache;
     next?: { revalidate?: number };
+    headers?: HeadersInit;
 };
 
 export async function fetchJson<T>(
@@ -14,6 +15,7 @@ export async function fetchJson<T>(
         const res = await fetch(url, {
             cache: options.cache,
             next: options.next,
+            headers: options.headers,
         });
 
         if (!res.ok) {

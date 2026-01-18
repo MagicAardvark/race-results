@@ -76,7 +76,9 @@ A comprehensive live timing system for race events, allowing real-time viewing o
 
 ### API Integration
 
-- Fetches from external live timing API endpoints
+- **Production**: Fetches from internal API routes (`/api/[orgSlug]/live/results/*`)
+- **Development**: Supports local JSON files or local API routes
+- **Authentication**: Automatically forwards cookies for authenticated requests
 - Supports autocross and rallycross modes
 - Handles missing/null data gracefully
 
@@ -155,6 +157,30 @@ live/
 - Data includes: class results, PAX results, raw results, run work, and feature flags
 - Data is provided to client components via `LiveResultsProvider` context
 
+#### Data Sources
+
+The system supports multiple data sources based on configuration:
+
+1. **Local Files** (Development): When `USE_LOCAL_FILES=true`, reads from `/datasets/live-results/live/results/*.json`
+2. **API Routes** (Production): Fetches from `/api/[orgSlug]/live/results/{class|indexed|raw|runwork}`
+
+#### API Route Structure
+
+- `/api/[orgSlug]/live/results/class` - Class results
+- `/api/[orgSlug]/live/results/indexed` - PAX (indexed) results
+- `/api/[orgSlug]/live/results/raw` - Raw results
+- `/api/[orgSlug]/live/runwork` - Work/run assignments
+
+These routes are served by the `liveResultsService` which provides cached results data.
+
+#### Authentication
+
+When fetching from API routes, the system automatically:
+
+- Forwards cookies from the incoming request for authentication
+- Uses same-domain requests (localhost for local dev, same Vercel domain for production)
+- Ensures cookies work properly by detecting the environment and using appropriate base URLs
+
 ### Display Modes
 
 The system supports two display modes:
@@ -217,28 +243,68 @@ These flags are configured in the global admin panel and affect navigation visib
 
 ## 🚀 Setup & Configuration
 
-### API Endpoints
+### Configuration
 
-Live timing data is fetched from external API endpoints. Configure these in `_lib/config/config.ts`:
+Live timing data fetching is configured in `_lib/config/config.ts`:
 
 ```typescript
 export const LIVE_TIMING_CONFIG = {
-    classResults: process.env.CLASS_RESULTS_JSON_URL || "...",
-    paxResults: process.env.PAX_RESULTS_JSON_URL || "...",
-    rawResults: process.env.RAW_RESULTS_JSON_URL || "...",
-    runWork: process.env.RUN_WORK_JSON_URL || "...",
+    useLocalFiles: process.env.USE_LOCAL_FILES === "true",
+    getApiUrl: (
+        orgSlug: string,
+        endpoint: "class" | "indexed" | "raw" | "runwork"
+    ) => {
+        if (LIVE_TIMING_CONFIG.useLocalFiles) {
+            // Returns paths like "/datasets/live-results/live/results/class.json"
+            return localPaths[endpoint];
+        }
+        // Returns API routes like "/api/[orgSlug]/live/results/class"
+        return `/api/${orgSlug}/live/results/${endpoint}`;
+    },
+    defaults: {
+        expectedRuns: parseInt(process.env.EXPECTED_RUNS || "4", 10),
+        displayMode: "autocross" as const,
+    },
 };
 ```
 
 ### Environment Variables
 
-Set these environment variables to configure the API endpoints:
+#### Development Mode
 
-- `CLASS_RESULTS_JSON_URL` - Class results endpoint
-- `PAX_RESULTS_JSON_URL` - PAX results endpoint
-- `RAW_RESULTS_JSON_URL` - Raw results endpoint
-- `RUN_WORK_JSON_URL` - Work/run order endpoint
+- `USE_LOCAL_FILES=true` - Use local JSON files from `/datasets/live-results/live/results/` instead of API routes
 - `EXPECTED_RUNS` - Expected number of runs per driver (default: 4)
+
+#### Production Mode
+
+- `APP_URL` - Base URL for the application (e.g., `https://race-results-beta.vercel.app`)
+    - Used when fetching API routes from server components
+    - If not set, uses `VERCEL_URL` or defaults to `http://localhost:3000`
+- `VERCEL_URL` - Automatically set by Vercel (used as fallback if `APP_URL` not set)
+- `EXPECTED_RUNS` - Expected number of runs per driver (default: 4)
+
+#### Data Source Selection
+
+The system automatically selects the data source:
+
+1. **If `USE_LOCAL_FILES=true`**: Reads from local JSON files
+2. **Otherwise**: Fetches from API routes at `/api/[orgSlug]/live/results/*`
+
+#### Local Development
+
+When running locally:
+
+- Automatically uses `http://localhost:3000` for API routes (even if `APP_URL` is set)
+- Ensures cookies work properly for authentication
+- Can use local files by setting `USE_LOCAL_FILES=true`
+
+#### Production Deployment
+
+When deployed on Vercel:
+
+- Uses `APP_URL` or `VERCEL_URL` for API route base URL
+- Cookies are forwarded automatically for same-domain requests
+- API routes are served by `liveResultsService` with cached data
 
 ## 📝 Technical Details
 

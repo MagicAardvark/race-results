@@ -1,50 +1,53 @@
 import { describe, it, expect } from "vitest";
 import { renderWithProviders, screen } from "@/__tests__/test-utils";
 import { RunDisplay } from "./run-display";
-import type { Run } from "../../types";
+import type { Run } from "@/dto/live-results";
 
 describe("RunDisplay", () => {
     it("renders clean run", () => {
         const run: Run = {
-            number: 1,
-            status: "CLEAN",
+            status: "clean",
             time: 57.222,
-            coneCount: 0,
+            penalty: 0,
+            indexedTotalTime: 57.222,
+            rawTotalTime: 57.222,
             isBest: false,
         };
 
-        renderWithProviders(<RunDisplay run={run} />);
+        renderWithProviders(<RunDisplay runNumber={1} run={run} />);
 
         expect(screen.getByText(/1/i)).toBeVisible();
         expect(screen.getByText(/57\.222/i)).toBeVisible();
     });
 
-    it("renders dirty run with cone count", () => {
+    it("renders dirty run with penalty", () => {
         const run: Run = {
-            number: 2,
-            status: "DIRTY",
+            status: "dirty",
             time: 58.524,
-            coneCount: 2,
+            penalty: 2,
+            indexedTotalTime: 60.524,
+            rawTotalTime: 60.524,
             isBest: false,
         };
 
-        renderWithProviders(<RunDisplay run={run} />);
+        renderWithProviders(<RunDisplay runNumber={2} run={run} />);
 
         expect(screen.getByText(/Run 2/i)).toBeVisible();
-        // Dirty runs show time+coneCount format: "58.524+2"
+        // Dirty runs show time+penalty format: "58.524+2"
         expect(screen.getByText(/58\.524\+2/i)).toBeVisible();
     });
 
-    it("renders DNF run", () => {
+    it("renders dnf run", () => {
         const run: Run = {
-            number: 3,
-            status: "DNF",
+            status: "dnf",
             time: 0,
-            coneCount: 0,
+            penalty: 0,
+            indexedTotalTime: null,
+            rawTotalTime: null,
             isBest: false,
         };
 
-        renderWithProviders(<RunDisplay run={run} />);
+        renderWithProviders(<RunDisplay runNumber={3} run={run} />);
 
         expect(screen.getByText(/3/i)).toBeVisible();
         expect(screen.getByText(/DNF/i)).toBeVisible();
@@ -52,14 +55,17 @@ describe("RunDisplay", () => {
 
     it("renders best run with highlight", () => {
         const run: Run = {
-            number: 4,
-            status: "CLEAN",
+            status: "clean",
             time: 57.222,
-            coneCount: 0,
+            penalty: 0,
+            indexedTotalTime: 57.222,
+            rawTotalTime: 57.222,
             isBest: true,
         };
 
-        const { container } = renderWithProviders(<RunDisplay run={run} />);
+        const { container } = renderWithProviders(
+            <RunDisplay runNumber={4} run={run} />
+        );
 
         const element = container.querySelector("span[data-slot='badge']");
         expect(element?.className).toBeDefined();
@@ -68,33 +74,37 @@ describe("RunDisplay", () => {
 
     it("does not highlight non-best run", () => {
         const run: Run = {
-            number: 1,
-            status: "CLEAN",
+            status: "clean",
             time: 57.222,
-            coneCount: 0,
+            penalty: 0,
+            indexedTotalTime: 57.222,
+            rawTotalTime: 57.222,
             isBest: false,
         };
 
-        const { container } = renderWithProviders(<RunDisplay run={run} />);
+        const { container } = renderWithProviders(
+            <RunDisplay runNumber={1} run={run} />
+        );
 
         const element = container.querySelector("span[data-slot='badge']");
         expect(element?.className).toBeDefined();
         expect(element?.className).not.toMatch(/ring-green/);
     });
 
-    it("renders run with single cone", () => {
+    it("renders run with single penalty", () => {
         const run: Run = {
-            number: 2,
-            status: "DIRTY",
+            status: "dirty",
             time: 58.524,
-            coneCount: 1,
+            penalty: 1,
+            indexedTotalTime: 60.524,
+            rawTotalTime: 60.524,
             isBest: false,
         };
 
-        renderWithProviders(<RunDisplay run={run} />);
+        renderWithProviders(<RunDisplay runNumber={2} run={run} />);
 
         expect(screen.getByText(/Run 2/i)).toBeVisible();
-        // Dirty runs show time+coneCount format: "58.524+1"
+        // Dirty runs show time+penalty format: "58.524+1"
         expect(screen.getByText(/58\.524\+1/i)).toBeVisible();
     });
 });

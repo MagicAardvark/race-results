@@ -13,7 +13,7 @@ describe("GapDisplay", () => {
     it("renders gap to first", () => {
         renderWithProviders(<GapDisplay gapToFirst={1.234} />);
 
-        expect(screen.getByText(/First: \+1\.234s/)).toBeVisible();
+        expect(screen.getByText(/First: 1\.234s/)).toBeVisible();
     });
 
     it("renders gap to next when provided", () => {
@@ -21,14 +21,14 @@ describe("GapDisplay", () => {
             <GapDisplay gapToFirst={1.234} gapToNext={0.567} />
         );
 
-        expect(screen.getByText(/First: \+1\.234s/)).toBeVisible();
-        expect(screen.getByText(/Next: \+0\.567s/)).toBeVisible();
+        expect(screen.getByText(/First: 1\.234s/)).toBeVisible();
+        expect(screen.getByText(/Next: 0\.567s/)).toBeVisible();
     });
 
     it("does not render gap to next when zero", () => {
         renderWithProviders(<GapDisplay gapToFirst={1.234} gapToNext={0} />);
 
-        expect(screen.getByText(/First: \+1\.234s/)).toBeVisible();
+        expect(screen.getByText(/First: 1\.234s/)).toBeVisible();
         expect(screen.queryByText(/Next:/)).not.toBeInTheDocument();
     });
 
@@ -51,7 +51,7 @@ describe("GapDisplay", () => {
             <GapDisplay gapToFirst={2.5} maxGap={5.0} allEntries={[]} />
         );
 
-        expect(screen.getByText(/First: \+2\.500s/)).toBeVisible();
+        expect(screen.getByText(/First: 2\.500s/)).toBeVisible();
     });
 
     it("calculates maxGap from allEntries when not provided", () => {
@@ -67,7 +67,7 @@ describe("GapDisplay", () => {
             <GapDisplay gapToFirst={2.5} allEntries={allEntries} />
         );
 
-        expect(screen.getByText(/First: \+2\.500s/)).toBeVisible();
+        expect(screen.getByText(/First: 2\.500s/)).toBeVisible();
     });
 
     it("filters out entries with same gap", () => {
@@ -78,6 +78,6 @@ describe("GapDisplay", () => {
         );
 
         // Should not show duplicate car for same gap
-        expect(screen.getByText(/First: \+1\.234s/)).toBeVisible();
+        expect(screen.getByText(/First: 1\.234s/)).toBeVisible();
     });
 });

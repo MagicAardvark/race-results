@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useLiveData } from "../../hooks/useLiveData";
-import { getClassResultKey } from "../../utils/key-generators";
 import { ClassResultEntry } from "./class-result-entry";
 
 type IndividualClassResultsProps = {
@@ -12,10 +11,10 @@ type IndividualClassResultsProps = {
 export const IndividualClassResults = ({
     className,
 }: IndividualClassResultsProps) => {
-    const { classResults } = useLiveData();
-    const results = classResults?.[className] ?? null;
+    const { classResultsMap } = useLiveData();
+    const classData = classResultsMap?.get(className);
 
-    if (!results) {
+    if (!classData) {
         return null;
     }
 
@@ -23,15 +22,15 @@ export const IndividualClassResults = ({
         <div id={className} className="space-y-2">
             <h2 className="cursor-pointer p-2 text-center text-lg font-bold tracking-widest">
                 <Link href={`#${className}`} className="hover:underline">
-                    {className}
+                    {classData.longName || className}
                 </Link>
             </h2>
             <div className="space-y-2">
-                {results.map((entry) => (
+                {classData.entries.map((entry) => (
                     <ClassResultEntry
-                        key={getClassResultKey(entry, className)}
+                        key={entry.entryKey}
                         entry={entry}
-                        allEntries={results}
+                        allEntries={classData.entries}
                     />
                 ))}
             </div>

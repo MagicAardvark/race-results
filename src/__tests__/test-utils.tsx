@@ -4,8 +4,9 @@ import { TenantProvider } from "@/context/TenantContext";
 import { LiveResultsProvider } from "@/app/(tenants)/t/[orgSlug]/live/_lib/context/live-results-context";
 import type { Tenant } from "@/dto/tenants";
 import type {
-    ClassResult,
-    RawResult,
+    ProcessedLiveClassResults,
+    ProcessedLiveIndexResults,
+    ProcessedLiveRawResults,
     RunWork,
 } from "@/app/(tenants)/t/[orgSlug]/live/_lib/types";
 import { DisplayMode } from "@/app/(tenants)/t/[orgSlug]/live/_lib/types";
@@ -13,9 +14,9 @@ import { DisplayMode } from "@/app/(tenants)/t/[orgSlug]/live/_lib/types";
 type CustomRenderOptions = Omit<RenderOptions, "wrapper"> & {
     tenant?: Tenant;
     liveData?: {
-        classResults?: Record<string, ClassResult[]>;
-        paxResults?: ClassResult[];
-        rawResults?: RawResult[];
+        classResults?: ProcessedLiveClassResults | null;
+        paxResults?: ProcessedLiveIndexResults | null;
+        rawResults?: ProcessedLiveRawResults | null;
         runWork?: RunWork | null;
         displayMode?: DisplayMode;
         featureFlags?: Record<string, boolean>;
@@ -39,9 +40,9 @@ const defaultTenant: Tenant = {
 };
 
 const defaultLiveData = {
-    classResults: {} as Record<string, ClassResult[]>,
-    paxResults: [] as ClassResult[],
-    rawResults: [] as RawResult[],
+    classResults: null as ProcessedLiveClassResults | null,
+    paxResults: null as ProcessedLiveIndexResults | null,
+    rawResults: null as ProcessedLiveRawResults | null,
     runWork: null as RunWork | null,
     displayMode: DisplayMode.autocross,
     featureFlags: {},

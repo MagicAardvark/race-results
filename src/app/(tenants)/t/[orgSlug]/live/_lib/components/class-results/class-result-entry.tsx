@@ -1,20 +1,14 @@
 "use client";
 
-import { useState } from "react";
-import type { ClassResult } from "../../types";
+import type { ResultsEntry } from "@/dto/live-results";
 import { DisplayMode } from "../../types";
 import { useLiveData } from "../../hooks/useLiveData";
-import { ResultCard } from "../shared/result-card";
-import { PositionBadge } from "../shared/position-badge";
-import { DriverInfo } from "../shared/driver-info";
-import { TimeValue } from "../shared/time-value";
-import { GapDisplay } from "../shared/gap-display";
-import { RunData } from "./run-data";
-import { RunTimeDisplay } from "./run-time-display";
+import { ResultEntryWrapper } from "../shared/result-entry-wrapper";
+import { formatBestTime, formatClassPosition } from "../shared/time-utils";
 
 type ClassResultEntryProps = {
-    entry: ClassResult;
-    allEntries: ClassResult[];
+    entry: ResultsEntry;
+    allEntries: ResultsEntry[];
 };
 
 export const ClassResultEntry = ({
@@ -22,67 +16,40 @@ export const ClassResultEntry = ({
     allEntries,
 }: ClassResultEntryProps) => {
     const { displayMode } = useLiveData();
-    const [showRuns, setShowRuns] = useState(false);
-    const isPaxLeader = entry.paxPosition === 1;
-    const lastRun =
-        entry.runInfo.runs.length > 0
-            ? entry.runInfo.runs[entry.runInfo.runs.length - 1]
-            : null;
-
+    const isPaxLeader = entry.indexedPosition.position === 1;
     const isRallycross = displayMode === DisplayMode.rallycross;
+    const bestTimeDisplay = formatBestTime(entry);
+
+    // For rallycross, use rawTotalTime as placeholder
+    // TODO: Implement proper rallycross time calculation if needed
+    const rallyCrossTime = isRallycross ? (entry.rawTotalTime ?? 0) : 0;
 
     return (
-        <ResultCard
-            onClick={() => setShowRuns(!showRuns)}
+        <ResultEntryWrapper
+            entry={entry}
+            position={{
+                label: isRallycross ? "Class" : "Pos",
+                value: formatClassPosition(
+                    entry.classPosition.position,
+                    entry.isTrophy
+                ),
+                secondaryLabel: isRallycross ? undefined : "PAX",
+                secondaryValue: isRallycross
+                    ? undefined
+                    : entry.indexedPosition.position,
+            }}
+            time={{
+                label: isRallycross ? "Total" : "Best",
+                value: isRallycross ? rallyCrossTime : bestTimeDisplay,
+            }}
+            gap={{
+                gapToFirst: entry.classPosition.toFirst ?? 0,
+                gapToNext: entry.classPosition.toNext ?? 0,
+                allEntries: allEntries.map((e) => ({
+                    gapToFirst: e.classPosition.toFirst ?? 0,
+                })),
+            }}
             isHighlighted={isPaxLeader}
-        >
-            <PositionBadge
-                label={isRallycross ? "Class" : "Pos"}
-                value={entry.position}
-                secondaryLabel={isRallycross ? undefined : "PAX"}
-                secondaryValue={isRallycross ? undefined : entry.paxPosition}
-            />
-            <DriverInfo
-                carClass={entry.carClass}
-                number={entry.number}
-                name={entry.name}
-                car={entry.car}
-                color={entry.color}
-            />
-            <TimeValue
-                label={isRallycross ? "Total" : "Best"}
-                value={
-                    isRallycross
-                        ? entry.runInfo.rallyCrossTime
-                        : entry.runInfo.total
-                }
-                secondaryLabel="Last"
-                secondaryValue={
-                    lastRun ? <RunTimeDisplay run={lastRun} /> : "N/A"
-                }
-            />
-            <GapDisplay
-                gapToFirst={
-                    isRallycross
-                        ? entry.runInfo.rallyCrossToFirst
-                        : entry.runInfo.toFirstInClass
-                }
-                gapToNext={
-                    isRallycross
-                        ? entry.runInfo.rallyCrossToNext
-                        : entry.runInfo.toNextInClass
-                }
-                allEntries={allEntries.map((e) => ({
-                    gapToFirst: isRallycross
-                        ? e.runInfo.rallyCrossToFirst
-                        : e.runInfo.toFirstInClass,
-                }))}
-            />
-            {showRuns && (
-                <div className="col-span-12 mt-2 border-t pt-2">
-                    <RunData runInfo={entry.runInfo} />
-                </div>
-            )}
-        </ResultCard>
+        />
     );
 };

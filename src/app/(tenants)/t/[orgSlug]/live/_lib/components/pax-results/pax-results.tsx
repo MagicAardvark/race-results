@@ -1,35 +1,28 @@
 "use client";
 
-import { useMemo } from "react";
+import { useCallback } from "react";
+import type { ResultsEntry } from "@/dto/live-results";
 import { useLiveData } from "../../hooks/useLiveData";
-import { calculateMaxGapFromTimes } from "../../utils/gap-calculator";
-import { getClassResultKey } from "../../utils/key-generators";
+import { useMaxGap } from "../../hooks/useMaxGap";
 import { PaxEntry } from "./pax-entry";
 import { EmptyState } from "../shared/empty-state";
 
 export const PaxResults = () => {
     const { paxResults } = useLiveData();
+    const timeExtractor = useCallback(
+        (entry: ResultsEntry) => entry.indexedTotalTime,
+        []
+    );
+    const maxGap = useMaxGap(paxResults?.results, timeExtractor);
 
-    const maxGap = useMemo(() => {
-        if (!paxResults) return 3.0;
-        const allTimes = paxResults
-            .map((e) => e.runInfo.paxTime)
-            .filter((t): t is number => t != null);
-        return calculateMaxGapFromTimes(allTimes);
-    }, [paxResults]);
-
-    if (!paxResults) {
+    if (!paxResults?.results) {
         return <EmptyState message="No results available" />;
     }
 
     return (
         <div className="space-y-2">
-            {paxResults.map((entry) => (
-                <PaxEntry
-                    key={getClassResultKey(entry)}
-                    entry={entry}
-                    maxGap={maxGap}
-                />
+            {paxResults.results.map((entry) => (
+                <PaxEntry key={entry.entryKey} entry={entry} maxGap={maxGap} />
             ))}
         </div>
     );

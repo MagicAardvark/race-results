@@ -51,8 +51,8 @@ describe("PositionTimeCard", () => {
         expect(screen.getByText(/\+0\.500s from first/i)).toBeVisible();
     });
 
-    it("renders leading when gap is zero", () => {
-        render(
+    it("renders empty string when gap is zero and no gapLabel provided", () => {
+        const { container } = render(
             <PositionTimeCard
                 title="Test"
                 position={1}
@@ -61,7 +61,13 @@ describe("PositionTimeCard", () => {
             />
         );
 
-        expect(screen.getByText("Leading")).toBeVisible();
+        // When gap is 0 and no gapLabel, component shows empty string
+        // The gap paragraph element exists but is empty
+        const gapElement = container.querySelector(
+            "p.text-muted-foreground.mt-1"
+        );
+        expect(gapElement).toBeInTheDocument();
+        expect(gapElement?.textContent).toBe("");
     });
 
     it("renders custom gap label when gap is zero", () => {

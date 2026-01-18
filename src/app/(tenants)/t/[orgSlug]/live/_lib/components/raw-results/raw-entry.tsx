@@ -1,32 +1,31 @@
-import type { RawResult } from "../../types";
-import { ResultCard } from "../shared/result-card";
-import { PositionBadge } from "../shared/position-badge";
-import { DriverInfo } from "../shared/driver-info";
-import { TimeValue } from "../shared/time-value";
-import { GapDisplay } from "../shared/gap-display";
+"use client";
+
+import type { ResultsEntry } from "@/dto/live-results";
+import { ResultEntryWrapper } from "../shared/result-entry-wrapper";
+import { formatBestTime } from "../shared/time-utils";
 
 type RawEntryProps = {
-    entry: RawResult;
+    entry: ResultsEntry;
     maxGap: number;
 };
 
 export const RawEntry = ({ entry, maxGap }: RawEntryProps) => {
     return (
-        <ResultCard>
-            <PositionBadge label="Pos" value={entry.position} />
-            <DriverInfo
-                carClass={entry.entryInfo.carClass}
-                number={entry.entryInfo.number}
-                name={entry.entryInfo.name}
-                car={entry.entryInfo.car}
-                color={entry.entryInfo.color}
-            />
-            <TimeValue label="Raw" value={entry.total} />
-            <GapDisplay
-                gapToFirst={entry.toFirst}
-                gapToNext={entry.toNext}
-                maxGap={maxGap}
-            />
-        </ResultCard>
+        <ResultEntryWrapper
+            entry={entry}
+            position={{
+                label: "Pos",
+                value: entry.rawPosition.position,
+            }}
+            time={{
+                label: "Raw",
+                value: formatBestTime(entry),
+            }}
+            gap={{
+                gapToFirst: entry.rawPosition.toFirst ?? 0,
+                gapToNext: entry.rawPosition.toNext ?? 0,
+                maxGap,
+            }}
+        />
     );
 };

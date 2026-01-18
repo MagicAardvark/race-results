@@ -8,7 +8,11 @@ import { mockClassResults } from "@/__tests__/mocks/mock-class-results";
 import { mockPaxResults } from "@/__tests__/mocks/mock-pax-results";
 import { mockRawResults } from "@/__tests__/mocks/mock-raw-results";
 import { DisplayMode } from "../types";
-import type { ClassResult, RawResult } from "../types";
+import type {
+    ProcessedLiveClassResults,
+    ProcessedLiveIndexResults,
+    ProcessedLiveRawResults,
+} from "../types";
 import type { ValidTenant } from "@/dto/tenants";
 
 const defaultTenant: ValidTenant = {
@@ -29,9 +33,9 @@ const defaultTenant: ValidTenant = {
 
 describe("useLiveData", () => {
     const createWrapper = (liveData: {
-        classResults?: Record<string, ClassResult[]>;
-        paxResults?: ClassResult[];
-        rawResults?: RawResult[];
+        classResults?: ProcessedLiveClassResults | null;
+        paxResults?: ProcessedLiveIndexResults | null;
+        rawResults?: ProcessedLiveRawResults | null;
     }) => {
         const Wrapper = ({ children }: { children: React.ReactNode }) =>
             // eslint-disable-next-line react/no-children-prop
@@ -40,9 +44,9 @@ describe("useLiveData", () => {
                 { tenant: defaultTenant, children: undefined },
                 // eslint-disable-next-line react/no-children-prop
                 React.createElement(LiveResultsProvider, {
-                    classResults: liveData.classResults ?? {},
-                    paxResults: liveData.paxResults ?? [],
-                    rawResults: liveData.rawResults ?? [],
+                    classResults: liveData.classResults ?? null,
+                    paxResults: liveData.paxResults ?? null,
+                    rawResults: liveData.rawResults ?? null,
                     runWork: null,
                     displayMode: DisplayMode.autocross,
                     featureFlags: {},
@@ -56,37 +60,37 @@ describe("useLiveData", () => {
     it("returns class results from context", () => {
         const { result } = renderHook(() => useLiveData(), {
             wrapper: createWrapper({
-                classResults: mockClassResults.results,
+                classResults: mockClassResults,
             }),
         });
 
-        expect(result.current.classResults).toEqual(mockClassResults.results);
+        expect(result.current.classResults).toEqual(mockClassResults);
     });
 
     it("returns pax results from context", () => {
         const { result } = renderHook(() => useLiveData(), {
             wrapper: createWrapper({
-                paxResults: mockPaxResults.results,
+                paxResults: mockPaxResults,
             }),
         });
 
-        expect(result.current.paxResults).toEqual(mockPaxResults.results);
+        expect(result.current.paxResults).toEqual(mockPaxResults);
     });
 
     it("returns raw results from context", () => {
         const { result } = renderHook(() => useLiveData(), {
             wrapper: createWrapper({
-                rawResults: mockRawResults.results,
+                rawResults: mockRawResults,
             }),
         });
 
-        expect(result.current.rawResults).toEqual(mockRawResults.results);
+        expect(result.current.rawResults).toEqual(mockRawResults);
     });
 
     it("returns class names from class results", () => {
         const { result } = renderHook(() => useLiveData(), {
             wrapper: createWrapper({
-                classResults: mockClassResults.results,
+                classResults: mockClassResults,
             }),
         });
 
@@ -106,7 +110,7 @@ describe("useLiveData", () => {
     it("creates driver ID correctly", () => {
         const { result } = renderHook(() => useLiveData(), {
             wrapper: createWrapper({
-                classResults: mockClassResults.results,
+                classResults: mockClassResults,
             }),
         });
 
@@ -122,7 +126,7 @@ describe("useLiveData", () => {
     it("gets all drivers from class results", () => {
         const { result } = renderHook(() => useLiveData(), {
             wrapper: createWrapper({
-                classResults: mockClassResults.results,
+                classResults: mockClassResults,
             }),
         });
 
@@ -137,22 +141,26 @@ describe("useLiveData", () => {
     it("finds driver in class results", () => {
         const { result } = renderHook(() => useLiveData(), {
             wrapper: createWrapper({
-                classResults: mockClassResults.results,
+                classResults: mockClassResults,
             }),
         });
 
-        const classResult = mockClassResults.results.SS[0];
-        const driverId = result.current.createDriverId(classResult);
+        const classEntry = mockClassResults.results[0]!.entries[0]!;
+        const driverId = result.current.createDriverId({
+            name: classEntry.driverName,
+            number: classEntry.carNumber,
+            carClass: classEntry.class,
+        });
         const found = result.current.findDriverInClassResults(driverId);
 
         expect(found).not.toBeNull();
-        expect(found?.name).toBe(classResult.name);
+        expect(found?.driverName).toBe(classEntry.driverName);
     });
 
     it("returns null when driver not found in class results", () => {
         const { result } = renderHook(() => useLiveData(), {
             wrapper: createWrapper({
-                classResults: mockClassResults.results,
+                classResults: mockClassResults,
             }),
         });
 
@@ -164,41 +172,45 @@ describe("useLiveData", () => {
     it("finds driver in pax results", () => {
         const { result } = renderHook(() => useLiveData(), {
             wrapper: createWrapper({
-                paxResults: mockPaxResults.results,
+                paxResults: mockPaxResults,
             }),
         });
 
-        const paxResult = mockPaxResults.results[0];
-        const driverId = result.current.createDriverId(paxResult);
+        const paxEntry = mockPaxResults.results[0]!;
+        const driverId = result.current.createDriverId({
+            name: paxEntry.driverName,
+            number: paxEntry.carNumber,
+            carClass: paxEntry.class,
+        });
         const found = result.current.findDriverInPaxResults(driverId);
 
         expect(found).not.toBeNull();
-        expect(found?.name).toBe(paxResult.name);
+        expect(found?.driverName).toBe(paxEntry.driverName);
     });
 
     it("finds driver in raw results", () => {
         const { result } = renderHook(() => useLiveData(), {
             wrapper: createWrapper({
-                rawResults: mockRawResults.results,
+                rawResults: mockRawResults,
             }),
         });
 
-        const rawResult = mockRawResults.results[0];
+        const rawEntry = mockRawResults.results[0]!;
         const driverId = result.current.createDriverId({
-            name: rawResult.entryInfo.name,
-            number: rawResult.entryInfo.number.toString(),
-            carClass: rawResult.entryInfo.carClass,
+            name: rawEntry.driverName,
+            number: rawEntry.carNumber,
+            carClass: rawEntry.class,
         });
         const found = result.current.findDriverInRawResults(driverId);
 
         expect(found).not.toBeNull();
-        expect(found?.entryInfo.name).toBe(rawResult.entryInfo.name);
+        expect(found?.driverName).toBe(rawEntry.driverName);
     });
 
     it("includes drivers from raw results in getAllDrivers", () => {
         const { result } = renderHook(() => useLiveData(), {
             wrapper: createWrapper({
-                rawResults: mockRawResults.results,
+                rawResults: mockRawResults,
             }),
         });
 
@@ -206,22 +218,21 @@ describe("useLiveData", () => {
         expect(allDrivers.length).toBeGreaterThan(0);
 
         // Check that raw result drivers are included
+        const rawEntry = mockRawResults.results[0]!;
         const rawDriver = allDrivers.find(
-            (d) => d.name === mockRawResults.results[0].entryInfo.name
+            (d) => d.name === rawEntry.driverName
         );
         expect(rawDriver).toBeDefined();
-        expect(rawDriver?.car).toBe(mockRawResults.results[0].entryInfo.car);
-        expect(rawDriver?.color).toBe(
-            mockRawResults.results[0].entryInfo.color
-        );
+        expect(rawDriver?.car).toBe(rawEntry.carModel);
+        expect(rawDriver?.color).toBe(rawEntry.carColor);
     });
 
     it("sorts drivers by name then number in getAllDrivers", () => {
         const { result } = renderHook(() => useLiveData(), {
             wrapper: createWrapper({
-                classResults: mockClassResults.results,
-                paxResults: mockPaxResults.results,
-                rawResults: mockRawResults.results,
+                classResults: mockClassResults,
+                paxResults: mockPaxResults,
+                rawResults: mockRawResults,
             }),
         });
 

@@ -487,9 +487,56 @@ const calendar = await motorsportRegService.getOrganizationCalendar(orgId, {
 
 See [MotorsportReg Service README](./src/services/motorsportreg/README.md) for full documentation.
 
-### Live Timing API
+### Live Timing Results API
 
-Live timing data is fetched from external API endpoints configured in:
+The platform provides API endpoints for retrieving live timing results data:
+
+#### Endpoints
+
+- **GET** `/api/[orgSlug]/live/results/class` - Get class results
+- **GET** `/api/[orgSlug]/live/results/indexed` - Get PAX (indexed) results
+- **GET** `/api/[orgSlug]/live/results/raw` - Get raw results
+- **GET** `/api/[orgSlug]/live/runwork` - Get work/run assignments
+
+#### Authentication
+
+These endpoints use Clerk authentication via cookies. When called from server components:
+
+- Cookies are automatically forwarded from the incoming request
+- Same-domain requests ensure cookies work properly
+- Local development uses `http://localhost:3000` automatically
+- Production uses the configured `APP_URL` or `VERCEL_URL`
+
+#### Data Source
+
+Results are served by `liveResultsService` which provides cached data from ingested live timing snapshots.
+
+#### Usage
+
+These endpoints are primarily used internally by the live timing pages, but can be accessed directly:
+
+```typescript
+// Example: Fetch class results
+const response = await fetch("/api/my-org/live/results/class", {
+    headers: {
+        Cookie: document.cookie, // Include cookies for authentication
+    },
+});
+const classResults = await response.json();
+```
+
+#### Configuration
+
+The live timing system supports multiple data sources:
+
+- **Local Files** (Development): Set `USE_LOCAL_FILES=true` to use JSON files from `/datasets/live-results/live/results/`
+- **API Routes** (Production): Default behavior, fetches from the API routes listed above
+
+See `src/app/(tenants)/t/[orgSlug]/live/README.md` for detailed configuration options.
+
+#### Previous Configuration
+
+Previously, live timing data was fetched from external API endpoints configured in:
 
 - `src/app/(tenants)/t/[orgSlug]/live/lib/config.ts`
 

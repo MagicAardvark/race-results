@@ -1,39 +1,30 @@
-import type { ClassResult } from "../../types";
-import { ResultCard } from "../shared/result-card";
-import { PositionBadge } from "../shared/position-badge";
-import { DriverInfo } from "../shared/driver-info";
-import { TimeValue } from "../shared/time-value";
-import { GapDisplay } from "../shared/gap-display";
+"use client";
+
+import type { ResultsEntry } from "@/dto/live-results";
+import { ResultEntryWrapper } from "../shared/result-entry-wrapper";
 
 type PaxEntryProps = {
-    entry: ClassResult;
+    entry: ResultsEntry;
     maxGap: number;
 };
 
 export const PaxEntry = ({ entry, maxGap }: PaxEntryProps) => {
-    const best = entry.runInfo.runs.find((e) => e.isBest);
-
     return (
-        <ResultCard>
-            <PositionBadge label="PAX" value={entry.paxPosition} />
-            <DriverInfo
-                carClass={entry.carClass}
-                number={entry.number}
-                name={entry.name}
-                car={entry.car}
-                color={entry.color}
-            />
-            <TimeValue
-                label="PAX"
-                value={entry.runInfo.paxTime}
-                secondaryLabel="Raw"
-                secondaryValue={best?.time}
-            />
-            <GapDisplay
-                gapToFirst={entry.runInfo.toFirstInPax}
-                gapToNext={entry.runInfo.toNextInPax}
-                maxGap={maxGap}
-            />
-        </ResultCard>
+        <ResultEntryWrapper
+            entry={entry}
+            position={{
+                label: "PAX",
+                value: entry.indexedPosition.position,
+            }}
+            time={{
+                label: "PAX",
+                value: entry.indexedTotalTime ?? 0,
+            }}
+            gap={{
+                gapToFirst: entry.indexedPosition.toFirst ?? 0,
+                gapToNext: entry.indexedPosition.toNext ?? 0,
+                maxGap,
+            }}
+        />
     );
 };

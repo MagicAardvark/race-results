@@ -7,20 +7,20 @@ import { LIVE_TIMING_CONFIG } from "@/app/(tenants)/t/[orgSlug]/live/_lib/config
 
 // Mock API handlers for MSW
 export const handlers = [
-    // Live timing API endpoints - use environment variables from config
-    http.get(LIVE_TIMING_CONFIG.api.classResults, () => {
+    // Live timing API endpoints - use getApiUrl from config
+    http.get(LIVE_TIMING_CONFIG.getApiUrl("test-org", "class"), () => {
         return HttpResponse.json(mockClassResults);
     }),
 
-    http.get(LIVE_TIMING_CONFIG.api.paxResults, () => {
+    http.get(LIVE_TIMING_CONFIG.getApiUrl("test-org", "indexed"), () => {
         return HttpResponse.json(mockPaxResults);
     }),
 
-    http.get(LIVE_TIMING_CONFIG.api.rawResults, () => {
+    http.get(LIVE_TIMING_CONFIG.getApiUrl("test-org", "raw"), () => {
         return HttpResponse.json(mockRawResults);
     }),
 
-    http.get(LIVE_TIMING_CONFIG.api.runWork, () => {
+    http.get(LIVE_TIMING_CONFIG.getApiUrl("test-org", "runwork"), () => {
         return HttpResponse.json(mockRunWork);
     }),
 
