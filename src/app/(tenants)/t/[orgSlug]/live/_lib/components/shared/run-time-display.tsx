@@ -1,6 +1,6 @@
-import type { Run } from "../../types";
+import type { Run } from "@/dto/live-results";
 import { cn } from "@/lib/utils";
-import { formatRunTime } from "../shared/time-utils";
+import { formatRunTime } from "./time-utils";
 
 type RunTimeDisplayProps = {
     run: Run;

@@ -28,7 +28,7 @@ describe("LiveResultsProvider", () => {
     it("provides class results to children", () => {
         render(
             <LiveResultsProvider
-                classResults={mockClassResults.results}
+                classResults={mockClassResults}
                 paxResults={null}
                 rawResults={null}
                 runWork={null}
@@ -47,7 +47,7 @@ describe("LiveResultsProvider", () => {
         render(
             <LiveResultsProvider
                 classResults={null}
-                paxResults={mockPaxResults.results}
+                paxResults={mockPaxResults}
                 rawResults={null}
                 runWork={null}
                 displayMode={DisplayMode.autocross}
@@ -64,7 +64,7 @@ describe("LiveResultsProvider", () => {
             <LiveResultsProvider
                 classResults={null}
                 paxResults={null}
-                rawResults={mockRawResults.results}
+                rawResults={mockRawResults}
                 runWork={null}
                 displayMode={DisplayMode.autocross}
             >

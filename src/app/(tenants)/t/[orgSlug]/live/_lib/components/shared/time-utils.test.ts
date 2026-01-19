@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { formatTime, formatRunTime } from "./time-utils";
-import type { Run } from "../../types";
+import { formatTime, formatRunTime, formatClassPosition } from "./time-utils";
+import type { Run } from "@/dto/live-results";
 
 describe("formatTime", () => {
     it("formats time to 3 decimal places", () => {
@@ -29,72 +29,105 @@ describe("formatTime", () => {
 });
 
 describe("formatRunTime", () => {
-    it("formats CLEAN run", () => {
+    it("formats clean run", () => {
         const run: Run = {
-            number: 1,
+            status: "clean",
             time: 45.123,
-            status: "CLEAN",
-            coneCount: 0,
+            penalty: 0,
+            indexedTotalTime: 45.123,
+            rawTotalTime: 45.123,
             isBest: false,
         };
         expect(formatRunTime(run)).toBe("45.123");
     });
 
-    it("formats DIRTY run with cone count", () => {
+    it("formats dirty run with penalty", () => {
         const run: Run = {
-            number: 1,
+            status: "dirty",
             time: 45.123,
-            status: "DIRTY",
-            coneCount: 2,
+            penalty: 2,
+            indexedTotalTime: 47.123,
+            rawTotalTime: 47.123,
             isBest: false,
         };
         expect(formatRunTime(run)).toBe("45.123+2");
     });
 
-    it("formats DIRTY run with zero cones", () => {
+    it("formats dirty run with zero penalty (shows as clean)", () => {
         const run: Run = {
-            number: 1,
+            status: "dirty",
             time: 45.123,
-            status: "DIRTY",
-            coneCount: 0,
+            penalty: 0,
+            indexedTotalTime: 45.123,
+            rawTotalTime: 45.123,
             isBest: false,
         };
-        expect(formatRunTime(run)).toBe("45.123+0");
+        // Zero penalty should not show +0
+        expect(formatRunTime(run)).toBe("45.123");
     });
 
-    it("formats DNF run", () => {
+    it("formats dnf run", () => {
         const run: Run = {
-            number: 1,
+            status: "dnf",
             time: 0,
-            status: "DNF",
-            coneCount: 0,
+            penalty: 0,
+            indexedTotalTime: null,
+            rawTotalTime: null,
             isBest: false,
         };
         const result = formatRunTime(run);
         expect(result).toContain("DNF");
-        // Time might be null/undefined, so just check it contains DNF
         expect(result).toMatch(/\(DNF\)/);
     });
 
-    it("formats DSQ run", () => {
+    it("formats dsq run", () => {
         const run: Run = {
-            number: 1,
+            status: "dsq",
             time: 45.123,
-            status: "DSQ",
-            coneCount: 0,
+            penalty: 0,
+            indexedTotalTime: null,
+            rawTotalTime: null,
             isBest: false,
         };
         expect(formatRunTime(run)).toBe("45.123 (DSQ)");
     });
 
-    it("handles zero time in CLEAN run", () => {
+    it("handles zero time in clean run", () => {
         const run: Run = {
-            number: 1,
+            status: "clean",
             time: 0,
-            status: "CLEAN",
-            coneCount: 0,
+            penalty: 0,
+            indexedTotalTime: 0,
+            rawTotalTime: 0,
             isBest: false,
         };
         expect(formatRunTime(run)).toBe("0.000");
+    });
+});
+
+describe("formatClassPosition", () => {
+    it("formats position with T when isTrophy is true", () => {
+        expect(formatClassPosition(1, true)).toBe("1T");
+        expect(formatClassPosition(5, true)).toBe("5T");
+    });
+
+    it("formats position without T when isTrophy is false", () => {
+        expect(formatClassPosition(1, false)).toBe("1");
+        expect(formatClassPosition(5, false)).toBe("5");
+    });
+
+    it("returns N/A for null position", () => {
+        expect(formatClassPosition(null, true)).toBe("N/A");
+        expect(formatClassPosition(null, false)).toBe("N/A");
+    });
+
+    it("returns N/A for undefined position", () => {
+        expect(formatClassPosition(undefined, true)).toBe("N/A");
+        expect(formatClassPosition(undefined, false)).toBe("N/A");
+    });
+
+    it("handles zero position", () => {
+        expect(formatClassPosition(0, true)).toBe("0T");
+        expect(formatClassPosition(0, false)).toBe("0");
     });
 });

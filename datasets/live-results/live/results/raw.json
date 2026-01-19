@@ -19,8 +19,8 @@
             },
             "indexedPosition": {
                 "position": 17,
-                "toNext": -0.0896850000000029,
-                "toFirst": -1.9006400000000028
+                "toNext": 0.0896850000000029,
+                "toFirst": 1.9006400000000028
             },
             "rawPosition": {
                 "position": 1,
@@ -116,18 +116,18 @@
             "sponsor": "",
             "classPosition": {
                 "position": 2,
-                "toNext": -1.2567300000000046,
-                "toFirst": -1.2567300000000046
+                "toNext": 1.2567300000000046,
+                "toFirst": 1.2567300000000046
             },
             "indexedPosition": {
                 "position": 25,
-                "toNext": -0.11136900000001049,
-                "toFirst": -3.1573700000000073
+                "toNext": 0.11136900000001049,
+                "toFirst": 3.1573700000000073
             },
             "rawPosition": {
                 "position": 2,
-                "toNext": -1.2850000000000037,
-                "toFirst": -1.2850000000000037
+                "toNext": 1.2850000000000037,
+                "toFirst": 1.2850000000000037
             },
             "isTrophy": false,
             "summary": {
@@ -228,8 +228,8 @@
             },
             "rawPosition": {
                 "position": 3,
-                "toNext": -4.244999999999997,
-                "toFirst": -5.530000000000001
+                "toNext": 4.244999999999997,
+                "toFirst": 5.530000000000001
             },
             "isTrophy": true,
             "summary": {
@@ -325,13 +325,13 @@
             },
             "indexedPosition": {
                 "position": 2,
-                "toNext": -0.7831280000000049,
-                "toFirst": -0.7831280000000049
+                "toNext": 0.7831280000000049,
+                "toFirst": 0.7831280000000049
             },
             "rawPosition": {
                 "position": 7,
-                "toNext": -0.22000000000000597,
-                "toFirst": -5.962000000000003
+                "toNext": 0.22000000000000597,
+                "toFirst": 5.962000000000003
             },
             "isTrophy": true,
             "summary": {
@@ -422,18 +422,18 @@
             "sponsor": "K-Spec Automotive, Redshift Motorsports",
             "classPosition": {
                 "position": 4,
-                "toNext": -0.36447199999999924,
-                "toFirst": -1.421289999999999
+                "toNext": 0.36447199999999924,
+                "toFirst": 1.421289999999999
             },
             "indexedPosition": {
                 "position": 12,
-                "toNext": -0.012355999999996925,
-                "toFirst": -1.421289999999999
+                "toNext": 0.012355999999996925,
+                "toFirst": 1.421289999999999
             },
             "rawPosition": {
                 "position": 8,
-                "toNext": -0.06899999999999551,
-                "toFirst": -6.030999999999999
+                "toNext": 0.06899999999999551,
+                "toFirst": 6.030999999999999
             },
             "isTrophy": true,
             "summary": {
@@ -524,18 +524,18 @@
             "sponsor": "I anti-seize my lug nuts",
             "classPosition": {
                 "position": 2,
-                "toNext": -0.20303999999999434,
-                "toFirst": -0.20303999999999434
+                "toNext": 0.20303999999999434,
+                "toFirst": 0.20303999999999434
             },
             "indexedPosition": {
                 "position": 6,
-                "toNext": -0.10794399999999627,
-                "toFirst": -0.9861679999999993
+                "toNext": 0.10794399999999627,
+                "toFirst": 0.9861679999999993
             },
             "rawPosition": {
                 "position": 9,
-                "toNext": -0.17099999999999937,
-                "toFirst": -6.201999999999998
+                "toNext": 0.17099999999999937,
+                "toFirst": 6.201999999999998
             },
             "isTrophy": true,
             "summary": {
@@ -626,18 +626,18 @@
             "sponsor": "",
             "classPosition": {
                 "position": 2,
-                "toNext": -0.878224000000003,
-                "toFirst": -0.878224000000003
+                "toNext": 0.878224000000003,
+                "toFirst": 0.878224000000003
             },
             "indexedPosition": {
                 "position": 5,
-                "toNext": -0.027449999999994645,
-                "toFirst": -0.878224000000003
+                "toNext": 0.027449999999994645,
+                "toFirst": 0.878224000000003
             },
             "rawPosition": {
                 "position": 12,
-                "toNext": -0.14800000000000324,
-                "toFirst": -6.578000000000003
+                "toNext": 0.14800000000000324,
+                "toFirst": 6.578000000000003
             },
             "isTrophy": true,
             "summary": {
@@ -733,13 +733,13 @@
             },
             "indexedPosition": {
                 "position": 64,
-                "toNext": -0.027999999999998693,
-                "toFirst": -9.725534000000003
+                "toNext": 0.027999999999998693,
+                "toFirst": 9.725534000000003
             },
             "rawPosition": {
                 "position": 14,
-                "toNext": -0.027999999999998693,
-                "toFirst": -6.798000000000002
+                "toNext": 0.027999999999998693,
+                "toFirst": 6.798000000000002
             },
             "isTrophy": true,
             "summary": {
@@ -814,18 +814,18 @@
             "sponsor": "Driving Forward Together | Flute Fixation",
             "classPosition": {
                 "position": 3,
-                "toNext": -0.1785939999999968,
-                "toFirst": -1.0568179999999998
+                "toNext": 0.1785939999999968,
+                "toFirst": 1.0568179999999998
             },
             "indexedPosition": {
                 "position": 8,
-                "toNext": -0.05019399999999763,
-                "toFirst": -1.0568179999999998
+                "toNext": 0.05019399999999763,
+                "toFirst": 1.0568179999999998
             },
             "rawPosition": {
                 "position": 16,
-                "toNext": -0.005999999999993122,
-                "toFirst": -6.854999999999997
+                "toNext": 0.005999999999993122,
+                "toFirst": 6.854999999999997
             },
             "isTrophy": true,
             "summary": {
@@ -921,13 +921,13 @@
             },
             "indexedPosition": {
                 "position": 18,
-                "toNext": -0.2739529999999988,
-                "toFirst": -2.1745930000000016
+                "toNext": 0.2739529999999988,
+                "toFirst": 2.1745930000000016
             },
             "rawPosition": {
                 "position": 17,
-                "toNext": -0.05500000000000682,
-                "toFirst": -6.910000000000004
+                "toNext": 0.05500000000000682,
+                "toFirst": 6.910000000000004
             },
             "isTrophy": true,
             "summary": {
@@ -1023,13 +1023,13 @@
             },
             "indexedPosition": {
                 "position": 7,
-                "toNext": -0.020456000000002916,
-                "toFirst": -1.0066240000000022
+                "toNext": 0.020456000000002916,
+                "toFirst": 1.0066240000000022
             },
             "rawPosition": {
                 "position": 19,
-                "toNext": -0.2890000000000015,
-                "toFirst": -7.246000000000002
+                "toNext": 0.2890000000000015,
+                "toFirst": 7.246000000000002
             },
             "isTrophy": true,
             "summary": {
@@ -1125,13 +1125,13 @@
             },
             "indexedPosition": {
                 "position": 3,
-                "toNext": -0.060837999999989734,
-                "toFirst": -0.8439659999999947
+                "toNext": 0.060837999999989734,
+                "toFirst": 0.8439659999999947
             },
             "rawPosition": {
                 "position": 21,
-                "toNext": -0.0519999999999996,
-                "toFirst": -7.506999999999998
+                "toNext": 0.0519999999999996,
+                "toFirst": 7.506999999999998
             },
             "isTrophy": true,
             "summary": {
@@ -1222,18 +1222,18 @@
             "sponsor": "PROJECT.Devens | KARCEPTS | baero.tech",
             "classPosition": {
                 "position": 3,
-                "toNext": -1.2833820000000031,
-                "toFirst": -1.4864219999999975
+                "toNext": 1.2833820000000031,
+                "toFirst": 1.4864219999999975
             },
             "indexedPosition": {
                 "position": 19,
-                "toNext": -0.09495700000000085,
-                "toFirst": -2.2695500000000024
+                "toNext": 0.09495700000000085,
+                "toFirst": 2.2695500000000024
             },
             "rawPosition": {
                 "position": 22,
-                "toNext": -0.2120000000000033,
-                "toFirst": -7.719000000000001
+                "toNext": 0.2120000000000033,
+                "toFirst": 7.719000000000001
             },
             "isTrophy": false,
             "summary": {
@@ -1329,13 +1329,13 @@
             },
             "indexedPosition": {
                 "position": 20,
-                "toNext": -0.12066399999999788,
-                "toFirst": -2.3902140000000003
+                "toNext": 0.12066399999999788,
+                "toFirst": 2.3902140000000003
             },
             "rawPosition": {
                 "position": 23,
-                "toNext": -0.013999999999995794,
-                "toFirst": -7.732999999999997
+                "toNext": 0.013999999999995794,
+                "toFirst": 7.732999999999997
             },
             "isTrophy": true,
             "summary": {
@@ -1426,18 +1426,18 @@
             "sponsor": "PROJECT.Devens",
             "classPosition": {
                 "position": 5,
-                "toNext": -0.3896650000000008,
-                "toFirst": -1.8109549999999999
+                "toNext": 0.3896650000000008,
+                "toFirst": 1.8109549999999999
             },
             "indexedPosition": {
                 "position": 16,
-                "toNext": -0.02998200000000395,
-                "toFirst": -1.8109549999999999
+                "toNext": 0.02998200000000395,
+                "toFirst": 1.8109549999999999
             },
             "rawPosition": {
                 "position": 24,
-                "toNext": -0.02300000000000324,
-                "toFirst": -7.756
+                "toNext": 0.02300000000000324,
+                "toFirst": 7.756
             },
             "isTrophy": false,
             "summary": {
@@ -1528,18 +1528,18 @@
             "sponsor": "",
             "classPosition": {
                 "position": 6,
-                "toNext": -1.2284500000000023,
-                "toFirst": -3.039405000000002
+                "toNext": 1.2284500000000023,
+                "toFirst": 3.039405000000002
             },
             "indexedPosition": {
                 "position": 23,
-                "toNext": -0.02483899999999295,
-                "toFirst": -3.039405000000002
+                "toNext": 0.02483899999999295,
+                "toFirst": 3.039405000000002
             },
             "rawPosition": {
                 "position": 25,
-                "toNext": -0.036000000000001364,
-                "toFirst": -7.792000000000002
+                "toNext": 0.036000000000001364,
+                "toFirst": 7.792000000000002
             },
             "isTrophy": false,
             "summary": {
@@ -1630,18 +1630,18 @@
             "sponsor": "",
             "classPosition": {
                 "position": 2,
-                "toNext": -0.7220999999999975,
-                "toFirst": -0.7220999999999975
+                "toNext": 0.7220999999999975,
+                "toFirst": 0.7220999999999975
             },
             "indexedPosition": {
                 "position": 13,
-                "toNext": -0.30743400000000065,
-                "toFirst": -1.7287239999999997
+                "toNext": 0.30743400000000065,
+                "toFirst": 1.7287239999999997
             },
             "rawPosition": {
                 "position": 27,
-                "toNext": -0.22500000000000142,
-                "toFirst": -8.116
+                "toNext": 0.22500000000000142,
+                "toFirst": 8.116
             },
             "isTrophy": false,
             "summary": {
@@ -1732,18 +1732,18 @@
             "sponsor": "Mickle Motorsports",
             "classPosition": {
                 "position": 8,
-                "toNext": -0.6048740000000095,
-                "toFirst": -4.014404000000006
+                "toNext": 0.6048740000000095,
+                "toFirst": 4.014404000000006
             },
             "indexedPosition": {
                 "position": 34,
-                "toNext": -0.08633100000000127,
-                "toFirst": -4.014404000000006
+                "toNext": 0.08633100000000127,
+                "toFirst": 4.014404000000006
             },
             "rawPosition": {
                 "position": 28,
-                "toNext": -0.10800000000000409,
-                "toFirst": -8.224000000000004
+                "toNext": 0.10800000000000409,
+                "toFirst": 8.224000000000004
             },
             "isTrophy": false,
             "summary": {
@@ -1834,18 +1834,18 @@
             "sponsor": "Thanks Don!",
             "classPosition": {
                 "position": 7,
-                "toNext": -0.3701249999999945,
-                "toFirst": -3.4095299999999966
+                "toNext": 0.3701249999999945,
+                "toFirst": 3.4095299999999966
             },
             "indexedPosition": {
                 "position": 30,
-                "toNext": -0.06906999999999641,
-                "toFirst": -3.4095299999999966
+                "toNext": 0.06906999999999641,
+                "toFirst": 3.4095299999999966
             },
             "rawPosition": {
                 "position": 29,
-                "toNext": -0.12699999999999534,
-                "toFirst": -8.350999999999999
+                "toNext": 0.12699999999999534,
+                "toFirst": 8.350999999999999
             },
             "isTrophy": false,
             "summary": {
@@ -1941,13 +1941,13 @@
             },
             "indexedPosition": {
                 "position": 32,
-                "toNext": -0.40183999999999287,
-                "toFirst": -3.836354
+                "toNext": 0.40183999999999287,
+                "toFirst": 3.836354
             },
             "rawPosition": {
                 "position": 30,
-                "toNext": -0.11200000000000188,
-                "toFirst": -8.463000000000001
+                "toNext": 0.11200000000000188,
+                "toFirst": 8.463000000000001
             },
             "isTrophy": true,
             "summary": {
@@ -2043,13 +2043,13 @@
             },
             "indexedPosition": {
                 "position": 15,
-                "toNext": -0.018454999999988786,
-                "toFirst": -1.780972999999996
+                "toNext": 0.018454999999988786,
+                "toFirst": 1.780972999999996
             },
             "rawPosition": {
                 "position": 34,
-                "toNext": -0.01899999999999835,
-                "toFirst": -9.326
+                "toNext": 0.01899999999999835,
+                "toFirst": 9.326
             },
             "isTrophy": true,
             "summary": {
@@ -2137,13 +2137,13 @@
             },
             "indexedPosition": {
                 "position": 40,
-                "toNext": -0.24684500000000043,
-                "toFirst": -4.4801940000000045
+                "toNext": 0.24684500000000043,
+                "toFirst": 4.4801940000000045
             },
             "rawPosition": {
                 "position": 35,
-                "toNext": -0.07800000000000296,
-                "toFirst": -9.404000000000003
+                "toNext": 0.07800000000000296,
+                "toFirst": 9.404000000000003
             },
             "isTrophy": true,
             "summary": {
@@ -2239,13 +2239,13 @@
             },
             "indexedPosition": {
                 "position": 4,
-                "toNext": -0.006808000000013692,
-                "toFirst": -0.8507740000000084
+                "toNext": 0.006808000000013692,
+                "toFirst": 0.8507740000000084
             },
             "rawPosition": {
                 "position": 37,
-                "toNext": -0.19600000000000506,
-                "toFirst": -9.779000000000003
+                "toNext": 0.19600000000000506,
+                "toFirst": 9.779000000000003
             },
             "isTrophy": true,
             "summary": {
@@ -2341,13 +2341,13 @@
             },
             "indexedPosition": {
                 "position": 9,
-                "toNext": -0.05610500000000229,
-                "toFirst": -1.112923000000002
+                "toNext": 0.05610500000000229,
+                "toFirst": 1.112923000000002
             },
             "rawPosition": {
                 "position": 38,
-                "toNext": -0.11699999999999733,
-                "toFirst": -9.896
+                "toNext": 0.11699999999999733,
+                "toFirst": 9.896
             },
             "isTrophy": true,
             "summary": {
@@ -2438,18 +2438,18 @@
             "sponsor": "",
             "classPosition": {
                 "position": 2,
-                "toNext": -0.042822000000001026,
-                "toFirst": -0.042822000000001026
+                "toNext": 0.042822000000001026,
+                "toFirst": 0.042822000000001026
             },
             "indexedPosition": {
                 "position": 10,
-                "toNext": -0.042822000000001026,
-                "toFirst": -1.1557450000000031
+                "toNext": 0.042822000000001026,
+                "toFirst": 1.1557450000000031
             },
             "rawPosition": {
                 "position": 39,
-                "toNext": -0.054000000000002046,
-                "toFirst": -9.950000000000003
+                "toNext": 0.054000000000002046,
+                "toFirst": 9.950000000000003
             },
             "isTrophy": true,
             "summary": {
@@ -2540,18 +2540,18 @@
             "sponsor": "Duff Beer",
             "classPosition": {
                 "position": 3,
-                "toNext": -1.5238799999999983,
-                "toFirst": -2.245979999999996
+                "toNext": 1.5238799999999983,
+                "toFirst": 2.245979999999996
             },
             "indexedPosition": {
                 "position": 28,
-                "toNext": -0.0016940000000005284,
-                "toFirst": -3.252603999999998
+                "toNext": 0.0016940000000005284,
+                "toFirst": 3.252603999999998
             },
             "rawPosition": {
                 "position": 40,
-                "toNext": -0.001999999999995339,
-                "toFirst": -9.951999999999998
+                "toNext": 0.001999999999995339,
+                "toFirst": 9.951999999999998
             },
             "isTrophy": false,
             "summary": {
@@ -2647,13 +2647,13 @@
             },
             "indexedPosition": {
                 "position": 27,
-                "toNext": -0.046725999999992496,
-                "toFirst": -3.2509099999999975
+                "toNext": 0.046725999999992496,
+                "toFirst": 3.2509099999999975
             },
             "rawPosition": {
                 "position": 43,
-                "toNext": -0.5570000000000022,
-                "toFirst": -10.850999999999999
+                "toNext": 0.5570000000000022,
+                "toFirst": 10.850999999999999
             },
             "isTrophy": true,
             "summary": {
@@ -2744,18 +2744,18 @@
             "sponsor": "",
             "classPosition": {
                 "position": 2,
-                "toNext": -1.265028000000001,
-                "toFirst": -1.265028000000001
+                "toNext": 1.265028000000001,
+                "toFirst": 1.265028000000001
             },
             "indexedPosition": {
                 "position": 24,
-                "toNext": -0.006595999999994717,
-                "toFirst": -3.046000999999997
+                "toNext": 0.006595999999994717,
+                "toFirst": 3.046000999999997
             },
             "rawPosition": {
                 "position": 44,
-                "toNext": -0.030999999999998806,
-                "toFirst": -10.881999999999998
+                "toNext": 0.030999999999998806,
+                "toFirst": 10.881999999999998
             },
             "isTrophy": false,
             "summary": {
@@ -2851,13 +2851,13 @@
             },
             "indexedPosition": {
                 "position": 11,
-                "toNext": -0.253188999999999,
-                "toFirst": -1.4089340000000021
+                "toNext": 0.253188999999999,
+                "toFirst": 1.4089340000000021
             },
             "rawPosition": {
                 "position": 45,
-                "toNext": -0.04100000000000392,
-                "toFirst": -10.923000000000002
+                "toNext": 0.04100000000000392,
+                "toFirst": 10.923000000000002
             },
             "isTrophy": true,
             "summary": {
@@ -2948,18 +2948,18 @@
             "sponsor": "",
             "classPosition": {
                 "position": 2,
-                "toNext": -0.353584000000005,
-                "toFirst": -0.353584000000005
+                "toNext": 0.353584000000005,
+                "toFirst": 0.353584000000005
             },
             "indexedPosition": {
                 "position": 14,
-                "toNext": -0.03379400000000743,
-                "toFirst": -1.7625180000000071
+                "toNext": 0.03379400000000743,
+                "toFirst": 1.7625180000000071
             },
             "rawPosition": {
                 "position": 47,
-                "toNext": -0.05300000000000438,
-                "toFirst": -11.374000000000002
+                "toNext": 0.05300000000000438,
+                "toFirst": 11.374000000000002
             },
             "isTrophy": true,
             "summary": {
@@ -3055,13 +3055,13 @@
             },
             "indexedPosition": {
                 "position": 31,
-                "toNext": -0.024984000000010553,
-                "toFirst": -3.434514000000007
+                "toNext": 0.024984000000010553,
+                "toFirst": 3.434514000000007
             },
             "rawPosition": {
                 "position": 50,
-                "toNext": -0.006999999999997897,
-                "toFirst": -11.503
+                "toNext": 0.006999999999997897,
+                "toFirst": 11.503
             },
             "isTrophy": true,
             "summary": {
@@ -3152,18 +3152,18 @@
             "sponsor": "",
             "classPosition": {
                 "position": 2,
-                "toNext": -0.8031110000000012,
-                "toFirst": -0.8031110000000012
+                "toNext": 0.8031110000000012,
+                "toFirst": 0.8031110000000012
             },
             "indexedPosition": {
                 "position": 36,
-                "toNext": -0.004768999999988921,
-                "toFirst": -4.054020999999999
+                "toNext": 0.004768999999988921,
+                "toFirst": 4.054020999999999
             },
             "rawPosition": {
                 "position": 51,
-                "toNext": -0.33100000000000307,
-                "toFirst": -11.834000000000003
+                "toNext": 0.33100000000000307,
+                "toFirst": 11.834000000000003
             },
             "isTrophy": false,
             "summary": {
@@ -3259,13 +3259,13 @@
             },
             "indexedPosition": {
                 "position": 44,
-                "toNext": -0.15126800000000173,
-                "toFirst": -5.453534000000005
+                "toNext": 0.15126800000000173,
+                "toFirst": 5.453534000000005
             },
             "rawPosition": {
                 "position": 52,
-                "toNext": -0.06400000000000006,
-                "toFirst": -11.898000000000003
+                "toNext": 0.06400000000000006,
+                "toFirst": 11.898000000000003
             },
             "isTrophy": true,
             "summary": {
@@ -3356,18 +3356,18 @@
             "sponsor": "Audra and the Multichrome Miata",
             "classPosition": {
                 "position": 2,
-                "toNext": -1.9315500000000014,
-                "toFirst": -1.9315500000000014
+                "toNext": 1.9315500000000014,
+                "toFirst": 1.9315500000000014
             },
             "indexedPosition": {
                 "position": 21,
-                "toNext": -0.3921100000000095,
-                "toFirst": -2.78232400000001
+                "toNext": 0.3921100000000095,
+                "toFirst": 2.78232400000001
             },
             "rawPosition": {
                 "position": 54,
-                "toNext": -0.1110000000000042,
-                "toFirst": -12.224000000000004
+                "toNext": 0.1110000000000042,
+                "toFirst": 12.224000000000004
             },
             "isTrophy": true,
             "summary": {
@@ -3458,18 +3458,18 @@
             "sponsor": "",
             "classPosition": {
                 "position": 2,
-                "toNext": -0.6147380000000027,
-                "toFirst": -0.6147380000000027
+                "toNext": 0.6147380000000027,
+                "toFirst": 0.6147380000000027
             },
             "indexedPosition": {
                 "position": 35,
-                "toNext": -0.034848000000003765,
-                "toFirst": -4.04925200000001
+                "toNext": 0.034848000000003765,
+                "toFirst": 4.04925200000001
             },
             "rawPosition": {
                 "position": 55,
-                "toNext": -0.036999999999999034,
-                "toFirst": -12.261000000000003
+                "toNext": 0.036999999999999034,
+                "toFirst": 12.261000000000003
             },
             "isTrophy": true,
             "summary": {
@@ -3560,18 +3560,18 @@
             "sponsor": "L.U. 103 Pension Plan",
             "classPosition": {
                 "position": 2,
-                "toNext": -4.004255999999998,
-                "toFirst": -4.004255999999998
+                "toNext": 4.004255999999998,
+                "toFirst": 4.004255999999998
             },
             "indexedPosition": {
                 "position": 46,
-                "toNext": -0.25850399999999496,
-                "toFirst": -6.394469999999998
+                "toNext": 0.25850399999999496,
+                "toFirst": 6.394469999999998
             },
             "rawPosition": {
                 "position": 56,
-                "toNext": -0.1939999999999955,
-                "toFirst": -12.454999999999998
+                "toNext": 0.1939999999999955,
+                "toFirst": 12.454999999999998
             },
             "isTrophy": false,
             "summary": {
@@ -3662,18 +3662,18 @@
             "sponsor": "",
             "classPosition": {
                 "position": 3,
-                "toNext": -0.18409699999999418,
-                "toFirst": -0.7988349999999969
+                "toNext": 0.18409699999999418,
+                "toFirst": 0.7988349999999969
             },
             "indexedPosition": {
                 "position": 39,
-                "toNext": -0.02112499999999784,
-                "toFirst": -4.233349000000004
+                "toNext": 0.02112499999999784,
+                "toFirst": 4.233349000000004
             },
             "rawPosition": {
                 "position": 57,
-                "toNext": -0.03300000000000125,
-                "toFirst": -12.488
+                "toNext": 0.03300000000000125,
+                "toFirst": 12.488
             },
             "isTrophy": false,
             "summary": {
@@ -3764,18 +3764,18 @@
             "sponsor": "Thanks Ken!",
             "classPosition": {
                 "position": 3,
-                "toNext": -2.184714999999997,
-                "toFirst": -2.227536999999998
+                "toNext": 2.184714999999997,
+                "toFirst": 2.227536999999998
             },
             "indexedPosition": {
                 "position": 29,
-                "toNext": -0.08785600000000215,
-                "toFirst": -3.34046
+                "toNext": 0.08785600000000215,
+                "toFirst": 3.34046
             },
             "rawPosition": {
                 "position": 59,
-                "toNext": -0.0379999999999967,
-                "toFirst": -12.704999999999998
+                "toNext": 0.0379999999999967,
+                "toFirst": 12.704999999999998
             },
             "isTrophy": true,
             "summary": {
@@ -3858,18 +3858,18 @@
             "sponsor": "CBC Design",
             "classPosition": {
                 "position": 3,
-                "toNext": -0.42185999999999524,
-                "toFirst": -2.3534099999999967
+                "toNext": 0.42185999999999524,
+                "toFirst": 2.3534099999999967
             },
             "indexedPosition": {
                 "position": 26,
-                "toNext": -0.04681399999999769,
-                "toFirst": -3.204184000000005
+                "toNext": 0.04681399999999769,
+                "toFirst": 3.204184000000005
             },
             "rawPosition": {
                 "position": 60,
-                "toNext": -0.05300000000000438,
-                "toFirst": -12.758000000000003
+                "toNext": 0.05300000000000438,
+                "toFirst": 12.758000000000003
             },
             "isTrophy": false,
             "summary": {
@@ -3960,18 +3960,18 @@
             "sponsor": "",
             "classPosition": {
                 "position": 3,
-                "toNext": -1.252048000000002,
-                "toFirst": -1.605632000000007
+                "toNext": 1.252048000000002,
+                "toFirst": 1.605632000000007
             },
             "indexedPosition": {
                 "position": 22,
-                "toNext": -0.2322419999999994,
-                "toFirst": -3.014566000000009
+                "toNext": 0.2322419999999994,
+                "toFirst": 3.014566000000009
             },
             "rawPosition": {
                 "position": 61,
-                "toNext": -0.21300000000000097,
-                "toFirst": -12.971000000000004
+                "toNext": 0.21300000000000097,
+                "toFirst": 12.971000000000004
             },
             "isTrophy": false,
             "summary": {
@@ -4067,13 +4067,13 @@
             },
             "indexedPosition": {
                 "position": 52,
-                "toNext": -0.2800810000000027,
-                "toFirst": -7.641927000000003
+                "toNext": 0.2800810000000027,
+                "toFirst": 7.641927000000003
             },
             "rawPosition": {
                 "position": 62,
-                "toNext": -0.17899999999999494,
-                "toFirst": -13.149999999999999
+                "toNext": 0.17899999999999494,
+                "toFirst": 13.149999999999999
             },
             "isTrophy": true,
             "summary": {
@@ -4164,18 +4164,18 @@
             "sponsor": "",
             "classPosition": {
                 "position": 4,
-                "toNext": -0.5876130000000046,
-                "toFirst": -2.8151500000000027
+                "toNext": 0.5876130000000046,
+                "toFirst": 2.8151500000000027
             },
             "indexedPosition": {
                 "position": 33,
-                "toNext": -0.09171900000000477,
-                "toFirst": -3.928073000000005
+                "toNext": 0.09171900000000477,
+                "toFirst": 3.928073000000005
             },
             "rawPosition": {
                 "position": 63,
-                "toNext": -0.2959999999999994,
-                "toFirst": -13.445999999999998
+                "toNext": 0.2959999999999994,
+                "toFirst": 13.445999999999998
             },
             "isTrophy": false,
             "summary": {
@@ -4271,13 +4271,13 @@
             },
             "indexedPosition": {
                 "position": 42,
-                "toNext": -0.07426699999999897,
-                "toFirst": -5.294137000000006
+                "toNext": 0.07426699999999897,
+                "toFirst": 5.294137000000006
             },
             "rawPosition": {
                 "position": 66,
-                "toNext": -0.09599999999999653,
-                "toFirst": -13.796
+                "toNext": 0.09599999999999653,
+                "toFirst": 13.796
             },
             "isTrophy": true,
             "summary": {
@@ -4368,18 +4368,18 @@
             "sponsor": "",
             "classPosition": {
                 "position": 4,
-                "toNext": -0.8658399999999986,
-                "toFirst": -3.2192499999999953
+                "toNext": 0.8658399999999986,
+                "toFirst": 3.2192499999999953
             },
             "indexedPosition": {
                 "position": 37,
-                "toNext": -0.016003000000004874,
-                "toFirst": -4.070024000000004
+                "toNext": 0.016003000000004874,
+                "toFirst": 4.070024000000004
             },
             "rawPosition": {
                 "position": 67,
-                "toNext": -0.05799999999999983,
-                "toFirst": -13.854
+                "toNext": 0.05799999999999983,
+                "toFirst": 13.854
             },
             "isTrophy": false,
             "summary": {
@@ -4470,18 +4470,18 @@
             "sponsor": "Magikarp and Multichrome",
             "classPosition": {
                 "position": 5,
-                "toNext": -0.14220000000000255,
-                "toFirst": -3.361449999999998
+                "toNext": 0.14220000000000255,
+                "toFirst": 3.361449999999998
             },
             "indexedPosition": {
                 "position": 38,
-                "toNext": -0.14220000000000255,
-                "toFirst": -4.212224000000006
+                "toNext": 0.14220000000000255,
+                "toFirst": 4.212224000000006
             },
             "rawPosition": {
                 "position": 69,
-                "toNext": -0.10600000000000165,
-                "toFirst": -14.033999999999999
+                "toNext": 0.10600000000000165,
+                "toFirst": 14.033999999999999
             },
             "isTrophy": false,
             "summary": {
@@ -4572,18 +4572,18 @@
             "sponsor": "AJs  Army",
             "classPosition": {
                 "position": 2,
-                "toNext": -0.9028089999999978,
-                "toFirst": -0.9028089999999978
+                "toNext": 0.9028089999999978,
+                "toFirst": 0.9028089999999978
             },
             "indexedPosition": {
                 "position": 56,
-                "toNext": -0.6433640000000054,
-                "toFirst": -8.544736
+                "toNext": 0.6433640000000054,
+                "toFirst": 8.544736
             },
             "rawPosition": {
                 "position": 70,
-                "toNext": -0.1670000000000016,
-                "toFirst": -14.201
+                "toNext": 0.1670000000000016,
+                "toFirst": 14.201
             },
             "isTrophy": false,
             "summary": {
@@ -4674,18 +4674,18 @@
             "sponsor": "",
             "classPosition": {
                 "position": 8,
-                "toNext": -0.344766000000007,
-                "toFirst": -5.356800999999997
+                "toNext": 0.344766000000007,
+                "toFirst": 5.356800999999997
             },
             "indexedPosition": {
                 "position": 73,
-                "toNext": -0.016074000000003252,
-                "toFirst": -10.650938000000004
+                "toNext": 0.016074000000003252,
+                "toFirst": 10.650938000000004
             },
             "rawPosition": {
                 "position": 72,
-                "toNext": -0.03999999999999915,
-                "toFirst": -14.310000000000002
+                "toNext": 0.03999999999999915,
+                "toFirst": 14.310000000000002
             },
             "isTrophy": false,
             "summary": {
@@ -4776,18 +4776,18 @@
             "sponsor": "",
             "classPosition": {
                 "position": 4,
-                "toNext": -5.631821999999993,
-                "toFirst": -7.11824399999999
+                "toNext": 5.631821999999993,
+                "toFirst": 7.11824399999999
             },
             "indexedPosition": {
                 "position": 55,
-                "toNext": -0.03230999999998829,
-                "toFirst": -7.901371999999995
+                "toNext": 0.03230999999998829,
+                "toFirst": 7.901371999999995
             },
             "rawPosition": {
                 "position": 74,
-                "toNext": -0.030999999999998806,
-                "toFirst": -14.375999999999998
+                "toNext": 0.030999999999998806,
+                "toFirst": 14.375999999999998
             },
             "isTrophy": false,
             "summary": {
@@ -4867,13 +4867,13 @@
             },
             "indexedPosition": {
                 "position": 67,
-                "toNext": -0.19626000000000232,
-                "toFirst": -10.080794000000004
+                "toNext": 0.19626000000000232,
+                "toFirst": 10.080794000000004
             },
             "rawPosition": {
                 "position": 75,
-                "toNext": -0.3270000000000053,
-                "toFirst": -14.703000000000003
+                "toNext": 0.3270000000000053,
+                "toFirst": 14.703000000000003
             },
             "isTrophy": true,
             "summary": {
@@ -4964,18 +4964,18 @@
             "sponsor": "",
             "classPosition": {
                 "position": 3,
-                "toNext": -2.3758359999999996,
-                "toFirst": -3.178947000000001
+                "toNext": 2.3758359999999996,
+                "toFirst": 3.178947000000001
             },
             "indexedPosition": {
                 "position": 47,
-                "toNext": -0.03538700000000006,
-                "toFirst": -6.429856999999998
+                "toNext": 0.03538700000000006,
+                "toFirst": 6.429856999999998
             },
             "rawPosition": {
                 "position": 76,
-                "toNext": -0.03899999999999437,
-                "toFirst": -14.741999999999997
+                "toNext": 0.03899999999999437,
+                "toFirst": 14.741999999999997
             },
             "isTrophy": false,
             "summary": {
@@ -5066,18 +5066,18 @@
             "sponsor": "",
             "classPosition": {
                 "position": 5,
-                "toNext": -1.2917970000000025,
-                "toFirst": -4.106947000000005
+                "toNext": 1.2917970000000025,
+                "toFirst": 4.106947000000005
             },
             "indexedPosition": {
                 "position": 41,
-                "toNext": -0.7396760000000029,
-                "toFirst": -5.219870000000007
+                "toNext": 0.7396760000000029,
+                "toFirst": 5.219870000000007
             },
             "rawPosition": {
                 "position": 78,
-                "toNext": -0.22400000000000375,
-                "toFirst": -15.075000000000003
+                "toNext": 0.22400000000000375,
+                "toFirst": 15.075000000000003
             },
             "isTrophy": false,
             "summary": {
@@ -5168,18 +5168,18 @@
             "sponsor": "",
             "classPosition": {
                 "position": 2,
-                "toNext": -0.008128999999996722,
-                "toFirst": -0.008128999999996722
+                "toNext": 0.008128999999996722,
+                "toFirst": 0.008128999999996722
             },
             "indexedPosition": {
                 "position": 43,
-                "toNext": -0.008128999999996722,
-                "toFirst": -5.302266000000003
+                "toNext": 0.008128999999996722,
+                "toFirst": 5.302266000000003
             },
             "rawPosition": {
                 "position": 79,
-                "toNext": -0.02599999999999625,
-                "toFirst": -15.100999999999999
+                "toNext": 0.02599999999999625,
+                "toFirst": 15.100999999999999
             },
             "isTrophy": true,
             "summary": {
@@ -5270,18 +5270,18 @@
             "sponsor": "",
             "classPosition": {
                 "position": 3,
-                "toNext": -0.8337000000000003,
-                "toFirst": -0.841828999999997
+                "toNext": 0.8337000000000003,
+                "toFirst": 0.841828999999997
             },
             "indexedPosition": {
                 "position": 45,
-                "toNext": -0.6824319999999986,
-                "toFirst": -6.135966000000003
+                "toNext": 0.6824319999999986,
+                "toFirst": 6.135966000000003
             },
             "rawPosition": {
                 "position": 80,
-                "toNext": -1.0500000000000043,
-                "toFirst": -16.151000000000003
+                "toNext": 1.0500000000000043,
+                "toFirst": 16.151000000000003
             },
             "isTrophy": true,
             "summary": {
@@ -5377,13 +5377,13 @@
             },
             "indexedPosition": {
                 "position": 72,
-                "toNext": -0.2523300000000006,
-                "toFirst": -10.634864
+                "toNext": 0.2523300000000006,
+                "toFirst": 10.634864
             },
             "rawPosition": {
                 "position": 81,
-                "toNext": -0.556999999999995,
-                "toFirst": -16.708
+                "toNext": 0.556999999999995,
+                "toFirst": 16.708
             },
             "isTrophy": true,
             "summary": {
@@ -5474,18 +5474,18 @@
             "sponsor": "",
             "classPosition": {
                 "position": 6,
-                "toNext": -1.4622919999999908,
-                "toFirst": -5.569238999999996
+                "toNext": 1.4622919999999908,
+                "toFirst": 5.569238999999996
             },
             "indexedPosition": {
                 "position": 49,
-                "toNext": -0.07060399999998879,
-                "toFirst": -6.682161999999998
+                "toNext": 0.07060399999998879,
+                "toFirst": 6.682161999999998
             },
             "rawPosition": {
                 "position": 82,
-                "toNext": -0.21099999999999852,
-                "toFirst": -16.918999999999997
+                "toNext": 0.21099999999999852,
+                "toFirst": 16.918999999999997
             },
             "isTrophy": false,
             "summary": {
@@ -5576,18 +5576,18 @@
             "sponsor": "Motortown NAPA / Small Fortune Racing",
             "classPosition": {
                 "position": 4,
-                "toNext": -3.6357130000000026,
-                "toFirst": -4.4345479999999995
+                "toNext": 3.6357130000000026,
+                "toFirst": 4.4345479999999995
             },
             "indexedPosition": {
                 "position": 54,
-                "toNext": -0.14727700000000254,
-                "toFirst": -7.869062000000007
+                "toNext": 0.14727700000000254,
+                "toFirst": 7.869062000000007
             },
             "rawPosition": {
                 "position": 83,
-                "toNext": -0.05200000000000671,
-                "toFirst": -16.971000000000004
+                "toNext": 0.05200000000000671,
+                "toFirst": 16.971000000000004
             },
             "isTrophy": false,
             "summary": {
@@ -5678,18 +5678,18 @@
             "sponsor": "",
             "classPosition": {
                 "position": 2,
-                "toNext": -7.504648000000003,
-                "toFirst": -7.504648000000003
+                "toNext": 7.504648000000003,
+                "toFirst": 7.504648000000003
             },
             "indexedPosition": {
                 "position": 75,
-                "toNext": -0.5224680000000035,
-                "toFirst": -11.341002000000003
+                "toNext": 0.5224680000000035,
+                "toFirst": 11.341002000000003
             },
             "rawPosition": {
                 "position": 84,
-                "toNext": -0.18799999999999528,
-                "toFirst": -17.159
+                "toNext": 0.18799999999999528,
+                "toFirst": 17.159
             },
             "isTrophy": false,
             "summary": {
@@ -5780,18 +5780,18 @@
             "sponsor": "",
             "classPosition": {
                 "position": 4,
-                "toNext": -3.596992,
-                "toFirst": -5.202624000000007
+                "toNext": 3.596992,
+                "toFirst": 5.202624000000007
             },
             "indexedPosition": {
                 "position": 48,
-                "toNext": -0.181701000000011,
-                "toFirst": -6.611558000000009
+                "toNext": 0.181701000000011,
+                "toFirst": 6.611558000000009
             },
             "rawPosition": {
                 "position": 85,
-                "toNext": -0.4000000000000057,
-                "toFirst": -17.559000000000005
+                "toNext": 0.4000000000000057,
+                "toFirst": 17.559000000000005
             },
             "isTrophy": false,
             "summary": {
@@ -5882,18 +5882,18 @@
             "sponsor": "With the help of my friends!",
             "classPosition": {
                 "position": 2,
-                "toNext": -0.8082360000000008,
-                "toFirst": -0.8082360000000008
+                "toNext": 0.8082360000000008,
+                "toFirst": 0.8082360000000008
             },
             "indexedPosition": {
                 "position": 76,
-                "toNext": -0.10209799999999802,
-                "toFirst": -11.443100000000001
+                "toNext": 0.10209799999999802,
+                "toFirst": 11.443100000000001
             },
             "rawPosition": {
                 "position": 86,
-                "toNext": -0.09099999999999397,
-                "toFirst": -17.65
+                "toNext": 0.09099999999999397,
+                "toFirst": 17.65
             },
             "isTrophy": false,
             "summary": {
@@ -5976,18 +5976,18 @@
             "sponsor": "",
             "classPosition": {
                 "position": 4,
-                "toNext": -0.6088720000000052,
-                "toFirst": -1.4507010000000022
+                "toNext": 0.6088720000000052,
+                "toFirst": 1.4507010000000022
             },
             "indexedPosition": {
                 "position": 50,
-                "toNext": -0.06267600000001039,
-                "toFirst": -6.7448380000000085
+                "toNext": 0.06267600000001039,
+                "toFirst": 6.7448380000000085
             },
             "rawPosition": {
                 "position": 87,
-                "toNext": -0.07900000000000773,
-                "toFirst": -17.729000000000006
+                "toNext": 0.07900000000000773,
+                "toFirst": 17.729000000000006
             },
             "isTrophy": true,
             "summary": {
@@ -6083,13 +6083,13 @@
             },
             "indexedPosition": {
                 "position": 98,
-                "toNext": -0.0867280000000008,
-                "toFirst": -16.714262000000005
+                "toNext": 0.0867280000000008,
+                "toFirst": 16.714262000000005
             },
             "rawPosition": {
                 "position": 89,
-                "toNext": -0.009000000000000341,
-                "toFirst": -17.921
+                "toNext": 0.009000000000000341,
+                "toFirst": 17.921
             },
             "isTrophy": true,
             "summary": {
@@ -6180,18 +6180,18 @@
             "sponsor": "",
             "classPosition": {
                 "position": 7,
-                "toNext": -1.039623000000006,
-                "toFirst": -6.608862000000002
+                "toNext": 1.039623000000006,
+                "toFirst": 6.608862000000002
             },
             "indexedPosition": {
                 "position": 53,
-                "toNext": -0.07985800000000154,
-                "toFirst": -7.721785000000004
+                "toNext": 0.07985800000000154,
+                "toFirst": 7.721785000000004
             },
             "rawPosition": {
                 "position": 90,
-                "toNext": -0.3089999999999975,
-                "toFirst": -18.229999999999997
+                "toNext": 0.3089999999999975,
+                "toFirst": 18.229999999999997
             },
             "isTrophy": false,
             "summary": {
@@ -6282,18 +6282,18 @@
             "sponsor": "",
             "classPosition": {
                 "position": 5,
-                "toNext": -0.7502879999999905,
-                "toFirst": -5.952911999999998
+                "toNext": 0.7502879999999905,
+                "toFirst": 5.952911999999998
             },
             "indexedPosition": {
                 "position": 51,
-                "toNext": -0.6170079999999913,
-                "toFirst": -7.361846
+                "toNext": 0.6170079999999913,
+                "toFirst": 7.361846
             },
             "rawPosition": {
                 "position": 91,
-                "toNext": -0.28600000000000136,
-                "toFirst": -18.516
+                "toNext": 0.28600000000000136,
+                "toFirst": 18.516
             },
             "isTrophy": false,
             "summary": {
@@ -6384,18 +6384,18 @@
             "sponsor": "",
             "classPosition": {
                 "position": 12,
-                "toNext": -0.10248199999999485,
-                "toFirst": -7.132746999999995
+                "toNext": 0.10248199999999485,
+                "toFirst": 7.132746999999995
             },
             "indexedPosition": {
                 "position": 84,
-                "toNext": -0.10248199999999485,
-                "toFirst": -12.426884000000001
+                "toNext": 0.10248199999999485,
+                "toFirst": 12.426884000000001
             },
             "rawPosition": {
                 "position": 92,
-                "toNext": -0.3569999999999993,
-                "toFirst": -18.872999999999998
+                "toNext": 0.3569999999999993,
+                "toFirst": 18.872999999999998
             },
             "isTrophy": false,
             "summary": {
@@ -6486,18 +6486,18 @@
             "sponsor": "",
             "classPosition": {
                 "position": 5,
-                "toNext": -4.054878000000009,
-                "toFirst": -11.173122
+                "toNext": 4.054878000000009,
+                "toFirst": 11.173122
             },
             "indexedPosition": {
                 "position": 81,
-                "toNext": -0.017716000000000065,
-                "toFirst": -11.956250000000004
+                "toNext": 0.017716000000000065,
+                "toFirst": 11.956250000000004
             },
             "rawPosition": {
                 "position": 93,
-                "toNext": -0.2960000000000065,
-                "toFirst": -19.169000000000004
+                "toNext": 0.2960000000000065,
+                "toFirst": 19.169000000000004
             },
             "isTrophy": false,
             "summary": {
@@ -6588,18 +6588,18 @@
             "sponsor": "",
             "classPosition": {
                 "position": 5,
-                "toNext": -3.4655109999999922,
-                "toFirst": -4.9162119999999945
+                "toNext": 3.4655109999999922,
+                "toFirst": 4.9162119999999945
             },
             "indexedPosition": {
                 "position": 68,
-                "toNext": -0.1295549999999963,
-                "toFirst": -10.210349
+                "toNext": 0.1295549999999963,
+                "toFirst": 10.210349
             },
             "rawPosition": {
                 "position": 94,
-                "toNext": -0.03900000000000148,
-                "toFirst": -19.208000000000006
+                "toNext": 0.03900000000000148,
+                "toFirst": 19.208000000000006
             },
             "isTrophy": true,
             "summary": {
@@ -6690,18 +6690,18 @@
             "sponsor": "",
             "classPosition": {
                 "position": 7,
-                "toNext": -0.07802199999999004,
-                "toFirst": -5.01203499999999
+                "toNext": 0.07802199999999004,
+                "toFirst": 5.01203499999999
             },
             "indexedPosition": {
                 "position": 70,
-                "toNext": -0.07802199999999004,
-                "toFirst": -10.306171999999997
+                "toNext": 0.07802199999999004,
+                "toFirst": 10.306171999999997
             },
             "rawPosition": {
                 "position": 95,
-                "toNext": -0.11699999999999022,
-                "toFirst": -19.324999999999996
+                "toNext": 0.11699999999999022,
+                "toFirst": 19.324999999999996
             },
             "isTrophy": false,
             "summary": {
@@ -6792,18 +6792,18 @@
             "sponsor": "Snail mail",
             "classPosition": {
                 "position": 8,
-                "toNext": -1.6002739999999989,
-                "toFirst": -8.209136
+                "toNext": 1.6002739999999989,
+                "toFirst": 8.209136
             },
             "indexedPosition": {
                 "position": 61,
-                "toNext": -0.00552499999999867,
-                "toFirst": -9.322059000000003
+                "toNext": 0.00552499999999867,
+                "toFirst": 9.322059000000003
             },
             "rawPosition": {
                 "position": 96,
-                "toNext": -0.9230000000000018,
-                "toFirst": -20.247999999999998
+                "toNext": 0.9230000000000018,
+                "toFirst": 20.247999999999998
             },
             "isTrophy": false,
             "summary": {
@@ -6894,18 +6894,18 @@
             "sponsor": "Senior moment racing. Thanks Bill",
             "classPosition": {
                 "position": 2,
-                "toNext": -11.432380000000002,
-                "toFirst": -11.432380000000002
+                "toNext": 11.432380000000002,
+                "toFirst": 11.432380000000002
             },
             "indexedPosition": {
                 "position": 88,
-                "toNext": -0.3854390000000052,
-                "toFirst": -13.606973000000004
+                "toNext": 0.3854390000000052,
+                "toFirst": 13.606973000000004
             },
             "rawPosition": {
                 "position": 97,
-                "toNext": -0.0020000000000095497,
-                "toFirst": -20.250000000000007
+                "toNext": 0.0020000000000095497,
+                "toFirst": 20.250000000000007
             },
             "isTrophy": false,
             "summary": {
@@ -6996,18 +6996,18 @@
             "sponsor": "",
             "classPosition": {
                 "position": 6,
-                "toNext": -0.01780100000000573,
-                "toFirst": -4.934013
+                "toNext": 0.01780100000000573,
+                "toFirst": 4.934013
             },
             "indexedPosition": {
                 "position": 69,
-                "toNext": -0.01780100000000573,
-                "toFirst": -10.228150000000007
+                "toNext": 0.01780100000000573,
+                "toFirst": 10.228150000000007
             },
             "rawPosition": {
                 "position": 99,
-                "toNext": -1.5649999999999977,
-                "toFirst": -22.172000000000004
+                "toNext": 1.5649999999999977,
+                "toFirst": 22.172000000000004
             },
             "isTrophy": true,
             "summary": {
@@ -7098,18 +7098,18 @@
             "sponsor": "NE-SVT Has Pizza | Project.Devens | Welcome to Earf Dreamz",
             "classPosition": {
                 "position": 9,
-                "toNext": -0.9390140000000002,
-                "toFirst": -6.2958149999999975
+                "toNext": 0.9390140000000002,
+                "toFirst": 6.2958149999999975
             },
             "indexedPosition": {
                 "position": 77,
-                "toNext": -0.14685200000000265,
-                "toFirst": -11.589952000000004
+                "toNext": 0.14685200000000265,
+                "toFirst": 11.589952000000004
             },
             "rawPosition": {
                 "position": 100,
-                "toNext": -0.847999999999999,
-                "toFirst": -23.020000000000003
+                "toNext": 0.847999999999999,
+                "toFirst": 23.020000000000003
             },
             "isTrophy": false,
             "summary": {
@@ -7205,13 +7205,13 @@
             },
             "indexedPosition": {
                 "position": 100,
-                "toNext": -0.30776800000000293,
-                "toFirst": -17.163302
+                "toNext": 0.30776800000000293,
+                "toFirst": 17.163302
             },
             "rawPosition": {
                 "position": 101,
-                "toNext": -0.4789999999999992,
-                "toFirst": -23.499000000000002
+                "toNext": 0.4789999999999992,
+                "toFirst": 23.499000000000002
             },
             "isTrophy": true,
             "summary": {
@@ -7302,18 +7302,18 @@
             "sponsor": "",
             "classPosition": {
                 "position": 11,
-                "toNext": -0.6333079999999995,
-                "toFirst": -7.030265
+                "toNext": 0.6333079999999995,
+                "toFirst": 7.030265
             },
             "indexedPosition": {
                 "position": 83,
-                "toNext": -0.08986800000000272,
-                "toFirst": -12.324402000000006
+                "toNext": 0.08986800000000272,
+                "toFirst": 12.324402000000006
             },
             "rawPosition": {
                 "position": 102,
-                "toNext": -0.44599999999999795,
-                "toFirst": -23.945
+                "toNext": 0.44599999999999795,
+                "toFirst": 23.945
             },
             "isTrophy": false,
             "summary": {
@@ -7404,18 +7404,18 @@
             "sponsor": "",
             "classPosition": {
                 "position": 10,
-                "toNext": -0.10114200000000295,
-                "toFirst": -6.3969570000000004
+                "toNext": 0.10114200000000295,
+                "toFirst": 6.3969570000000004
             },
             "indexedPosition": {
                 "position": 78,
-                "toNext": -0.10114200000000295,
-                "toFirst": -11.691094000000007
+                "toNext": 0.10114200000000295,
+                "toFirst": 11.691094000000007
             },
             "rawPosition": {
                 "position": 104,
-                "toNext": -0.028000000000005798,
-                "toFirst": -24.038000000000004
+                "toNext": 0.028000000000005798,
+                "toFirst": 24.038000000000004
             },
             "isTrophy": false,
             "summary": {
@@ -7506,18 +7506,18 @@
             "sponsor": "",
             "classPosition": {
                 "position": 14,
-                "toNext": -0.5133659999999907,
-                "toFirst": -9.645348999999996
+                "toNext": 0.5133659999999907,
+                "toFirst": 9.645348999999996
             },
             "indexedPosition": {
                 "position": 93,
-                "toNext": -0.5133659999999907,
-                "toFirst": -14.939486000000002
+                "toNext": 0.5133659999999907,
+                "toFirst": 14.939486000000002
             },
             "rawPosition": {
                 "position": 105,
-                "toNext": -0.3370000000000033,
-                "toFirst": -24.375000000000007
+                "toNext": 0.3370000000000033,
+                "toFirst": 24.375000000000007
             },
             "isTrophy": false,
             "summary": {
@@ -7608,18 +7608,18 @@
             "sponsor": "",
             "classPosition": {
                 "position": 16,
-                "toNext": -1.1670619999999943,
-                "toFirst": -14.585056999999992
+                "toNext": 1.1670619999999943,
+                "toFirst": 14.585056999999992
             },
             "indexedPosition": {
                 "position": 105,
-                "toNext": -1.1670619999999943,
-                "toFirst": -19.879194
+                "toNext": 1.1670619999999943,
+                "toFirst": 19.879194
             },
             "rawPosition": {
                 "position": 107,
-                "toNext": -0.17499999999999716,
-                "toFirst": -25.793
+                "toNext": 0.17499999999999716,
+                "toFirst": 25.793
             },
             "isTrophy": false,
             "summary": {
@@ -7662,18 +7662,18 @@
             "sponsor": "",
             "classPosition": {
                 "position": 13,
-                "toNext": -1.9992360000000104,
-                "toFirst": -9.131983000000005
+                "toNext": 1.9992360000000104,
+                "toFirst": 9.131983000000005
             },
             "indexedPosition": {
                 "position": 92,
-                "toNext": -0.002586000000007971,
-                "toFirst": -14.426120000000012
+                "toNext": 0.002586000000007971,
+                "toFirst": 14.426120000000012
             },
             "rawPosition": {
                 "position": 108,
-                "toNext": -0.7990000000000066,
-                "toFirst": -26.592000000000006
+                "toNext": 0.7990000000000066,
+                "toFirst": 26.592000000000006
             },
             "isTrophy": false,
             "summary": {
@@ -7764,18 +7764,18 @@
             "sponsor": "",
             "classPosition": {
                 "position": 15,
-                "toNext": -3.7726460000000017,
-                "toFirst": -13.417994999999998
+                "toNext": 3.7726460000000017,
+                "toFirst": 13.417994999999998
             },
             "indexedPosition": {
                 "position": 104,
-                "toNext": -0.9335980000000035,
-                "toFirst": -18.712132000000004
+                "toNext": 0.9335980000000035,
+                "toFirst": 18.712132000000004
             },
             "rawPosition": {
                 "position": 109,
-                "toNext": -3.7489999999999952,
-                "toFirst": -30.341
+                "toNext": 3.7489999999999952,
+                "toFirst": 30.341
             },
             "isTrophy": false,
             "summary": {
@@ -7866,18 +7866,18 @@
             "sponsor": "",
             "classPosition": {
                 "position": 17,
-                "toNext": -5.141267999999997,
-                "toFirst": -19.72632499999999
+                "toNext": 5.141267999999997,
+                "toFirst": 19.72632499999999
             },
             "indexedPosition": {
                 "position": 108,
-                "toNext": -1.485927999999987,
-                "toFirst": -25.020461999999995
+                "toNext": 1.485927999999987,
+                "toFirst": 25.020461999999995
             },
             "rawPosition": {
                 "position": 110,
-                "toNext": -9.593999999999994,
-                "toFirst": -39.934999999999995
+                "toNext": 9.593999999999994,
+                "toFirst": 39.934999999999995
             },
             "isTrophy": false,
             "summary": {

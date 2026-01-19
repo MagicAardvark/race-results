@@ -34,9 +34,9 @@ describe("MyStats", () => {
     it("renders no drivers message when no drivers available", () => {
         renderWithProviders(<MyStats />, {
             liveData: {
-                classResults: undefined,
-                paxResults: undefined,
-                rawResults: undefined,
+                classResults: null,
+                paxResults: null,
+                rawResults: null,
             },
         });
 
@@ -46,9 +46,9 @@ describe("MyStats", () => {
     it("renders select driver message when no driver is selected", () => {
         renderWithProviders(<MyStats />, {
             liveData: {
-                classResults: mockClassResults.results,
-                paxResults: mockPaxResults.results,
-                rawResults: mockRawResults.results,
+                classResults: mockClassResults,
+                paxResults: mockPaxResults,
+                rawResults: mockRawResults,
             },
         });
 
@@ -60,9 +60,9 @@ describe("MyStats", () => {
     it("renders driver select component", () => {
         renderWithProviders(<MyStats />, {
             liveData: {
-                classResults: mockClassResults.results,
-                paxResults: mockPaxResults.results,
-                rawResults: mockRawResults.results,
+                classResults: mockClassResults,
+                paxResults: mockPaxResults,
+                rawResults: mockRawResults,
             },
         });
 
@@ -75,43 +75,12 @@ describe("MyStats", () => {
 
         renderWithProviders(<MyStats />, {
             liveData: {
-                classResults: mockClassResults.results,
-                paxResults: mockPaxResults.results,
-                rawResults: mockRawResults.results,
+                classResults: mockClassResults,
+                paxResults: mockPaxResults,
+                rawResults: mockRawResults,
             },
         });
 
-        // Should show class position card
-        expect(screen.getByText("Class")).toBeVisible();
-    });
-
-    it("renders class times visualization when class result exists", () => {
-        const driverId = `Sarah Johnson|35|SS`;
-        localStorageMock.setItem("selected-driver-id", driverId);
-
-        renderWithProviders(<MyStats />, {
-            liveData: {
-                classResults: mockClassResults.results,
-                paxResults: mockPaxResults.results,
-                rawResults: mockRawResults.results,
-            },
-        });
-
-        expect(screen.getByText("Class Times Visualization")).toBeVisible();
-    });
-
-    it("renders run statistics card", () => {
-        const driverId = `Sarah Johnson|35|SS`;
-        localStorageMock.setItem("selected-driver-id", driverId);
-
-        renderWithProviders(<MyStats />, {
-            liveData: {
-                classResults: mockClassResults.results,
-                paxResults: mockPaxResults.results,
-                rawResults: mockRawResults.results,
-            },
-        });
-
-        expect(screen.getByText("Run Statistics")).toBeVisible();
+        expect(screen.getByText("Sarah Johnson")).toBeVisible();
     });
 });

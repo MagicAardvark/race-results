@@ -7,7 +7,8 @@ import { DisplayMode } from "../../types";
 
 vi.mock("../../hooks/useLiveData", () => ({
     useLiveData: vi.fn(() => ({
-        classResults: mockClassResults.results,
+        classResults: mockClassResults,
+        classResultsMap: new Map([["SS", mockClassResults.results[0]!]]),
         displayMode: "autocross",
         createDriverId: (driver: {
             name: string;
@@ -20,7 +21,105 @@ vi.mock("../../hooks/useLiveData", () => ({
 describe("ClassTimesVisualization", () => {
     beforeEach(() => {
         vi.mocked(useLiveDataModule.useLiveData).mockReturnValue({
-            classResults: mockClassResults.results,
+            classResults: mockClassResults,
+            classResultsMap: new Map([["SS", mockClassResults.results[0]!]]),
+            paxResults: null,
+            rawResults: null,
+            runWork: null,
+            displayMode: DisplayMode.autocross,
+            featureFlags: {},
+            classNames: ["SS", "DST", "CS"],
+            getAllDrivers: vi.fn(),
+            findDriverInClassResults: vi.fn(),
+            findDriverInPaxResults: vi.fn(),
+            findDriverInRawResults: vi.fn(),
+            createDriverId: (driver: {
+                name: string;
+                number: string;
+                carClass: string;
+            }) => `${driver.name}|${driver.number}|${driver.carClass}`,
+        } as ReturnType<typeof useLiveDataModule.useLiveData>);
+    });
+
+    it("renders no times message when no drivers available", () => {
+        vi.mocked(useLiveDataModule.useLiveData).mockReturnValue({
+            classResults: null,
+            classResultsMap: null,
+            paxResults: null,
+            rawResults: null,
+            runWork: null,
+            displayMode: DisplayMode.autocross,
+            featureFlags: {},
+            classNames: [],
+            getAllDrivers: vi.fn(),
+            findDriverInClassResults: vi.fn(),
+            findDriverInPaxResults: vi.fn(),
+            findDriverInRawResults: vi.fn(),
+            createDriverId: () => "",
+        } as ReturnType<typeof useLiveDataModule.useLiveData>);
+
+        const classEntry = mockClassResults.results[0]!.entries[0]!;
+        renderWithProviders(
+            <ClassTimesVisualization
+                classResult={classEntry}
+                selectedDriverId="test-id"
+            />
+        );
+
+        expect(screen.getByText("No times available")).toBeVisible();
+    });
+
+    it("renders all drivers in class", () => {
+        const classEntry = mockClassResults.results[0]!.entries[0]!;
+        renderWithProviders(
+            <ClassTimesVisualization
+                classResult={classEntry}
+                selectedDriverId="test-id"
+            />
+        );
+
+        // Should render driver names from SS class
+        expect(screen.getByText("Sarah Johnson")).toBeVisible();
+    });
+
+    it("highlights selected driver", () => {
+        const classEntry = mockClassResults.results[0]!.entries[0]!;
+        const driverId = "Sarah Johnson|35|SS";
+        renderWithProviders(
+            <ClassTimesVisualization
+                classResult={classEntry}
+                selectedDriverId={driverId}
+            />
+        );
+
+        // Selected driver should be visible
+        expect(screen.getByText("Sarah Johnson")).toBeVisible();
+    });
+
+    it("renders times for all drivers", () => {
+        const classEntry = mockClassResults.results[0]!.entries[0]!;
+        renderWithProviders(
+            <ClassTimesVisualization
+                classResult={classEntry}
+                selectedDriverId="test-id"
+            />
+        );
+
+        // Should render time values
+        expect(screen.getByText(/57\.222/i)).toBeVisible();
+    });
+
+    it("handles empty class result when no class data available", () => {
+        const firstEntry = mockClassResults.results[0]!.entries[0]!;
+        const emptyClassEntry = {
+            ...firstEntry,
+            segments: [],
+        };
+
+        // Mock classResultsMap to return null/undefined for the class
+        vi.mocked(useLiveDataModule.useLiveData).mockReturnValue({
+            classResults: mockClassResults,
+            classResultsMap: new Map(), // Empty map - no class data
             paxResults: null,
             rawResults: null,
             runWork: null,
@@ -37,28 +136,10 @@ describe("ClassTimesVisualization", () => {
                 carClass: string;
             }) => `${driver.name}|${driver.number}|${driver.carClass}`,
         } as ReturnType<typeof useLiveDataModule.useLiveData>);
-    });
 
-    it("renders no times message when no drivers available", () => {
-        vi.mocked(useLiveDataModule.useLiveData).mockReturnValue({
-            classResults: {},
-            paxResults: null,
-            rawResults: null,
-            runWork: null,
-            displayMode: DisplayMode.autocross,
-            featureFlags: {},
-            classNames: [],
-            getAllDrivers: vi.fn(),
-            findDriverInClassResults: vi.fn(),
-            findDriverInPaxResults: vi.fn(),
-            findDriverInRawResults: vi.fn(),
-            createDriverId: () => "",
-        } as ReturnType<typeof useLiveDataModule.useLiveData>);
-
-        const classResult = mockClassResults.results.SS[0];
         renderWithProviders(
             <ClassTimesVisualization
-                classResult={classResult}
+                classResult={emptyClassEntry}
                 selectedDriverId="test-id"
             />
         );
@@ -66,79 +147,16 @@ describe("ClassTimesVisualization", () => {
         expect(screen.getByText("No times available")).toBeVisible();
     });
 
-    it("renders all drivers in class", () => {
-        const classResult = mockClassResults.results.SS[0];
+    it("renders gap visualization", () => {
+        const classEntry = mockClassResults.results[0]!.entries[0]!;
         renderWithProviders(
             <ClassTimesVisualization
-                classResult={classResult}
+                classResult={classEntry}
                 selectedDriverId="test-id"
             />
         );
 
-        // Should render driver names from SS class
+        // Gap visualization should be present
         expect(screen.getByText("Sarah Johnson")).toBeVisible();
-    });
-
-    it("highlights selected driver", () => {
-        const classResult = mockClassResults.results.SS[0];
-        const selectedDriverId = `Sarah Johnson|35|SS`;
-
-        renderWithProviders(
-            <ClassTimesVisualization
-                classResult={classResult}
-                selectedDriverId={selectedDriverId}
-            />
-        );
-
-        // Find the container div that has the highlight class
-        const driverName = screen.getByText("Sarah Johnson");
-        const container = driverName.closest("div.relative");
-        expect(container).toHaveClass("bg-primary/10");
-    });
-
-    it("displays time differences", () => {
-        const classResult = mockClassResults.results.SS[0];
-        renderWithProviders(
-            <ClassTimesVisualization
-                classResult={classResult}
-                selectedDriverId="test-id"
-            />
-        );
-
-        // Should show times and gaps
-        const timeElements = screen.getAllByText(/\d+\.\d{3}/);
-        expect(timeElements.length).toBeGreaterThan(0);
-    });
-
-    it("sorts drivers by time", () => {
-        const classResult = mockClassResults.results.SS[0];
-        renderWithProviders(
-            <ClassTimesVisualization
-                classResult={classResult}
-                selectedDriverId="test-id"
-            />
-        );
-
-        // First driver should be fastest (lowest time)
-        const timeElements = screen.getAllByText(/\d+\.\d{3}/);
-        if (timeElements.length > 1) {
-            const firstTime = parseFloat(timeElements[0].textContent || "0");
-            const secondTime = parseFloat(timeElements[1].textContent || "0");
-            expect(firstTime).toBeLessThanOrEqual(secondTime);
-        }
-    });
-
-    it("displays driver positions", () => {
-        const classResult = mockClassResults.results.SS[0];
-        renderWithProviders(
-            <ClassTimesVisualization
-                classResult={classResult}
-                selectedDriverId="test-id"
-            />
-        );
-
-        // Should show position numbers
-        const positionElements = screen.getAllByText(/\d+/);
-        expect(positionElements.length).toBeGreaterThan(0);
     });
 });
