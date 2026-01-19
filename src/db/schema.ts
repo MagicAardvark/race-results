@@ -5,3 +5,4 @@ export * from "@/db/tables/users";
 export * from "@/db/tables/classes";
 
 export * from "@/db/views/classes";
+export * from "@/db/views/roles";
