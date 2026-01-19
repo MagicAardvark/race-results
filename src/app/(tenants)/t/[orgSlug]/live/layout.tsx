@@ -4,7 +4,7 @@ import {
     getPaxResults,
     getRawResults,
     getRunWork,
-} from "./_lib/data/results";
+} from "./_lib/utils/live-results-client";
 import { DisplayMode } from "./_lib/types";
 import { requireValidTenant } from "./_lib/utils/tenant-guard";
 import { LiveLayoutClient } from "./_lib/components/live-layout-client";
@@ -16,15 +16,16 @@ export default async function LiveLayout({
     children: React.ReactNode;
 }) {
     const tenant = await requireValidTenant();
+    const orgSlug = tenant.org?.slug || "";
 
     // Fetch all data on the server in parallel
     // TODO: Get display mode from event/tenant configuration
     const displayMode = DisplayMode.autocross;
     const results = await Promise.all([
-        getClassResults(displayMode),
-        getPaxResults(),
-        getRawResults(),
-        getRunWork(),
+        getClassResults(orgSlug),
+        getPaxResults(orgSlug),
+        getRawResults(orgSlug),
+        getRunWork(orgSlug),
         tenant.isValid && !tenant.isGlobal && tenant.org
             ? featureFlagsService.getOrgFeatureFlags(tenant.org.orgId)
             : Promise.resolve({}),

@@ -1,11 +1,12 @@
 "use client";
 
 import { useMemo } from "react";
-import type { ClassResult } from "../../types";
+import type { ResultsEntry } from "@/dto/live-results";
 import { useLiveData } from "../../hooks/useLiveData";
+import { formatClassPosition } from "../shared/time-utils";
 
 type ClassTimesVisualizationProps = {
-    classResult: ClassResult;
+    classResult: ResultsEntry;
     selectedDriverId: string;
 };
 
@@ -13,28 +14,44 @@ export function ClassTimesVisualization({
     classResult,
     selectedDriverId,
 }: ClassTimesVisualizationProps) {
-    const { classResults, displayMode, createDriverId } = useLiveData();
+    const { classResultsMap, createDriverId } = useLiveData();
     // Get all drivers in the same class
     const classDrivers = useMemo(() => {
-        if (!classResults || !classResult) return [];
-        const driversInClass = classResults[classResult.carClass] || [];
+        if (!classResultsMap || !classResult) return [];
 
-        return driversInClass
+        // Determine the class key to use - if class starts with P or N, use the grouped key
+        const driverClass = classResult.class;
+        let classKey = driverClass;
+        if (driverClass.startsWith("P")) {
+            classKey = "P";
+        } else if (driverClass.startsWith("N")) {
+            classKey = "N";
+        }
+
+        // Find the class data for this driver's class
+        const classData = classResultsMap.get(classKey);
+        if (!classData) return [];
+
+        return classData.entries
             .map((driver) => {
-                const driverId = createDriverId(driver);
-                const time =
-                    displayMode === "rallycross"
-                        ? (driver.runInfo.rallyCrossTime ??
-                          driver.runInfo.total)
-                        : driver.runInfo.runs.find((r) => r.isBest)?.time ||
-                          driver.runInfo.total;
+                const driverId = createDriverId({
+                    name: driver.driverName,
+                    number: driver.carNumber,
+                    carClass: driver.class,
+                });
+
+                // Get best time - rawTotalTime already includes penalties and is the best time
+                const time = driver.rawTotalTime ?? null;
 
                 return {
                     driverId,
-                    name: driver.name,
-                    number: driver.number,
+                    name: driver.driverName,
+                    number: driver.carNumber,
                     time,
-                    position: parseInt(driver.position) || 999,
+                    position: formatClassPosition(
+                        driver.classPosition.position,
+                        driver.isTrophy
+                    ),
                     isSelected: driverId === selectedDriverId,
                 };
             })
@@ -43,13 +60,7 @@ export function ClassTimesVisualization({
                     d.time != null && !isNaN(d.time)
             )
             .sort((a, b) => a.time - b.time);
-    }, [
-        classResult,
-        classResults,
-        selectedDriverId,
-        displayMode,
-        createDriverId,
-    ]);
+    }, [classResult, classResultsMap, selectedDriverId, createDriverId]);
 
     if (classDrivers.length === 0) {
         return (

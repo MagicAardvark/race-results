@@ -12,63 +12,58 @@ describe("RunStatisticsCard", () => {
     });
 
     it("displays total runs from class result", () => {
-        const classResult = mockClassResults.results.SS[0];
-        render(
-            <RunStatisticsCard classResult={classResult} rawResult={null} />
-        );
+        const classEntry = mockClassResults.results[0]!.entries[0]!;
+        render(<RunStatisticsCard classResult={classEntry} rawResult={null} />);
 
         expect(screen.getByText("Total Runs")).toBeVisible();
-        expect(
-            screen.getByText(classResult.runInfo.runs.length.toString())
-        ).toBeVisible();
+        // Count total runs from segments
+        const totalRuns = classEntry.segments.reduce(
+            (sum, seg) => sum + Object.keys(seg.runs).length,
+            0
+        );
+        expect(screen.getByText(totalRuns.toString())).toBeVisible();
     });
 
     it("displays clean runs count", () => {
-        const classResult = mockClassResults.results.SS[0];
-        render(
-            <RunStatisticsCard classResult={classResult} rawResult={null} />
-        );
+        const classEntry = mockClassResults.results[0]!.entries[0]!;
+        render(<RunStatisticsCard classResult={classEntry} rawResult={null} />);
 
         expect(screen.getByText("Clean Runs")).toBeVisible();
         expect(
-            screen.getByText(classResult.runInfo.cleanCount.toString())
+            screen.getByText(classEntry.summary.totalClean.toString())
         ).toBeVisible();
     });
 
     it("displays cone count from class result", () => {
-        const classResult = mockClassResults.results.SS[0];
-        render(
-            <RunStatisticsCard classResult={classResult} rawResult={null} />
-        );
+        const classEntry = mockClassResults.results[0]!.entries[0]!;
+        render(<RunStatisticsCard classResult={classEntry} rawResult={null} />);
 
         expect(screen.getByText("Cone Count")).toBeVisible();
         expect(
-            screen.getByText(classResult.runInfo.coneCount.toString())
+            screen.getByText(classEntry.summary.totalCones.toString())
         ).toBeVisible();
     });
 
     it("displays cone count from raw result when class result is null", () => {
-        const rawResult = mockRawResults.results[0];
-        render(<RunStatisticsCard classResult={null} rawResult={rawResult} />);
+        const rawEntry = mockRawResults.results[0]!;
+        render(<RunStatisticsCard classResult={null} rawResult={rawEntry} />);
 
         expect(screen.getByText("Cone Count")).toBeVisible();
         const coneCountLabel = screen.getByText("Cone Count");
         const coneCountValue =
             coneCountLabel.parentElement?.querySelector(".font-bold");
         expect(coneCountValue).toHaveTextContent(
-            rawResult.coneCount.toString()
+            rawEntry.summary.totalCones.toString()
         );
     });
 
     it("displays DNF count", () => {
-        const classResult = mockClassResults.results.SS[0];
-        render(
-            <RunStatisticsCard classResult={classResult} rawResult={null} />
-        );
+        const classEntry = mockClassResults.results[0]!.entries[0]!;
+        render(<RunStatisticsCard classResult={classEntry} rawResult={null} />);
 
         expect(screen.getByText("DNF Count")).toBeVisible();
         expect(
-            screen.getByText(classResult.runInfo.dnfCount.toString())
+            screen.getByText(classEntry.summary.totalDNF.toString())
         ).toBeVisible();
     });
 

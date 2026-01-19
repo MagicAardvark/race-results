@@ -1,12 +1,17 @@
 "use client";
 
 import { createContext, useContext, useMemo } from "react";
-import type { ClassResult, DisplayMode, RawResult, RunWork } from "../types";
+import type {
+    ProcessedLiveClassResults,
+    ProcessedLiveIndexResults,
+    ProcessedLiveRawResults,
+} from "@/dto/live-results";
+import type { DisplayMode, RunWork } from "../types";
 
 type LiveResultsData = {
-    classResults: Record<string, ClassResult[]> | null;
-    paxResults: ClassResult[] | null;
-    rawResults: RawResult[] | null;
+    classResults: ProcessedLiveClassResults | null;
+    paxResults: ProcessedLiveIndexResults | null;
+    rawResults: ProcessedLiveRawResults | null;
     runWork: RunWork | null;
     displayMode: DisplayMode;
     featureFlags: Record<string, boolean>;
@@ -14,10 +19,13 @@ type LiveResultsData = {
 
 const LiveResultsContext = createContext<LiveResultsData | null>(null);
 
+// Stable empty object for default featureFlags
+const EMPTY_FEATURE_FLAGS: Record<string, boolean> = {};
+
 type LiveResultsProviderProps = {
-    classResults: Record<string, ClassResult[]> | null;
-    paxResults: ClassResult[] | null;
-    rawResults: RawResult[] | null;
+    classResults: ProcessedLiveClassResults | null;
+    paxResults: ProcessedLiveIndexResults | null;
+    rawResults: ProcessedLiveRawResults | null;
     runWork: RunWork | null;
     displayMode: DisplayMode;
     featureFlags?: Record<string, boolean>;
@@ -30,7 +38,7 @@ export function LiveResultsProvider({
     rawResults,
     runWork,
     displayMode,
-    featureFlags = {},
+    featureFlags = EMPTY_FEATURE_FLAGS,
     children,
 }: LiveResultsProviderProps) {
     const value = useMemo(

@@ -1,19 +1,26 @@
-import type { ClassResult, RawResult } from "../../types";
+import type { ResultsEntry } from "@/dto/live-results";
 
 type RunStatisticsCardProps = {
-    classResult: ClassResult | null;
-    rawResult: RawResult | null;
+    classResult: ResultsEntry | null;
+    rawResult: ResultsEntry | null;
 };
 
 export function RunStatisticsCard({
     classResult,
     rawResult,
 }: RunStatisticsCardProps) {
-    const totalRuns = classResult?.runInfo.runs.length ?? 0;
-    const cleanRuns = classResult?.runInfo.cleanCount ?? "N/A";
-    const coneCount =
-        classResult?.runInfo.coneCount ?? rawResult?.coneCount ?? 0;
-    const dnfCount = classResult?.runInfo.dnfCount ?? "N/A";
+    const entry = classResult || rawResult;
+
+    // Count total runs across all segments
+    const totalRuns = entry
+        ? entry.segments.reduce(
+              (sum, segment) => sum + Object.keys(segment.runs).length,
+              0
+          )
+        : 0;
+    const cleanRuns = entry?.summary.totalClean ?? "N/A";
+    const coneCount = entry?.summary.totalCones ?? 0;
+    const dnfCount = entry?.summary.totalDNF ?? "N/A";
 
     return (
         <div className="rounded-lg border p-3 sm:p-4">

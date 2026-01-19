@@ -4,7 +4,7 @@ import {
     getPaxResults,
     getRawResults,
     getRunWork,
-} from "./_lib/data/results";
+} from "./_lib/utils/live-results-client";
 import { featureFlagsService } from "@/services/feature-flags/feature-flags.service";
 import { requireValidTenant } from "./_lib/utils/tenant-guard";
 import {
@@ -12,10 +12,13 @@ import {
     mockGlobalTenant,
 } from "@/__tests__/mocks/mock-tenants";
 import { mockRunWork } from "@/__tests__/mocks/mock-run-work";
+import { mockClassResults } from "@/__tests__/mocks/mock-class-results";
+import { mockPaxResults } from "@/__tests__/mocks/mock-pax-results";
+import { mockRawResults } from "@/__tests__/mocks/mock-raw-results";
 import type { Tenant } from "@/dto/tenants";
 
 // Mock dependencies
-vi.mock("./_lib/data/results", () => ({
+vi.mock("./_lib/utils/live-results-client", () => ({
     getClassResults: vi.fn(),
     getPaxResults: vi.fn(),
     getRawResults: vi.fn(),
@@ -49,9 +52,9 @@ describe("LiveLayout", () => {
     const setupMockData = (tenant: Tenant = mockValidTenant) => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         vi.mocked(requireValidTenant).mockResolvedValue(tenant as any);
-        vi.mocked(getClassResults).mockResolvedValue({});
-        vi.mocked(getPaxResults).mockResolvedValue([]);
-        vi.mocked(getRawResults).mockResolvedValue([]);
+        vi.mocked(getClassResults).mockResolvedValue(mockClassResults);
+        vi.mocked(getPaxResults).mockResolvedValue(mockPaxResults);
+        vi.mocked(getRawResults).mockResolvedValue(mockRawResults);
         vi.mocked(getRunWork).mockResolvedValue(mockRunWork);
         vi.mocked(featureFlagsService.getOrgFeatureFlags).mockResolvedValue({});
     };
@@ -68,10 +71,10 @@ describe("LiveLayout", () => {
         await LiveLayout({ children: <div>Test</div> });
 
         expect(requireValidTenant).toHaveBeenCalled();
-        expect(getClassResults).toHaveBeenCalled();
-        expect(getPaxResults).toHaveBeenCalled();
-        expect(getRawResults).toHaveBeenCalled();
-        expect(getRunWork).toHaveBeenCalled();
+        expect(getClassResults).toHaveBeenCalledWith("test-org");
+        expect(getPaxResults).toHaveBeenCalledWith("test-org");
+        expect(getRawResults).toHaveBeenCalledWith("test-org");
+        expect(getRunWork).toHaveBeenCalledWith("test-org");
         expect(featureFlagsService.getOrgFeatureFlags).toHaveBeenCalledWith(
             "org-123"
         );

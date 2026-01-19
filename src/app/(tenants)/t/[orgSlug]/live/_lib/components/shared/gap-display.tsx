@@ -56,15 +56,16 @@ export function GapDisplay({
     maxGap: providedMaxGap,
     className = "col-span-12",
 }: GapDisplayProps) {
+    // Gap is positive when behind (slower), 0 when tied/leading, null when in first
     const gap = gapToFirst ?? 0;
-    const isLeader = gap === 0;
+    const isLeader = gap === 0 || gapToFirst === null;
 
     const maxGap =
         providedMaxGap ??
         calculatePercentile70(
             allEntries
                 .map((e) => e.gapToFirst)
-                .filter((g): g is number => g != null && g > 0)
+                .filter((g): g is number => g != null && g !== 0)
         );
 
     const userCarPosition = isLeader ? 0 : getGapPosition(gap, maxGap);
@@ -77,7 +78,7 @@ export function GapDisplay({
         .filter(
             (entry) =>
                 entry.gapToFirst != null &&
-                entry.gapToFirst > 0 &&
+                entry.gapToFirst !== 0 &&
                 Math.abs(entry.gapToFirst - gap) > GAP_OVERLAP_THRESHOLD
         );
 
@@ -102,7 +103,8 @@ export function GapDisplay({
             )}
 
             {otherCars.map((car) => {
-                const carPosition = getGapPosition(car.gapToFirst!, maxGap);
+                const carGap = car.gapToFirst ?? 0;
+                const carPosition = getGapPosition(carGap, maxGap);
                 return (
                     <div
                         key={car.id}
@@ -131,9 +133,9 @@ export function GapDisplay({
 
             {!isLeader && (
                 <div className="text-muted-foreground absolute top-1/2 right-0 ml-2 flex -translate-y-1/2 flex-col items-end text-[10px]">
-                    <div>First: +{gap.toFixed(3)}s</div>
-                    {gapToNext != null && gapToNext > 0 && (
-                        <div>Next: +{gapToNext.toFixed(3)}s</div>
+                    <div>First: {gap.toFixed(3)}s</div>
+                    {gapToNext != null && gapToNext !== 0 && (
+                        <div>Next: {gapToNext.toFixed(3)}s</div>
                     )}
                 </div>
             )}

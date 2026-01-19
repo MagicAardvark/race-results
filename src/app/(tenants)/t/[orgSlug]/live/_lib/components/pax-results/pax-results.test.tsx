@@ -4,48 +4,48 @@ import { PaxResults } from "./pax-results";
 import { mockPaxResults } from "@/__tests__/mocks/mock-pax-results";
 
 describe("PaxResults", () => {
+    it("renders empty state when no results", () => {
+        renderWithProviders(<PaxResults />, {
+            liveData: {
+                paxResults: null,
+            },
+        });
+
+        expect(screen.getByText("No results available")).toBeVisible();
+    });
+
     it("renders all PAX entries", () => {
         renderWithProviders(<PaxResults />, {
             liveData: {
-                paxResults: mockPaxResults.results,
+                paxResults: mockPaxResults,
             },
         });
 
         expect(screen.getByText("Alex Martinez")).toBeVisible();
         expect(screen.getByText("Chris Anderson")).toBeVisible();
-    });
-
-    it("calculates max gap from PAX times", () => {
-        renderWithProviders(<PaxResults />, {
-            liveData: {
-                paxResults: mockPaxResults.results,
-            },
-        });
-
-        // Should render entries with gap displays
-        expect(screen.getByText("Alex Martinez")).toBeVisible();
+        expect(screen.getByText("David Thompson")).toBeVisible();
     });
 
     it("renders PAX positions", () => {
         renderWithProviders(<PaxResults />, {
             liveData: {
-                paxResults: mockPaxResults.results,
+                paxResults: mockPaxResults,
             },
         });
 
-        // PAX position 1 should be visible
         expect(screen.getByText("1")).toBeVisible();
+        expect(screen.getByText("2")).toBeVisible();
+        expect(screen.getByText("3")).toBeVisible();
     });
 
-    it("handles empty results array", () => {
-        const { container } = renderWithProviders(<PaxResults />, {
+    it("renders PAX times", () => {
+        renderWithProviders(<PaxResults />, {
             liveData: {
-                paxResults: [],
+                paxResults: mockPaxResults,
             },
         });
 
-        // Empty array doesn't trigger empty state, just renders nothing
-        const emptyState = container.querySelector("main");
-        expect(emptyState).not.toBeInTheDocument();
+        expect(screen.getByText(/46\.876/i)).toBeVisible();
+        expect(screen.getByText(/47\.007/i)).toBeVisible();
     });
 });

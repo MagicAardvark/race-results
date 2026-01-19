@@ -1,16 +1,14 @@
 "use client";
 
-import { useEffect, useState, useMemo } from "react";
 import { useLiveData } from "../../hooks/useLiveData";
+import { useDriverSelection } from "../../hooks/useDriverSelection";
 import { FEATURE_FLAGS } from "../../config/feature-flags";
 import { DriverSelect } from "./driver-select";
-import { ClassPositionTimeCard } from "./class-position-time-card";
 import { PositionTimeCard } from "./position-time-card";
+import { formatBestTime, formatClassPosition } from "../shared/time-utils";
 import { RunStatisticsCard } from "./run-statistics-card";
 import { ClassTimesVisualization } from "./class-times-visualization";
 import { TimesDistributionChart } from "./times-distribution-chart";
-
-const STORAGE_KEY = "selected-driver-id";
 
 export function MyStats() {
     const {
@@ -21,35 +19,10 @@ export function MyStats() {
         findDriverInRawResults,
     } = useLiveData();
 
-    const allDrivers = useMemo(() => getAllDrivers(), [getAllDrivers]);
+    const allDrivers = getAllDrivers();
+    const { selectedDriverId, selectedDriver, setSelectedDriverId } =
+        useDriverSelection(allDrivers);
 
-    // Get valid stored driver ID from localStorage
-    const getStoredDriverId = () => {
-        if (typeof window === "undefined" || allDrivers.length === 0)
-            return null;
-        const stored = localStorage.getItem(STORAGE_KEY);
-        if (stored && allDrivers.some((d) => d.id === stored)) {
-            return stored;
-        }
-        return null;
-    };
-
-    // Use state for user selection, but derive initial value from localStorage
-    const [userSelectedDriverId, setUserSelectedDriverId] = useState<
-        string | null
-    >(null);
-
-    // The actual selected driver ID: user selection takes precedence, otherwise use stored value
-    const selectedDriverId = userSelectedDriverId ?? getStoredDriverId();
-
-    // Save to localStorage when user selection changes
-    useEffect(() => {
-        if (userSelectedDriverId && typeof window !== "undefined") {
-            localStorage.setItem(STORAGE_KEY, userSelectedDriverId);
-        }
-    }, [userSelectedDriverId]);
-
-    const selectedDriver = allDrivers.find((d) => d.id === selectedDriverId);
     const classResult = selectedDriverId
         ? findDriverInClassResults(selectedDriverId)
         : null;
@@ -84,17 +57,25 @@ export function MyStats() {
             {selectedDriver && (
                 <>
                     <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4 xl:grid-cols-5">
-                        <ClassPositionTimeCard
-                            classResult={classResult}
-                            rawResult={rawResult}
-                        />
+                        {classResult && (
+                            <PositionTimeCard
+                                title="Class"
+                                position={formatClassPosition(
+                                    classResult.classPosition.position,
+                                    classResult.isTrophy
+                                )}
+                                time={formatBestTime(classResult)}
+                                timeLabel="Best Time"
+                                gapToFirst={classResult.classPosition.toFirst}
+                            />
+                        )}
 
                         {rawResult && (
                             <PositionTimeCard
                                 title="Raw"
-                                position={rawResult.position}
-                                time={rawResult.time}
-                                gapToFirst={rawResult.toFirst}
+                                position={rawResult.rawPosition.position}
+                                time={formatBestTime(rawResult)}
+                                gapToFirst={rawResult.rawPosition.toFirst}
                             />
                         )}
 
@@ -102,9 +83,15 @@ export function MyStats() {
                             featureFlags[FEATURE_FLAGS.PAX_ENABLED] && (
                                 <PositionTimeCard
                                     title="PAX"
-                                    position={paxResult.paxPosition}
-                                    time={paxResult.runInfo.paxTime}
-                                    gapToFirst={paxResult.runInfo.toFirstInPax}
+                                    position={
+                                        paxResult.indexedPosition.position
+                                    }
+                                    time={paxResult.indexedTotalTime?.toFixed(
+                                        3
+                                    )}
+                                    gapToFirst={
+                                        paxResult.indexedPosition.toFirst
+                                    }
                                 />
                             )}
 
@@ -138,7 +125,7 @@ export function MyStats() {
             <DriverSelect
                 drivers={allDrivers}
                 selectedDriverId={selectedDriverId}
-                onDriverChange={setUserSelectedDriverId}
+                onDriverChange={setSelectedDriverId}
             />
         </div>
     );

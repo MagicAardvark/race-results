@@ -6,7 +6,7 @@ import { Button } from "@/ui/button";
 import { RefreshCw } from "lucide-react";
 import { getNavigationPages } from "../utils/navigation";
 import { useLiveData } from "../hooks/useLiveData";
-import { useState } from "react";
+import { useState, useMemo, useCallback } from "react";
 
 export function LiveLayoutClient({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
@@ -14,16 +14,20 @@ export function LiveLayoutClient({ children }: { children: React.ReactNode }) {
     const router = useRouter();
     const { featureFlags } = useLiveData();
     const [isRefreshing, setIsRefreshing] = useState(false);
-    const orgSlug = params.orgSlug as string;
-    const basePath = `/t/${orgSlug}/live`;
-    const navigationPages = getNavigationPages(basePath, featureFlags);
 
-    const handleRefresh = async () => {
+    const orgSlug = params.orgSlug as string;
+    const basePath = useMemo(() => `/t/${orgSlug}/live`, [orgSlug]);
+    const navigationPages = useMemo(
+        () => getNavigationPages(basePath, featureFlags),
+        [basePath, featureFlags]
+    );
+
+    const handleRefresh = useCallback(async () => {
         setIsRefreshing(true);
         router.refresh();
         // Reset loading state after a short delay to allow refresh to complete
         setTimeout(() => setIsRefreshing(false), 1000);
-    };
+    }, [router]);
 
     return (
         <div className="flex flex-col items-center justify-center pb-[100px]">

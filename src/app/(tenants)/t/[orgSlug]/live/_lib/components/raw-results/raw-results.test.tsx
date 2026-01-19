@@ -4,49 +4,53 @@ import { RawResults } from "./raw-results";
 import { mockRawResults } from "@/__tests__/mocks/mock-raw-results";
 
 describe("RawResults", () => {
+    it("renders empty state when no results", () => {
+        renderWithProviders(<RawResults />, {
+            liveData: {
+                rawResults: null,
+            },
+        });
+
+        expect(screen.getByText("No results available")).toBeVisible();
+    });
+
     it("renders all raw entries", () => {
         renderWithProviders(<RawResults />, {
             liveData: {
-                rawResults: mockRawResults.results,
+                rawResults: mockRawResults,
             },
         });
 
+        expect(screen.getByText("Tamra Krystinik")).toBeVisible();
         expect(screen.getByText("Alex Martinez")).toBeVisible();
-        expect(screen.getByText("Chris Anderson")).toBeVisible();
+        expect(screen.getByText("Sarah Johnson")).toBeVisible();
     });
 
-    it("calculates max gap from raw times", () => {
+    it("renders raw positions", () => {
         renderWithProviders(<RawResults />, {
             liveData: {
-                rawResults: mockRawResults.results,
+                rawResults: mockRawResults,
             },
         });
 
-        // Should render entries with gap displays
-        expect(screen.getByText("Alex Martinez")).toBeVisible();
+        expect(screen.getByText("1")).toBeVisible();
+        expect(screen.getByText("2")).toBeVisible();
+        expect(screen.getByText("3")).toBeVisible();
     });
 
-    it("renders positions", () => {
+    it("renders raw times", () => {
         renderWithProviders(<RawResults />, {
             liveData: {
-                rawResults: mockRawResults.results,
+                rawResults: mockRawResults,
             },
         });
 
-        // Position 1 should be visible (may appear multiple times)
-        const ones = screen.getAllByText("1");
-        expect(ones.length).toBeGreaterThan(0);
-    });
-
-    it("handles empty results array", () => {
-        const { container } = renderWithProviders(<RawResults />, {
-            liveData: {
-                rawResults: [],
-            },
-        });
-
-        // Empty array doesn't trigger empty state, just renders nothing
-        const emptyState = container.querySelector("main");
-        expect(emptyState).not.toBeInTheDocument();
+        // Best run time is displayed (not rawTotalTime)
+        // First entry's best run is 48.234 (run 2)
+        expect(screen.getByText(/48\.234/i)).toBeVisible();
+        // Second entry's best run is 57.306 (run 8) - may appear multiple times
+        const timeElements = screen.getAllByText(/57\.306/i);
+        expect(timeElements.length).toBeGreaterThan(0);
+        expect(timeElements[0]).toBeVisible();
     });
 });
