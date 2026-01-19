@@ -15,6 +15,7 @@ export type RoleDTO = {
     name: string;
     effectiveAt: Date;
     isEnabled: boolean;
+    isGlobal: boolean;
 };
 
 export type UserOrgRolesDTO = {
@@ -50,9 +51,3 @@ export interface User {
     displayName: string | null;
     roles: string[];
 }
-
-export const ROLES = {
-    admin: "admin",
-    orgOwner: "org_owner",
-    user: "user",
-} as const;

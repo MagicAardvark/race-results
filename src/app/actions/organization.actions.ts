@@ -1,10 +1,10 @@
 "use server";
 
+import { ROLES } from "@/constants/global";
 import { Organization } from "@/dto/organizations";
 import { nameof } from "@/lib/utils";
 import { organizationAdminService } from "@/services/organizations/organization.admin.service";
 import { userService } from "@/services/users/user.service";
-import { ROLES } from "@/dto/users";
 import { refresh, revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 

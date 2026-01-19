@@ -1,9 +1,9 @@
 import { userService } from "@/services/users/user.service";
-import { ROLES } from "@/dto/users";
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 import { Button } from "@/ui/button";
 import { CgMediaLive } from "react-icons/cg";
+import { ROLES } from "@/constants/global";
 
 export async function AppHeader({
     sidebarTrigger,

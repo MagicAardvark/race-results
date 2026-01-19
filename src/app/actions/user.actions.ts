@@ -1,16 +1,17 @@
 "use server";
 
 import { userService } from "@/services/users/user.service";
-import { ROLES } from "@/dto/users";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { rolesService } from "@/services/roles/roles.service";
+import { ROLES } from "@/constants/global";
 
 type ActionState = {
     isError: boolean;
     message: string;
 };
 
-export async function updateUser(
+export async function updateUserInformation(
     _: ActionState,
     formData: FormData
 ): Promise<ActionState> {
@@ -31,9 +32,37 @@ export async function updateUser(
         };
     }
 
+    try {
+        await userService.updateUser(userId, {
+            displayName,
+        });
+    } catch (error) {
+        return {
+            isError: true,
+            message:
+                error instanceof Error
+                    ? error.message
+                    : "An unknown error occurred",
+        };
+    }
+
+    revalidatePath("/admin/users");
+    redirect(`/admin/users/${userId}`);
+}
+
+export async function updateUserGlobalRoles(
+    _: ActionState,
+    formData: FormData
+): Promise<ActionState> {
+    const userId = formData.get("userId")?.toString();
+
+    if (!userId) {
+        return { isError: true, message: "User ID is required" };
+    }
+
     // Get selected roles from form data
-    const allRoles = await userService.getAllRoles();
-    const selectedRoles = allRoles
+    const globalRoles = await rolesService.getGlobalRoles();
+    const selectedRoles = globalRoles
         .map((role) => {
             const isChecked = formData.get(`role.${role.key}`) === "on";
             return isChecked ? role.key : null;
@@ -41,15 +70,12 @@ export async function updateUser(
         .filter((key): key is string => key !== null);
 
     // Ensure at least 'user' role is assigned
-    if (!selectedRoles.includes("user")) {
+    if (!selectedRoles.includes(ROLES.user)) {
         selectedRoles.push("user");
     }
 
     try {
-        await userService.updateUser(userId, {
-            displayName,
-            roleKeys: selectedRoles,
-        });
+        await userService.updateUserGlobalRoles(userId, selectedRoles);
     } catch (error) {
         return {
             isError: true,

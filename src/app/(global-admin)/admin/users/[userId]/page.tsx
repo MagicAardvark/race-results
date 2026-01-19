@@ -11,6 +11,7 @@ import { userService } from "@/services/users/user.service";
 import { TriangleAlert } from "lucide-react";
 import { UpdateUserForm } from "../_lib/components/update-user-form";
 import { DeleteUserButton } from "../_lib/components/delete-user-button";
+import { rolesService } from "@/services/roles/roles.service";
 
 export default async function Page({
     params,
@@ -39,7 +40,7 @@ export default async function Page({
         );
     }
 
-    const roles = await userService.getAllRoles();
+    const roles = await rolesService.getGlobalRoles();
 
     return (
         <div className="flex w-full flex-col gap-4">
@@ -55,7 +56,7 @@ export default async function Page({
                     <LinkButton href="/admin/users">Go Back</LinkButton>
                 </div>
             </div>
-            <UpdateUserForm user={user} availableRoles={roles} />
+            <UpdateUserForm user={user} availableGlobalRoles={roles} />
         </div>
     );
 }

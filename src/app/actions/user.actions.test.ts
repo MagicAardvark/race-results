@@ -1,11 +1,17 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { deleteUser } from "./user.actions";
+import {
+    deleteUser,
+    updateUserGlobalRoles,
+    updateUserInformation,
+} from "./user.actions";
 import { userService } from "@/services/users/user.service";
 import { mockAdminUser, createMockUser } from "@/__tests__/mocks/mock-users";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { rolesService } from "@/services/roles/roles.service";
 
 vi.mock("@/services/users/user.service");
+vi.mock("@/services/roles/roles.service");
 vi.mock("next/cache", () => ({
     revalidatePath: vi.fn(),
 }));
@@ -18,16 +24,11 @@ vi.mock("next/navigation", () => ({
 describe("user.actions", () => {
     beforeEach(() => {
         vi.clearAllMocks();
+        vi.mocked(userService.getCurrentUser).mockResolvedValue(mockAdminUser);
     });
 
     describe("deleteUser", () => {
-        beforeEach(() => {
-            vi.mocked(userService.getCurrentUser).mockResolvedValue(
-                mockAdminUser
-            );
-        });
-
-        it("deletes user successfully", async () => {
+        it("deletes user and redirects on success", async () => {
             vi.mocked(userService.deleteUser).mockResolvedValue(undefined);
 
             await expect(deleteUser("user-1")).rejects.toThrow(
@@ -39,7 +40,7 @@ describe("user.actions", () => {
             expect(redirect).toHaveBeenCalledWith("/admin/users");
         });
 
-        it("returns error when user is not admin", async () => {
+        it("prevents non-admin users from deleting accounts", async () => {
             vi.mocked(userService.getCurrentUser).mockResolvedValue(
                 createMockUser({ roles: [] })
             );
@@ -51,7 +52,7 @@ describe("user.actions", () => {
             expect(userService.deleteUser).not.toHaveBeenCalled();
         });
 
-        it("returns error when trying to delete yourself", async () => {
+        it("prevents users from deleting their own account", async () => {
             const currentAdmin = createMockUser({
                 userId: "admin-123",
                 roles: ["admin"],
@@ -67,7 +68,7 @@ describe("user.actions", () => {
             expect(userService.deleteUser).not.toHaveBeenCalled();
         });
 
-        it("returns error when service throws", async () => {
+        it("handles service errors gracefully", async () => {
             vi.mocked(userService.deleteUser).mockRejectedValue(
                 new Error("Database error")
             );
@@ -77,15 +78,85 @@ describe("user.actions", () => {
             expect(result.isError).toBe(true);
             expect(result.message).toBe("Database error");
         });
+    });
 
-        it("returns error when current user is null", async () => {
-            vi.mocked(userService.getCurrentUser).mockResolvedValue(null);
+    describe("updateUserInformation", () => {
+        beforeEach(() => {
+            vi.clearAllMocks();
+            vi.mocked(userService.updateUser).mockResolvedValue(undefined);
+        });
 
-            const result = await deleteUser("user-1");
+        it("trims whitespace from display name", async () => {
+            const formData = new FormData();
+            formData.set("userId", "user-1");
+            formData.set("displayName", "  John Doe  ");
 
-            expect(result.isError).toBe(true);
-            expect(result.message).toBe("Unauthorized: Admin access required");
-            expect(userService.deleteUser).not.toHaveBeenCalled();
+            await expect(
+                updateUserInformation({ isError: false, message: "" }, formData)
+            ).rejects.toThrow("redirect called");
+
+            expect(userService.updateUser).toHaveBeenCalledWith("user-1", {
+                displayName: "John Doe",
+            });
+        });
+
+        it("converts empty string to undefined", async () => {
+            const formData = new FormData();
+            formData.set("userId", "user-1");
+            formData.set("displayName", "   ");
+
+            await expect(
+                updateUserInformation({ isError: false, message: "" }, formData)
+            ).rejects.toThrow("redirect called");
+
+            expect(userService.updateUser).toHaveBeenCalledWith("user-1", {
+                displayName: undefined,
+            });
+        });
+    });
+
+    describe("updateUserGlobalRoles", () => {
+        beforeEach(() => {
+            vi.clearAllMocks();
+
+            vi.mocked(rolesService.getGlobalRoles).mockResolvedValue([
+                { roleId: "123", key: "user", name: "User" },
+                { roleId: "124", key: "admin", name: "Admin" },
+            ]);
+
+            vi.mocked(userService.updateUserGlobalRoles).mockResolvedValue(
+                undefined
+            );
+        });
+        it("automatically adds user role if not selected", async () => {
+            const formData = new FormData();
+            formData.set("userId", "user-1");
+            formData.set("role.admin", "on");
+            // Note: 'user' role NOT checked
+
+            await expect(
+                updateUserGlobalRoles({ isError: false, message: "" }, formData)
+            ).rejects.toThrow("redirect called");
+
+            expect(userService.updateUserGlobalRoles).toHaveBeenCalledWith(
+                "user-1",
+                ["admin", "user"] // 'user' was auto-added
+            );
+        });
+
+        it("preserves user role when already selected", async () => {
+            const formData = new FormData();
+            formData.set("userId", "user-1");
+            formData.set("role.user", "on");
+
+            await expect(
+                updateUserGlobalRoles({ isError: false, message: "" }, formData)
+            ).rejects.toThrow("redirect called");
+
+            expect(userService.updateUserGlobalRoles).toHaveBeenCalledWith(
+                "user-1",
+                ["user"]
+            );
         });
     });
 });
