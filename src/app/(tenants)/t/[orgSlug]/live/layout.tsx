@@ -4,7 +4,7 @@ import {
     getPaxResults,
     getRawResults,
     getRunWork,
-} from "./_lib/data/results";
+} from "./_lib/utils/live-results-client";
 import { DisplayMode } from "./_lib/types";
 import { requireValidTenant } from "./_lib/utils/tenant-guard";
 import { LiveLayoutClient } from "./_lib/components/live-layout-client";

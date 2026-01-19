@@ -4,7 +4,7 @@ import {
     getPaxResults,
     getRawResults,
     getRunWork,
-} from "./_lib/data/results";
+} from "./_lib/utils/live-results-client";
 import { featureFlagsService } from "@/services/feature-flags/feature-flags.service";
 import { requireValidTenant } from "./_lib/utils/tenant-guard";
 import {
@@ -18,7 +18,7 @@ import { mockRawResults } from "@/__tests__/mocks/mock-raw-results";
 import type { Tenant } from "@/dto/tenants";
 
 // Mock dependencies
-vi.mock("./_lib/data/results", () => ({
+vi.mock("./_lib/utils/live-results-client", () => ({
     getClassResults: vi.fn(),
     getPaxResults: vi.fn(),
     getRawResults: vi.fn(),
