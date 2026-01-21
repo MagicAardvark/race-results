@@ -17,6 +17,20 @@ import {
 import { generateApiKey } from "@/lib/auth/generate-api-key";
 
 async function main() {
+    // eslint-disable-next-line no-console
+    console.log("Starting seed...");
+
+    await configureOrgs();
+
+    await configureUsers();
+
+    await configureClasses();
+
+    // eslint-disable-next-line no-console
+    console.log("Seed completed successfully!");
+}
+
+async function configureOrgs() {
     await db.delete(orgs);
 
     const insertedOrgs = await db
@@ -66,13 +80,6 @@ async function main() {
 
     await db.insert(featureFlags).values(orgDefaultFeatureFlags);
     await db.insert(orgApiKeys).values(orgDefaultApiKeys);
-
-    await configureUsers();
-
-    await configureClasses();
-
-    // eslint-disable-next-line no-console
-    console.log("Seed completed successfully!");
 }
 
 async function configureUsers() {
@@ -95,7 +102,7 @@ async function configureUsers() {
 
     await db.insert(roles).values(roleData).returning();
 
-    const userglobalRoleMapping = userData.flatMap((user) =>
+    const userGlobalRoleMapping = userData.flatMap((user) =>
         user.globalRoles.map((key) => ({
             userId: userData.find((u) => u.displayName === user.displayName)!
                 .userId,
@@ -103,7 +110,7 @@ async function configureUsers() {
         }))
     );
 
-    await db.insert(userGlobalRoles).values(userglobalRoleMapping);
+    await db.insert(userGlobalRoles).values(userGlobalRoleMapping);
 }
 
 async function configureClasses() {

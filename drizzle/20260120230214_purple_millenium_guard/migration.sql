@@ -34,6 +34,7 @@ CREATE TABLE "roles" (
 	"name" text NOT NULL UNIQUE,
 	"effective_at" timestamp with time zone DEFAULT now() NOT NULL,
 	"is_enabled" boolean DEFAULT true NOT NULL,
+	"is_global" boolean DEFAULT false NOT NULL,
 	CONSTRAINT "unique_role" UNIQUE("role_key","effective_at")
 );
 --> statement-breakpoint
@@ -195,4 +196,30 @@ SELECT
   group_short_name,
   group_long_name
 FROM classes_group_effective_index_values_vw
-);
+);--> statement-breakpoint
+CREATE VIEW "roles_current_vw" AS (
+  WITH global_roles AS (
+    SELECT
+      id,
+      role_key,
+      name,
+      is_enabled,
+      is_global,
+      ROW_NUMBER() OVER (PARTITION BY id ORDER BY effective_at DESC) as row_num
+    FROM roles
+    WHERE
+      effective_at <= CURRENT_TIMESTAMP
+  )
+
+  SELECT
+    id,
+    role_key,
+    name,
+    is_global
+  FROM global_roles
+  WHERE
+    row_num = 1
+  AND is_enabled = true
+);--> statement-breakpoint
+CREATE VIEW "user_global_roles_vw" AS (select "user_global_roles"."user_id", "roles_current_vw"."id", "roles_current_vw"."role_key", "roles_current_vw"."name" from "user_global_roles" inner join "roles_current_vw" on "user_global_roles"."role_id" = "roles_current_vw"."id" where ("user_global_roles"."is_negated" = false and "user_global_roles"."effective_at" < CURRENT_TIMESTAMP));--> statement-breakpoint
+CREATE VIEW "user_org_roles_vw" AS (select "user_org_roles"."user_id", "roles_current_vw"."id", "roles_current_vw"."role_key", "roles_current_vw"."name", "user_org_roles"."org_id" from "user_org_roles" inner join "roles_current_vw" on "user_org_roles"."role_id" = "roles_current_vw"."id" where ("user_org_roles"."is_negated" = false and "user_org_roles"."effective_at" < CURRENT_TIMESTAMP));

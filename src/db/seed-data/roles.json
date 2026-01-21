@@ -14,6 +14,13 @@
         "isGlobal": false
     },
     {
+        "roleId": "0e7ce3d7-fbe9-4466-b68a-b82fcd3ef05e",
+        "key": "org_manager",
+        "name": "Organization Manager",
+        "isEnabled": true,
+        "isGlobal": false
+    },
+    {
         "roleId": "74df6244-5fac-49f1-b8a3-6f8c6ce23df3",
         "key": "user",
         "name": "Standard User",

@@ -1,7 +1,7 @@
 {
   "version": "8",
   "dialect": "postgres",
-  "id": "cd56f504-b6bd-43ac-bea4-c3a6ca8a7207",
+  "id": "52f4c68f-558c-45d8-8de5-2309930fffc4",
   "prevIds": [
     "00000000-0000-0000-0000-000000000000"
   ],
@@ -406,6 +406,19 @@
       "generated": null,
       "identity": null,
       "name": "is_enabled",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "roles"
+    },
+    {
+      "type": "boolean",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "false",
+      "generated": null,
+      "identity": null,
+      "name": "is_global",
       "entityType": "columns",
       "schema": "public",
       "table": "roles"
@@ -1756,6 +1769,39 @@
       "tablespace": null,
       "materialized": false,
       "name": "classes_flattened_group_classes_vw",
+      "entityType": "views",
+      "schema": "public"
+    },
+    {
+      "definition": "\n  WITH global_roles AS (\n    SELECT\n      id,\n      role_key,\n      name,\n      is_enabled,\n      is_global,\n      ROW_NUMBER() OVER (PARTITION BY id ORDER BY effective_at DESC) as row_num\n    FROM roles\n    WHERE\n      effective_at <= CURRENT_TIMESTAMP\n  )\n\n  SELECT\n    id,\n    role_key,\n    name,\n    is_global\n  FROM global_roles\n  WHERE\n    row_num = 1\n  AND is_enabled = true\n",
+      "with": null,
+      "withNoData": null,
+      "using": null,
+      "tablespace": null,
+      "materialized": false,
+      "name": "roles_current_vw",
+      "entityType": "views",
+      "schema": "public"
+    },
+    {
+      "definition": "select \"user_global_roles\".\"user_id\", \"roles_current_vw\".\"id\", \"roles_current_vw\".\"role_key\", \"roles_current_vw\".\"name\" from \"user_global_roles\" inner join \"roles_current_vw\" on \"user_global_roles\".\"role_id\" = \"roles_current_vw\".\"id\" where (\"user_global_roles\".\"is_negated\" = false and \"user_global_roles\".\"effective_at\" < CURRENT_TIMESTAMP)",
+      "with": null,
+      "withNoData": null,
+      "using": null,
+      "tablespace": null,
+      "materialized": false,
+      "name": "user_global_roles_vw",
+      "entityType": "views",
+      "schema": "public"
+    },
+    {
+      "definition": "select \"user_org_roles\".\"user_id\", \"roles_current_vw\".\"id\", \"roles_current_vw\".\"role_key\", \"roles_current_vw\".\"name\", \"user_org_roles\".\"org_id\" from \"user_org_roles\" inner join \"roles_current_vw\" on \"user_org_roles\".\"role_id\" = \"roles_current_vw\".\"id\" where (\"user_org_roles\".\"is_negated\" = false and \"user_org_roles\".\"effective_at\" < CURRENT_TIMESTAMP)",
+      "with": null,
+      "withNoData": null,
+      "using": null,
+      "tablespace": null,
+      "materialized": false,
+      "name": "user_org_roles_vw",
       "entityType": "views",
       "schema": "public"
     }
