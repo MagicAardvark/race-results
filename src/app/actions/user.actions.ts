@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { rolesService } from "@/services/roles/roles.service";
 import { ROLES } from "@/constants/global";
+import { requireRole } from "@/lib/auth/require-role";
 
 type ActionState = {
     isError: boolean;
@@ -15,21 +16,14 @@ export async function updateUserInformation(
     _: ActionState,
     formData: FormData
 ): Promise<ActionState> {
+    await requireRole(ROLES.admin);
+
     const userId = formData.get("userId")?.toString();
     const displayNameInput = formData.get("displayName")?.toString().trim();
     const displayName = displayNameInput || undefined;
 
     if (!userId) {
         return { isError: true, message: "User ID is required" };
-    }
-
-    // Verify user has admin permissions
-    const currentUser = await userService.getCurrentUser();
-    if (!currentUser?.roles.includes(ROLES.admin)) {
-        return {
-            isError: true,
-            message: "Unauthorized: Admin access required",
-        };
     }
 
     try {
@@ -91,14 +85,7 @@ export async function updateUserGlobalRoles(
 }
 
 export async function deleteUser(userId: string): Promise<ActionState> {
-    // Verify user has admin permissions
-    const currentUser = await userService.getCurrentUser();
-    if (!currentUser?.roles.includes(ROLES.admin)) {
-        return {
-            isError: true,
-            message: "Unauthorized: Admin access required",
-        };
-    }
+    const currentUser = await requireRole(ROLES.admin);
 
     // Prevent deleting yourself
     if (currentUser.userId === userId) {
@@ -122,4 +109,37 @@ export async function deleteUser(userId: string): Promise<ActionState> {
 
     revalidatePath("/admin/users");
     redirect("/admin/users");
+}
+
+export async function addUserToOrganization(
+    _: ActionState,
+    formData: FormData
+): Promise<ActionState> {
+    await requireRole(ROLES.admin);
+
+    const userId = formData.get("userId")?.toString();
+    const orgId = formData.get("orgId")?.toString();
+
+    if (!userId) {
+        return { isError: true, message: "Form state is invalid" };
+    }
+
+    if (!orgId) {
+        return { isError: true, message: "Organization is required" };
+    }
+
+    try {
+        await userService.addUserToOrganization(userId, orgId);
+    } catch (error) {
+        return {
+            isError: true,
+            message:
+                error instanceof Error
+                    ? error.message
+                    : "An unknown error occurred",
+        };
+    }
+
+    revalidatePath("/admin/users");
+    redirect(`/admin/users/${userId}`);
 }

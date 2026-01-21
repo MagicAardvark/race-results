@@ -1,8 +1,7 @@
 import { ConfigurationLayout } from "@/app/components/shared/layout/configuration-layout";
-import { userService } from "@/services/users/user.service";
 import { filterNavForRoles } from "@/lib/shared/layout/configuration/navigation";
-import { redirect } from "next/navigation";
 import { ROLES } from "@/constants/global";
+import { requireRole } from "@/lib/auth/require-role";
 
 const ADMIN_NAVIGATION = [
     {
@@ -27,13 +26,9 @@ export default async function AdminLayout({
 }: {
     children: React.ReactNode;
 }) {
-    const user = await userService.getCurrentUser();
+    const user = await requireRole(ROLES.admin);
 
-    if (!user?.roles.some((r) => r === ROLES.admin)) {
-        redirect("/");
-    }
-
-    const navItems = filterNavForRoles(ADMIN_NAVIGATION, user?.roles || []);
+    const navItems = filterNavForRoles(ADMIN_NAVIGATION, user.roles || []);
 
     return (
         <ConfigurationLayout navigationData={navItems}>

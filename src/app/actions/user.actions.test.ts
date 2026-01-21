@@ -9,8 +9,12 @@ import { mockAdminUser, createMockUser } from "@/__tests__/mocks/mock-users";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { rolesService } from "@/services/roles/roles.service";
+import { getCurrentUserCached } from "@/services/users/user.service.cached";
 
 vi.mock("@/services/users/user.service");
+vi.mock("@/services/users/user.service.cached", () => ({
+    getCurrentUserCached: vi.fn(),
+}));
 vi.mock("@/services/roles/roles.service");
 vi.mock("next/cache", () => ({
     revalidatePath: vi.fn(),
@@ -24,7 +28,7 @@ vi.mock("next/navigation", () => ({
 describe("user.actions", () => {
     beforeEach(() => {
         vi.clearAllMocks();
-        vi.mocked(userService.getCurrentUser).mockResolvedValue(mockAdminUser);
+        vi.mocked(getCurrentUserCached).mockResolvedValue(mockAdminUser);
     });
 
     describe("deleteUser", () => {
@@ -41,14 +45,14 @@ describe("user.actions", () => {
         });
 
         it("prevents non-admin users from deleting accounts", async () => {
-            vi.mocked(userService.getCurrentUser).mockResolvedValue(
+            vi.mocked(getCurrentUserCached).mockResolvedValue(
                 createMockUser({ roles: [] })
             );
 
-            const result = await deleteUser("user-1");
+            await expect(deleteUser("user-1")).rejects.toThrow(
+                "redirect called"
+            );
 
-            expect(result.isError).toBe(true);
-            expect(result.message).toBe("Unauthorized: Admin access required");
             expect(userService.deleteUser).not.toHaveBeenCalled();
         });
 
@@ -57,9 +61,7 @@ describe("user.actions", () => {
                 userId: "admin-123",
                 roles: ["admin"],
             });
-            vi.mocked(userService.getCurrentUser).mockResolvedValue(
-                currentAdmin
-            );
+            vi.mocked(getCurrentUserCached).mockResolvedValue(currentAdmin);
 
             const result = await deleteUser("admin-123");
 

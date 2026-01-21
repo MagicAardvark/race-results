@@ -5,14 +5,17 @@ import {
     updateApiKey,
 } from "./organization.actions";
 import { organizationAdminService } from "@/services/organizations/organization.admin.service";
-import { userService } from "@/services/users/user.service";
 import { mockAdminUser, createMockUser } from "@/__tests__/mocks/mock-users";
 import { revalidatePath, refresh } from "next/cache";
 import { redirect } from "next/navigation";
 import type { OrganizationExtended } from "@/dto/organizations";
+import { getCurrentUserCached } from "@/services/users/user.service.cached";
 
 vi.mock("@/services/organizations/organization.admin.service");
-vi.mock("@/services/users/user.service");
+vi.mock("@/services/users/user.service.cached", () => ({
+    getCurrentUserCached: vi.fn(),
+}));
+
 vi.mock("next/cache", () => ({
     revalidatePath: vi.fn(),
     refresh: vi.fn(),
@@ -108,9 +111,7 @@ describe("organization.actions", () => {
 
     describe("updateOrganization", () => {
         beforeEach(() => {
-            vi.mocked(userService.getCurrentUser).mockResolvedValue(
-                mockAdminUser
-            );
+            vi.mocked(getCurrentUserCached).mockResolvedValue(mockAdminUser);
         });
 
         it("updates organization successfully", async () => {
@@ -202,7 +203,7 @@ describe("organization.actions", () => {
         });
 
         it("throws error when user is not admin", async () => {
-            vi.mocked(userService.getCurrentUser).mockResolvedValue(
+            vi.mocked(getCurrentUserCached).mockResolvedValue(
                 createMockUser({ roles: [] })
             );
 
@@ -212,15 +213,13 @@ describe("organization.actions", () => {
 
             await expect(
                 updateOrganization({ isError: false, message: "" }, formData)
-            ).rejects.toThrow("Unauthorized: Admin access required");
+            ).rejects.toThrow("redirect called");
         });
     });
 
     describe("updateApiKey", () => {
         beforeEach(() => {
-            vi.mocked(userService.getCurrentUser).mockResolvedValue(
-                mockAdminUser
-            );
+            vi.mocked(getCurrentUserCached).mockResolvedValue(mockAdminUser);
         });
 
         it("updates API key successfully", async () => {
@@ -250,13 +249,13 @@ describe("organization.actions", () => {
         });
 
         it("throws error when user is not admin", async () => {
-            vi.mocked(userService.getCurrentUser).mockResolvedValue(
+            vi.mocked(getCurrentUserCached).mockResolvedValue(
                 createMockUser({ roles: [] })
             );
 
             await expect(
                 updateApiKey("org-1", { isEnabled: true })
-            ).rejects.toThrow("Unauthorized: Admin access required");
+            ).rejects.toThrow("redirect called");
         });
     });
 });

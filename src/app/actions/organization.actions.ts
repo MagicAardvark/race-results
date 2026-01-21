@@ -2,9 +2,9 @@
 
 import { ROLES } from "@/constants/global";
 import { Organization } from "@/dto/organizations";
+import { requireRole } from "@/lib/auth/require-role";
 import { nameof } from "@/lib/utils";
 import { organizationAdminService } from "@/services/organizations/organization.admin.service";
-import { userService } from "@/services/users/user.service";
 import { refresh, revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
@@ -52,6 +52,8 @@ export async function updateOrganization(
     _: ActionState,
     formData: FormData
 ): Promise<ActionState> {
+    await requireRole(ROLES.admin);
+
     const orgId = formData.get(nameof<Organization>("orgId"))?.toString();
     const name = formData.get(nameof<Organization>("name"))?.toString().trim();
     const motorsportregOrgId =
@@ -78,12 +80,6 @@ export async function updateOrganization(
     }
 
     let slug = null;
-
-    // Verify user has admin permissions
-    const user = await userService.getCurrentUser();
-    if (!user?.roles.includes(ROLES.admin)) {
-        throw new Error("Unauthorized: Admin access required");
-    }
 
     try {
         slug = await organizationAdminService.updateOrganization({
@@ -124,11 +120,7 @@ export async function updateApiKey(
         isEnabled: boolean;
     }
 ) {
-    // Verify user has admin permissions
-    const user = await userService.getCurrentUser();
-    if (!user?.roles.includes(ROLES.admin)) {
-        throw new Error("Unauthorized: Admin access required");
-    }
+    await requireRole(ROLES.admin);
 
     await organizationAdminService.createApiKey(orgId, options.isEnabled);
 

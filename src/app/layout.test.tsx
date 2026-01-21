@@ -1,12 +1,10 @@
 import { describe, it, expect, vi } from "vitest";
-import { userService } from "@/services/users/user.service";
 import { mockUser } from "@/__tests__/mocks/mock-users";
+import { getCurrentUserCached } from "@/services/users/user.service.cached";
 
 // Mock dependencies
-vi.mock("@/services/users/user.service", () => ({
-    userService: {
-        getCurrentUser: vi.fn(),
-    },
+vi.mock("@/services/users/user.service.cached", () => ({
+    getCurrentUserCached: vi.fn(),
 }));
 
 vi.mock("@clerk/nextjs", () => ({
@@ -26,8 +24,8 @@ vi.mock("next/font/google", () => ({
 }));
 
 describe("RootLayout", () => {
-    it("calls userService.getCurrentUser", async () => {
-        vi.mocked(userService.getCurrentUser).mockResolvedValue(null);
+    it("calls getCurrentUserCached", async () => {
+        vi.mocked(getCurrentUserCached).mockResolvedValue(null);
 
         // Import the layout component
         const RootLayout = (await import("./layout")).default;
@@ -36,26 +34,24 @@ describe("RootLayout", () => {
         // But we can verify the service is called
         await RootLayout({ children: <div>Test</div> });
 
-        expect(userService.getCurrentUser).toHaveBeenCalled();
+        expect(getCurrentUserCached).toHaveBeenCalled();
     });
 
     it("handles user service returning null", async () => {
-        vi.mocked(userService.getCurrentUser).mockResolvedValue(null);
-
+        vi.mocked(getCurrentUserCached).mockResolvedValue(null);
         const RootLayout = (await import("./layout")).default;
 
         await RootLayout({ children: <div>Test</div> });
 
-        expect(userService.getCurrentUser).toHaveBeenCalled();
+        expect(getCurrentUserCached).toHaveBeenCalled();
     });
 
     it("handles user service returning a user", async () => {
-        vi.mocked(userService.getCurrentUser).mockResolvedValue(mockUser);
-
+        vi.mocked(getCurrentUserCached).mockResolvedValue(mockUser);
         const RootLayout = (await import("./layout")).default;
 
         await RootLayout({ children: <div>Test</div> });
 
-        expect(userService.getCurrentUser).toHaveBeenCalled();
+        expect(getCurrentUserCached).toHaveBeenCalled();
     });
 });
