@@ -53,15 +53,8 @@ describe("UserService", () => {
                     {
                         userId: "user-1",
                         roleId: "role-1",
-                        effectiveAt: new Date(),
-                        isNegated: false,
-                        role: {
-                            roleId: "role-1",
-                            key: "admin",
-                            name: "Admin",
-                            effectiveAt: new Date(),
-                            isEnabled: true,
-                        },
+                        roleKey: "admin",
+                        roleName: "Admin",
                     },
                 ],
             };
@@ -74,51 +67,16 @@ describe("UserService", () => {
             expect(result[0].roles).toContain("admin");
         });
 
-        it("filters out negated roles", async () => {
-            const userWithNegatedRole: UserDTO = {
-                ...mockUserDTO,
-                assignedGlobalRoles: [
-                    {
-                        userId: "user-1",
-                        roleId: "role-1",
-                        effectiveAt: new Date(),
-                        isNegated: true,
-                        role: {
-                            roleId: "role-1",
-                            key: "admin",
-                            name: "Admin",
-                            effectiveAt: new Date(),
-                            isEnabled: true,
-                        },
-                    },
-                ],
-            };
-            vi.mocked(usersRepository.findAll).mockResolvedValue([
-                userWithNegatedRole,
-            ]);
-
-            const result = await userService.getAllUsers();
-
-            expect(result[0].roles).not.toContain("admin");
-        });
-
         it("includes org roles in mapped user", async () => {
             const userWithOrgRoles: UserDTO = {
                 ...mockUserDTO,
                 assignedOrgRoles: [
                     {
                         userId: "user-1",
-                        orgId: "org-1",
                         roleId: "role-1",
-                        effectiveAt: new Date(),
-                        isNegated: false,
-                        role: {
-                            roleId: "role-1",
-                            key: "org_admin",
-                            name: "Org Admin",
-                            effectiveAt: new Date(),
-                            isEnabled: true,
-                        },
+                        roleKey: "org_admin",
+                        roleName: "Org Admin",
+                        orgId: "org-1",
                     },
                 ],
             };
@@ -129,35 +87,6 @@ describe("UserService", () => {
             const result = await userService.getAllUsers();
 
             expect(result[0].roles).toContain("org_admin");
-        });
-
-        it("filters out negated org roles", async () => {
-            const userWithNegatedOrgRole: UserDTO = {
-                ...mockUserDTO,
-                assignedOrgRoles: [
-                    {
-                        userId: "user-1",
-                        orgId: "org-1",
-                        roleId: "role-1",
-                        effectiveAt: new Date(),
-                        isNegated: true,
-                        role: {
-                            roleId: "role-1",
-                            key: "org_admin",
-                            name: "Org Admin",
-                            effectiveAt: new Date(),
-                            isEnabled: true,
-                        },
-                    },
-                ],
-            };
-            vi.mocked(usersRepository.findAll).mockResolvedValue([
-                userWithNegatedOrgRole,
-            ]);
-
-            const result = await userService.getAllUsers();
-
-            expect(result[0].roles).not.toContain("org_admin");
         });
     });
 

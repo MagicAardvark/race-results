@@ -1,11 +1,16 @@
-import { availableGlobalRoles } from "@/db";
+import { currentRoles } from "@/db";
 
-export type GlobalRoleDTO = typeof availableGlobalRoles.$inferSelect;
-
-export type OrgRoleDTO = typeof availableGlobalRoles.$inferSelect;
+export type RoleDTO = typeof currentRoles.$inferSelect;
 
 export interface AvailableRole {
     roleId: string;
     key: string;
     name: string;
+}
+
+export interface Role {
+    roleId: string;
+    key: string;
+    name: string;
+    isGlobal: boolean;
 }

@@ -6,3 +6,4 @@ export * from "@/db/tables/classes";
 
 export * from "@/db/views/classes";
 export * from "@/db/views/roles";
+export * from "@/db/views/users";

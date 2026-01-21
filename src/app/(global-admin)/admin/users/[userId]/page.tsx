@@ -9,9 +9,12 @@ import {
 import { LinkButton } from "@/ui/link-button";
 import { userService } from "@/services/users/user.service";
 import { TriangleAlert } from "lucide-react";
-import { UpdateUserForm } from "../_lib/components/update-user-form";
-import { DeleteUserButton } from "../_lib/components/delete-user-button";
 import { rolesService } from "@/services/roles/roles.service";
+import { organizationService } from "@/services/organizations/organization.service";
+import { UserOrganizations } from "@/app/(global-admin)/admin/users/_lib/components/org/user-organizations";
+import { GlobalRoles } from "@/app/(global-admin)/admin/users/_lib/components/roles/global-roles";
+import { UserInfoForm } from "@/app/(global-admin)/admin/users/_lib/components/user-info-form";
+import { DeleteUserButton } from "@/app/(global-admin)/admin/users/_lib/components/delete-user-button";
 
 export default async function Page({
     params,
@@ -41,6 +44,8 @@ export default async function Page({
     }
 
     const roles = await rolesService.getGlobalRoles();
+    const userOrgs = await userService.getUserOrgsWithPermissions(user.userId);
+    const orgs = await organizationService.getAllOrganizations();
 
     return (
         <div className="flex w-full flex-col gap-4">
@@ -56,7 +61,13 @@ export default async function Page({
                     <LinkButton href="/admin/users">Go Back</LinkButton>
                 </div>
             </div>
-            <UpdateUserForm user={user} availableGlobalRoles={roles} />
+            <UserInfoForm user={user} />
+            <GlobalRoles user={user} availableRoles={roles} />
+            <UserOrganizations
+                user={user}
+                userOrgs={userOrgs}
+                organizations={orgs}
+            />
         </div>
     );
 }

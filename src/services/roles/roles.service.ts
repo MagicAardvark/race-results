@@ -1,5 +1,5 @@
 import { roleRepository } from "@/db/repositories/roles.repo";
-import { AvailableRole, GlobalRoleDTO, OrgRoleDTO } from "@/dto/roles";
+import { AvailableRole, RoleDTO } from "@/dto/roles";
 
 interface IRoleService {
     getGlobalRoles(): Promise<AvailableRole[]>;
@@ -15,7 +15,7 @@ export class RolesService implements IRoleService {
         return this.mapRoles(await roleRepository.getAvailableOrgRoles());
     }
 
-    private mapRoles(roles: GlobalRoleDTO[] | OrgRoleDTO[]): AvailableRole[] {
+    private mapRoles(roles: RoleDTO[]): AvailableRole[] {
         return roles.map((role) => ({
             roleId: role.roleId,
             key: role.key,

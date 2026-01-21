@@ -1,5 +1,5 @@
 import { usersRepository } from "@/db/repositories/users.repo";
-import { User, UserDTO } from "@/dto/users";
+import { OrgWithRoles, User, UserDTO } from "@/dto/users";
 import { auth } from "@clerk/nextjs/server";
 import { db } from "@/db";
 import { users } from "@/db/schema";
@@ -10,8 +10,10 @@ interface IUserService {
     getAllUsers(): Promise<User[]>;
     getCurrentUser(): Promise<User | null>;
     getUserById(userId: string): Promise<User | null>;
+    getUserOrgsWithPermissions(userId: string): Promise<OrgWithRoles[]>;
     updateUser(userId: string, data: { displayName?: string }): Promise<void>;
     deleteUser(userId: string): Promise<void>;
+    addUserToOrganization(userId: string, orgId: string): Promise<void>;
 }
 
 export class UserService implements IUserService {
@@ -34,6 +36,25 @@ export class UserService implements IUserService {
     async getUserById(userId: string): Promise<User | null> {
         const user = await usersRepository.findByUserId(userId);
         return user ? mapUser(user) : null;
+    }
+
+    async getUserOrgsWithPermissions(userId: string): Promise<OrgWithRoles[]> {
+        const roles = await usersRepository.findOrgRoles(userId);
+
+        const orgsWithRoles: OrgWithRoles[] = [];
+
+        Map.groupBy(roles, (role) => role.org).forEach((value, key) => {
+            orgsWithRoles.push({
+                org: key,
+                roles: value.map((value) => ({
+                    roleId: value.roleId,
+                    key: value.roleKey,
+                    name: value.roleName,
+                })),
+            });
+        });
+
+        return orgsWithRoles;
     }
 
     async updateUser(
@@ -60,11 +81,15 @@ export class UserService implements IUserService {
             throw new Error("The 'user' role must be assigned to the user.");
         }
 
-        await usersRepository.updateUserRoles(userId, roleKeys);
+        await usersRepository.updateUserGlobalRoles(userId, roleKeys);
     }
 
     async deleteUser(userId: string): Promise<void> {
         await usersRepository.delete(userId);
+    }
+
+    async addUserToOrganization(userId: string, orgId: string): Promise<void> {
+        await usersRepository.addUserToOrganization(userId, orgId);
     }
 }
 
@@ -81,12 +106,12 @@ const mapUser = (data: UserDTO) => {
         updatedAt: data.updatedAt,
         deletedAt: data.deletedAt,
         roles: [
-            ...data.assignedGlobalRoles
-                .filter((assignedRole) => !assignedRole.isNegated)
-                .map((assignedRole) => assignedRole.role.key),
-            ...data.assignedOrgRoles
-                .filter((assignedRole) => !assignedRole.isNegated)
-                .map((assignedRole) => assignedRole.role.key),
+            ...data.assignedGlobalRoles.map(
+                (assignedRole) => assignedRole.roleKey
+            ),
+            ...data.assignedOrgRoles.map(
+                (assignedRole) => assignedRole.roleKey
+            ),
         ],
     };
 };
