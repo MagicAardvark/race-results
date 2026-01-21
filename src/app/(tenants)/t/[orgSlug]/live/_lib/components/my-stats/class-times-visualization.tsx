@@ -28,7 +28,7 @@ export function ClassTimesVisualization({
             classKey = "N";
         }
 
-        // Find the class data for this driver's class
+        // Find the class data for this driver's class (grouped for P/N)
         const classData = classResultsMap.get(classKey);
         if (!classData) return [];
 
@@ -47,11 +47,13 @@ export function ClassTimesVisualization({
                     driverId,
                     name: driver.driverName,
                     number: driver.carNumber,
+                    class: driver.class,
                     time,
                     position: formatClassPosition(
                         driver.classPosition.position,
                         driver.isTrophy
                     ),
+                    positionNumber: driver.classPosition.position,
                     isSelected: driverId === selectedDriverId,
                 };
             })
@@ -59,7 +61,7 @@ export function ClassTimesVisualization({
                 (d): d is typeof d & { time: number } =>
                     d.time != null && !isNaN(d.time)
             )
-            .sort((a, b) => a.time - b.time);
+            .sort((a, b) => a.positionNumber - b.positionNumber);
     }, [classResult, classResultsMap, selectedDriverId, createDriverId]);
 
     if (classDrivers.length === 0) {
@@ -96,6 +98,12 @@ export function ClassTimesVisualization({
                                 </span>
                                 <span className="text-muted-foreground">
                                     #{driver.number}
+                                    {(driver.class.startsWith("P") ||
+                                        driver.class.startsWith("N")) && (
+                                        <span className="ml-1">
+                                            ({driver.class})
+                                        </span>
+                                    )}
                                 </span>
                             </div>
                             <div className="flex shrink-0 items-center gap-2 font-mono text-sm">

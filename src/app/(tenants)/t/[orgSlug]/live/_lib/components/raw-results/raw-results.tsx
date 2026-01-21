@@ -6,6 +6,7 @@ import { useLiveData } from "../../hooks/useLiveData";
 import { useMaxGap } from "../../hooks/useMaxGap";
 import { RawEntry } from "./raw-entry";
 import { EmptyState } from "../shared/empty-state";
+import { TrophiesCallout } from "../shared/trophies-callout";
 
 export const RawResults = () => {
     const { rawResults } = useLiveData();
@@ -20,10 +21,17 @@ export const RawResults = () => {
     }
 
     return (
-        <div className="space-y-2">
-            {rawResults.results.map((entry) => (
-                <RawEntry key={entry.entryKey} entry={entry} maxGap={maxGap} />
-            ))}
+        <div className="space-y-4">
+            <TrophiesCallout />
+            <div className="space-y-2">
+                {rawResults.results.map((entry) => (
+                    <RawEntry
+                        key={entry.entryKey}
+                        entry={entry}
+                        maxGap={maxGap}
+                    />
+                ))}
+            </div>
         </div>
     );
 };

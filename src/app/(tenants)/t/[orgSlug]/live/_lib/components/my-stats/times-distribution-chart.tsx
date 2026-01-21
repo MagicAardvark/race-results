@@ -147,7 +147,7 @@ export function TimesDistributionChart({
         <div className="space-y-4">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <h3 className="text-base font-semibold sm:text-lg">
-                    Time Distribution
+                    Overall Time Distribution
                 </h3>
                 {isPaxEnabled && (
                     <div className="flex gap-2">

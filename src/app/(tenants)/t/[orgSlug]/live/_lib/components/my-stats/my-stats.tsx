@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { useLiveData } from "../../hooks/useLiveData";
 import { useDriverSelection } from "../../hooks/useDriverSelection";
 import { FEATURE_FLAGS } from "../../config/feature-flags";
@@ -9,6 +11,7 @@ import { formatBestTime, formatClassPosition } from "../shared/time-utils";
 import { RunStatisticsCard } from "./run-statistics-card";
 import { ClassTimesVisualization } from "./class-times-visualization";
 import { TimesDistributionChart } from "./times-distribution-chart";
+import { RunPositionChart } from "./run-position-chart";
 
 export function MyStats() {
     const {
@@ -17,11 +20,21 @@ export function MyStats() {
         findDriverInClassResults,
         findDriverInPaxResults,
         findDriverInRawResults,
+        classResultsMap,
     } = useLiveData();
 
     const allDrivers = getAllDrivers();
     const { selectedDriverId, selectedDriver, setSelectedDriverId } =
         useDriverSelection(allDrivers);
+    const searchParams = useSearchParams();
+
+    // Handle driver selection from URL parameter
+    useEffect(() => {
+        const driverParam = searchParams.get("driver");
+        if (driverParam && allDrivers.some((d) => d.id === driverParam)) {
+            setSelectedDriverId(driverParam);
+        }
+    }, [searchParams, allDrivers, setSelectedDriverId]);
 
     const classResult = selectedDriverId
         ? findDriverInClassResults(selectedDriverId)
@@ -101,24 +114,47 @@ export function MyStats() {
                         />
                     </div>
 
-                    {classResult && (
-                        <div className="grid gap-6 lg:grid-cols-2">
-                            <div className="rounded-lg border p-3 sm:p-4">
-                                <h3 className="mb-3 text-base font-semibold sm:mb-4 sm:text-lg">
-                                    Class Times Visualization
-                                </h3>
-                                <ClassTimesVisualization
-                                    classResult={classResult}
-                                    selectedDriverId={selectedDriverId!}
-                                />
-                            </div>
-                            <div className="rounded-lg border p-3 sm:p-4">
-                                <TimesDistributionChart
-                                    selectedDriverId={selectedDriverId!}
-                                />
-                            </div>
-                        </div>
-                    )}
+                    {classResult &&
+                        (() => {
+                            const driverClass = classResult.class;
+                            let classTitle: string;
+
+                            if (driverClass.startsWith("P")) {
+                                classTitle = "Pro";
+                            } else if (driverClass.startsWith("N")) {
+                                classTitle = "Novice";
+                            } else {
+                                // Get the longName from class data
+                                const classData =
+                                    classResultsMap?.get(driverClass);
+                                classTitle = classData?.longName || driverClass;
+                            }
+
+                            return (
+                                <div className="grid gap-6 lg:grid-cols-3">
+                                    <div className="rounded-lg border p-3 sm:p-4">
+                                        <h3 className="mb-3 text-base font-semibold sm:mb-4 sm:text-lg">
+                                            {classTitle}
+                                        </h3>
+                                        <ClassTimesVisualization
+                                            classResult={classResult}
+                                            selectedDriverId={selectedDriverId!}
+                                        />
+                                    </div>
+                                    <div className="rounded-lg border p-3 sm:p-4">
+                                        <RunPositionChart
+                                            selectedDriverId={selectedDriverId!}
+                                            classResult={classResult}
+                                        />
+                                    </div>
+                                    <div className="rounded-lg border p-3 sm:p-4">
+                                        <TimesDistributionChart
+                                            selectedDriverId={selectedDriverId!}
+                                        />
+                                    </div>
+                                </div>
+                            );
+                        })()}
                 </>
             )}
 

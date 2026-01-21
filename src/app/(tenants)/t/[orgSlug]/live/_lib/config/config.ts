@@ -41,7 +41,7 @@ export const LIVE_TIMING_CONFIG = {
             return localPaths[endpoint];
         }
         // Use API routes for production
-        return `/api/${orgSlug}/live/results/${endpoint === "runwork" ? "runwork" : endpoint}`;
+        return `/api/${orgSlug}/live/results/${endpoint}`;
     },
     defaults: {
         expectedRuns: parseInt(process.env.EXPECTED_RUNS || "4", 10),

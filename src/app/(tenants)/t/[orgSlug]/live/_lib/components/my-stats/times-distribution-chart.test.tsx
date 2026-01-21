@@ -68,7 +68,7 @@ describe("TimesDistributionChart", () => {
             <TimesDistributionChart selectedDriverId="test-id" />
         );
 
-        expect(screen.getByText("Time Distribution")).toBeVisible();
+        expect(screen.getByText("Overall Time Distribution")).toBeVisible();
     });
 
     it("renders PAX and Raw buttons when PAX is enabled", () => {

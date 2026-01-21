@@ -6,6 +6,7 @@ import { useUrlFilters } from "../../hooks/useUrlFilters";
 import { ClassLinks } from "./class-links";
 import { IndividualClassResults } from "./individual-class-results";
 import { EmptyState } from "../shared/empty-state";
+import { TrophiesCallout } from "../shared/trophies-callout";
 
 export const ClassResults = () => {
     const { classResults, classNames } = useLiveData();
@@ -58,6 +59,7 @@ export const ClassResults = () => {
 
     return (
         <div>
+            <TrophiesCallout />
             <ClassLinks
                 classes={classNames}
                 filteredClasses={filteredClasses}
