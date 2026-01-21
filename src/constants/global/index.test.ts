@@ -3,6 +3,11 @@ import { ROLES } from "./index";
 
 describe("ROLES", () => {
     it("exports array of roles", () => {
-        expect(Object.keys(ROLES)).toEqual(["admin", "orgOwner", "user"]);
+        expect(Object.keys(ROLES)).toEqual([
+            "admin",
+            "orgManager",
+            "orgOwner",
+            "user",
+        ]);
     });
 });

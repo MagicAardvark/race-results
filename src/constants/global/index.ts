@@ -9,6 +9,7 @@ export const HEADERS = {
 
 export const ROLES = {
     admin: "admin",
+    orgManager: "org_manager",
     orgOwner: "org_owner",
     user: "user",
 } as const;
