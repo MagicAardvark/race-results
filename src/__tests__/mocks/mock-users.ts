@@ -1,4 +1,4 @@
-import type { User } from "@/dto/users";
+import type { User, UserWithExtendedDetails } from "@/dto/users";
 
 /**
  * Reusable mock user data for testing
@@ -14,11 +14,52 @@ export const mockUser: User = {
     deletedAt: null,
 };
 
-export const mockAdminUser: User = {
+export const mockUserWithExtendedDetails: UserWithExtendedDetails = {
+    ...mockUser,
+    orgs: [
+        {
+            org: {
+                orgId: "org-123",
+                name: "Test Org",
+                slug: "test-org",
+            },
+            roles: [
+                {
+                    roleId: "role-123",
+                    key: "user",
+                    name: "User",
+                },
+            ],
+        },
+    ],
+};
+
+export const mockAdminUser: UserWithExtendedDetails = {
     ...mockUser,
     userId: "admin-123",
     displayName: "Admin User",
     roles: ["admin"],
+    orgs: [
+        {
+            org: {
+                orgId: "org-123",
+                name: "Test Org",
+                slug: "test-org",
+            },
+            roles: [
+                {
+                    roleId: "role-123",
+                    key: "user",
+                    name: "User",
+                },
+                {
+                    roleId: "role-124",
+                    key: "admin",
+                    name: "Admin",
+                },
+            ],
+        },
+    ],
 };
 
 /**
@@ -27,6 +68,15 @@ export const mockAdminUser: User = {
 export function createMockUser(overrides?: Partial<User>): User {
     return {
         ...mockUser,
+        ...overrides,
+    };
+}
+
+export function createMockUserWithExtendedDetails(
+    overrides?: Partial<UserWithExtendedDetails>
+): UserWithExtendedDetails {
+    return {
+        ...mockUserWithExtendedDetails,
         ...overrides,
     };
 }

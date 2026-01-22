@@ -5,7 +5,10 @@ import {
     updateApiKey,
 } from "./organization.actions";
 import { organizationAdminService } from "@/services/organizations/organization.admin.service";
-import { mockAdminUser, createMockUser } from "@/__tests__/mocks/mock-users";
+import {
+    mockAdminUser,
+    createMockUserWithExtendedDetails,
+} from "@/__tests__/mocks/mock-users";
 import { revalidatePath, refresh } from "next/cache";
 import { redirect } from "next/navigation";
 import type { OrganizationExtended } from "@/dto/organizations";
@@ -204,7 +207,7 @@ describe("organization.actions", () => {
 
         it("throws error when user is not admin", async () => {
             vi.mocked(getCurrentUserCached).mockResolvedValue(
-                createMockUser({ roles: [] })
+                createMockUserWithExtendedDetails({ roles: [] })
             );
 
             const formData = new FormData();
@@ -250,7 +253,7 @@ describe("organization.actions", () => {
 
         it("throws error when user is not admin", async () => {
             vi.mocked(getCurrentUserCached).mockResolvedValue(
-                createMockUser({ roles: [] })
+                createMockUserWithExtendedDetails({ roles: [] })
             );
 
             await expect(

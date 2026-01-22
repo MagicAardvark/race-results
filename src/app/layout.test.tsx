@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { mockUser } from "@/__tests__/mocks/mock-users";
+import { mockUserWithExtendedDetails } from "@/__tests__/mocks/mock-users";
 import { getCurrentUserCached } from "@/services/users/user.service.cached";
 
 // Mock dependencies
@@ -47,7 +47,9 @@ describe("RootLayout", () => {
     });
 
     it("handles user service returning a user", async () => {
-        vi.mocked(getCurrentUserCached).mockResolvedValue(mockUser);
+        vi.mocked(getCurrentUserCached).mockResolvedValue(
+            mockUserWithExtendedDetails
+        );
         const RootLayout = (await import("./layout")).default;
 
         await RootLayout({ children: <div>Test</div> });

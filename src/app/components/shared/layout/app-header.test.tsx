@@ -1,6 +1,9 @@
 import { describe, it, expect, vi } from "vitest";
 import { AppHeader } from "./app-header";
-import { mockAdminUser, createMockUser } from "@/__tests__/mocks/mock-users";
+import {
+    mockAdminUser,
+    createMockUserWithExtendedDetails,
+} from "@/__tests__/mocks/mock-users";
 import React from "react";
 import { getCurrentUserCached } from "@/services/users/user.service.cached";
 
@@ -50,7 +53,7 @@ describe("AppHeader", () => {
 
     it("handles non-admin user", async () => {
         vi.mocked(getCurrentUserCached).mockResolvedValue(
-            createMockUser({ roles: [] })
+            createMockUserWithExtendedDetails({ roles: ["user"] })
         );
 
         const Header = await AppHeader({});

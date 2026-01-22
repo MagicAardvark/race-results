@@ -5,7 +5,10 @@ import {
     updateUserInformation,
 } from "./user.actions";
 import { userService } from "@/services/users/user.service";
-import { mockAdminUser, createMockUser } from "@/__tests__/mocks/mock-users";
+import {
+    mockAdminUser,
+    createMockUserWithExtendedDetails,
+} from "@/__tests__/mocks/mock-users";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { rolesService } from "@/services/roles/roles.service";
@@ -46,7 +49,7 @@ describe("user.actions", () => {
 
         it("prevents non-admin users from deleting accounts", async () => {
             vi.mocked(getCurrentUserCached).mockResolvedValue(
-                createMockUser({ roles: [] })
+                createMockUserWithExtendedDetails({ roles: ["user"] })
             );
 
             await expect(deleteUser("user-1")).rejects.toThrow(
@@ -57,7 +60,7 @@ describe("user.actions", () => {
         });
 
         it("prevents users from deleting their own account", async () => {
-            const currentAdmin = createMockUser({
+            const currentAdmin = createMockUserWithExtendedDetails({
                 userId: "admin-123",
                 roles: ["admin"],
             });

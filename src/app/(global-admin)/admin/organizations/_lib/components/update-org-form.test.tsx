@@ -1,9 +1,8 @@
 import { describe, it, expect, vi } from "vitest";
-import { render, screen } from "@/__tests__/test-utils";
+import { render, screen, userEvent } from "@/__tests__/test-utils";
 import { UpdateOrgForm } from "./update-org-form";
 import type { OrganizationExtended } from "@/dto/organizations";
 import type { OrgFeatureFlags } from "@/dto/feature-flags";
-import { updateOrganization } from "@/app/actions/organization.actions";
 
 vi.mock("@/app/actions/organization.actions", () => ({
     updateOrganization: vi.fn(),
@@ -94,22 +93,42 @@ describe("UpdateOrgForm", () => {
         expect(screen.getByRole("button", { name: /Cancel/i })).toBeVisible();
     });
 
-    it("displays error message when state has error", () => {
-        vi.mocked(updateOrganization).mockResolvedValue({
-            isError: true,
-            message: "Test error",
-        });
-
-        render(<UpdateOrgForm org={mockOrg} featureFlags={mockFeatureFlags} />);
-
-        // Error would be shown after form submission
-        // This test verifies the component structure supports error display
-        expect(screen.getByLabelText("Name")).toBeVisible();
-    });
-
     it("handles empty feature flags", () => {
         render(<UpdateOrgForm org={mockOrg} featureFlags={{}} />);
 
         expect(screen.getByText("No feature flags configured")).toBeVisible();
+    });
+
+    it("allows user to edit organization name", async () => {
+        const user = userEvent.setup();
+        render(<UpdateOrgForm org={mockOrg} featureFlags={mockFeatureFlags} />);
+
+        const nameInput = screen.getByLabelText("Name");
+        await user.clear(nameInput);
+        await user.type(nameInput, "Updated Organization");
+
+        expect(nameInput).toHaveValue("Updated Organization");
+    });
+
+    it("allows user to toggle feature flags", async () => {
+        const user = userEvent.setup();
+        render(<UpdateOrgForm org={mockOrg} featureFlags={mockFeatureFlags} />);
+
+        const paxCheckbox = screen.getByLabelText(/Pax Enabled/i);
+        expect(paxCheckbox).toBeChecked();
+
+        await user.click(paxCheckbox);
+        expect(paxCheckbox).not.toBeChecked();
+    });
+
+    it("allows user to toggle isPublic checkbox", async () => {
+        const user = userEvent.setup();
+        render(<UpdateOrgForm org={mockOrg} featureFlags={mockFeatureFlags} />);
+
+        const publicCheckbox = screen.getByLabelText("Publicly Viewable");
+        expect(publicCheckbox).toBeChecked();
+
+        await user.click(publicCheckbox);
+        expect(publicCheckbox).not.toBeChecked();
     });
 });
