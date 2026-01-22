@@ -1,55 +1,50 @@
 "use client";
 
-import { updateUser } from "@/app/actions/user.actions";
+import { updateUserGlobalRoles } from "@/app/actions/user.actions";
+import { AvailableRole } from "@/dto/roles";
+import { User } from "@/dto/users";
 import { Button } from "@/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/ui/card";
 import { Checkbox } from "@/ui/checkbox";
 import { Field, FieldGroup, FieldLabel } from "@/ui/field";
-import { Input } from "@/ui/input";
-import { User } from "@/dto/users";
 import { useActionState } from "react";
 
-type UpdateUserFormProps = {
+type GlobalRolesProps = {
     user: User;
-    availableRoles: Array<{ key: string; name: string }>;
+    availableRoles: AvailableRole[];
 };
 
-export function UpdateUserForm({ user, availableRoles }: UpdateUserFormProps) {
-    const [state, formAction] = useActionState(updateUser, {
-        isError: false,
-        message: "",
-    });
+export const GlobalRoles = ({
+    user,
+    availableRoles: roles,
+}: GlobalRolesProps) => {
+    const [userRolesState, userRolesFormAction] = useActionState(
+        updateUserGlobalRoles,
+        {
+            isError: false,
+            message: "",
+        }
+    );
 
     return (
         <Card className="w-full">
             <CardHeader>
-                <CardTitle>User Information</CardTitle>
+                <CardTitle>Global Roles</CardTitle>
             </CardHeader>
             <CardContent>
-                <form action={formAction}>
-                    {state.isError && (
-                        <div className="mb-4 text-red-500">{state.message}</div>
+                <form action={userRolesFormAction}>
+                    {userRolesState.isError && (
+                        <div className="mb-4 text-red-500">
+                            {userRolesState.message}
+                        </div>
                     )}
 
                     <input type="hidden" name="userId" value={user.userId} />
 
                     <FieldGroup>
                         <Field>
-                            <FieldLabel htmlFor="displayName">
-                                Display Name
-                            </FieldLabel>
-                            <Input
-                                type="text"
-                                id="displayName"
-                                name="displayName"
-                                defaultValue={user.displayName || ""}
-                            />
-                        </Field>
-
-                        <Field>
-                            <FieldLabel>Roles</FieldLabel>
                             <div className="space-y-2">
-                                {availableRoles.map((role) => (
+                                {roles.map((role) => (
                                     <div
                                         key={role.key}
                                         className="flex items-center space-x-2"
@@ -61,23 +56,23 @@ export function UpdateUserForm({ user, availableRoles }: UpdateUserFormProps) {
                                                 role.key
                                             )}
                                         />
-                                        <label
+                                        <FieldLabel
                                             htmlFor={`role.${role.key}`}
                                             className="text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                                         >
                                             {role.name}
-                                        </label>
+                                        </FieldLabel>
                                     </div>
                                 ))}
                             </div>
                         </Field>
                     </FieldGroup>
 
-                    <div className="mt-6 flex justify-end">
-                        <Button type="submit">Save Changes</Button>
+                    <div className="mt-6 flex">
+                        <Button type="submit">Update Global Roles</Button>
                     </div>
                 </form>
             </CardContent>
         </Card>
     );
-}
+};

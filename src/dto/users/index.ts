@@ -1,3 +1,21 @@
+import {
+    userActiveGlobalRoleAssignments,
+    userActiveOrgRoleAssignments,
+} from "@/db";
+
+export type UserGlobalRoleDTO =
+    typeof userActiveGlobalRoleAssignments.$inferSelect;
+
+export type UserOrgRoleDTO = typeof userActiveOrgRoleAssignments.$inferSelect;
+
+export type UserOrgRoleWithOrgDTO = UserOrgRoleDTO & {
+    org: {
+        orgId: string;
+        name: string;
+        slug: string;
+    };
+};
+
 export type UserDTO = {
     userId: string;
     authProviderId: string;
@@ -5,40 +23,14 @@ export type UserDTO = {
     updatedAt: Date;
     deletedAt: Date | null;
     displayName: string | null;
-    assignedOrgRoles: UserOrgRolesDTO[];
-    assignedGlobalRoles: UserGlobalRolesDTO[];
-};
-
-export type RoleDTO = {
-    roleId: string;
-    key: string;
-    name: string;
-    effectiveAt: Date;
-    isEnabled: boolean;
-};
-
-export type UserOrgRolesDTO = {
-    userId: string;
-    roleId: string;
-    orgId: string;
-    effectiveAt: Date;
-    isNegated: boolean;
-    role: RoleDTO;
-};
-
-export type UserGlobalRolesDTO = {
-    userId: string;
-    roleId: string;
-    effectiveAt: Date;
-    isNegated: boolean;
-    role: RoleDTO;
+    assignedOrgRoles: UserOrgRoleDTO[];
+    assignedGlobalRoles: UserGlobalRoleDTO[];
 };
 
 export interface UserRole {
-    userId: string;
-    role: string;
-    effectiveAt: Date;
-    isNegated: boolean;
+    roleId: string;
+    key: string;
+    name: string;
 }
 
 export interface User {
@@ -51,8 +43,19 @@ export interface User {
     roles: string[];
 }
 
-export const ROLES = {
-    admin: "admin",
-    orgOwner: "org_owner",
-    user: "user",
-} as const;
+export interface UserWithExtendedDetails extends User {
+    orgs: OrgWithRoles[];
+}
+
+export interface OrgWithRoles {
+    org: {
+        orgId: string;
+        name: string;
+        slug: string;
+    };
+    roles: UserRole[];
+}
+
+export interface UserDetailsDTO {
+    displayName?: string;
+}

@@ -1,20 +1,32 @@
 import { usersRepository } from "@/db/repositories/users.repo";
-import { User, UserDTO } from "@/dto/users";
+import {
+    OrgWithRoles,
+    User,
+    UserDTO,
+    UserWithExtendedDetails,
+} from "@/dto/users";
 import { auth } from "@clerk/nextjs/server";
-import { db } from "@/db";
-import { users } from "@/db/schema";
-import { eq } from "drizzle-orm/sql/expressions/conditions";
+import { ROLES } from "@/constants/global";
+import { rolesService } from "@/services/roles/roles.service";
 
 interface IUserService {
     getAllUsers(): Promise<User[]>;
-    getCurrentUser(): Promise<User | null>;
-    getUserById(userId: string): Promise<User | null>;
-    updateUser(
-        userId: string,
-        data: { displayName?: string; roleKeys?: string[] }
-    ): Promise<void>;
-    getAllRoles(): Promise<Array<{ key: string; name: string }>>;
+    getCurrentUser(): Promise<UserWithExtendedDetails | null>;
+    getUserById(userId: string): Promise<UserWithExtendedDetails | null>;
+    getUserOrgsWithPermissions(userId: string): Promise<OrgWithRoles[]>;
+    updateUser(userId: string, data: { displayName?: string }): Promise<void>;
     deleteUser(userId: string): Promise<void>;
+    addUserToOrganization(userId: string, orgId: string): Promise<void>;
+    addUserOrganizationRole(
+        userId: string,
+        orgId: string,
+        roleId: string
+    ): Promise<void>;
+    negateUserOrganizationRole(
+        userId: string,
+        orgId: string,
+        roleId: string
+    ): Promise<void>;
 }
 
 export class UserService implements IUserService {
@@ -22,7 +34,7 @@ export class UserService implements IUserService {
         return mapUsers(await usersRepository.findAll());
     }
 
-    async getCurrentUser(): Promise<User | null> {
+    async getCurrentUser(): Promise<UserWithExtendedDetails | null> {
         const { userId } = await auth();
 
         if (userId === null) {
@@ -31,50 +43,138 @@ export class UserService implements IUserService {
 
         const user = await usersRepository.findByAuthProviderId(userId);
 
-        return user ? mapUser(user) : null;
+        if (!user) {
+            return null;
+        }
+
+        return {
+            ...mapUser(user),
+            orgs: await this.getUserOrgsWithPermissions(user.userId),
+        };
     }
 
-    async getUserById(userId: string): Promise<User | null> {
+    async getUserById(userId: string): Promise<UserWithExtendedDetails | null> {
         const user = await usersRepository.findByUserId(userId);
-        return user ? mapUser(user) : null;
+        return user
+            ? {
+                  ...mapUser(user),
+                  orgs: await this.getUserOrgsWithPermissions(user.userId),
+              }
+            : null;
+    }
+
+    async getUserOrgsWithPermissions(userId: string): Promise<OrgWithRoles[]> {
+        const roles = await usersRepository.findOrgRoles(userId);
+
+        const orgsWithRoles: OrgWithRoles[] = [];
+
+        Map.groupBy(roles, (role) => role.org.orgId).forEach((value) => {
+            const org = value[0].org;
+            orgsWithRoles.push({
+                org: {
+                    orgId: org.orgId,
+                    name: org.name,
+                    slug: org.slug,
+                },
+                roles: value.map((value) => ({
+                    roleId: value.roleId,
+                    key: value.roleKey,
+                    name: value.roleName,
+                })),
+            });
+        });
+
+        return orgsWithRoles;
     }
 
     async updateUser(
         userId: string,
-        data: { displayName?: string; roleKeys?: string[] }
+        data: { displayName?: string }
     ): Promise<void> {
         if (data.displayName !== undefined) {
-            await db
-                .update(users)
-                .set({
-                    displayName: data.displayName,
-                    updatedAt: new Date(),
-                })
-                .where(eq(users.userId, userId));
-        }
-
-        if (data.roleKeys !== undefined) {
-            await usersRepository.updateUserRoles(userId, data.roleKeys);
+            await usersRepository.update(userId, {
+                displayName: data.displayName,
+            });
         }
     }
 
-    async getAllRoles(): Promise<Array<{ key: string; name: string }>> {
-        const roles = await db.query.roles.findMany({
-            where: {
-                isEnabled: true,
-            },
-        });
+    async updateUserGlobalRoles(userId: string, roleKeys: string[]) {
+        if (roleKeys.length === 0) {
+            throw new Error("At least one role must be assigned to the user.");
+        }
 
-        return roles.map((r) => ({
-            key: r.key,
-            name: r.name,
-        }));
+        if (!roleKeys.includes(ROLES.user)) {
+            throw new Error("The 'user' role must be assigned to the user.");
+        }
+
+        await usersRepository.updateUserGlobalRoles(userId, roleKeys);
     }
 
     async deleteUser(userId: string): Promise<void> {
         await usersRepository.delete(userId);
     }
+
+    async addUserToOrganization(userId: string, orgId: string): Promise<void> {
+        const defaultRole = await rolesService.getRoleByKey(ROLES.orgManager);
+
+        if (!defaultRole) {
+            throw new Error(
+                `Cannot add user to organization: '${ROLES.orgManager}' role not found.`
+            );
+        }
+
+        const orgRoles = (await this.getUserOrgsWithPermissions(userId)).filter(
+            (role) => role.org.orgId === orgId
+        );
+
+        if (
+            orgRoles.length > 0 &&
+            orgRoles.some((role) =>
+                role.roles.some((r) => r.key === ROLES.orgManager)
+            )
+        ) {
+            throw new Error(
+                `User is already a member of the organization with the '${ROLES.orgManager}' role.`
+            );
+        }
+
+        await usersRepository.addUserOrganizationRole(
+            userId,
+            orgId,
+            defaultRole.roleId
+        );
+    }
+
+    async addUserOrganizationRole(
+        userId: string,
+        orgId: string,
+        roleId: string
+    ): Promise<void> {
+        const orgRoles = (await this.getUserOrgsWithPermissions(userId)).filter(
+            (role) => role.org.orgId === orgId
+        );
+
+        if (
+            orgRoles.length > 0 &&
+            orgRoles.some((role) => role.roles.some((r) => r.roleId === roleId))
+        ) {
+            throw new Error(
+                `User already has the specified role in the organization.`
+            );
+        }
+
+        await usersRepository.addUserOrganizationRole(userId, orgId, roleId);
+    }
+
+    async negateUserOrganizationRole(
+        userId: string,
+        orgId: string,
+        roleId: string
+    ): Promise<void> {
+        await usersRepository.negateUserOrganizationRole(userId, orgId, roleId);
+    }
 }
+
 const mapUsers = (data: UserDTO[]) => {
     return data.map(mapUser);
 };
@@ -88,12 +188,12 @@ const mapUser = (data: UserDTO) => {
         updatedAt: data.updatedAt,
         deletedAt: data.deletedAt,
         roles: [
-            ...data.assignedGlobalRoles
-                .filter((assignedRole) => !assignedRole.isNegated)
-                .map((assignedRole) => assignedRole.role.key),
-            ...data.assignedOrgRoles
-                .filter((assignedRole) => !assignedRole.isNegated)
-                .map((assignedRole) => assignedRole.role.key),
+            ...data.assignedGlobalRoles.map(
+                (assignedRole) => assignedRole.roleKey
+            ),
+            ...data.assignedOrgRoles.map(
+                (assignedRole) => assignedRole.roleKey
+            ),
         ],
     };
 };

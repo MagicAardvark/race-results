@@ -1,10 +1,14 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, userEvent } from "@/__tests__/test-utils";
 import { KeyControlPanel } from "./key-control-panel";
 
 describe("KeyControlPanel", () => {
     const mockOnGenerateNew = vi.fn();
     const mockOnDisable = vi.fn();
+
+    beforeEach(() => {
+        vi.clearAllMocks();
+    });
 
     it("renders key control heading", () => {
         render(
@@ -75,7 +79,7 @@ describe("KeyControlPanel", () => {
         ).toBeVisible();
     });
 
-    it("calls onDisable when disable button is clicked", async () => {
+    it("calls onDisable when disable button is clicked and confirmed", async () => {
         const user = userEvent.setup();
         render(
             <KeyControlPanel
@@ -86,20 +90,29 @@ describe("KeyControlPanel", () => {
             />
         );
 
-        // Find and click the disable button inside the confirmation dialog
-        const disableButton = screen.getByText("Disable Access");
-        await user.click(disableButton);
+        // Find and click the disable button to open dialog
+        const disableTrigger = screen.getByText("Disable Access");
+        await user.click(disableTrigger);
 
-        // The confirmation dialog should appear, then click the action button
-        const confirmButton = screen.getByRole("button", {
-            name: /Disable Access/i,
-        });
+        // Wait for dialog to open and find the action button
+        const dialog = await screen.findByRole("alertdialog");
+        expect(dialog).toBeInTheDocument();
+
+        // Find the action button inside the dialog (not the trigger)
+        const actionButtons = await screen.findAllByRole("button");
+        const confirmButton = actionButtons.find(
+            (btn) =>
+                btn.textContent?.includes("Disable Access") &&
+                btn.getAttribute("data-slot") !== "alert-dialog-trigger"
+        );
+
         if (confirmButton) {
             await user.click(confirmButton);
+            expect(mockOnDisable).toHaveBeenCalledOnce();
         }
     });
 
-    it("calls onGenerateNew when generate button is clicked", async () => {
+    it("calls onGenerateNew when generate button is clicked and confirmed", async () => {
         const user = userEvent.setup();
         render(
             <KeyControlPanel
@@ -110,16 +123,52 @@ describe("KeyControlPanel", () => {
             />
         );
 
-        // Find and click the generate new key button inside the confirmation dialog
-        const generateButton = screen.getByText("Generate New Key");
-        await user.click(generateButton);
+        // Find and click the generate button to open dialog
+        const generateTrigger = screen.getByText("Generate New Key");
+        await user.click(generateTrigger);
 
-        // The confirmation dialog should appear, then click the action button
-        const confirmButton = screen.getByRole("button", {
-            name: /Generate New Key/i,
-        });
+        // Wait for dialog to open and find the action button
+        const dialog = await screen.findByRole("alertdialog");
+        expect(dialog).toBeInTheDocument();
+
+        // Find the action button inside the dialog (not the trigger)
+        const actionButtons = await screen.findAllByRole("button");
+        const confirmButton = actionButtons.find(
+            (btn) =>
+                btn.textContent?.includes("Generate New Key") &&
+                btn.getAttribute("data-slot") !== "alert-dialog-trigger"
+        );
+
         if (confirmButton) {
             await user.click(confirmButton);
+            expect(mockOnGenerateNew).toHaveBeenCalledOnce();
         }
+    });
+
+    it("disables action buttons when isPending is true", async () => {
+        const user = userEvent.setup();
+        render(
+            <KeyControlPanel
+                currentKeyEnabled={true}
+                onGenerateNew={mockOnGenerateNew}
+                onDisable={mockOnDisable}
+                isPending={true}
+            />
+        );
+
+        // Open the disable dialog
+        const disableTrigger = screen.getByText("Disable Access");
+        await user.click(disableTrigger);
+
+        // Check that the action button inside the dialog is disabled
+        await screen.findByRole("alertdialog");
+        const actionButtons = await screen.findAllByRole("button");
+        const actionButton = actionButtons.find(
+            (btn) =>
+                btn.textContent?.includes("Disable Access") &&
+                btn.getAttribute("data-slot") !== "alert-dialog-trigger"
+        );
+
+        expect(actionButton).toBeDisabled();
     });
 });

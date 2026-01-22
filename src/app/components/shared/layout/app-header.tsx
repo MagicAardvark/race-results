@@ -1,16 +1,16 @@
-import { userService } from "@/services/users/user.service";
-import { ROLES } from "@/dto/users";
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 import { Button } from "@/ui/button";
 import { CgMediaLive } from "react-icons/cg";
+import { ROLES } from "@/constants/global";
+import { getCurrentUserCached } from "@/services/users/user.service.cached";
 
 export async function AppHeader({
     sidebarTrigger,
 }: {
     sidebarTrigger?: React.ReactNode;
 }) {
-    const user = await userService.getCurrentUser();
+    const user = await getCurrentUserCached();
 
     return (
         <header className="bg-background relative z-50 w-full border-b">

@@ -50,20 +50,56 @@ describe("CreateOrgDialog", () => {
         expect(screen.getByRole("button", { name: /Create/i })).toBeVisible();
     });
 
-    it("displays error message when state has error", async () => {
+    it("submits form with organization name", async () => {
         vi.mocked(createOrganization).mockResolvedValue({
-            isError: true,
-            message: "Test error",
+            isError: false,
+            message: "",
         });
 
         const user = userEvent.setup();
         render(<CreateOrgDialog trigger={mockTrigger} />);
 
-        const trigger = screen.getByText("Create Organization");
-        await user.click(trigger);
+        await user.click(screen.getByText("Create Organization"));
 
-        // Error would be shown after form submission
-        // This test verifies the component structure supports error display
-        expect(screen.getByLabelText("Name")).toBeVisible();
+        const nameInput = screen.getByLabelText("Name");
+        await user.type(nameInput, "New Organization");
+
+        const createButton = screen.getByRole("button", { name: /Create/i });
+        await user.click(createButton);
+
+        // Verify the action was called with FormData
+        expect(createOrganization).toHaveBeenCalled();
+    });
+
+    it("requires name field to be filled", async () => {
+        const user = userEvent.setup();
+        render(<CreateOrgDialog trigger={mockTrigger} />);
+
+        await user.click(screen.getByText("Create Organization"));
+
+        const nameInput = screen.getByLabelText("Name");
+        expect(nameInput).toBeRequired();
+    });
+
+    it("disables create button while pending", async () => {
+        vi.mocked(createOrganization).mockImplementation(
+            () => new Promise(() => {}) // Never resolves to keep pending state
+        );
+
+        const user = userEvent.setup();
+        render(<CreateOrgDialog trigger={mockTrigger} />);
+
+        await user.click(screen.getByText("Create Organization"));
+
+        const nameInput = screen.getByLabelText("Name");
+        await user.type(nameInput, "New Organization");
+
+        const createButton = screen.getByRole("button", { name: /Create/i });
+        await user.click(createButton);
+
+        // Button should show pending state and be disabled
+        expect(
+            screen.getByRole("button", { name: /Creating/i })
+        ).toBeDisabled();
     });
 });

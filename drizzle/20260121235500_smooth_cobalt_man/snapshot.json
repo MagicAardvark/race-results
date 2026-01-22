@@ -1,7 +1,7 @@
 {
   "version": "8",
   "dialect": "postgres",
-  "id": "cd56f504-b6bd-43ac-bea4-c3a6ca8a7207",
+  "id": "8d3cd839-282c-4d30-95b3-b2bd22f8a04d",
   "prevIds": [
     "00000000-0000-0000-0000-000000000000"
   ],
@@ -406,6 +406,19 @@
       "generated": null,
       "identity": null,
       "name": "is_enabled",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "roles"
+    },
+    {
+      "type": "boolean",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "false",
+      "generated": null,
+      "identity": null,
+      "name": "is_global",
       "entityType": "columns",
       "schema": "public",
       "table": "roles"
@@ -1756,6 +1769,39 @@
       "tablespace": null,
       "materialized": false,
       "name": "classes_flattened_group_classes_vw",
+      "entityType": "views",
+      "schema": "public"
+    },
+    {
+      "definition": "\n  WITH global_roles AS (\n    SELECT\n      id,\n      role_key,\n      name,\n      is_enabled,\n      is_global,\n      ROW_NUMBER() OVER (PARTITION BY id ORDER BY effective_at DESC) as row_num\n    FROM roles\n    WHERE\n      effective_at <= CURRENT_TIMESTAMP\n  )\n\n  SELECT\n    id,\n    role_key,\n    name,\n    is_global\n  FROM global_roles\n  WHERE\n    row_num = 1\n  AND is_enabled = true\n",
+      "with": null,
+      "withNoData": null,
+      "using": null,
+      "tablespace": null,
+      "materialized": false,
+      "name": "roles_current_vw",
+      "entityType": "views",
+      "schema": "public"
+    },
+    {
+      "definition": "\nWITH effective_global_roles AS (\n  SELECT\n    user_global_roles.user_id,\n    roles_current_vw.id as role_id,\n    roles_current_vw.role_key,\n    roles_current_vw.name as role_name,\n    user_global_roles.is_negated,\n    ROW_NUMBER() OVER (\n        PARTITION BY \n            user_global_roles.user_id, \n            roles_current_vw.id\n        ORDER BY user_global_roles.effective_at DESC\n    ) as row_num\n  FROM\n    user_global_roles\n  JOIN roles_current_vw ON user_global_roles.role_id = roles_current_vw.id\n  WHERE\n    user_global_roles.effective_at < CURRENT_TIMESTAMP\n)\n\nSELECT\n  user_id,\n  role_id,\n  role_key,\n  role_name\nFROM effective_global_roles\nWHERE\n  row_num = 1\nAND is_negated = false\n",
+      "with": null,
+      "withNoData": null,
+      "using": null,
+      "tablespace": null,
+      "materialized": false,
+      "name": "user_global_roles_vw",
+      "entityType": "views",
+      "schema": "public"
+    },
+    {
+      "definition": "\nWITH effective_org_roles AS (\n  SELECT\n    user_org_roles.user_id,\n    roles_current_vw.id as role_id,\n    roles_current_vw.role_key,\n    roles_current_vw.name as role_name,\n    user_org_roles.org_id,\n    user_org_roles.is_negated,\n    ROW_NUMBER() OVER (\n        PARTITION BY \n            user_org_roles.user_id, \n            roles_current_vw.id, \n            user_org_roles.org_id \n        ORDER BY user_org_roles.effective_at DESC\n    ) as row_num\n  FROM\n    user_org_roles\n    JOIN roles_current_vw ON user_org_roles.role_id = roles_current_vw.id\n  WHERE\n    user_org_roles.effective_at < CURRENT_TIMESTAMP\n)\n\nSELECT\n  user_id,\n  role_id,\n  role_key,\n  role_name,\n  org_id\nFROM effective_org_roles\nWHERE\n  row_num = 1\nAND is_negated = false\n",
+      "with": null,
+      "withNoData": null,
+      "using": null,
+      "tablespace": null,
+      "materialized": false,
+      "name": "user_org_roles_vw",
       "entityType": "views",
       "schema": "public"
     }

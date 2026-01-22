@@ -9,6 +9,7 @@ export const roles = pgTable(
         name: text("name").notNull().unique(),
         effectiveAt: effectiveAt,
         isEnabled: boolean("is_enabled").notNull().default(true),
+        isGlobal: boolean("is_global").notNull().default(false),
     },
     (table) => [unique("unique_role").on(table.key, table.effectiveAt)]
 );

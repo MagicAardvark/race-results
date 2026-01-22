@@ -1,32 +1,37 @@
-import { UserDTO, RoleDTO } from "@/dto/users";
+import { UserDetailsDTO, UserDTO, UserOrgRoleWithOrgDTO } from "@/dto/users";
 import { db } from "@/db";
-import { users, userGlobalRoles } from "@/db/schema";
+import { users, userGlobalRoles, userOrgRoles } from "@/db/schema";
 import { eq } from "drizzle-orm/sql/expressions/conditions";
 import { and } from "drizzle-orm/sql";
+import { roleRepository } from "@/db/repositories/roles.repo";
+import { AvailableRole } from "@/dto/roles";
+import { ROLES } from "@/constants/global";
 
 interface IUserRepository {
     findAll(): Promise<UserDTO[]>;
     findByAuthProviderId(authProviderId: string): Promise<UserDTO | null>;
     findByUserId(userId: string): Promise<UserDTO | null>;
+    findOrgRoles(userId: string): Promise<UserOrgRoleWithOrgDTO[]>;
     create(authProviderId: string, displayName?: string): Promise<UserDTO>;
-    updateUserRoles(userId: string, roleKeys: string[]): Promise<void>;
+    update(userId: string, data: UserDetailsDTO): Promise<void>;
+    updateUserGlobalRoles(userId: string, roleKeys: string[]): Promise<void>;
     delete(userId: string): Promise<void>;
+    addUserOrganizationRole(
+        userId: string,
+        orgId: string,
+        roleId: string
+    ): Promise<void>;
+    negateUserOrganizationRole(
+        userId: string,
+        orgId: string,
+        roleId: string
+    ): Promise<void>;
 }
-
-const USER_ROLE_KEY = "user";
 
 const USER_QUERY_OPTIONS = {
     with: {
-        assignedGlobalRoles: {
-            with: {
-                role: true,
-            },
-        },
-        assignedOrgRoles: {
-            with: {
-                role: true,
-            },
-        },
+        assignedGlobalRoles: true,
+        assignedOrgRoles: true,
     },
 } as const;
 
@@ -66,13 +71,26 @@ export class UsersRepository implements IUserRepository {
         return dbUser ?? null;
     }
 
+    async findOrgRoles(userId: string): Promise<UserOrgRoleWithOrgDTO[]> {
+        const roles = await db.query.userActiveOrgRoleAssignments.findMany({
+            with: {
+                org: true,
+            },
+            where: {
+                userId: userId,
+            },
+        });
+
+        return roles;
+    }
+
     async create(
         authProviderId: string,
         displayName?: string
     ): Promise<UserDTO> {
         const existingUser = await this.findExistingUser(authProviderId);
         const user = existingUser
-            ? await this.updateExistingUser(existingUser, displayName)
+            ? await this.revalidateExistingUser(existingUser, displayName)
             : await this.insertNewUser(authProviderId, displayName);
 
         await this.ensureUserRole(user.userId);
@@ -80,94 +98,29 @@ export class UsersRepository implements IUserRepository {
         return (await this.findByAuthProviderId(authProviderId))!;
     }
 
-    private async findExistingUser(authProviderId: string) {
-        return db.query.users.findFirst({
-            where: {
-                authProviderId,
-            },
-        });
-    }
-
-    private async updateExistingUser(
-        existingUser: Awaited<ReturnType<typeof this.findExistingUser>>,
-        displayName?: string
-    ) {
-        if (!existingUser) {
-            throw new Error("Cannot update non-existent user");
-        }
-
-        const updates: {
-            deletedAt?: null;
-            displayName?: string | null;
-            updatedAt: Date;
-        } = {
-            updatedAt: new Date(),
-        };
-
-        if (existingUser.deletedAt) {
-            updates.deletedAt = null;
-            updates.displayName = displayName ?? existingUser.displayName;
-        } else if (displayName && displayName !== existingUser.displayName) {
-            updates.displayName = displayName;
-        }
-
-        if (Object.keys(updates).length > 1) {
-            await db
-                .update(users)
-                .set(updates)
-                .where(eq(users.userId, existingUser.userId));
-        }
-
-        return existingUser;
-    }
-
-    private async insertNewUser(authProviderId: string, displayName?: string) {
-        const [newUser] = await db
-            .insert(users)
-            .values({
-                authProviderId,
-                displayName: displayName ?? null,
+    async update(userId: string, data: UserDetailsDTO): Promise<void> {
+        await db
+            .update(users)
+            .set({
+                displayName: data.displayName,
+                updatedAt: new Date(),
             })
-            .returning();
-
-        return newUser;
+            .where(eq(users.userId, userId));
     }
 
-    private async ensureUserRole(userId: string) {
-        const userRole = await db.query.roles.findFirst({
-            where: {
-                key: USER_ROLE_KEY,
-            },
-        });
-
-        if (!userRole) {
-            throw new Error(
-                `Cannot assign role: '${USER_ROLE_KEY}' role not found in database. Please run database seed.`
-            );
-        }
-
-        const existingRole = await db.query.userGlobalRoles.findFirst({
-            where: {
-                userId,
-                roleId: userRole.roleId,
-            },
-        });
-
-        if (!existingRole) {
-            await db.insert(userGlobalRoles).values({
-                userId,
-                roleId: userRole.roleId,
-            });
-        }
+    async delete(userId: string): Promise<void> {
+        await db
+            .update(users)
+            .set({ deletedAt: new Date() })
+            .where(eq(users.userId, userId));
     }
 
-    async updateUserRoles(userId: string, roleKeys: string[]): Promise<void> {
+    async updateUserGlobalRoles(
+        userId: string,
+        roleKeys: string[]
+    ): Promise<void> {
         // Get all available roles
-        const allRoles = await db.query.roles.findMany({
-            where: {
-                isEnabled: true,
-            },
-        });
+        const globalRoles = await roleRepository.getAvailableGlobalRoles();
 
         // Get current user roles (only non-negated roles)
         const currentRoles = await db.query.userGlobalRoles.findMany({
@@ -178,9 +131,10 @@ export class UsersRepository implements IUserRepository {
         });
 
         // Find roles to add and remove
-        const roleMap = new Map<string, RoleDTO>(
-            allRoles.map((r) => [r.key, r])
+        const roleMap = new Map<string, AvailableRole>(
+            globalRoles.map((r) => [r.key, r])
         );
+
         const targetRoleIds: string[] = roleKeys
             .map((key) => {
                 const role = roleMap.get(key);
@@ -230,11 +184,106 @@ export class UsersRepository implements IUserRepository {
         }
     }
 
-    async delete(userId: string): Promise<void> {
-        await db
-            .update(users)
-            .set({ deletedAt: new Date() })
-            .where(eq(users.userId, userId));
+    async addUserOrganizationRole(
+        userId: string,
+        orgId: string,
+        roleId: string
+    ): Promise<void> {
+        await db.insert(userOrgRoles).values({
+            userId: userId,
+            orgId: orgId,
+            roleId: roleId,
+        });
+    }
+
+    async negateUserOrganizationRole(
+        userId: string,
+        orgId: string,
+        roleId: string
+    ): Promise<void> {
+        await db.insert(userOrgRoles).values({
+            userId: userId,
+            orgId: orgId,
+            roleId: roleId,
+            isNegated: true,
+        });
+    }
+
+    private async findExistingUser(authProviderId: string) {
+        return db.query.users.findFirst({
+            where: {
+                authProviderId,
+            },
+        });
+    }
+
+    private async revalidateExistingUser(
+        existingUser: Awaited<ReturnType<typeof this.findExistingUser>>,
+        displayName?: string
+    ) {
+        if (!existingUser) {
+            throw new Error("Cannot update non-existent user");
+        }
+
+        const updates: {
+            deletedAt?: null;
+            displayName?: string | null;
+            updatedAt: Date;
+        } = {
+            updatedAt: new Date(),
+        };
+
+        if (existingUser.deletedAt) {
+            updates.deletedAt = null;
+            updates.displayName = displayName ?? existingUser.displayName;
+        } else if (displayName && displayName !== existingUser.displayName) {
+            updates.displayName = displayName;
+        }
+
+        if (Object.keys(updates).length > 1) {
+            await db
+                .update(users)
+                .set(updates)
+                .where(eq(users.userId, existingUser.userId));
+        }
+
+        return existingUser;
+    }
+
+    private async insertNewUser(authProviderId: string, displayName?: string) {
+        const [newUser] = await db
+            .insert(users)
+            .values({
+                authProviderId,
+                displayName: displayName ?? null,
+            })
+            .returning();
+
+        return newUser;
+    }
+
+    private async ensureUserRole(userId: string) {
+        const userRole = await roleRepository.getRoleByKey(ROLES.user);
+
+        if (!userRole) {
+            throw new Error(
+                `Cannot assign role: '${ROLES.user}' role not found in database. Please run database seed.`
+            );
+        }
+
+        const existingRole = await db.query.userGlobalRoles.findFirst({
+            where: {
+                userId,
+                roleId: userRole.roleId,
+            },
+        });
+
+        if (!existingRole) {
+            await db.insert(userGlobalRoles).values({
+                userId,
+                roleId: userRole.roleId,
+            });
+        }
     }
 }
 

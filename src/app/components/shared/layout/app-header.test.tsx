@@ -1,10 +1,15 @@
 import { describe, it, expect, vi } from "vitest";
 import { AppHeader } from "./app-header";
-import { userService } from "@/services/users/user.service";
-import { mockAdminUser, createMockUser } from "@/__tests__/mocks/mock-users";
+import {
+    mockAdminUser,
+    createMockUserWithExtendedDetails,
+} from "@/__tests__/mocks/mock-users";
 import React from "react";
+import { getCurrentUserCached } from "@/services/users/user.service.cached";
 
-vi.mock("@/services/users/user.service");
+vi.mock("@/services/users/user.service.cached", () => ({
+    getCurrentUserCached: vi.fn(),
+}));
 vi.mock("@clerk/nextjs", () => ({
     SignedIn: ({ children }: { children: React.ReactNode }) => (
         <div>{children}</div>
@@ -29,7 +34,7 @@ vi.mock("next/link", () => ({
 
 describe("AppHeader", () => {
     it("returns JSX element", async () => {
-        vi.mocked(userService.getCurrentUser).mockResolvedValue(null);
+        vi.mocked(getCurrentUserCached).mockResolvedValue(null);
 
         const Header = await AppHeader({});
 
@@ -38,7 +43,7 @@ describe("AppHeader", () => {
     });
 
     it("handles admin user", async () => {
-        vi.mocked(userService.getCurrentUser).mockResolvedValue(mockAdminUser);
+        vi.mocked(getCurrentUserCached).mockResolvedValue(mockAdminUser);
 
         const Header = await AppHeader({});
 
@@ -47,8 +52,8 @@ describe("AppHeader", () => {
     });
 
     it("handles non-admin user", async () => {
-        vi.mocked(userService.getCurrentUser).mockResolvedValue(
-            createMockUser({ roles: [] })
+        vi.mocked(getCurrentUserCached).mockResolvedValue(
+            createMockUserWithExtendedDetails({ roles: ["user"] })
         );
 
         const Header = await AppHeader({});
@@ -58,7 +63,7 @@ describe("AppHeader", () => {
     });
 
     it("handles sidebar trigger", async () => {
-        vi.mocked(userService.getCurrentUser).mockResolvedValue(null);
+        vi.mocked(getCurrentUserCached).mockResolvedValue(null);
 
         const trigger = <button>Menu</button>;
         const Header = await AppHeader({ sidebarTrigger: trigger });

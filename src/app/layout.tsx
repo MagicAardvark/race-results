@@ -3,8 +3,8 @@ import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Noto_Sans } from "next/font/google";
 import "./globals.css";
-import { userService } from "@/services/users/user.service";
 import { Toaster } from "sonner";
+import { getCurrentUserCached } from "@/services/users/user.service.cached";
 
 const notoSans = Noto_Sans({ variable: "--font-sans" });
 
@@ -28,7 +28,7 @@ export default async function RootLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
-    const user = await userService.getCurrentUser();
+    const user = await getCurrentUserCached();
 
     return (
         <ClerkProvider>

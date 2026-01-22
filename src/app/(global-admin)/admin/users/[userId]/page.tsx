@@ -7,10 +7,14 @@ import {
     EmptyTitle,
 } from "@/ui/empty";
 import { LinkButton } from "@/ui/link-button";
-import { userService } from "@/services/users/user.service";
 import { TriangleAlert } from "lucide-react";
-import { UpdateUserForm } from "../_lib/components/update-user-form";
-import { DeleteUserButton } from "../_lib/components/delete-user-button";
+import { rolesService } from "@/services/roles/roles.service";
+import { organizationService } from "@/services/organizations/organization.service";
+import { UserOrgs } from "@/app/(global-admin)/admin/users/_lib/components/org/user-orgs";
+import { GlobalRoles } from "@/app/(global-admin)/admin/users/_lib/components/roles/global-roles";
+import { UserInfoForm } from "@/app/(global-admin)/admin/users/_lib/components/user-info-form";
+import { DeleteUserButton } from "@/app/(global-admin)/admin/users/_lib/components/delete-user-button";
+import { getUserByIdCached } from "@/services/users/user.service.cached";
 
 export default async function Page({
     params,
@@ -18,7 +22,7 @@ export default async function Page({
     params: Promise<{ userId: string }>;
 }) {
     const { userId } = await params;
-    const user = await userService.getUserById(userId);
+    const user = await getUserByIdCached(userId);
 
     if (user === null) {
         return (
@@ -39,7 +43,9 @@ export default async function Page({
         );
     }
 
-    const roles = await userService.getAllRoles();
+    const globalRoles = await rolesService.getGlobalRoles();
+    const orgRoles = await rolesService.getOrgRoles();
+    const orgs = await organizationService.getAllOrganizations();
 
     return (
         <div className="flex w-full flex-col gap-4">
@@ -55,7 +61,9 @@ export default async function Page({
                     <LinkButton href="/admin/users">Go Back</LinkButton>
                 </div>
             </div>
-            <UpdateUserForm user={user} availableRoles={roles} />
+            <UserInfoForm user={user} />
+            <GlobalRoles user={user} availableRoles={globalRoles} />
+            <UserOrgs user={user} orgs={orgs} availableRoles={orgRoles} />
         </div>
     );
 }
