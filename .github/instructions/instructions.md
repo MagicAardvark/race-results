@@ -7,10 +7,12 @@ You are assisting with the development of a multi-tenant motorsports results and
 - TypeScript
 - Clerk authentication
 - Postgres (Neon)
-- Prisma or Drizzle ORM
-- Redis (Upstash)
-- Realtime updates (Pusher/Ably)
+- Drizzle ORM
 - Hosted on Vercel
+
+**Planned/Future:**
+- Redis (Upstash) for caching and live timing state
+- Realtime updates (Pusher/Ably) for live timing push notifications
 
 PROJECT CONTEXT
 ---------------
@@ -37,14 +39,14 @@ ROUTING CONVENTIONS
 - All org-scoped routes live under `/t/[orgSlug]`
 - Org administration lives under `/t/[orgSlug]/admin`
 - Global platform administration lives under `/(global-admin)`
-- Route guards are enforced in `layout.tsx` files, not pages
+- Authorization guards (like `requireRole`) are called from `layout.tsx` files to protect route trees
 
 ARCHITECTURE GUIDELINES
 -----------------------
 - Prefer server components by default
 - Client components only when necessary
 - Heavy computation (scoring, parsing) must be isolated from request/response
-- Live timing should use in-memory or Redis state and publish via a realtime service
+- Live timing should use in-memory or Redis state and publish via a realtime service (when implemented)
 - Database writes should be minimized during live timing
 
 CODING EXPECTATIONS
@@ -57,6 +59,45 @@ CODING EXPECTATIONS
   - Multiple seasons
   - Per-event scoring modes
   - Org-specific overrides
+
+TESTING GUIDELINES
+------------------
+**What to Test:**
+- Complex user interactions (forms, dialogs, multi-step flows)
+- Stateful components with conditional rendering or behavior
+- Context providers (contract, error boundaries, state propagation)
+- Components with business logic or data transformation
+- Error states and validation flows
+- User event handlers and callbacks
+
+**What NOT to Test:**
+- Thin server components that only fetch data and render children
+- Static presentation with no logic or state
+- Orchestration components that just compose other components
+- Page components that only call services (test the services instead)
+- Implementation details of dependencies
+
+**Testing Principles:**
+- Test behavior, not implementation details
+- Test at the right abstraction layer (mock the dependency you use, not its internals)
+- Write interaction tests, not just rendering tests
+- Verify complete user flows (open dialog → fill form → submit → verify result)
+- Use `beforeEach` to clear mocks and avoid test pollution
+- When mocking Next.js `redirect()`, make it throw to simulate real behavior
+- Keep tests simple, logical, and meaningful
+
+**Test Organization:**
+- Place tests next to the files they test (`.test.tsx`)
+- Use `renderWithProviders` from test-utils for components needing context
+- Mock server actions and external dependencies
+- Prefer `userEvent` over `fireEvent` for realistic interactions
+
+**Red Flags (indicates test may not be valuable):**
+- Test only verifies a service method was called
+- Test checks if static text renders
+- Test mocks all child components
+- Test has redundant assertions that don't add value
+- Test becomes outdated when copy changes
 
 ASSISTANT BEHAVIOR
 ------------------
