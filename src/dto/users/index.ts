@@ -43,6 +43,10 @@ export interface User {
     roles: string[];
 }
 
+export interface UserWithExtendedDetails extends User {
+    orgs: OrgWithRoles[];
+}
+
 export interface OrgWithRoles {
     org: {
         orgId: string;
@@ -50,4 +54,8 @@ export interface OrgWithRoles {
         slug: string;
     };
     roles: UserRole[];
+}
+
+export interface UserDetailsDTO {
+    displayName?: string;
 }

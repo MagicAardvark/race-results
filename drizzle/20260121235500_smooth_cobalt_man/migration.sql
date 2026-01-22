@@ -221,5 +221,68 @@ CREATE VIEW "roles_current_vw" AS (
     row_num = 1
   AND is_enabled = true
 );--> statement-breakpoint
-CREATE VIEW "user_global_roles_vw" AS (select "user_global_roles"."user_id", "roles_current_vw"."id", "roles_current_vw"."role_key", "roles_current_vw"."name" from "user_global_roles" inner join "roles_current_vw" on "user_global_roles"."role_id" = "roles_current_vw"."id" where ("user_global_roles"."is_negated" = false and "user_global_roles"."effective_at" < CURRENT_TIMESTAMP));--> statement-breakpoint
-CREATE VIEW "user_org_roles_vw" AS (select "user_org_roles"."user_id", "roles_current_vw"."id", "roles_current_vw"."role_key", "roles_current_vw"."name", "user_org_roles"."org_id" from "user_org_roles" inner join "roles_current_vw" on "user_org_roles"."role_id" = "roles_current_vw"."id" where ("user_org_roles"."is_negated" = false and "user_org_roles"."effective_at" < CURRENT_TIMESTAMP));
+CREATE VIEW "user_global_roles_vw" AS (
+WITH effective_global_roles AS (
+  SELECT
+    user_global_roles.user_id,
+    roles_current_vw.id as role_id,
+    roles_current_vw.role_key,
+    roles_current_vw.name as role_name,
+    user_global_roles.is_negated,
+    ROW_NUMBER() OVER (
+        PARTITION BY 
+            user_global_roles.user_id, 
+            roles_current_vw.id
+        ORDER BY user_global_roles.effective_at DESC
+    ) as row_num
+  FROM
+    user_global_roles
+  JOIN roles_current_vw ON user_global_roles.role_id = roles_current_vw.id
+  WHERE
+    user_global_roles.effective_at < CURRENT_TIMESTAMP
+)
+
+SELECT
+  user_id,
+  role_id,
+  role_key,
+  role_name
+FROM effective_global_roles
+WHERE
+  row_num = 1
+AND is_negated = false
+);--> statement-breakpoint
+CREATE VIEW "user_org_roles_vw" AS (
+WITH effective_org_roles AS (
+  SELECT
+    user_org_roles.user_id,
+    roles_current_vw.id as role_id,
+    roles_current_vw.role_key,
+    roles_current_vw.name as role_name,
+    user_org_roles.org_id,
+    user_org_roles.is_negated,
+    ROW_NUMBER() OVER (
+        PARTITION BY 
+            user_org_roles.user_id, 
+            roles_current_vw.id, 
+            user_org_roles.org_id 
+        ORDER BY user_org_roles.effective_at DESC
+    ) as row_num
+  FROM
+    user_org_roles
+    JOIN roles_current_vw ON user_org_roles.role_id = roles_current_vw.id
+  WHERE
+    user_org_roles.effective_at < CURRENT_TIMESTAMP
+)
+
+SELECT
+  user_id,
+  role_id,
+  role_key,
+  role_name,
+  org_id
+FROM effective_org_roles
+WHERE
+  row_num = 1
+AND is_negated = false
+);

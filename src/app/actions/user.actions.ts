@@ -143,3 +143,60 @@ export async function addUserToOrganization(
     revalidatePath("/admin/users");
     redirect(`/admin/users/${userId}`);
 }
+
+export async function addUserOrganizationRole(
+    _: ActionState,
+    formData: FormData
+): Promise<ActionState> {
+    await requireRole(ROLES.admin);
+
+    const userId = formData.get("userId")?.toString();
+    const orgId = formData.get("orgId")?.toString();
+    const roleId = formData.get("roleId")?.toString();
+
+    if (!userId || !orgId) {
+        return { isError: true, message: "Form state is invalid" };
+    }
+
+    if (!roleId) {
+        return { isError: true, message: "Role is required" };
+    }
+
+    try {
+        await userService.addUserOrganizationRole(userId, orgId, roleId);
+    } catch (error) {
+        return {
+            isError: true,
+            message:
+                error instanceof Error
+                    ? error.message
+                    : "An unknown error occurred",
+        };
+    }
+
+    revalidatePath("/admin/users");
+    redirect(`/admin/users/${userId}`);
+}
+
+export async function negateUserOrganizationRole(
+    userId: string,
+    orgId: string,
+    roleId: string
+) {
+    await requireRole(ROLES.admin);
+
+    try {
+        await userService.negateUserOrganizationRole(userId, orgId, roleId);
+    } catch (error) {
+        return {
+            isError: true,
+            message:
+                error instanceof Error
+                    ? error.message
+                    : "An unknown error occurred",
+        };
+    }
+
+    revalidatePath("/admin/users");
+    redirect(`/admin/users/${userId}`);
+}

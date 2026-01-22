@@ -1,8 +1,8 @@
 "use client";
 
-import { addUserToOrganization } from "@/app/actions/user.actions";
-import { Organization } from "@/dto/organizations";
-import { User } from "@/dto/users";
+import { addUserOrganizationRole } from "@/app/actions/user.actions";
+import { AvailableRole } from "@/dto/roles";
+import { OrgWithRoles } from "@/dto/users";
 import { Button } from "@/ui/button";
 import {
     Dialog,
@@ -21,25 +21,39 @@ import {
 } from "@/ui/select";
 import { useActionState, useState } from "react";
 
-type AddUserOrgButtonProps = {
-    user: User;
-    organizations: Organization[];
+type AddOrgRoleButtonProps = {
+    userId: string;
+    userOrg: OrgWithRoles;
+    orgId: string;
+    orgName: string;
+    roles: AvailableRole[];
 };
 
-export const AddUserOrgButton = ({
-    user,
-    organizations,
-}: AddUserOrgButtonProps) => {
-    const [state, formAction, pending] = useActionState(addUserToOrganization, {
-        isError: false,
-        message: "",
-    });
+export const AddOrgRoleButton = ({
+    userId,
+    userOrg,
+    orgId,
+    orgName,
+    roles,
+}: AddOrgRoleButtonProps) => {
+    const [state, formAction, pending] = useActionState(
+        addUserOrganizationRole,
+        {
+            isError: false,
+            message: "",
+        }
+    );
 
-    const [selectedOrg, setSelectedOrg] = useState<string>("");
+    const [selectedRole, setSelectedRole] = useState<string>("");
 
     const handleClose = () => {
-        setSelectedOrg("");
+        setSelectedRole("");
     };
+
+    const availableRoles = roles.filter(
+        (role) => !userOrg.roles.some((r) => r.key === role.key)
+    );
+
     return (
         <Dialog
             onOpenChange={(open) => {
@@ -49,41 +63,37 @@ export const AddUserOrgButton = ({
             }}
         >
             <DialogTrigger asChild>
-                <Button>Add Organization</Button>
+                <Button>Add Role</Button>
             </DialogTrigger>
             <DialogContent>
-                <DialogTitle>Add User to Organization</DialogTitle>
-                <p>
-                    Select an organization to add the user to. This will give
-                    them the initial role of Organization Manager.
-                </p>
+                <DialogTitle>Add Organization Role</DialogTitle>
+                <p>Select the role to give this user within {orgName}.</p>
                 <form action={formAction}>
                     {state.isError && (
                         <div className="text-red-500">{state.message}</div>
                     )}
 
-                    <input type="hidden" name="userId" value={user.userId} />
+                    <input type="hidden" name="userId" value={userId} />
+                    <input type="hidden" name="orgId" value={orgId} />
 
                     <FieldGroup>
                         <Field>
-                            <FieldLabel htmlFor="orgId">
-                                Organization
-                            </FieldLabel>
+                            <FieldLabel htmlFor="roleId">Role</FieldLabel>
                             <Select
-                                name="orgId"
-                                defaultValue={selectedOrg}
-                                onValueChange={setSelectedOrg}
+                                onValueChange={setSelectedRole}
+                                value={selectedRole}
+                                name="roleId"
                             >
                                 <SelectTrigger>
-                                    <SelectValue placeholder="Select an organization" />
+                                    <SelectValue placeholder="Select Role" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    {organizations.map((org) => (
+                                    {availableRoles.map((role) => (
                                         <SelectItem
-                                            key={org.orgId}
-                                            value={org.orgId}
+                                            key={role.key}
+                                            value={role.roleId}
                                         >
-                                            {org.name}
+                                            {role.name}
                                         </SelectItem>
                                     ))}
                                 </SelectContent>
@@ -99,10 +109,11 @@ export const AddUserOrgButton = ({
                                     Cancel
                                 </Button>
                             </DialogClose>
-                            <Button type="submit" disabled={pending}>
-                                {pending
-                                    ? "Saving…"
-                                    : "Add User to Organization"}
+                            <Button
+                                type="submit"
+                                disabled={pending || !selectedRole}
+                            >
+                                {pending ? "Saving…" : "Add Role"}
                             </Button>
                         </Field>
                     </FieldGroup>

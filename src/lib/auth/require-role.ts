@@ -2,7 +2,7 @@ import { ROLES } from "@/constants/global";
 import { getCurrentUserCached } from "@/services/users/user.service.cached";
 import { redirect } from "next/navigation";
 
-export async function requireRole(role: keyof typeof ROLES) {
+export async function requireRole(role: (typeof ROLES)[keyof typeof ROLES]) {
     const user = await getCurrentUserCached();
 
     if (!user) {

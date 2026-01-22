@@ -8,5 +8,10 @@
         "userId": "6e5c6470-1342-4a2e-88ee-7b538d7ddd14",
         "displayName": "Kyle",
         "globalRoles": ["admin", "user"]
+    },
+    {
+        "userId": "01ff30fc-f584-4211-84a6-b746141feaf2",
+        "displayName": "Shamit",
+        "globalRoles": ["admin", "user"]
     }
 ]

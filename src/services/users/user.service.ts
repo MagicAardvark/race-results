@@ -1,19 +1,32 @@
 import { usersRepository } from "@/db/repositories/users.repo";
-import { OrgWithRoles, User, UserDTO } from "@/dto/users";
+import {
+    OrgWithRoles,
+    User,
+    UserDTO,
+    UserWithExtendedDetails,
+} from "@/dto/users";
 import { auth } from "@clerk/nextjs/server";
-import { db } from "@/db";
-import { users } from "@/db/schema";
-import { eq } from "drizzle-orm/sql/expressions/conditions";
 import { ROLES } from "@/constants/global";
+import { rolesService } from "@/services/roles/roles.service";
 
 interface IUserService {
     getAllUsers(): Promise<User[]>;
-    getCurrentUser(): Promise<User | null>;
-    getUserById(userId: string): Promise<User | null>;
+    getCurrentUser(): Promise<UserWithExtendedDetails | null>;
+    getUserById(userId: string): Promise<UserWithExtendedDetails | null>;
     getUserOrgsWithPermissions(userId: string): Promise<OrgWithRoles[]>;
     updateUser(userId: string, data: { displayName?: string }): Promise<void>;
     deleteUser(userId: string): Promise<void>;
     addUserToOrganization(userId: string, orgId: string): Promise<void>;
+    addUserOrganizationRole(
+        userId: string,
+        orgId: string,
+        roleId: string
+    ): Promise<void>;
+    negateUserOrganizationRole(
+        userId: string,
+        orgId: string,
+        roleId: string
+    ): Promise<void>;
 }
 
 export class UserService implements IUserService {
@@ -21,7 +34,7 @@ export class UserService implements IUserService {
         return mapUsers(await usersRepository.findAll());
     }
 
-    async getCurrentUser(): Promise<User | null> {
+    async getCurrentUser(): Promise<UserWithExtendedDetails | null> {
         const { userId } = await auth();
 
         if (userId === null) {
@@ -30,12 +43,24 @@ export class UserService implements IUserService {
 
         const user = await usersRepository.findByAuthProviderId(userId);
 
-        return user ? mapUser(user) : null;
+        if (!user) {
+            return null;
+        }
+
+        return {
+            ...mapUser(user),
+            orgs: await this.getUserOrgsWithPermissions(user.userId),
+        };
     }
 
-    async getUserById(userId: string): Promise<User | null> {
+    async getUserById(userId: string): Promise<UserWithExtendedDetails | null> {
         const user = await usersRepository.findByUserId(userId);
-        return user ? mapUser(user) : null;
+        return user
+            ? {
+                  ...mapUser(user),
+                  orgs: await this.getUserOrgsWithPermissions(user.userId),
+              }
+            : null;
     }
 
     async getUserOrgsWithPermissions(userId: string): Promise<OrgWithRoles[]> {
@@ -43,9 +68,14 @@ export class UserService implements IUserService {
 
         const orgsWithRoles: OrgWithRoles[] = [];
 
-        Map.groupBy(roles, (role) => role.org).forEach((value, key) => {
+        Map.groupBy(roles, (role) => role.org.orgId).forEach((value) => {
+            const org = value[0].org;
             orgsWithRoles.push({
-                org: key,
+                org: {
+                    orgId: org.orgId,
+                    name: org.name,
+                    slug: org.slug,
+                },
                 roles: value.map((value) => ({
                     roleId: value.roleId,
                     key: value.roleKey,
@@ -62,13 +92,9 @@ export class UserService implements IUserService {
         data: { displayName?: string }
     ): Promise<void> {
         if (data.displayName !== undefined) {
-            await db
-                .update(users)
-                .set({
-                    displayName: data.displayName,
-                    updatedAt: new Date(),
-                })
-                .where(eq(users.userId, userId));
+            await usersRepository.update(userId, {
+                displayName: data.displayName,
+            });
         }
     }
 
@@ -89,7 +115,63 @@ export class UserService implements IUserService {
     }
 
     async addUserToOrganization(userId: string, orgId: string): Promise<void> {
-        await usersRepository.addUserToOrganization(userId, orgId);
+        const defaultRole = await rolesService.getRoleByKey(ROLES.orgManager);
+
+        if (!defaultRole) {
+            throw new Error(
+                `Cannot add user to organization: '${ROLES.orgManager}' role not found.`
+            );
+        }
+
+        const orgRoles = (await this.getUserOrgsWithPermissions(userId)).filter(
+            (role) => role.org.orgId === orgId
+        );
+
+        if (
+            orgRoles.length > 0 &&
+            orgRoles.some((role) =>
+                role.roles.some((r) => r.key === ROLES.orgManager)
+            )
+        ) {
+            throw new Error(
+                `User is already a member of the organization with the '${ROLES.orgManager}' role.`
+            );
+        }
+
+        await usersRepository.addUserOrganizationRole(
+            userId,
+            orgId,
+            defaultRole.roleId
+        );
+    }
+
+    async addUserOrganizationRole(
+        userId: string,
+        orgId: string,
+        roleId: string
+    ): Promise<void> {
+        const orgRoles = (await this.getUserOrgsWithPermissions(userId)).filter(
+            (role) => role.org.orgId === orgId
+        );
+
+        if (
+            orgRoles.length > 0 &&
+            orgRoles.some((role) => role.roles.some((r) => r.roleId === roleId))
+        ) {
+            throw new Error(
+                `User already has the specified role in the organization.`
+            );
+        }
+
+        await usersRepository.addUserOrganizationRole(userId, orgId, roleId);
+    }
+
+    async negateUserOrganizationRole(
+        userId: string,
+        orgId: string,
+        roleId: string
+    ): Promise<void> {
+        await usersRepository.negateUserOrganizationRole(userId, orgId, roleId);
     }
 }
 

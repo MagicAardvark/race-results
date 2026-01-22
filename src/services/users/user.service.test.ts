@@ -15,6 +15,7 @@ vi.mock("@/db/repositories/users.repo", () => ({
         findAll: vi.fn(),
         findByAuthProviderId: vi.fn(),
         findByUserId: vi.fn(),
+        findOrgRoles: vi.fn(),
         delete: vi.fn(),
     },
 }));
@@ -102,6 +103,7 @@ describe("UserService", () => {
             vi.mocked(usersRepository.findByAuthProviderId).mockResolvedValue(
                 mockUserDTO
             );
+            vi.mocked(usersRepository.findOrgRoles).mockResolvedValue([]);
 
             const result = await userService.getCurrentUser();
 
