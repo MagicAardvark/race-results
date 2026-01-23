@@ -51,35 +51,37 @@ export default async function Page() {
 
     return (
         <div className="container mx-auto px-4 py-8">
-            {/* Back Button */}
-            <Button variant="ghost" size="sm" asChild className="mb-6">
-                <Link href="/">
-                    <ArrowLeftIcon className="mr-2 h-4 w-4" />
-                    Back to Organizations
-                </Link>
-            </Button>
+            {/* Top Bar with Back Button and Live Timing */}
+            <div className="mb-6 flex items-center justify-between">
+                <Button variant="ghost" size="sm" asChild>
+                    <Link href="/">
+                        <ArrowLeftIcon className="mr-2 h-4 w-4" />
+                        Back to Organizations
+                    </Link>
+                </Button>
+                <Button size="lg" asChild>
+                    <Link href={`/t/${tenant.org.slug}/live`}>
+                        <LiveIcon className="mr-2 h-5 w-5 animate-pulse text-white" />
+                        Live Timing
+                    </Link>
+                </Button>
+            </div>
 
             {/* Organization Header */}
             <div className="mb-8">
-                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                    <div>
-                        <h1 className="text-3xl font-bold sm:text-4xl">
-                            {tenant.org.name}
-                        </h1>
-                        {tenant.org.motorsportregOrgId && (
-                            <p className="text-muted-foreground mt-2">
-                                View upcoming events and results for this
-                                organization
-                            </p>
-                        )}
-                    </div>
-                    <Button size="lg" asChild>
-                        <Link href={`/t/${tenant.org.slug}/live`}>
-                            <LiveIcon className="mr-2 h-5 w-5 animate-pulse text-white" />
-                            Live Timing
-                        </Link>
-                    </Button>
-                </div>
+                <h1 className="text-3xl font-bold sm:text-4xl">
+                    {tenant.org.name}
+                </h1>
+                {tenant.org.description && (
+                    <p className="text-muted-foreground mt-2 max-w-2xl">
+                        {tenant.org.description}
+                    </p>
+                )}
+                {!tenant.org.description && tenant.org.motorsportregOrgId && (
+                    <p className="text-muted-foreground mt-2">
+                        View upcoming events and results for this organization
+                    </p>
+                )}
             </div>
 
             {/* Events Section */}

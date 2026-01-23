@@ -58,6 +58,9 @@ vi.mock("next/navigation", () => ({
     }),
     usePathname: () => "/",
     useSearchParams: () => new URLSearchParams(),
+    useParams: () => ({
+        orgSlug: "test-org",
+    }),
 }));
 
 // Mock Next.js Image component

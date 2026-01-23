@@ -9,6 +9,8 @@ type FilterButtonsProps = {
     onClear?: () => void;
     showClear?: boolean;
     className?: string;
+    itemLabels?: Record<string, string>;
+    itemTitles?: Record<string, string>;
 };
 
 /**
@@ -22,6 +24,8 @@ export function FilterButtons({
     onClear,
     showClear = false,
     className = "mt-2 flex flex-wrap items-center gap-2",
+    itemLabels,
+    itemTitles,
 }: FilterButtonsProps) {
     const noSelected = selectedItems.length === 0;
 
@@ -29,6 +33,9 @@ export function FilterButtons({
         <div className={className}>
             {items.map((item) => {
                 const isSelected = selectedItems.includes(item);
+                const label = itemLabels?.[item] || item;
+                const title = itemTitles?.[item];
+
                 return (
                     <Button
                         key={item}
@@ -37,8 +44,9 @@ export function FilterButtons({
                         }
                         size="sm"
                         onClick={() => onToggle(item)}
+                        title={title}
                     >
-                        {item}
+                        {label}
                     </Button>
                 );
             })}
