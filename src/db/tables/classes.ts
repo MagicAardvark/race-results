@@ -12,6 +12,7 @@ import {
     pgTable,
     primaryKey,
     text,
+    unique,
     uuid,
 } from "drizzle-orm/pg-core";
 
@@ -19,8 +20,8 @@ export const baseClasses = pgTable(
     "classes_base",
     {
         classId: uuid("id").primaryKey().defaultRandom(),
-        shortName: text("short_name").unique().notNull(),
-        longName: text("long_name").unique().notNull(),
+        shortName: text("short_name").notNull(),
+        longName: text("long_name").notNull(),
         isEnabled: boolean("is_enabled").notNull().default(true),
         // Null means global
         orgId: uuid("org_id").references(() => orgs.orgId, {
@@ -35,6 +36,7 @@ export const baseClasses = pgTable(
             table.isEnabled,
             table.orgId
         ),
+        unique("base_class_name_org_uq").on(table.shortName, table.orgId),
     ]
 );
 

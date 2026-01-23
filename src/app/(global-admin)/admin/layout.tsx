@@ -19,6 +19,16 @@ const ADMIN_NAVIGATION = [
             },
         ],
     },
+    {
+        name: "Classing",
+        items: [
+            {
+                text: "Base Classes",
+                href: "/admin/classes",
+                roles: [ROLES.admin],
+            },
+        ],
+    },
 ];
 
 export default async function AdminLayout({
