@@ -17,3 +17,4 @@ export * from "./form-select";
 export * from "./form-section";
 export * from "./form-actions";
 export * from "./default-actions";
+export * from "./form-error";

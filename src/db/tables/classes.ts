@@ -8,6 +8,7 @@ import {
 import {
     boolean,
     index,
+    integer,
     numeric,
     pgTable,
     primaryKey,
@@ -15,6 +16,23 @@ import {
     unique,
     uuid,
 } from "drizzle-orm/pg-core";
+
+export const classTypes = pgTable("classes_types", {
+    classTypeId: uuid("id").primaryKey().defaultRandom(),
+    classTypeKey: text("class_type_key").unique().notNull(),
+    shortName: text("short_name").notNull(),
+    longName: text("long_name").notNull(),
+    isEnabled: boolean("is_enabled").notNull().default(true),
+    relativeOrder: integer("relative_order").notNull().default(999),
+});
+
+export const classCategories = pgTable("classes_categories", {
+    classCategoryId: uuid("id").primaryKey().defaultRandom(),
+    shortName: text("short_name").notNull(),
+    longName: text("long_name").notNull(),
+    isEnabled: boolean("is_enabled").notNull().default(true),
+    relativeOrder: integer("relative_order").notNull().default(999),
+});
 
 export const baseClasses = pgTable(
     "classes_base",
@@ -27,6 +45,16 @@ export const baseClasses = pgTable(
         orgId: uuid("org_id").references(() => orgs.orgId, {
             onDelete: "cascade",
         }),
+        classTypeKey: text("class_type_key").references(
+            () => classTypes.classTypeKey,
+            { onDelete: "set null" }
+        ),
+        // Null means uncategorized
+        classCategoryId: uuid("class_category_id").references(
+            () => classCategories.classCategoryId,
+            { onDelete: "set null" }
+        ),
+        relativeOrder: integer("relative_order").notNull().default(999),
         createdAt: createdAt,
         updatedAt: updatedAt,
     },

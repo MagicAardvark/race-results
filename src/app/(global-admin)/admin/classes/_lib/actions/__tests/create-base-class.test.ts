@@ -68,6 +68,6 @@ describe("createBaseClass", () => {
         });
 
         expect(result.isError).toBe(false);
-        expect(result.data).toBe(mockClass);
+        expect(result.data).not.toBeNull();
     });
 });

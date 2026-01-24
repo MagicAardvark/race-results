@@ -18,22 +18,35 @@ import { useForm } from "react-hook-form";
 import { Stack } from "@/app/components/shared/stack";
 import { createBaseClass } from "@/app/(global-admin)/admin/classes/_lib/actions/create-base-class";
 import { useState } from "react";
-import { FormError } from "@/app/components/forms/form-error";
 import { FormResponse } from "@/types/forms";
-import { Form, FormInput } from "@/app/components/forms/form";
+import {
+    Form,
+    FormInput,
+    FormSelect,
+    FormError,
+} from "@/app/components/forms/form";
 import { newBaseClassSchema } from "@/app/(global-admin)/admin/classes/_lib/schema";
-import { BaseCarClass } from "@/dto/classes-admin";
+import { BaseCarClass, ClassCategory, ClassType } from "@/dto/classes-admin";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
-export const AddBaseClassDialog = () => {
+type AddBaseClassDialogProps = {
+    classTypes: ClassType[];
+    classCategories: ClassCategory[];
+};
+
+export const AddBaseClassDialog = ({
+    classTypes,
+    classCategories,
+}: AddBaseClassDialogProps) => {
     const router = useRouter();
     const form = useForm<z.infer<typeof newBaseClassSchema>>({
         resolver: zodResolver(newBaseClassSchema),
-        mode: "onBlur", // Validate on every change
         defaultValues: {
             shortName: "",
             longName: "",
+            classTypeKey: "",
+            classCategoryId: "",
         },
     });
 
@@ -103,6 +116,40 @@ export const AddBaseClassDialog = () => {
                             name="longName"
                             label="Long Name"
                             placeholder="e.g. Super Street"
+                        />
+
+                        <FormSelect
+                            form={form}
+                            name="classTypeKey"
+                            label="Class Type"
+                            placeholder="Class Type"
+                            items={[
+                                {
+                                    value: "Invalid",
+                                    label: "None",
+                                },
+                                ...classTypes.map((ct) => ({
+                                    value: ct.classTypeKey,
+                                    label: ct.shortName,
+                                })),
+                            ]}
+                        />
+
+                        <FormSelect
+                            form={form}
+                            name="classCategoryId"
+                            label="Class Category"
+                            placeholder="Class Category"
+                            items={[
+                                {
+                                    value: "Invalid",
+                                    label: "None",
+                                },
+                                ...classCategories.map((cc) => ({
+                                    value: cc.classCategoryId,
+                                    label: cc.longName,
+                                })),
+                            ]}
                         />
 
                         <DialogFooter>

@@ -25,6 +25,18 @@ export async function createBaseClass(
 
     const shortName = data.shortName.trim();
     const longName = data.longName.trim();
+    const classTypeKey =
+        !data.classTypeKey ||
+        data.classTypeKey === "" ||
+        data.classTypeKey === "Invalid"
+            ? null
+            : data.classTypeKey.trim();
+    const classCategoryId =
+        !data.classCategoryId ||
+        data.classCategoryId === "" ||
+        data.classCategoryId === "Invalid"
+            ? null
+            : data.classCategoryId.trim();
 
     let newBaseClass = null;
 
@@ -32,6 +44,8 @@ export async function createBaseClass(
         newBaseClass = await classesAdminService.createGlobalBaseClass({
             shortName,
             longName,
+            classTypeKey,
+            classCategoryId,
         });
     } catch (error) {
         return {

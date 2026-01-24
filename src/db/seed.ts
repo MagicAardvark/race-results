@@ -13,6 +13,8 @@ import {
     classGroups,
     classIndexValues,
     classGroupClasses,
+    classCategories,
+    classTypes,
 } from "@/db/tables/classes";
 import { generateApiKey } from "@/lib/auth/generate-api-key";
 
@@ -114,18 +116,56 @@ async function configureUsers() {
 }
 
 async function configureClasses() {
+    await db.delete(classTypes);
+    await db.delete(classCategories);
     await db.delete(baseClasses);
     await db.delete(classGroups);
+
+    const classTypeData = (await import("@/db/seed-data/class-types.json"))
+        .default;
+
+    await db.insert(classTypes).values(
+        classTypeData.map((ct, index) => ({
+            classTypeKey: ct.classTypeKey,
+            shortName: ct.shortName,
+            longName: ct.longName,
+            isEnabled: true,
+            relativeOrder: index + 1,
+        }))
+    );
+
+    const classCategoriesData = (
+        await import("@/db/seed-data/class-categories.json")
+    ).default;
+
+    const insertedCategories = await db
+        .insert(classCategories)
+        .values(
+            classCategoriesData.map((cc, index) => ({
+                shortName: cc.shortName,
+                longName: cc.longName,
+                classTypeKey: cc.classTypeKey,
+                isEnabled: true,
+                relativeOrder: index + 1,
+            }))
+        )
+        .returning();
 
     const baseClassData = (await import("@/db/seed-data/base-classes.json"))
         .default;
 
     await db.insert(baseClasses).values(
-        baseClassData.map((bc) => ({
+        baseClassData.map((bc, index) => ({
             classId: bc.classId,
             shortName: bc.shortName,
             longName: bc.longName,
+            classTypeKey: classTypeData[0].classTypeKey,
+            classCategoryId:
+                insertedCategories.find(
+                    (c) => c.shortName === bc.categoryShortName
+                )?.classCategoryId || null,
             isEnabled: true,
+            relativeOrder: index + 1,
         }))
     );
 

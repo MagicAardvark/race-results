@@ -20,20 +20,24 @@ export const BaseClassesList = ({ baseClasses }: BaseClassesListProps) => {
         <Table>
             <TableHeader>
                 <TableRow>
-                    <TableHead>Short Name</TableHead>
-                    <TableHead>Long Name</TableHead>
-                    <TableHead className="w-24 text-center">Status</TableHead>
+                    <TableHead className="w-1">Type</TableHead>
+                    <TableHead className="w-1">Category</TableHead>
+                    <TableHead>Name</TableHead>
+                    <TableHead className="w-1 text-center">Status</TableHead>
                     <TableHead></TableHead>
                 </TableRow>
             </TableHeader>
             <TableBody>
                 {baseClasses.map((bc) => (
                     <TableRow key={bc.classId}>
-                        <TableCell className="w-0 whitespace-nowrap">
-                            {bc.shortName}
+                        <TableCell className="w-1">
+                            {bc.classType?.shortName}
                         </TableCell>
-                        <TableCell>{bc.longName}</TableCell>
-                        <TableCell className="w-24 whitespace-nowrap">
+                        <TableCell className="w-1">
+                            {bc.classCategory?.longName}
+                        </TableCell>
+                        <TableCell>{bc.shortName}</TableCell>
+                        <TableCell className="w-1 text-center whitespace-nowrap">
                             <div className="flex items-center justify-center">
                                 {bc.isEnabled ? (
                                     <TooltipIcon

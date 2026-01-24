@@ -6,10 +6,16 @@ import { classesAdminService } from "@/services/classes-admin/classes-admin.serv
 export default async function Page() {
     const baseClasses = await classesAdminService.getGlobalBaseClasses();
 
+    const classTypes = await classesAdminService.getClassTypes();
+    const classCategories = await classesAdminService.getClassCategories();
+
     return (
         <Stack>
             <div>
-                <AddBaseClassDialog />
+                <AddBaseClassDialog
+                    classTypes={classTypes}
+                    classCategories={classCategories}
+                />
             </div>
             <BaseClassesList baseClasses={baseClasses} />
         </Stack>

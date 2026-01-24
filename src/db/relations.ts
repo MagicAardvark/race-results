@@ -101,10 +101,32 @@ export const relations = defineRelations(schema, (r) => ({
             optional: false,
         }),
     },
+    classCategories: {
+        baseClasses: r.many.baseClasses({
+            from: r.classCategories.classCategoryId,
+            to: r.baseClasses.classCategoryId,
+        }),
+    },
+    classTypes: {
+        baseClasses: r.many.baseClasses({
+            from: r.classTypes.classTypeKey,
+            to: r.baseClasses.classTypeKey,
+        }),
+    },
     baseClasses: {
         classIndexValues: r.many.classIndexValues({
             from: r.baseClasses.classId,
             to: r.classIndexValues.classId,
+        }),
+        classType: r.one.classTypes({
+            from: r.baseClasses.classTypeKey,
+            to: r.classTypes.classTypeKey,
+            optional: true,
+        }),
+        classCategory: r.one.classCategories({
+            from: r.baseClasses.classCategoryId,
+            to: r.classCategories.classCategoryId,
+            optional: true,
         }),
     },
     classIndexValues: {

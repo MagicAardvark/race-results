@@ -1,0 +1,57 @@
+[
+    {
+        "classTypeKey": "SCCA_NATIONAL",
+        "shortName": "S",
+        "longName": "Street"
+    },
+    {
+        "classTypeKey": "SCCA_NATIONAL",
+        "shortName": "ST",
+        "longName": "Street Touring"
+    },
+    {
+        "classTypeKey": "SCCA_NATIONAL",
+        "shortName": "Spec",
+        "longName": "Solo Spec"
+    },
+    {
+        "classTypeKey": "SCCA_NATIONAL",
+        "shortName": "SP",
+        "longName": "Street Prepared"
+    },
+    {
+        "classTypeKey": "SCCA_NATIONAL",
+        "shortName": "SM",
+        "longName": "Street Modified"
+    },
+    {
+        "classTypeKey": "SCCA_NATIONAL",
+        "shortName": "P",
+        "longName": "Prepared"
+    },
+    {
+        "classTypeKey": "SCCA_NATIONAL",
+        "shortName": "M",
+        "longName": "Modified"
+    },
+    {
+        "classTypeKey": "SCCA_NATIONAL",
+        "shortName": "CAM",
+        "longName": "Classic American Muscle"
+    },
+    {
+        "classTypeKey": "SCCA_NATIONAL",
+        "shortName": "XS",
+        "longName": "Xtreme Street"
+    },
+    {
+        "classTypeKey": "SCCA_NATIONAL",
+        "shortName": "Sup",
+        "longName": "Supplemental"
+    },
+    {
+        "classTypeKey": "SCCA_NATIONAL",
+        "shortName": "H",
+        "longName": "Historic"
+    }
+]

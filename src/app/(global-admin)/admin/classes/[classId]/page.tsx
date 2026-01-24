@@ -12,6 +12,8 @@ export default async function Page({
     const { classId } = await params;
 
     const baseClass = await classesAdminService.getGlobalBaseClass(classId);
+    const classTypes = await classesAdminService.getClassTypes();
+    const classCategories = await classesAdminService.getClassCategories();
 
     if (!baseClass) {
         return (
@@ -28,7 +30,11 @@ export default async function Page({
                 <LinkButton href="/admin/classes">Go Back</LinkButton>
             </div>
 
-            <UpdateBaseClassForm baseClass={baseClass} />
+            <UpdateBaseClassForm
+                baseClass={baseClass}
+                classTypes={classTypes}
+                classCategories={classCategories}
+            />
         </Stack>
     );
 }

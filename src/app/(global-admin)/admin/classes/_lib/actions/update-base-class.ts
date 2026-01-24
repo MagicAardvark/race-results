@@ -26,6 +26,18 @@ export async function updateBaseClass(
 
     const shortName = data.shortName.trim();
     const longName = data.longName.trim();
+    const classTypeKey =
+        !data.classTypeKey ||
+        data.classTypeKey === "" ||
+        data.classTypeKey === "Invalid"
+            ? null
+            : data.classTypeKey.trim();
+    const classCategoryId =
+        !data.classCategoryId ||
+        data.classCategoryId === "" ||
+        data.classCategoryId === "Invalid"
+            ? null
+            : data.classCategoryId.trim();
     const isEnabled = data.isEnabled;
 
     let updatedBaseClass = null;
@@ -35,6 +47,8 @@ export async function updateBaseClass(
             classId: classId,
             shortName,
             longName,
+            classTypeKey,
+            classCategoryId,
             isEnabled,
         });
     } catch (error) {

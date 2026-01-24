@@ -1,14 +1,18 @@
-import { baseClasses, db } from "@/db";
+import { baseClasses, classCategories, classTypes, db } from "@/db";
 import {
     BaseCarClassCreateDTO,
     BaseCarClassDTO,
     BaseCarClassUpdateDTO,
+    ClassCategoryDTO,
+    ClassTypeDTO,
 } from "@/dto/classes-admin";
-import { eq } from "drizzle-orm";
+import { asc, eq } from "drizzle-orm";
 
 interface IClassesAdminRepository {
     getGlobalBaseClasses(): Promise<BaseCarClassDTO[]>;
     getGlobalBaseClass(classId: string): Promise<BaseCarClassDTO | null>;
+    getClassTypes(): Promise<ClassTypeDTO[]>;
+    getClassCategories(): Promise<ClassCategoryDTO[]>;
     doesShortNameExist(
         shortName: string,
         orgId?: string | null
@@ -22,25 +26,57 @@ interface IClassesAdminRepository {
 }
 
 export class ClassesAdminRepository implements IClassesAdminRepository {
-    getGlobalBaseClasses(): Promise<BaseCarClassDTO[]> {
-        return db.query.baseClasses.findMany({
-            where: {
-                orgId: { isNull: true },
-            },
-            orderBy: {
-                shortName: "asc",
-            },
-        });
+    async getGlobalBaseClasses(): Promise<BaseCarClassDTO[]> {
+        return await db
+            .select()
+            .from(baseClasses)
+            .leftJoin(
+                classTypes,
+                eq(baseClasses.classTypeKey, classTypes.classTypeKey)
+            )
+            .leftJoin(
+                classCategories,
+                eq(baseClasses.classCategoryId, classCategories.classCategoryId)
+            )
+            .orderBy(
+                asc(classTypes.relativeOrder),
+                asc(classCategories.relativeOrder),
+                asc(baseClasses.relativeOrder)
+            );
     }
 
     async getGlobalBaseClass(classId: string): Promise<BaseCarClassDTO | null> {
-        const baseClass = await db.query.baseClasses.findFirst({
-            where: {
-                classId: classId,
-            },
-        });
+        const result = await db
+            .select()
+            .from(baseClasses)
+            .leftJoin(
+                classTypes,
+                eq(baseClasses.classTypeKey, classTypes.classTypeKey)
+            )
+            .leftJoin(
+                classCategories,
+                eq(baseClasses.classCategoryId, classCategories.classCategoryId)
+            )
+            .where(eq(baseClasses.classId, classId))
+            .orderBy(
+                asc(classTypes.relativeOrder),
+                asc(classCategories.relativeOrder),
+                asc(baseClasses.relativeOrder)
+            );
 
-        return baseClass ?? null;
+        return result.length > 0 ? result[0] : null;
+    }
+
+    async getClassTypes(): Promise<ClassTypeDTO[]> {
+        return db.query.classTypes.findMany({
+            orderBy: (ct) => [asc(ct.relativeOrder)],
+        });
+    }
+
+    async getClassCategories(): Promise<ClassCategoryDTO[]> {
+        return db.query.classCategories.findMany({
+            orderBy: (cc) => [asc(cc.relativeOrder)],
+        });
     }
 
     async doesShortNameExist(
@@ -65,6 +101,8 @@ export class ClassesAdminRepository implements IClassesAdminRepository {
             .values({
                 shortName: data.shortName,
                 longName: data.longName,
+                classTypeKey: data.classTypeKey,
+                classCategoryId: data.classCategoryId,
                 isEnabled: true,
                 orgId: null,
             })
@@ -74,23 +112,38 @@ export class ClassesAdminRepository implements IClassesAdminRepository {
                     isEnabled: true,
                 },
             })
-            .returning();
+            .returning({ classId: baseClasses.classId });
 
-        return newBaseClass;
+        const updatedBaseClass = await this.getGlobalBaseClass(
+            newBaseClass.classId
+        );
+
+        if (!updatedBaseClass) {
+            throw new Error("Failed to retrieve the newly created base class.");
+        }
+
+        return updatedBaseClass;
     }
 
     async updateGlobalBaseClass(
         data: BaseCarClassUpdateDTO
     ): Promise<BaseCarClassDTO> {
-        const [updatedBaseClass] = await db
+        await db
             .update(baseClasses)
             .set({
                 shortName: data.shortName,
                 longName: data.longName,
+                classTypeKey: data.classTypeKey,
+                classCategoryId: data.classCategoryId,
                 isEnabled: data.isEnabled,
             })
-            .where(eq(baseClasses.classId, data.classId))
-            .returning();
+            .where(eq(baseClasses.classId, data.classId));
+
+        const updatedBaseClass = await this.getGlobalBaseClass(data.classId);
+
+        if (!updatedBaseClass) {
+            throw new Error("Failed to retrieve the newly created base class.");
+        }
 
         return updatedBaseClass;
     }
