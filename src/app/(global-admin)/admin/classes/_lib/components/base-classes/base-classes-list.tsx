@@ -22,7 +22,8 @@ export const BaseClassesList = ({ baseClasses }: BaseClassesListProps) => {
                 <TableRow>
                     <TableHead className="w-1">Type</TableHead>
                     <TableHead className="w-1">Category</TableHead>
-                    <TableHead>Name</TableHead>
+                    <TableHead>Short Name</TableHead>
+                    <TableHead>Long Name</TableHead>
                     <TableHead className="w-1 text-center">Status</TableHead>
                     <TableHead></TableHead>
                 </TableRow>
@@ -36,7 +37,12 @@ export const BaseClassesList = ({ baseClasses }: BaseClassesListProps) => {
                         <TableCell className="w-1">
                             {bc.classCategory?.longName}
                         </TableCell>
-                        <TableCell>{bc.shortName}</TableCell>
+                        <TableCell>
+                            {bc.shortName}
+                        </TableCell>
+                        <TableCell>
+                            {bc.longName}
+                        </TableCell>
                         <TableCell className="w-1 text-center whitespace-nowrap">
                             <div className="flex items-center justify-center">
                                 {bc.isEnabled ? (
