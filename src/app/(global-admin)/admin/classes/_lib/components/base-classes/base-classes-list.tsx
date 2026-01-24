@@ -37,12 +37,8 @@ export const BaseClassesList = ({ baseClasses }: BaseClassesListProps) => {
                         <TableCell className="w-1">
                             {bc.classCategory?.longName}
                         </TableCell>
-                        <TableCell>
-                            {bc.shortName}
-                        </TableCell>
-                        <TableCell>
-                            {bc.longName}
-                        </TableCell>
+                        <TableCell>{bc.shortName}</TableCell>
+                        <TableCell>{bc.longName}</TableCell>
                         <TableCell className="w-1 text-center whitespace-nowrap">
                             <div className="flex items-center justify-center">
                                 {bc.isEnabled ? (
