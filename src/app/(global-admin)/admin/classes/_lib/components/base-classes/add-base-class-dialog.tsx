@@ -41,6 +41,7 @@ export const AddBaseClassDialog = ({
 }: AddBaseClassDialogProps) => {
     const router = useRouter();
     const form = useForm<z.infer<typeof newBaseClassSchema>>({
+        // @ts-expect-error - zodResolver v5.2.2 has incomplete Zod v4 support
         resolver: zodResolver(newBaseClassSchema),
         defaultValues: {
             shortName: "",

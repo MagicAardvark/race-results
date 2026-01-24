@@ -33,6 +33,7 @@ export const UpdateBaseClassForm = ({
     classCategories,
 }: BaseClassFormProps) => {
     const form = useForm<z.infer<typeof updateBaseClassSchema>>({
+        // @ts-expect-error - zodResolver v5.2.2 has incomplete Zod v4 support
         resolver: zodResolver(updateBaseClassSchema),
         mode: "onBlur", // Validate on every change
         defaultValues: {

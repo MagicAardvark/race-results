@@ -6,7 +6,7 @@ import {
     ClassCategoryDTO,
     ClassTypeDTO,
 } from "@/dto/classes-admin";
-import { asc, eq } from "drizzle-orm";
+import { asc, eq, sql } from "drizzle-orm";
 
 interface IClassesAdminRepository {
     getGlobalBaseClasses(): Promise<BaseCarClassDTO[]>;
@@ -39,8 +39,8 @@ export class ClassesAdminRepository implements IClassesAdminRepository {
                 eq(baseClasses.classCategoryId, classCategories.classCategoryId)
             )
             .orderBy(
-                asc(classTypes.relativeOrder),
-                asc(classCategories.relativeOrder),
+                sql`COALESCE(${classTypes.relativeOrder}, 999)`,
+                sql`COALESCE(${classCategories.relativeOrder}, 999)`,
                 asc(baseClasses.relativeOrder)
             );
     }
@@ -59,8 +59,8 @@ export class ClassesAdminRepository implements IClassesAdminRepository {
             )
             .where(eq(baseClasses.classId, classId))
             .orderBy(
-                asc(classTypes.relativeOrder),
-                asc(classCategories.relativeOrder),
+                sql`COALESCE(${classTypes.relativeOrder}, 999)`,
+                sql`COALESCE(${classCategories.relativeOrder}, 999)`,
                 asc(baseClasses.relativeOrder)
             );
 
