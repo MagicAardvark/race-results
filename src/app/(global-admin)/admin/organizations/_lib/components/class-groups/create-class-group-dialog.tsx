@@ -38,8 +38,9 @@ export const CreateClassGroupDialog = ({
     type FormData = z.infer<typeof createClassGroupSchema>;
 
     const form = useForm<FormData>({
-        // @ts-expect-error - zodResolver v5.2.2 has incomplete Zod v4 support
-        resolver: zodResolver(createClassGroupSchema),
+        // @hookform/resolvers v5.2.2 types don't fully support Zod v4 yet, but runtime works correctly
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        resolver: zodResolver(createClassGroupSchema as any),
         mode: "onBlur",
         defaultValues: {
             shortName: "",
@@ -85,16 +86,11 @@ export const CreateClassGroupDialog = ({
 
     const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        form.handleSubmit(
-            // @ts-expect-error - React Hook Form's handleSubmit has complex generic types
-            // that don't always align perfectly. This is a known limitation of the library.
-            onSubmit,
-            (errors) => {
-                if (Object.keys(errors).length > 0) {
-                    toast.error("Please fix the form errors before submitting");
-                }
+        form.handleSubmit(onSubmit, (errors) => {
+            if (Object.keys(errors).length > 0) {
+                toast.error("Please fix the form errors before submitting");
             }
-        )(e);
+        })(e);
     };
 
     const cleanup = () => {
