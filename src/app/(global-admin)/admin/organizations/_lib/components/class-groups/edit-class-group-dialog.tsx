@@ -127,6 +127,9 @@ export const EditClassGroupDialog = ({
         return (
             <Dialog open={open} onOpenChange={onOpenChange}>
                 <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Edit Class Group</DialogTitle>
+                    </DialogHeader>
                     <div className="py-8 text-center">Loading...</div>
                 </DialogContent>
             </Dialog>
@@ -137,6 +140,9 @@ export const EditClassGroupDialog = ({
         return (
             <Dialog open={open} onOpenChange={onOpenChange}>
                 <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Edit Class Group</DialogTitle>
+                    </DialogHeader>
                     <div className="text-destructive py-8 text-center">
                         Class group not found
                     </div>
