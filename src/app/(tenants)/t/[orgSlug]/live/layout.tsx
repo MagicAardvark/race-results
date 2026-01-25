@@ -1,14 +1,9 @@
 import { LiveResultsProvider } from "./_lib/context/live-results-context";
-import {
-    getClassResults,
-    getPaxResults,
-    getRawResults,
-    getRunWork,
-} from "./_lib/utils/live-results-client";
 import { DisplayMode } from "./_lib/types";
 import { requireValidTenant } from "./_lib/utils/tenant-guard";
 import { LiveLayoutClient } from "./_lib/components/live-layout-client";
 import { featureFlagsService } from "@/services/feature-flags/feature-flags.service";
+import { liveResultsService } from "@/services/live-results/live-results.service";
 
 export default async function LiveLayout({
     children,
@@ -22,10 +17,10 @@ export default async function LiveLayout({
     // TODO: Get display mode from event/tenant configuration
     const displayMode = DisplayMode.autocross;
     const results = await Promise.all([
-        getClassResults(orgSlug),
-        getPaxResults(orgSlug),
-        getRawResults(orgSlug),
-        getRunWork(orgSlug),
+        liveResultsService.getClassResults(orgSlug),
+        liveResultsService.getIndexedResults(orgSlug),
+        liveResultsService.getRawResults(orgSlug),
+        Promise.resolve(null), // TODO: Add getRunWork to service when available
         tenant.isValid && !tenant.isGlobal && tenant.org
             ? featureFlagsService.getOrgFeatureFlags(tenant.org.orgId)
             : Promise.resolve({}),
