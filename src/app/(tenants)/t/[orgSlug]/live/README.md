@@ -151,9 +151,9 @@ live/
 
 - All data is fetched server-side in `layout.tsx` using `Promise.all` for parallel requests
 - Data is fetched directly from `liveResultsService` methods:
-  - `liveResultsService.getClassResults(orgSlug)`
-  - `liveResultsService.getIndexedResults(orgSlug)`
-  - `liveResultsService.getRawResults(orgSlug)`
+    - `liveResultsService.getClassResults(orgSlug)`
+    - `liveResultsService.getIndexedResults(orgSlug)`
+    - `liveResultsService.getRawResults(orgSlug)`
 - Data includes: class results, PAX results, raw results, run work (currently null), and feature flags
 - Data is provided to client components via `LiveResultsProvider` context
 
@@ -246,10 +246,10 @@ The `_lib/config/config.ts` file provides `getApiUrl()` for reference and test m
 
 The system fetches data directly from the `liveResultsService` in `layout.tsx`:
 
-- **Service Methods**: 
-  - `liveResultsService.getClassResults(orgSlug)` - Class results
-  - `liveResultsService.getIndexedResults(orgSlug)` - PAX (indexed) results
-  - `liveResultsService.getRawResults(orgSlug)` - Raw results
+- **Service Methods**:
+    - `liveResultsService.getClassResults(orgSlug)` - Class results
+    - `liveResultsService.getIndexedResults(orgSlug)` - PAX (indexed) results
+    - `liveResultsService.getRawResults(orgSlug)` - Raw results
 - **Cache**: Data is stored in an in-memory cache managed by the service
 - **Cache Population**: Data is populated via the ingest endpoint at `/api/ingest/[orgSlug]/live/results`
 - **No HTTP Overhead**: Direct service calls avoid HTTP request overhead
