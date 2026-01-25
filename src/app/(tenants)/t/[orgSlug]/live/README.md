@@ -76,9 +76,9 @@ A comprehensive live timing system for race events, allowing real-time viewing o
 
 ### API Integration
 
-- **Production**: Fetches from internal API routes (`/api/[orgSlug]/live/results/*`)
-- **Development**: Supports local JSON files or local API routes
-- **Authentication**: Automatically forwards cookies for authenticated requests
+- **Data Source**: Fetches directly from `liveResultsService` (in-memory cache)
+- **Service**: `liveResultsService` provides cached results data
+- **API Routes**: Available at `/api/[orgSlug]/live/results/*` for external clients
 - Supports autocross and rallycross modes
 - Handles missing/null data gracefully
 
@@ -97,7 +97,6 @@ A comprehensive live timing system for race events, allowing real-time viewing o
 
 ### Utilities (`_lib/utils/`)
 
-- **`api-client.ts`**: Generic API client for fetching data from endpoints
 - **`gap-calculator.ts`**: Calculates time gaps between drivers
 - **`is-today.ts`**: Date utilities for work/run order visibility
 - **`key-generators.ts`**: Generates consistent React keys for driver identification
@@ -127,14 +126,11 @@ live/
 │   │   └── feature-flags.ts  # Feature flag constants
 │   ├── context/     # React Context providers
 │   │   └── live-results-context.tsx  # Provides data to all pages
-│   ├── data/        # Data fetching utilities (server-side)
-│   │   └── results.ts        # Fetches class, PAX, raw, and work/run data
 │   ├── hooks/       # Custom React hooks
 │   │   ├── useLiveData.ts    # Access live results data
 │   │   └── useUrlFilters.ts  # URL search param management
 │   ├── types.ts     # TypeScript type definitions
 │   └── utils/       # Utility functions
-│       ├── api-client.ts          # API client for fetching data
 │       ├── gap-calculator.ts     # Time gap calculations
 │       ├── is-today.ts           # Date utilities
 │       ├── key-generators.ts     # React key generation
@@ -154,32 +150,31 @@ live/
 ### Data Fetching
 
 - All data is fetched server-side in `layout.tsx` using `Promise.all` for parallel requests
-- Data includes: class results, PAX results, raw results, run work, and feature flags
+- Data is fetched directly from `liveResultsService` methods:
+  - `liveResultsService.getClassResults(orgSlug)`
+  - `liveResultsService.getIndexedResults(orgSlug)`
+  - `liveResultsService.getRawResults(orgSlug)`
+- Data includes: class results, PAX results, raw results, run work (currently null), and feature flags
 - Data is provided to client components via `LiveResultsProvider` context
 
 #### Data Sources
 
-The system supports multiple data sources based on configuration:
+The system fetches data directly from the `liveResultsService`:
 
-1. **Local Files** (Development): When `USE_LOCAL_FILES=true`, reads from `/datasets/live-results/live/results/*.json`
-2. **API Routes** (Production): Fetches from `/api/[orgSlug]/live/results/{class|indexed|raw|runwork}`
+- **Service Cache**: All data is retrieved from the in-memory cache maintained by `liveResultsService`
+- **Cache Population**: Data is populated via the ingest endpoint at `/api/ingest/[orgSlug]/live/results`
+- **No HTTP Requests**: The client code calls service methods directly, avoiding HTTP overhead
 
-#### API Route Structure
+#### API Route Structure (for external clients)
+
+The following API routes are available for external clients but are not used by the live timing pages:
 
 - `/api/[orgSlug]/live/results/class` - Class results
 - `/api/[orgSlug]/live/results/indexed` - PAX (indexed) results
 - `/api/[orgSlug]/live/results/raw` - Raw results
-- `/api/[orgSlug]/live/runwork` - Work/run assignments
+- `/api/[orgSlug]/live/results/runwork` - Work/run assignments
 
 These routes are served by the `liveResultsService` which provides cached results data.
-
-#### Authentication
-
-When fetching from API routes, the system automatically:
-
-- Forwards cookies from the incoming request for authentication
-- Uses same-domain requests (localhost for local dev, same Vercel domain for production)
-- Ensures cookies work properly by detecting the environment and using appropriate base URLs
 
 ### Display Modes
 
@@ -245,66 +240,31 @@ These flags are configured in the global admin panel and affect navigation visib
 
 ### Configuration
 
-Live timing data fetching is configured in `_lib/config/config.ts`:
+The `_lib/config/config.ts` file provides `getApiUrl()` for reference and test mocks, but is not used by the live timing pages. Data is fetched directly from `liveResultsService` in `layout.tsx`.
 
-```typescript
-export const LIVE_TIMING_CONFIG = {
-    useLocalFiles: process.env.USE_LOCAL_FILES === "true",
-    getApiUrl: (
-        orgSlug: string,
-        endpoint: "class" | "indexed" | "raw" | "runwork"
-    ) => {
-        if (LIVE_TIMING_CONFIG.useLocalFiles) {
-            // Returns paths like "/datasets/live-results/live/results/class.json"
-            return localPaths[endpoint];
-        }
-        // Returns API routes like "/api/[orgSlug]/live/results/class"
-        return `/api/${orgSlug}/live/results/${endpoint}`;
-    },
-    defaults: {
-        expectedRuns: parseInt(process.env.EXPECTED_RUNS || "4", 10),
-        displayMode: "autocross" as const,
-    },
-};
-```
+### Data Source
 
-### Environment Variables
+The system fetches data directly from the `liveResultsService` in `layout.tsx`:
 
-#### Development Mode
-
-- `USE_LOCAL_FILES=true` - Use local JSON files from `/datasets/live-results/live/results/` instead of API routes
-- `EXPECTED_RUNS` - Expected number of runs per driver (default: 4)
-
-#### Production Mode
-
-- `APP_URL` - Base URL for the application (e.g., `https://race-results-beta.vercel.app`)
-    - Used when fetching API routes from server components
-    - If not set, uses `VERCEL_URL` or defaults to `http://localhost:3000`
-- `VERCEL_URL` - Automatically set by Vercel (used as fallback if `APP_URL` not set)
-- `EXPECTED_RUNS` - Expected number of runs per driver (default: 4)
-
-#### Data Source Selection
-
-The system automatically selects the data source:
-
-1. **If `USE_LOCAL_FILES=true`**: Reads from local JSON files
-2. **Otherwise**: Fetches from API routes at `/api/[orgSlug]/live/results/*`
+- **Service Methods**: 
+  - `liveResultsService.getClassResults(orgSlug)` - Class results
+  - `liveResultsService.getIndexedResults(orgSlug)` - PAX (indexed) results
+  - `liveResultsService.getRawResults(orgSlug)` - Raw results
+- **Cache**: Data is stored in an in-memory cache managed by the service
+- **Cache Population**: Data is populated via the ingest endpoint at `/api/ingest/[orgSlug]/live/results`
+- **No HTTP Overhead**: Direct service calls avoid HTTP request overhead
+- **Run Work**: Currently returns `null` (TODO: Add to service when available)
 
 #### Local Development
 
-When running locally:
-
-- Automatically uses `http://localhost:3000` for API routes (even if `APP_URL` is set)
-- Ensures cookies work properly for authentication
-- Can use local files by setting `USE_LOCAL_FILES=true`
+- Data is fetched from the service cache (same as production)
+- Tests should mock `liveResultsService` methods directly
 
 #### Production Deployment
 
-When deployed on Vercel:
-
-- Uses `APP_URL` or `VERCEL_URL` for API route base URL
-- Cookies are forwarded automatically for same-domain requests
-- API routes are served by `liveResultsService` with cached data
+- Data is fetched from the service cache
+- Cache is shared across serverless function invocations (when available)
+- API routes at `/api/[orgSlug]/live/results/*` are available for external clients
 
 ## 📝 Technical Details
 
