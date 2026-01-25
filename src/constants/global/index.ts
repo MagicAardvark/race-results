@@ -13,3 +13,7 @@ export const ROLES = {
     orgOwner: "org_owner",
     user: "user",
 } as const;
+
+export const CLASSING = {
+    DEFAULT_INDEX_VALUE: 1,
+};

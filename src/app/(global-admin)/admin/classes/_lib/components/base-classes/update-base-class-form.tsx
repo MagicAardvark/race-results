@@ -57,6 +57,7 @@ export const UpdateBaseClassForm = ({
             classTypeKey: data.classTypeKey,
             classCategoryId: data.classCategoryId,
             isEnabled: data.isEnabled,
+            isIndexed: data.isIndexed,
         });
 
         if (result.isError) {

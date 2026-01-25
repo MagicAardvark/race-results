@@ -1,3 +1,4 @@
+import { CLASSING } from "@/constants/global";
 import { classesAdminRepository } from "@/db/repositories/classes-admin.repo";
 import {
     BaseCarClass,
@@ -7,6 +8,7 @@ import {
     ClassCategory,
     ClassType,
 } from "@/dto/classes-admin";
+import { ValidationError } from "@/lib/errors/app-errors";
 
 interface IClassesAdminService {
     getGlobalBaseClasses(): Promise<BaseCarClass[]>;
@@ -66,8 +68,17 @@ export class ClassesAdminService implements IClassesAdminService {
             await classesAdminRepository.doesShortNameExist(data.shortName);
 
         if (doesShortNameExist) {
-            throw new Error(
+            throw new ValidationError(
                 `A base class with the short name '${data.shortName}' already exists.`
+            );
+        }
+
+        if (
+            data.isIndexed &&
+            (!data.indexValue || data.indexValue <= 0 || data.indexValue > 1)
+        ) {
+            throw new ValidationError(
+                "An index value must be provided when indexing is enabled, and must be greater than 0 and less than or equal to 1."
             );
         }
 
@@ -77,7 +88,24 @@ export class ClassesAdminService implements IClassesAdminService {
                 longName: data.longName,
                 classTypeKey: data.classTypeKey,
                 classCategoryId: data.classCategoryId,
+                isIndexed: data.isIndexed,
+                indexValue: data.indexValue,
             }
+        );
+
+        const indexValue = data.isIndexed
+            ? (data.indexValue ?? CLASSING.DEFAULT_INDEX_VALUE)
+            : CLASSING.DEFAULT_INDEX_VALUE;
+
+        const currentYear = new Date().getFullYear();
+        const effectiveFrom = new Date(`${currentYear}-01-01T00:00:00-05:00`);
+        const effectiveTo = new Date(`${currentYear}-12-31T23:59:59-05:00`);
+
+        await classesAdminRepository.createIndexEntry(
+            newBaseClass.classes_base.classId,
+            indexValue,
+            effectiveFrom,
+            effectiveTo
         );
 
         return this.map([newBaseClass])[0];

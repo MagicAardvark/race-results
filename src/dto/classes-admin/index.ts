@@ -39,6 +39,8 @@ export interface BaseCarClassCreateDTO {
     longName: string;
     classTypeKey: string | null;
     classCategoryId: string | null;
+    isIndexed: boolean;
+    indexValue: number | null;
 }
 
 export interface BaseCarClassUpdateDTO {
@@ -48,4 +50,5 @@ export interface BaseCarClassUpdateDTO {
     classTypeKey: string | null;
     classCategoryId: string | null;
     isEnabled: boolean;
+    isIndexed: boolean;
 }

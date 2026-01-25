@@ -1,4 +1,10 @@
-import { baseClasses, classCategories, classTypes, db } from "@/db";
+import {
+    baseClasses,
+    classCategories,
+    classIndexValues,
+    classTypes,
+    db,
+} from "@/db";
 import {
     BaseCarClassCreateDTO,
     BaseCarClassDTO,
@@ -23,6 +29,12 @@ interface IClassesAdminRepository {
     updateGlobalBaseClass(
         data: BaseCarClassUpdateDTO
     ): Promise<BaseCarClassDTO>;
+    createIndexEntry(
+        classId: string,
+        indexValue: number,
+        effectiveFrom: Date,
+        effectiveTo: Date
+    ): Promise<void>;
 }
 
 export class ClassesAdminRepository implements IClassesAdminRepository {
@@ -104,6 +116,7 @@ export class ClassesAdminRepository implements IClassesAdminRepository {
                 classTypeKey: data.classTypeKey,
                 classCategoryId: data.classCategoryId,
                 isEnabled: true,
+                isIndexed: data.isIndexed,
                 orgId: null,
             })
             .onConflictDoUpdate({
@@ -146,6 +159,21 @@ export class ClassesAdminRepository implements IClassesAdminRepository {
         }
 
         return updatedBaseClass;
+    }
+
+    async createIndexEntry(
+        classId: string,
+        indexValue: number,
+        effectiveFrom: Date,
+        effectiveTo: Date
+    ): Promise<void> {
+        await db.insert(classIndexValues).values({
+            classId,
+            effectiveFrom,
+            effectiveTo,
+            indexValue: indexValue.toString(),
+            orgId: null,
+        });
     }
 }
 

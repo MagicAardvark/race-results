@@ -11,10 +11,10 @@ import {
     DialogTrigger,
 } from "@/ui/dialog";
 import { Button } from "@/ui/button-wrapper";
-import { Field } from "@/ui/field";
+import { Field, FieldLegend, FieldSeparator } from "@/ui/field";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { Stack } from "@/app/components/shared/stack";
 import { createBaseClass } from "@/app/(global-admin)/admin/classes/_lib/actions/create-base-class";
 import { useState } from "react";
@@ -29,6 +29,7 @@ import { newBaseClassSchema } from "@/app/(global-admin)/admin/classes/_lib/sche
 import { BaseCarClass, ClassCategory, ClassType } from "@/dto/classes-admin";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { FormCheckbox } from "@/app/components/forms/form-checkbox";
 
 type AddBaseClassDialogProps = {
     classTypes: ClassType[];
@@ -49,6 +50,8 @@ export const AddBaseClassDialog = ({
             longName: "",
             classTypeKey: "",
             classCategoryId: "",
+            isIndexed: true,
+            indexValue: 0.8,
         },
     });
 
@@ -73,6 +76,11 @@ export const AddBaseClassDialog = ({
         form.reset();
         setError(null);
     };
+
+    const watchIsIndexed = useWatch({
+        control: form.control,
+        name: "isIndexed",
+    });
 
     return (
         <Dialog
@@ -153,6 +161,28 @@ export const AddBaseClassDialog = ({
                                 })),
                             ]}
                         />
+
+                        <FieldSeparator />
+
+                        <FieldLegend>Index Options</FieldLegend>
+
+                        <FormCheckbox
+                            form={form}
+                            name="isIndexed"
+                            label="Is Indexed"
+                            description="Indicates whether this class should have an index value."
+                        />
+
+                        {watchIsIndexed && (
+                            <FormInput
+                                form={form}
+                                name="indexValue"
+                                label="Index Value"
+                                type="number"
+                                step="0.001"
+                                placeholder="e.g. .800"
+                            />
+                        )}
 
                         <DialogFooter>
                             <Field orientation="horizontal">

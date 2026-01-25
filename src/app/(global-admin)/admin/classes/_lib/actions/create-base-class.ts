@@ -38,6 +38,8 @@ export async function createBaseClass(
             ? null
             : data.classCategoryId.trim();
 
+    const indexValue = data.isIndexed ? (data.indexValue ?? 1) : null;
+
     let newBaseClass = null;
 
     try {
@@ -46,6 +48,8 @@ export async function createBaseClass(
             longName,
             classTypeKey,
             classCategoryId,
+            isIndexed: data.isIndexed,
+            indexValue: indexValue,
         });
     } catch (error) {
         return {

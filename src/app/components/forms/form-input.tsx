@@ -7,11 +7,13 @@ import {
     UseFormReturn,
 } from "react-hook-form";
 
-interface FormInputProps<T extends FieldValues> {
+interface FormInputProps<T extends FieldValues> extends Omit<
+    React.InputHTMLAttributes<HTMLInputElement>,
+    "name" | "form"
+> {
     form: UseFormReturn<T>;
     name: FieldPath<T>;
     label: string;
-    placeholder?: string;
 }
 
 export function FormInput<T extends FieldValues>({
@@ -19,6 +21,8 @@ export function FormInput<T extends FieldValues>({
     name,
     label,
     placeholder,
+    type = "text",
+    ...inputProps
 }: FormInputProps<T>) {
     return (
         <Controller
@@ -28,11 +32,12 @@ export function FormInput<T extends FieldValues>({
                 <Field data-invalid={fieldState.invalid}>
                     <FieldLabel htmlFor={name}>{label}</FieldLabel>
                     <Input
-                        type="text"
                         id={name}
+                        type={type}
                         placeholder={placeholder}
-                        {...field}
                         autoComplete="off"
+                        {...field}
+                        {...inputProps}
                     />
                     {fieldState.invalid && (
                         <FieldError errors={[fieldState.error]} />

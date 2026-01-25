@@ -40,6 +40,7 @@ export const baseClasses = pgTable(
         classId: uuid("id").primaryKey().defaultRandom(),
         shortName: text("short_name").notNull(),
         longName: text("long_name").notNull(),
+        isIndexed: boolean("is_indexed").notNull().default(false),
         isEnabled: boolean("is_enabled").notNull().default(true),
         // Null means global
         orgId: uuid("org_id").references(() => orgs.orgId, {
