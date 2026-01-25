@@ -46,7 +46,7 @@ ARCHITECTURE GUIDELINES
 - Prefer server components by default
 - Client components only when necessary
 - Heavy computation (scoring, parsing) must be isolated from request/response
-- Live timing should use in-memory or Redis state and publish via a realtime service (when implemented)
+- Live timing should use Redis state and publish via a realtime service (when implemented)
 - Database writes should be minimized during live timing
 
 CODING EXPECTATIONS

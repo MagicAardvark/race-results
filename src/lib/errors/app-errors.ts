@@ -29,3 +29,10 @@ export class ApiError extends Error {
         this.name = "ApiError";
     }
 }
+
+export class CacheError extends Error {
+    constructor(message: string) {
+        super(message);
+        this.name = "CacheError";
+    }
+}

@@ -13,6 +13,9 @@ importers:
             "@neondatabase/serverless":
                 specifier: ^1.0.2
                 version: 1.0.2
+            "@upstash/redis":
+                specifier: ^1.36.1
+                version: 1.36.1
             class-variance-authority:
                 specifier: ^0.7.1
                 version: 0.7.1
@@ -24,7 +27,7 @@ importers:
                 version: 17.2.3
             drizzle-orm:
                 specifier: 1.0.0-beta.9-e89174b
-                version: 1.0.0-beta.9-e89174b(@neondatabase/serverless@1.0.2)(@types/mssql@9.1.8)(@types/pg@8.15.6)(mssql@11.0.1)
+                version: 1.0.0-beta.9-e89174b(@neondatabase/serverless@1.0.2)(@types/mssql@9.1.8)(@types/pg@8.15.6)(@upstash/redis@1.36.1)(mssql@11.0.1)
             lucide-react:
                 specifier: ^0.562.0
                 version: 0.562.0(react@19.2.3)
@@ -3518,6 +3521,12 @@ packages:
             }
         cpu: [x64]
         os: [win32]
+
+    "@upstash/redis@1.36.1":
+        resolution:
+            {
+                integrity: sha512-N6SjDcgXdOcTAF+7uNoY69o7hCspe9BcA7YjQdxVu5d25avljTwyLaHBW3krWjrP0FfocgMk94qyVtQbeDp39A==,
+            }
 
     "@vitejs/plugin-react@5.1.2":
         resolution:
@@ -8099,6 +8108,12 @@ packages:
             }
         engines: { node: ">= 0.4" }
 
+    uncrypto@0.1.3:
+        resolution:
+            {
+                integrity: sha512-Ql87qFHB3s/De2ClA9e0gsnS6zXG27SkTiSJwjCc9MebbfapQfuPzumMIUMi38ezPZVNFcHI9sUIepeQfw8J8Q==,
+            }
+
     undici-types@6.21.0:
         resolution:
             {
@@ -10733,6 +10748,10 @@ snapshots:
     "@unrs/resolver-binding-win32-x64-msvc@1.11.1":
         optional: true
 
+    "@upstash/redis@1.36.1":
+        dependencies:
+            uncrypto: 0.1.3
+
     "@vitejs/plugin-react@5.1.2(vite@7.3.0(@types/node@20.19.25)(jiti@2.6.1)(lightningcss@1.30.2)(tsx@4.21.0))":
         dependencies:
             "@babel/core": 7.28.5
@@ -11286,13 +11305,14 @@ snapshots:
             esbuild: 0.25.12
             tsx: 4.21.0
 
-    drizzle-orm@1.0.0-beta.9-e89174b(@neondatabase/serverless@1.0.2)(@types/mssql@9.1.8)(@types/pg@8.15.6)(mssql@11.0.1):
+    drizzle-orm@1.0.0-beta.9-e89174b(@neondatabase/serverless@1.0.2)(@types/mssql@9.1.8)(@types/pg@8.15.6)(@upstash/redis@1.36.1)(mssql@11.0.1):
         dependencies:
             "@types/mssql": 9.1.8
             mssql: 11.0.1
         optionalDependencies:
             "@neondatabase/serverless": 1.0.2
             "@types/pg": 8.15.6
+            "@upstash/redis": 1.36.1
 
     dunder-proto@1.0.1:
         dependencies:
@@ -13710,6 +13730,8 @@ snapshots:
             has-bigints: 1.1.0
             has-symbols: 1.1.0
             which-boxed-primitive: 1.1.1
+
+    uncrypto@0.1.3: {}
 
     undici-types@6.21.0: {}
 

@@ -243,6 +243,13 @@ The application uses a consistent header across all pages for unified navigation
     MOTORSPORTREG_API_KEY=...
     MOTORSPORTREG_USERNAME=...
     MOTORSPORTREG_PASSWORD=...
+
+    # Upstash Redis connection details (required for live timing pages)
+    UPSTASH_REDIS_REST_URL=...
+    UPSTASH_REDIS_REST_TOKEN=...
+
+    # A string that gets prepended to all cache keys to prevent clashing between environments (uses a single Redis instance currently)
+    CACHE_ENV=...
     ```
 
 4. **Set up the database**
@@ -436,7 +443,7 @@ These checks help maintain code quality and prevent broken code from being commi
 - **Server Components by Default**: Prefer server components
 - **Client Components When Necessary**: Only use `"use client"` when needed
 - **Isolated Computation**: Heavy computation (scoring, parsing) isolated from request/response
-- **Minimal DB Writes**: Live timing uses in-memory/Redis state
+- **Minimal DB Writes**: Live timing uses Redis state
 - **Explicit Types**: Clear, explicit TypeScript types
 - **No Magic Globals**: Avoid global state inference
 - **Tenant Context**: Always passed via headers, never inferred from URL

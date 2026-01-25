@@ -6,7 +6,7 @@ export async function GET(
 ) {
     const { orgSlug } = await params;
 
-    const indexResults = liveResultsService.getIndexedResults(orgSlug);
+    const indexResults = await liveResultsService.getIndexedResults(orgSlug);
 
     if (!indexResults) {
         return Response.json(

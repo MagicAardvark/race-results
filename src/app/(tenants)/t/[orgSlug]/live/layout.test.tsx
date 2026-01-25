@@ -47,13 +47,13 @@ describe("LiveLayout", () => {
     const setupMockData = (tenant: Tenant = mockValidTenant) => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         vi.mocked(requireValidTenant).mockResolvedValue(tenant as any);
-        vi.mocked(liveResultsService.getClassResults).mockReturnValue(
+        vi.mocked(liveResultsService.getClassResults).mockResolvedValue(
             mockClassResults
         );
-        vi.mocked(liveResultsService.getIndexedResults).mockReturnValue(
+        vi.mocked(liveResultsService.getIndexedResults).mockResolvedValue(
             mockPaxResults
         );
-        vi.mocked(liveResultsService.getRawResults).mockReturnValue(
+        vi.mocked(liveResultsService.getRawResults).mockResolvedValue(
             mockRawResults
         );
         vi.mocked(featureFlagsService.getOrgFeatureFlags).mockResolvedValue({});

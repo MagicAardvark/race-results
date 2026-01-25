@@ -76,7 +76,7 @@ A comprehensive live timing system for race events, allowing real-time viewing o
 
 ### API Integration
 
-- **Data Source**: Fetches directly from `liveResultsService` (in-memory cache)
+- **Data Source**: Fetches directly from `liveResultsService` (Redis cache)
 - **Service**: `liveResultsService` provides cached results data
 - **API Routes**: Available at `/api/[orgSlug]/live/results/*` for external clients
 - Supports autocross and rallycross modes
@@ -161,7 +161,7 @@ live/
 
 The system fetches data directly from the `liveResultsService`:
 
-- **Service Cache**: All data is retrieved from the in-memory cache maintained by `liveResultsService`
+- **Service Cache**: All data is retrieved from Redis cache maintained by `liveResultsService`
 - **Cache Population**: Data is populated via the ingest endpoint at `/api/ingest/[orgSlug]/live/results`
 - **No HTTP Requests**: The client code calls service methods directly, avoiding HTTP overhead
 
@@ -250,7 +250,7 @@ The system fetches data directly from the `liveResultsService` in `layout.tsx`:
     - `liveResultsService.getClassResults(orgSlug)` - Class results
     - `liveResultsService.getIndexedResults(orgSlug)` - PAX (indexed) results
     - `liveResultsService.getRawResults(orgSlug)` - Raw results
-- **Cache**: Data is stored in an in-memory cache managed by the service
+- **Cache**: Data is stored in Redis (Upstash)
 - **Cache Population**: Data is populated via the ingest endpoint at `/api/ingest/[orgSlug]/live/results`
 - **No HTTP Overhead**: Direct service calls avoid HTTP request overhead
 - **Run Work**: Currently returns `null` (TODO: Add to service when available)
