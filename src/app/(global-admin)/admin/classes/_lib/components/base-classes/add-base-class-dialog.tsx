@@ -41,7 +41,9 @@ export const AddBaseClassDialog = ({
 }: AddBaseClassDialogProps) => {
     const router = useRouter();
     const form = useForm<z.infer<typeof newBaseClassSchema>>({
-        resolver: zodResolver(newBaseClassSchema),
+        // @hookform/resolvers v5.2.2 types don't fully support Zod v4 yet, but runtime works correctly
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        resolver: zodResolver(newBaseClassSchema as any),
         defaultValues: {
             shortName: "",
             longName: "",

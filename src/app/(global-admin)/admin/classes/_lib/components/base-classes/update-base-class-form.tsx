@@ -33,7 +33,9 @@ export const UpdateBaseClassForm = ({
     classCategories,
 }: BaseClassFormProps) => {
     const form = useForm<z.infer<typeof updateBaseClassSchema>>({
-        resolver: zodResolver(updateBaseClassSchema),
+        // @hookform/resolvers v5.2.2 types don't fully support Zod v4 yet, but runtime works correctly
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        resolver: zodResolver(updateBaseClassSchema as any),
         mode: "onBlur", // Validate on every change
         defaultValues: {
             shortName: baseClass.shortName,

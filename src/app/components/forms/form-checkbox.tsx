@@ -8,7 +8,8 @@ import {
 } from "react-hook-form";
 
 interface FormCheckboxProps<T extends FieldValues> {
-    form: UseFormReturn<T>;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    form: UseFormReturn<T, any, any>;
     name: FieldPath<T>;
     label: string;
 }
