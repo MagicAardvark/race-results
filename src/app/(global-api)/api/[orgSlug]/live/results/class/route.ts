@@ -6,7 +6,7 @@ export async function GET(
 ) {
     const { orgSlug } = await params;
 
-    const classResults = liveResultsService.getClassResults(orgSlug);
+    const classResults = await liveResultsService.getClassResults(orgSlug);
 
     if (!classResults) {
         return Response.json(

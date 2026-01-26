@@ -18,9 +18,11 @@ interface ILiveResultsService {
         data: LiveResultsSnapshot,
         timestamp: Date
     ): Promise<void>;
-    getClassResults(orgSlug: string): ProcessedLiveClassResults | null;
-    getIndexedResults(orgSlug: string): ProcessedLiveIndexResults | null;
-    getRawResults(orgSlug: string): ProcessedLiveRawResults | null;
+    getClassResults(orgSlug: string): Promise<ProcessedLiveClassResults | null>;
+    getIndexedResults(
+        orgSlug: string
+    ): Promise<ProcessedLiveIndexResults | null>;
+    getRawResults(orgSlug: string): Promise<ProcessedLiveRawResults | null>;
 }
 
 export class LiveResultsService implements ILiveResultsService {
@@ -47,31 +49,37 @@ export class LiveResultsService implements ILiveResultsService {
         );
     }
 
-    getClassResults(orgSlug: string): ProcessedLiveClassResults | null {
-        const cached = appCache.get<ProcessedLiveClassResults>(
+    async getClassResults(
+        orgSlug: string
+    ): Promise<ProcessedLiveClassResults | null> {
+        const cached = await appCache.get<ProcessedLiveClassResults>(
             getCacheKey(orgSlug, "classResults")
         );
 
         return cached || null;
     }
 
-    getIndexedResults(orgSlug: string): ProcessedLiveIndexResults | null {
-        const cached = appCache.get<ProcessedLiveIndexResults>(
+    async getIndexedResults(
+        orgSlug: string
+    ): Promise<ProcessedLiveIndexResults | null> {
+        const cached = await appCache.get<ProcessedLiveIndexResults>(
             getCacheKey(orgSlug, "indexedResults")
         );
 
         return cached || null;
     }
 
-    getRawResults(orgSlug: string): ProcessedLiveRawResults | null {
-        const cached = appCache.get<ProcessedLiveRawResults>(
+    async getRawResults(
+        orgSlug: string
+    ): Promise<ProcessedLiveRawResults | null> {
+        const cached = await appCache.get<ProcessedLiveRawResults>(
             getCacheKey(orgSlug, "rawResults")
         );
 
         return cached || null;
     }
 
-    private updateCache(
+    private async updateCache(
         orgSlug: string,
         timestamp: Date,
         classResults: ClassResultsClass[],
@@ -79,32 +87,33 @@ export class LiveResultsService implements ILiveResultsService {
         rawResults: ResultsEntry[]
     ) {
         const expiration = 60 * 60 * 24; // 24 hours
+        const processedTimestamp = new Date();
 
-        appCache.set<ProcessedLiveClassResults>(
+        await appCache.set<ProcessedLiveClassResults>(
             getCacheKey(orgSlug, "classResults"),
             {
                 uploadTimestamp: timestamp,
-                processedTimestamp: new Date(),
+                processedTimestamp: processedTimestamp,
                 results: classResults,
             },
             expiration
         );
 
-        appCache.set<ProcessedLiveIndexResults>(
+        await appCache.set<ProcessedLiveIndexResults>(
             getCacheKey(orgSlug, "indexedResults"),
             {
                 uploadTimestamp: timestamp,
-                processedTimestamp: new Date(),
+                processedTimestamp: processedTimestamp,
                 results: indexedResults,
             },
             expiration
         );
 
-        appCache.set<ProcessedLiveRawResults>(
+        await appCache.set<ProcessedLiveRawResults>(
             getCacheKey(orgSlug, "rawResults"),
             {
                 uploadTimestamp: timestamp,
-                processedTimestamp: new Date(),
+                processedTimestamp: processedTimestamp,
                 results: rawResults,
             },
             expiration
