@@ -165,6 +165,7 @@ async function configureClasses() {
                     (c) => c.shortName === bc.categoryShortName
                 )?.classCategoryId || null,
             isEnabled: true,
+            isIndexed: true,
             relativeOrder: index + 1,
         }))
     );

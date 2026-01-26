@@ -11,7 +11,7 @@ import {
     DialogTrigger,
 } from "@/ui/dialog";
 import { Button } from "@/ui/button-wrapper";
-import { Field, FieldLegend, FieldSeparator } from "@/ui/field";
+import { Field, FieldSeparator } from "@/ui/field";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, useWatch } from "react-hook-form";
@@ -29,7 +29,7 @@ import { newBaseClassSchema } from "@/app/(global-admin)/admin/classes/_lib/sche
 import { BaseCarClass, ClassCategory, ClassType } from "@/dto/classes-admin";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { FormCheckbox } from "@/app/components/forms/form-checkbox";
+import { FormRadioGroup } from "@/app/components/forms/form-radio-group";
 
 type AddBaseClassDialogProps = {
     classTypes: ClassType[];
@@ -164,13 +164,36 @@ export const AddBaseClassDialog = ({
 
                         <FieldSeparator />
 
-                        <FieldLegend>Index Options</FieldLegend>
-
-                        <FormCheckbox
+                        <FormRadioGroup
                             form={form}
                             name="isIndexed"
-                            label="Is Indexed"
-                            description="Indicates whether this class should have an index value."
+                            groupLabel="Indexing"
+                            groupDescription={
+                                <Stack className="mt-2">
+                                    <p>
+                                        Indicates whether this class will be
+                                        indexed or will compete on raw time.
+                                    </p>
+                                    <p>
+                                        <strong>Note:</strong> this cannot be
+                                        changed after creation.
+                                    </p>
+                                </Stack>
+                            }
+                            options={[
+                                {
+                                    title: "Indexed",
+                                    description:
+                                        "Class will be indexed using the specified index value.",
+                                    value: "true",
+                                },
+                                {
+                                    title: "Raw Time",
+                                    description:
+                                        "Class will compete on raw time without indexing.",
+                                    value: "false",
+                                },
+                            ]}
                         />
 
                         {watchIsIndexed && (

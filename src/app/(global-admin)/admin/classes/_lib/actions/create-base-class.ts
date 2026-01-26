@@ -28,13 +28,13 @@ export async function createBaseClass(
     const classTypeKey =
         !data.classTypeKey ||
         data.classTypeKey === "" ||
-        data.classTypeKey === "Invalid"
+        data.classTypeKey === "None"
             ? null
             : data.classTypeKey.trim();
     const classCategoryId =
         !data.classCategoryId ||
         data.classCategoryId === "" ||
-        data.classCategoryId === "Invalid"
+        data.classCategoryId === "None"
             ? null
             : data.classCategoryId.trim();
 

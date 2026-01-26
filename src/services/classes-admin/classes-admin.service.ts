@@ -8,6 +8,7 @@ import {
     ClassCategory,
     ClassType,
 } from "@/dto/classes-admin";
+import { getEffectiveDateRangeForYear } from "@/lib/effective-date-utils";
 import { ValidationError } from "@/lib/errors/app-errors";
 
 interface IClassesAdminService {
@@ -17,6 +18,12 @@ interface IClassesAdminService {
     getClassCategories(): Promise<ClassCategory[]>;
     createGlobalBaseClass(data: BaseCarClassCreateDTO): Promise<BaseCarClass>;
     updateGlobalBaseClass(data: BaseCarClassUpdateDTO): Promise<BaseCarClass>;
+    createIndexValue(
+        classId: string,
+        indexValue: number,
+        year: number
+    ): Promise<void>;
+    updateIndexValue(indexValueId: string, indexValue: number): Promise<void>;
 }
 
 export class ClassesAdminService implements IClassesAdminService {
@@ -93,19 +100,16 @@ export class ClassesAdminService implements IClassesAdminService {
             }
         );
 
+        const currentYear = new Date().getFullYear();
+
         const indexValue = data.isIndexed
             ? (data.indexValue ?? CLASSING.DEFAULT_INDEX_VALUE)
             : CLASSING.DEFAULT_INDEX_VALUE;
 
-        const currentYear = new Date().getFullYear();
-        const effectiveFrom = new Date(`${currentYear}-01-01T00:00:00-05:00`);
-        const effectiveTo = new Date(`${currentYear}-12-31T23:59:59-05:00`);
-
-        await classesAdminRepository.createIndexEntry(
+        await this.createIndexValue(
             newBaseClass.classes_base.classId,
             indexValue,
-            effectiveFrom,
-            effectiveTo
+            currentYear
         );
 
         return this.map([newBaseClass])[0];
@@ -128,11 +132,35 @@ export class ClassesAdminService implements IClassesAdminService {
         return this.map([updateBaseClass])[0];
     }
 
+    async createIndexValue(
+        classId: string,
+        indexValue: number,
+        year: number
+    ): Promise<void> {
+        const { effectiveFrom, effectiveTo } =
+            getEffectiveDateRangeForYear(year);
+
+        await classesAdminRepository.createIndexValue(
+            classId,
+            indexValue,
+            effectiveFrom,
+            effectiveTo
+        );
+    }
+
+    async updateIndexValue(
+        indexValueId: string,
+        indexValue: number
+    ): Promise<void> {
+        await classesAdminRepository.updateIndexValue(indexValueId, indexValue);
+    }
+
     private mapBaseClass(dto: BaseCarClassDTO): BaseCarClass {
         return {
             classId: dto.classes_base.classId,
             shortName: dto.classes_base.shortName,
             longName: dto.classes_base.longName,
+            isIndexed: dto.classes_base.isIndexed,
             isEnabled: dto.classes_base.isEnabled,
             classCategory: dto.classes_categories
                 ? {
@@ -151,6 +179,12 @@ export class ClassesAdminService implements IClassesAdminService {
                       isEnabled: dto.classes_types.isEnabled,
                   }
                 : null,
+            indexValues:
+                dto.classes_index_values?.map((iv) => ({
+                    indexValueId: iv.indexValueId,
+                    value: parseFloat(iv.indexValue),
+                    year: new Date(iv.effectiveFrom).getFullYear(),
+                })) ?? [],
         };
     }
 

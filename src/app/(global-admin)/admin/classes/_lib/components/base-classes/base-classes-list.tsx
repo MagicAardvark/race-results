@@ -9,7 +9,8 @@ import {
     TableHeader,
     TableRow,
 } from "@/ui/table";
-import { Eye, EyeOff, PencilIcon } from "lucide-react";
+import { CalculatorIcon, Eye, EyeOff, PencilIcon } from "lucide-react";
+import { CgStopwatch } from "react-icons/cg";
 
 type BaseClassesListProps = {
     baseClasses: BaseCarClass[];
@@ -24,7 +25,7 @@ export const BaseClassesList = ({ baseClasses }: BaseClassesListProps) => {
                     <TableHead className="w-1">Category</TableHead>
                     <TableHead className="w-1">Short Name</TableHead>
                     <TableHead>Long Name</TableHead>
-                    <TableHead className="w-1 text-center">Status</TableHead>
+                    <TableHead className="w-1 text-center"></TableHead>
                     <TableHead></TableHead>
                 </TableRow>
             </TableHeader>
@@ -40,7 +41,18 @@ export const BaseClassesList = ({ baseClasses }: BaseClassesListProps) => {
                         <TableCell className="w-1">{bc.shortName}</TableCell>
                         <TableCell>{bc.longName}</TableCell>
                         <TableCell className="w-1 text-center whitespace-nowrap">
-                            <div className="flex items-center justify-center">
+                            <div className="flex items-center justify-center gap-2">
+                                {bc.isIndexed ? (
+                                    <TooltipIcon
+                                        icon={<CalculatorIcon size={16} />}
+                                        text="Indexed"
+                                    />
+                                ) : (
+                                    <TooltipIcon
+                                        icon={<CgStopwatch size={16} />}
+                                        text="Raw Time"
+                                    />
+                                )}
                                 {bc.isEnabled ? (
                                     <TooltipIcon
                                         icon={<Eye size={16} />}

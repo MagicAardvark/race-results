@@ -15,9 +15,10 @@ import { BaseCarClass, ClassCategory, ClassType } from "@/dto/classes-admin";
 import { FormResponse } from "@/types/forms";
 import { Card, CardContent, CardHeader, CardTitle } from "@/ui/card";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AlertTriangle } from "lucide-react";
+import { AlertTriangle, CalculatorIcon } from "lucide-react";
 import { useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
+import { CgStopwatch } from "react-icons/cg";
 import { toast } from "sonner";
 import z from "zod";
 
@@ -40,8 +41,8 @@ export const UpdateBaseClassForm = ({
         defaultValues: {
             shortName: baseClass.shortName,
             longName: baseClass.longName,
-            classTypeKey: baseClass.classType?.classTypeKey,
-            classCategoryId: baseClass.classCategory?.classCategoryId,
+            classTypeKey: baseClass.classType?.classTypeKey ?? "None",
+            classCategoryId: baseClass.classCategory?.classCategoryId ?? "None",
             isEnabled: baseClass.isEnabled,
         },
     });
@@ -57,7 +58,6 @@ export const UpdateBaseClassForm = ({
             classTypeKey: data.classTypeKey,
             classCategoryId: data.classCategoryId,
             isEnabled: data.isEnabled,
-            isIndexed: data.isIndexed,
         });
 
         if (result.isError) {
@@ -84,6 +84,22 @@ export const UpdateBaseClassForm = ({
             <CardContent>
                 <Form onSubmit={form.handleSubmit(onSubmit)}>
                     <Stack>
+                        <div className="flex items-center gap-2">
+                            {baseClass.isIndexed ? (
+                                <>
+                                    <CalculatorIcon size={16} />
+                                    This class is configured to compete on
+                                    indexed time.
+                                </>
+                            ) : (
+                                <>
+                                    <CgStopwatch size={16} />
+                                    This class is configured to compete on raw
+                                    time.
+                                </>
+                            )}
+                        </div>
+
                         {error?.isError && (
                             <FormError
                                 isError={error.isError}
@@ -111,7 +127,7 @@ export const UpdateBaseClassForm = ({
                             placeholder="Class Type"
                             items={[
                                 {
-                                    value: "Invalid",
+                                    value: "None",
                                     label: "None",
                                 },
                                 ...classTypes.map((ct) => ({
@@ -128,7 +144,7 @@ export const UpdateBaseClassForm = ({
                             placeholder="Class Category"
                             items={[
                                 {
-                                    value: "Invalid",
+                                    value: "None",
                                     label: "None",
                                 },
                                 ...classCategories.map((cc) => ({

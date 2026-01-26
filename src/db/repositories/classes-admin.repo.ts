@@ -12,7 +12,7 @@ import {
     ClassCategoryDTO,
     ClassTypeDTO,
 } from "@/dto/classes-admin";
-import { asc, eq, sql } from "drizzle-orm";
+import { asc, desc, eq, sql } from "drizzle-orm";
 
 interface IClassesAdminRepository {
     getGlobalBaseClasses(): Promise<BaseCarClassDTO[]>;
@@ -29,11 +29,15 @@ interface IClassesAdminRepository {
     updateGlobalBaseClass(
         data: BaseCarClassUpdateDTO
     ): Promise<BaseCarClassDTO>;
-    createIndexEntry(
+    createIndexValue(
         classId: string,
         indexValue: number,
         effectiveFrom: Date,
         effectiveTo: Date
+    ): Promise<void>;
+    updateIndexValue(
+        classIndexValueId: string,
+        indexValue: number
     ): Promise<void>;
 }
 
@@ -69,6 +73,10 @@ export class ClassesAdminRepository implements IClassesAdminRepository {
                 classCategories,
                 eq(baseClasses.classCategoryId, classCategories.classCategoryId)
             )
+            .leftJoin(
+                classIndexValues,
+                eq(baseClasses.classId, classIndexValues.classId)
+            )
             .where(eq(baseClasses.classId, classId))
             .orderBy(
                 sql`COALESCE(${classTypes.relativeOrder}, 999)`,
@@ -76,7 +84,23 @@ export class ClassesAdminRepository implements IClassesAdminRepository {
                 asc(baseClasses.relativeOrder)
             );
 
-        return result.length > 0 ? result[0] : null;
+        if (result.length === 0) {
+            return null;
+        }
+
+        const row = result[0];
+
+        const indexValues = await db.query.classIndexValues.findMany({
+            where: {
+                classId: row.classes_base.classId,
+            },
+            orderBy: (civ) => [desc(civ.effectiveFrom)],
+        });
+
+        return {
+            ...row,
+            classes_index_values: indexValues,
+        };
     }
 
     async getClassTypes(): Promise<ClassTypeDTO[]> {
@@ -161,12 +185,30 @@ export class ClassesAdminRepository implements IClassesAdminRepository {
         return updatedBaseClass;
     }
 
-    async createIndexEntry(
+    async createIndexValue(
         classId: string,
         indexValue: number,
         effectiveFrom: Date,
         effectiveTo: Date
     ): Promise<void> {
+        const existing = await db.query.classIndexValues.findFirst({
+            where: {
+                classId: classId,
+                effectiveFrom: {
+                    eq: effectiveFrom,
+                },
+                effectiveTo: {
+                    eq: effectiveTo,
+                },
+            },
+        });
+
+        if (existing) {
+            throw new Error(
+                `An index value for the year ${effectiveFrom.getFullYear()} already exists for this class.`
+            );
+        }
+
         await db.insert(classIndexValues).values({
             classId,
             effectiveFrom,
@@ -174,6 +216,18 @@ export class ClassesAdminRepository implements IClassesAdminRepository {
             indexValue: indexValue.toString(),
             orgId: null,
         });
+    }
+
+    async updateIndexValue(
+        indexValueId: string,
+        indexValue: number
+    ): Promise<void> {
+        await db
+            .update(classIndexValues)
+            .set({
+                indexValue: indexValue.toString(),
+            })
+            .where(eq(classIndexValues.indexValueId, indexValueId));
     }
 }
 

@@ -1,8 +1,10 @@
+import { IndexConfiguration } from "@/app/(global-admin)/admin/classes/_lib/components/base-classes/index-configuration";
 import { UpdateBaseClassForm } from "@/app/(global-admin)/admin/classes/_lib/components/base-classes/update-base-class-form";
 import { NothingToShow } from "@/app/components/shared/nothing-to-show";
 import { Stack } from "@/app/components/shared/stack";
 import { classesAdminService } from "@/services/classes-admin/classes-admin.service";
 import { LinkButton } from "@/ui/link-button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/ui/tabs";
 
 export default async function Page({
     params,
@@ -30,11 +32,27 @@ export default async function Page({
                 <LinkButton href="/admin/classes">Go Back</LinkButton>
             </div>
 
-            <UpdateBaseClassForm
-                baseClass={baseClass}
-                classTypes={classTypes}
-                classCategories={classCategories}
-            />
+            <Tabs defaultValue="general" className="w-full">
+                <TabsList>
+                    <TabsTrigger value="general">General</TabsTrigger>
+                    <TabsTrigger
+                        value="IndexConfiguration"
+                        disabled={!baseClass.isIndexed}
+                    >
+                        Index Value
+                    </TabsTrigger>
+                </TabsList>
+                <TabsContent value="general">
+                    <UpdateBaseClassForm
+                        baseClass={baseClass}
+                        classTypes={classTypes}
+                        classCategories={classCategories}
+                    />
+                </TabsContent>
+                <TabsContent value="IndexConfiguration">
+                    <IndexConfiguration baseClass={baseClass} />
+                </TabsContent>
+            </Tabs>
         </Stack>
     );
 }
