@@ -17,9 +17,10 @@ export async function createIndexValue(
     const result = await addIndexValueSchema.safeParseAsync(data);
 
     if (!result.success) {
-        throw new Error(
-            result.error.issues.map((err) => err.message).join(", ")
-        );
+        return {
+            isError: true,
+            errors: result.error.issues.map((err) => err.message).join(", "),
+        };
     }
 
     try {

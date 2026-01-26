@@ -24,6 +24,7 @@ import { requireRole } from "@/lib/auth/require-role";
 import { classesAdminService } from "@/services/classes-admin/classes-admin.service";
 import { mockUserWithExtendedDetails } from "@/__tests__/mocks/mock-users";
 import { updateBaseClass } from "@/app/(global-admin)/admin/classes/_lib/actions/update-base-class";
+import { BaseCarClass } from "@/dto/classes-admin";
 
 const mockClass = {
     classId: "class123",
@@ -67,8 +68,31 @@ describe("updateBaseClass", () => {
             classId: "class123",
             shortName: "SS",
             longName: "Super Street",
+            classType: {
+                classTypeId: "type1",
+                classTypeKey: "None",
+                shortName: "None",
+                longName: "",
+                isEnabled: true,
+            },
+            classCategory: {
+                classCategoryId: "cat1",
+                shortName: "None",
+                longName: "",
+                isEnabled: true,
+            },
+            classTypeKey: "None",
+            classCategoryId: "cat1",
+            indexValues: [
+                {
+                    indexValueId: "index1",
+                    value: 0.8,
+                    year: new Date().getFullYear(),
+                },
+            ],
             isEnabled: true,
-        };
+            isIndexed: true,
+        } as BaseCarClass;
 
         vi.mocked(classesAdminService.updateGlobalBaseClass).mockResolvedValue(
             mockClass
