@@ -101,6 +101,13 @@ export const relations = defineRelations(schema, (r) => ({
             optional: false,
         }),
     },
+    activeOrgApiKeys: {
+        org: r.one.orgs({
+            from: r.activeOrgApiKeys.orgId,
+            to: r.orgs.orgId,
+            optional: false,
+        }),
+    },
     classCategories: {
         baseClasses: r.many.baseClasses({
             from: r.classCategories.classCategoryId,
