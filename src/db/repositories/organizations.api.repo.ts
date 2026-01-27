@@ -1,38 +1,39 @@
-import { db } from "@/db";
-import { sql } from "drizzle-orm/sql/sql";
+import { activeOrgApiKeys, db, orgs } from "@/db";
+import { and, eq } from "drizzle-orm";
 
 interface IOrganizationsAPIRepository {
     validateApiRequest(slug: string, apiKey: string): Promise<boolean>;
+    getOrgIdFromApiKey(apiKey: string): Promise<string | null>;
 }
 
 export class OrganizationsAPIRepository implements IOrganizationsAPIRepository {
     async validateApiRequest(slug: string, apiKey: string): Promise<boolean> {
-        const result = await db.execute(sql`
-            WITH Ordered AS (
-            SELECT
-                api_key,
-                api_key_enabled,
-                ROW_NUMBER() OVER (ORDER BY effective_at DESC) as row_num
-            FROM public.org_api_keys as apiKey
-            INNER JOIN public.orgs as org
-                ON apiKey.org_id = org.id
-            WHERE
-                org.slug = ${slug}
-            )
-            
-            SELECT
-                1
-            FROM Ordered
-            WHERE
-                row_num = 1
-            AND api_key = ${apiKey}
-            AND api_key_enabled = true`);
+        const result = await db
+            .select()
+            .from(activeOrgApiKeys)
+            .innerJoin(orgs, eq(activeOrgApiKeys.orgId, orgs.orgId))
+            .where(
+                and(eq(orgs.slug, slug), eq(activeOrgApiKeys.apiKey, apiKey))
+            );
 
-        if (result.rowCount == 1) {
+        if (result.length == 1) {
             return true;
         }
 
         return false;
+    }
+
+    async getOrgIdFromApiKey(apiKey: string): Promise<string | null> {
+        const result = await db.query.activeOrgApiKeys.findFirst({
+            with: {
+                org: true,
+            },
+            where: {
+                apiKey: apiKey,
+            },
+        });
+
+        return result ? result.org.orgId : null;
     }
 }
 
