@@ -1,7 +1,7 @@
 {
   "version": "8",
   "dialect": "postgres",
-  "id": "8d3cd839-282c-4d30-95b3-b2bd22f8a04d",
+  "id": "07f506f2-e35c-458d-a324-018d01582ce4",
   "prevIds": [
     "00000000-0000-0000-0000-000000000000"
   ],
@@ -56,6 +56,12 @@
     },
     {
       "isRlsEnabled": false,
+      "name": "classes_categories",
+      "entityType": "tables",
+      "schema": "public"
+    },
+    {
+      "isRlsEnabled": false,
       "name": "classes_group_classes",
       "entityType": "tables",
       "schema": "public"
@@ -69,6 +75,12 @@
     {
       "isRlsEnabled": false,
       "name": "classes_index_values",
+      "entityType": "tables",
+      "schema": "public"
+    },
+    {
+      "isRlsEnabled": false,
+      "name": "classes_types",
       "entityType": "tables",
       "schema": "public"
     },
@@ -662,6 +674,19 @@
       "typeSchema": null,
       "notNull": true,
       "dimensions": 0,
+      "default": "false",
+      "generated": null,
+      "identity": null,
+      "name": "is_indexed",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "classes_base"
+    },
+    {
+      "type": "boolean",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
       "default": "true",
       "generated": null,
       "identity": null,
@@ -679,6 +704,45 @@
       "generated": null,
       "identity": null,
       "name": "org_id",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "classes_base"
+    },
+    {
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "class_type_key",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "classes_base"
+    },
+    {
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "class_category_id",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "classes_base"
+    },
+    {
+      "type": "integer",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "999",
+      "generated": null,
+      "identity": null,
+      "name": "relative_order",
       "entityType": "columns",
       "schema": "public",
       "table": "classes_base"
@@ -708,6 +772,71 @@
       "entityType": "columns",
       "schema": "public",
       "table": "classes_base"
+    },
+    {
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "gen_random_uuid()",
+      "generated": null,
+      "identity": null,
+      "name": "id",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "classes_categories"
+    },
+    {
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "short_name",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "classes_categories"
+    },
+    {
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "long_name",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "classes_categories"
+    },
+    {
+      "type": "boolean",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "true",
+      "generated": null,
+      "identity": null,
+      "name": "is_enabled",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "classes_categories"
+    },
+    {
+      "type": "integer",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "999",
+      "generated": null,
+      "identity": null,
+      "name": "relative_order",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "classes_categories"
     },
     {
       "type": "uuid",
@@ -903,6 +1032,84 @@
       "entityType": "columns",
       "schema": "public",
       "table": "classes_index_values"
+    },
+    {
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "gen_random_uuid()",
+      "generated": null,
+      "identity": null,
+      "name": "id",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "classes_types"
+    },
+    {
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "class_type_key",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "classes_types"
+    },
+    {
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "short_name",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "classes_types"
+    },
+    {
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "long_name",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "classes_types"
+    },
+    {
+      "type": "boolean",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "true",
+      "generated": null,
+      "identity": null,
+      "name": "is_enabled",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "classes_types"
+    },
+    {
+      "type": "integer",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "999",
+      "generated": null,
+      "identity": null,
+      "name": "relative_order",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "classes_types"
     },
     {
       "nameExplicit": true,
@@ -1419,6 +1626,40 @@
     {
       "nameExplicit": false,
       "columns": [
+        "class_type_key"
+      ],
+      "schemaTo": "public",
+      "tableTo": "classes_types",
+      "columnsTo": [
+        "class_type_key"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "SET NULL",
+      "name": "classes_base_class_type_key_classes_types_class_type_key_fkey",
+      "entityType": "fks",
+      "schema": "public",
+      "table": "classes_base"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "class_category_id"
+      ],
+      "schemaTo": "public",
+      "tableTo": "classes_categories",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "SET NULL",
+      "name": "classes_base_class_category_id_classes_categories_id_fkey",
+      "entityType": "fks",
+      "schema": "public",
+      "table": "classes_base"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
         "class_group_id"
       ],
       "schemaTo": "public",
@@ -1602,6 +1843,16 @@
         "id"
       ],
       "nameExplicit": false,
+      "name": "classes_categories_pkey",
+      "schema": "public",
+      "table": "classes_categories",
+      "entityType": "pks"
+    },
+    {
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
       "name": "classes_groups_pkey",
       "schema": "public",
       "table": "classes_groups",
@@ -1618,6 +1869,16 @@
       "entityType": "pks"
     },
     {
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "name": "classes_types_pkey",
+      "schema": "public",
+      "table": "classes_types",
+      "entityType": "pks"
+    },
+    {
       "nameExplicit": true,
       "columns": [
         "role_key",
@@ -1628,6 +1889,18 @@
       "entityType": "uniques",
       "schema": "public",
       "table": "roles"
+    },
+    {
+      "nameExplicit": true,
+      "columns": [
+        "short_name",
+        "org_id"
+      ],
+      "nullsNotDistinct": false,
+      "name": "base_class_name_org_uq",
+      "entityType": "uniques",
+      "schema": "public",
+      "table": "classes_base"
     },
     {
       "nameExplicit": false,
@@ -1690,28 +1963,6 @@
         "short_name"
       ],
       "nullsNotDistinct": false,
-      "name": "classes_base_short_name_key",
-      "schema": "public",
-      "table": "classes_base",
-      "entityType": "uniques"
-    },
-    {
-      "nameExplicit": false,
-      "columns": [
-        "long_name"
-      ],
-      "nullsNotDistinct": false,
-      "name": "classes_base_long_name_key",
-      "schema": "public",
-      "table": "classes_base",
-      "entityType": "uniques"
-    },
-    {
-      "nameExplicit": false,
-      "columns": [
-        "short_name"
-      ],
-      "nullsNotDistinct": false,
       "name": "classes_groups_short_name_key",
       "schema": "public",
       "table": "classes_groups",
@@ -1726,6 +1977,17 @@
       "name": "classes_groups_long_name_key",
       "schema": "public",
       "table": "classes_groups",
+      "entityType": "uniques"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "class_type_key"
+      ],
+      "nullsNotDistinct": false,
+      "name": "classes_types_class_type_key_key",
+      "schema": "public",
+      "table": "classes_types",
       "entityType": "uniques"
     },
     {

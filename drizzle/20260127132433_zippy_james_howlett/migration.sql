@@ -66,12 +66,25 @@ CREATE TABLE "users" (
 --> statement-breakpoint
 CREATE TABLE "classes_base" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-	"short_name" text NOT NULL UNIQUE,
-	"long_name" text NOT NULL UNIQUE,
+	"short_name" text NOT NULL,
+	"long_name" text NOT NULL,
+	"is_indexed" boolean DEFAULT false NOT NULL,
 	"is_enabled" boolean DEFAULT true NOT NULL,
 	"org_id" uuid,
+	"class_type_key" text,
+	"class_category_id" uuid,
+	"relative_order" integer DEFAULT 999 NOT NULL,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
-	"updated_at" timestamp with time zone DEFAULT now() NOT NULL
+	"updated_at" timestamp with time zone DEFAULT now() NOT NULL,
+	CONSTRAINT "base_class_name_org_uq" UNIQUE("short_name","org_id")
+);
+--> statement-breakpoint
+CREATE TABLE "classes_categories" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+	"short_name" text NOT NULL,
+	"long_name" text NOT NULL,
+	"is_enabled" boolean DEFAULT true NOT NULL,
+	"relative_order" integer DEFAULT 999 NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE "classes_group_classes" (
@@ -99,6 +112,15 @@ CREATE TABLE "classes_index_values" (
 	"org_id" uuid
 );
 --> statement-breakpoint
+CREATE TABLE "classes_types" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+	"class_type_key" text NOT NULL UNIQUE,
+	"short_name" text NOT NULL,
+	"long_name" text NOT NULL,
+	"is_enabled" boolean DEFAULT true NOT NULL,
+	"relative_order" integer DEFAULT 999 NOT NULL
+);
+--> statement-breakpoint
 CREATE UNIQUE INDEX "org_feature_key_idx" ON "feature_flags" ("org_id","feature_key");--> statement-breakpoint
 CREATE INDEX "org_id_idx" ON "feature_flags" ("org_id");--> statement-breakpoint
 CREATE INDEX "feature_key_idx" ON "feature_flags" ("feature_key");--> statement-breakpoint
@@ -121,6 +143,8 @@ ALTER TABLE "org_api_keys" ADD CONSTRAINT "org_api_keys_org_id_orgs_id_fkey" FOR
 ALTER TABLE "user_global_roles" ADD CONSTRAINT "user_global_roles_user_id_users_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE;--> statement-breakpoint
 ALTER TABLE "user_org_roles" ADD CONSTRAINT "user_org_roles_user_id_users_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE;--> statement-breakpoint
 ALTER TABLE "classes_base" ADD CONSTRAINT "classes_base_org_id_orgs_id_fkey" FOREIGN KEY ("org_id") REFERENCES "orgs"("id") ON DELETE CASCADE;--> statement-breakpoint
+ALTER TABLE "classes_base" ADD CONSTRAINT "classes_base_class_type_key_classes_types_class_type_key_fkey" FOREIGN KEY ("class_type_key") REFERENCES "classes_types"("class_type_key") ON DELETE SET NULL;--> statement-breakpoint
+ALTER TABLE "classes_base" ADD CONSTRAINT "classes_base_class_category_id_classes_categories_id_fkey" FOREIGN KEY ("class_category_id") REFERENCES "classes_categories"("id") ON DELETE SET NULL;--> statement-breakpoint
 ALTER TABLE "classes_group_classes" ADD CONSTRAINT "classes_group_classes_class_group_id_classes_groups_id_fkey" FOREIGN KEY ("class_group_id") REFERENCES "classes_groups"("id") ON DELETE CASCADE;--> statement-breakpoint
 ALTER TABLE "classes_group_classes" ADD CONSTRAINT "classes_group_classes_class_id_classes_base_id_fkey" FOREIGN KEY ("class_id") REFERENCES "classes_base"("id") ON DELETE CASCADE;--> statement-breakpoint
 ALTER TABLE "classes_groups" ADD CONSTRAINT "classes_groups_org_id_orgs_id_fkey" FOREIGN KEY ("org_id") REFERENCES "orgs"("id") ON DELETE CASCADE;--> statement-breakpoint
