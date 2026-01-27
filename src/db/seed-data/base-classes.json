@@ -3,6 +3,7 @@
         "classId": "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d",
         "shortName": "SS",
         "longName": "Super Street",
+        "categoryShortName": "S",
         "indexValues": [
             { "year": 2025, "value": 0.836 },
             { "year": 2026, "value": 0.837 }
@@ -12,6 +13,7 @@
         "classId": "b2c3d4e5-f6a7-4b8c-9d0e-1f2a3b4c5d6e",
         "shortName": "AS",
         "longName": "A Street",
+        "categoryShortName": "S",
         "indexValues": [
             { "year": 2025, "value": 0.826 },
             { "year": 2026, "value": 0.83 }
@@ -21,6 +23,7 @@
         "classId": "c3d4e5f6-a7b8-4c9d-0e1f-2a3b4c5d6e7f",
         "shortName": "BS",
         "longName": "B Street",
+        "categoryShortName": "S",
         "indexValues": [
             { "year": 2025, "value": 0.819 },
             { "year": 2026, "value": 0.823 }
@@ -30,6 +33,7 @@
         "classId": "d4e5f6a7-b8c9-4d0e-1f2a-3b4c5d6e7f8a",
         "shortName": "CS",
         "longName": "C Street",
+        "categoryShortName": "S",
         "indexValues": [
             { "year": 2025, "value": 0.813 },
             { "year": 2026, "value": 0.814 }
@@ -39,6 +43,7 @@
         "classId": "e5f6a7b8-c9d0-4e1f-2a3b-4c5d6e7f8a9b",
         "shortName": "DS",
         "longName": "D Street",
+        "categoryShortName": "S",
         "indexValues": [
             { "year": 2025, "value": 0.811 },
             { "year": 2026, "value": 0.811 }
@@ -48,6 +53,7 @@
         "classId": "f6a7b8c9-d0e1-4f2a-3b4c-5d6e7f8a9b0c",
         "shortName": "ES",
         "longName": "E Street",
+        "categoryShortName": "S",
         "indexValues": [
             { "year": 2025, "value": 0.79 },
             { "year": 2026, "value": 0.788 }
@@ -57,6 +63,7 @@
         "classId": "a7b8c9d0-e1f2-4a3b-4c5d-6e7f8a9b0c1d",
         "shortName": "FS",
         "longName": "F Street",
+        "categoryShortName": "S",
         "indexValues": [
             { "year": 2025, "value": 0.817 },
             { "year": 2026, "value": 0.817 }
@@ -66,6 +73,7 @@
         "classId": "b8c9d0e1-f2a3-4b4c-5d6e-7f8a9b0c1d2e",
         "shortName": "GS",
         "longName": "G Street",
+        "categoryShortName": "S",
         "indexValues": [
             { "year": 2025, "value": 0.794 },
             { "year": 2026, "value": 0.793 }
@@ -75,6 +83,7 @@
         "classId": "c9d0e1f2-a3b4-4c5d-6e7f-8a9b0c1d2e3f",
         "shortName": "HS",
         "longName": "H Street",
+        "categoryShortName": "S",
         "indexValues": [
             { "year": 2025, "value": 0.784 },
             { "year": 2026, "value": 0.78 }
@@ -83,7 +92,8 @@
     {
         "classId": "d0e1f2a3-b4c5-4d6e-7f8a-9b0c1d2e3f4a",
         "shortName": "HCS",
-        "longName": "HCS",
+        "longName": "Heritage Classic Street",
+        "categoryShortName": "H",
         "indexValues": [
             { "year": 2025, "value": 0.789 },
             { "year": 2026, "value": 0.789 }
@@ -92,7 +102,8 @@
     {
         "classId": "e1f2a3b4-c5d6-4e7f-8a9b-0c1d2e3f4a5b",
         "shortName": "SSC",
-        "longName": "SSC",
+        "longName": "Solo Spec Coupe",
+        "categoryShortName": "Spec",
         "indexValues": [
             { "year": 2025, "value": 0.802 },
             { "year": 2026, "value": 0.808 }
@@ -101,7 +112,8 @@
     {
         "classId": "f2a3b4c5-d6e7-4f8a-9b0c-1d2e3f4a5b6c",
         "shortName": "SST",
-        "longName": "SST",
+        "longName": "Super Street Touring",
+        "categoryShortName": "ST",
         "indexValues": [
             { "year": 2025, "value": 0.837 },
             { "year": 2026, "value": 0.838 }
@@ -110,7 +122,8 @@
     {
         "classId": "a3b4c5d6-e7f8-4a9b-0c1d-2e3f4a5b6c7d",
         "shortName": "AST",
-        "longName": "AST",
+        "longName": "A Street Touring",
+        "categoryShortName": "ST",
         "indexValues": [
             { "year": 2025, "value": 0.834 },
             { "year": 2026, "value": 0.836 }
@@ -119,7 +132,8 @@
     {
         "classId": "b4c5d6e7-f8a9-4b0c-1d2e-3f4a5b6c7d8e",
         "shortName": "BST",
-        "longName": "BST",
+        "longName": "B Street Touring",
+        "categoryShortName": "ST",
         "indexValues": [
             { "year": 2025, "value": 0.833 },
             { "year": 2026, "value": 0.835 }
@@ -128,7 +142,8 @@
     {
         "classId": "c5d6e7f8-a9b0-4c1d-2e3f-4a5b6c7d8e9f",
         "shortName": "CST",
-        "longName": "CST",
+        "longName": "C Street Touring",
+        "categoryShortName": "ST",
         "indexValues": [
             { "year": 2025, "value": 0.83 },
             { "year": 2026, "value": 0.829 }
@@ -137,7 +152,8 @@
     {
         "classId": "d6e7f8a9-b0c1-4d2e-3f4a-5b6c7d8e9f0a",
         "shortName": "DST",
-        "longName": "DST",
+        "longName": "D Street Touring",
+        "categoryShortName": "ST",
         "indexValues": [
             { "year": 2025, "value": 0.818 },
             { "year": 2026, "value": 0.82 }
@@ -146,7 +162,8 @@
     {
         "classId": "e7f8a9b0-c1d2-4e3f-4a5b-6c7d8e9f0a1b",
         "shortName": "EST",
-        "longName": "EST",
+        "longName": "E Street Touring",
+        "categoryShortName": "ST",
         "indexValues": [
             { "year": 2025, "value": 0.815 },
             { "year": 2026, "value": 0.815 }
@@ -155,7 +172,8 @@
     {
         "classId": "f8a9b0c1-d2e3-4f4a-5b6c-7d8e9f0a1b2c",
         "shortName": "GST",
-        "longName": "GST",
+        "longName": "G Street Touring",
+        "categoryShortName": "ST",
         "indexValues": [
             { "year": 2025, "value": 0.81 },
             { "year": 2026, "value": 0.812 }
@@ -164,7 +182,8 @@
     {
         "classId": "a9b0c1d2-e3f4-4a5b-6c7d-8e9f0a1b2c3d",
         "shortName": "SSP",
-        "longName": "SSP",
+        "longName": "Super Street Prepared",
+        "categoryShortName": "SP",
         "indexValues": [
             { "year": 2025, "value": 0.857 },
             { "year": 2026, "value": 0.86 }
@@ -173,7 +192,8 @@
     {
         "classId": "b0c1d2e3-f4a5-4b6c-7d8e-9f0a1b2c3d4e",
         "shortName": "ASP",
-        "longName": "ASP",
+        "longName": "A Street Prepared",
+        "categoryShortName": "SP",
         "indexValues": [
             { "year": 2025, "value": 0.851 },
             { "year": 2026, "value": 0.852 }
@@ -182,7 +202,8 @@
     {
         "classId": "c1d2e3f4-a5b6-4c7d-8e9f-0a1b2c3d4e5f",
         "shortName": "BSP",
-        "longName": "BSP",
+        "longName": "B Street Prepared",
+        "categoryShortName": "SP",
         "indexValues": [
             { "year": 2025, "value": 0.855 },
             { "year": 2026, "value": 0.856 }
@@ -191,7 +212,8 @@
     {
         "classId": "d2e3f4a5-b6c7-4d8e-9f0a-1b2c3d4e5f6a",
         "shortName": "CSP",
-        "longName": "CSP",
+        "longName": "C Street Prepared",
+        "categoryShortName": "SP",
         "indexValues": [
             { "year": 2025, "value": 0.859 },
             { "year": 2026, "value": 0.858 }
@@ -200,7 +222,8 @@
     {
         "classId": "e3f4a5b6-c7d8-4e9f-0a1b-2c3d4e5f6a7b",
         "shortName": "DSP",
-        "longName": "DSP",
+        "longName": "D Street Prepared",
+        "categoryShortName": "SP",
         "indexValues": [
             { "year": 2025, "value": 0.847 },
             { "year": 2026, "value": 0.854 }
@@ -209,7 +232,8 @@
     {
         "classId": "f4a5b6c7-d8e9-4f0a-1b2c-3d4e5f6a7b8c",
         "shortName": "ESP",
-        "longName": "ESP",
+        "longName": "E Street Prepared",
+        "categoryShortName": "SP",
         "indexValues": [
             { "year": 2025, "value": 0.84 },
             { "year": 2026, "value": 0.842 }
@@ -218,7 +242,8 @@
     {
         "classId": "a5b6c7d8-e9f0-4a1b-2c3d-4e5f6a7b8c9d",
         "shortName": "FSP",
-        "longName": "FSP",
+        "longName": "F Street Prepared",
+        "categoryShortName": "SP",
         "indexValues": [
             { "year": 2025, "value": 0.831 },
             { "year": 2026, "value": 0.833 }
@@ -227,7 +252,8 @@
     {
         "classId": "b6c7d8e9-f0a1-4b2c-3d4e-5f6a7b8c9d0e",
         "shortName": "CAM-T",
-        "longName": "CAM-T",
+        "longName": "CAM Traditional",
+        "categoryShortName": "CAM",
         "indexValues": [
             { "year": 2025, "value": 0.821 },
             { "year": 2026, "value": 0.819 }
@@ -236,7 +262,8 @@
     {
         "classId": "c7d8e9f0-a1b2-4c3d-4e5f-6a7b8c9d0e1f",
         "shortName": "CAM-C",
-        "longName": "CAM-C",
+        "longName": "CAM Contemporary",
+        "categoryShortName": "CAM",
         "indexValues": [
             { "year": 2025, "value": 0.825 },
             { "year": 2026, "value": 0.827 }
@@ -245,7 +272,8 @@
     {
         "classId": "d8e9f0a1-b2c3-4d4e-5f6a-7b8c9d0e1f2a",
         "shortName": "CAM-S",
-        "longName": "CAM-S",
+        "longName": "CAM Sports",
+        "categoryShortName": "CAM",
         "indexValues": [
             { "year": 2025, "value": 0.844 },
             { "year": 2026, "value": 0.847 }
@@ -254,7 +282,8 @@
     {
         "classId": "e9f0a1b2-c3d4-4e5f-6a7b-8c9d0e1f2a3b",
         "shortName": "XA",
-        "longName": "XA",
+        "longName": "X Prepared A",
+        "categoryShortName": "XS",
         "indexValues": [
             { "year": 2025, "value": 0.846 },
             { "year": 2026, "value": 0.861 }
@@ -263,7 +292,8 @@
     {
         "classId": "f0a1b2c3-d4e5-4f6a-7b8c-9d0e1f2a3b4c",
         "shortName": "XB",
-        "longName": "XB",
+        "longName": "X Prepared B",
+        "categoryShortName": "XS",
         "indexValues": [
             { "year": 2025, "value": 0.848 },
             { "year": 2026, "value": 0.859 }
@@ -272,7 +302,8 @@
     {
         "classId": "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5e",
         "shortName": "XU",
-        "longName": "XU",
+        "longName": "X Prepared U",
+        "categoryShortName": "XS",
         "indexValues": [
             { "year": 2025, "value": 0.869 },
             { "year": 2026, "value": 0.869 }
@@ -281,7 +312,8 @@
     {
         "classId": "b2c3d4e5-f6a7-4b8c-9d0e-1f2a3b4c5d6f",
         "shortName": "EVX",
-        "longName": "EVX",
+        "longName": "Electric Vehicle X",
+        "categoryShortName": "Sup",
         "indexValues": [
             { "year": 2025, "value": 0.839 },
             { "year": 2026, "value": 0.839 }
@@ -290,7 +322,8 @@
     {
         "classId": "c3d4e5f6-a7b8-4c9d-0e1f-2a3b4c5d6e7a",
         "shortName": "XP",
-        "longName": "XP",
+        "longName": "X Prepared",
+        "categoryShortName": "P",
         "indexValues": [
             { "year": 2025, "value": 0.89 },
             { "year": 2026, "value": 0.892 }
@@ -299,7 +332,8 @@
     {
         "classId": "d4e5f6a7-b8c9-4d0e-1f2a-3b4c5d6e7f8b",
         "shortName": "BP",
-        "longName": "BP",
+        "longName": "B Prepared",
+        "categoryShortName": "P",
         "indexValues": [
             { "year": 2025, "value": 0.874 },
             { "year": 2026, "value": 0.875 }
@@ -308,7 +342,8 @@
     {
         "classId": "e5f6a7b8-c9d0-4e1f-2a3b-4c5d6e7f8a9c",
         "shortName": "CP",
-        "longName": "CP",
+        "longName": "C Prepared",
+        "categoryShortName": "P",
         "indexValues": [
             { "year": 2025, "value": 0.863 },
             { "year": 2026, "value": 0.862 }
@@ -317,7 +352,8 @@
     {
         "classId": "f6a7b8c9-d0e1-4f2a-3b4c-5d6e7f8a9b0d",
         "shortName": "DP",
-        "longName": "DP",
+        "longName": "D Prepared",
+        "categoryShortName": "P",
         "indexValues": [
             { "year": 2025, "value": 0.865 },
             { "year": 2026, "value": 0.863 }
@@ -326,7 +362,8 @@
     {
         "classId": "a7b8c9d0-e1f2-4a3b-4c5d-6e7f8a9b0c1e",
         "shortName": "EP",
-        "longName": "EP",
+        "longName": "E Prepared",
+        "categoryShortName": "P",
         "indexValues": [
             { "year": 2025, "value": 0.858 },
             { "year": 2026, "value": 0.855 }
@@ -335,7 +372,8 @@
     {
         "classId": "b8c9d0e1-f2a3-4b4c-5d6e-7f8a9b0c1d2f",
         "shortName": "FP",
-        "longName": "FP",
+        "longName": "F Prepared",
+        "categoryShortName": "P",
         "indexValues": [
             { "year": 2025, "value": 0.877 },
             { "year": 2026, "value": 0.877 }
@@ -344,7 +382,8 @@
     {
         "classId": "c9d0e1f2-a3b4-4c5d-6e7f-8a9b0c1d2e3a",
         "shortName": "HCR",
-        "longName": "HCR",
+        "longName": "Heritage Classic Race",
+        "categoryShortName": "H",
         "indexValues": [
             { "year": 2025, "value": 0.814 },
             { "year": 2026, "value": 0.813 }
@@ -353,7 +392,8 @@
     {
         "classId": "d0e1f2a3-b4c5-4d6e-7f8a-9b0c1d2e3f4b",
         "shortName": "SMF",
-        "longName": "SMF",
+        "longName": "Street Modified Front",
+        "categoryShortName": "SM",
         "indexValues": [
             { "year": 2025, "value": 0.85 },
             { "year": 2026, "value": 0.857 }
@@ -362,7 +402,8 @@
     {
         "classId": "e1f2a3b4-c5d6-4e7f-8a9b-0c1d2e3f4a5c",
         "shortName": "SM",
-        "longName": "SM",
+        "longName": "Street Modified",
+        "categoryShortName": "SM",
         "indexValues": [
             { "year": 2025, "value": 0.868 },
             { "year": 2026, "value": 0.87 }
@@ -371,7 +412,8 @@
     {
         "classId": "f2a3b4c5-d6e7-4f8a-9b0c-1d2e3f4a5b6d",
         "shortName": "SSM",
-        "longName": "SSM",
+        "longName": "Super Street Modified",
+        "categoryShortName": "SM",
         "indexValues": [
             { "year": 2025, "value": 0.878 },
             { "year": 2026, "value": 0.878 }
@@ -380,7 +422,8 @@
     {
         "classId": "a3b4c5d6-e7f8-4a9b-0c1d-2e3f4a5b6c7e",
         "shortName": "CSM",
-        "longName": "CSM",
+        "longName": "Club Spec Mustang",
+        "categoryShortName": "Spec",
         "indexValues": [
             { "year": 2025, "value": 0.8 },
             { "year": 2026, "value": 0.794 }
@@ -389,7 +432,8 @@
     {
         "classId": "b4c5d6e7-f8a9-4b0c-1d2e-3f4a5b6c7d8f",
         "shortName": "CSX",
-        "longName": "CSX",
+        "longName": "Club Spec MX-5",
+        "categoryShortName": "Spec",
         "indexValues": [
             { "year": 2025, "value": 0.803 },
             { "year": 2026, "value": 0.803 }
@@ -398,7 +442,8 @@
     {
         "classId": "c5d6e7f8-a9b0-4c1d-2e3f-4a5b6c7d8e9a",
         "shortName": "AM",
-        "longName": "AM",
+        "longName": "A Modified",
+        "categoryShortName": "M",
         "indexValues": [
             { "year": 2025, "value": 1 },
             { "year": 2026, "value": 1 }
@@ -407,7 +452,8 @@
     {
         "classId": "d6e7f8a9-b0c1-4d2e-3f4a-5b6c7d8e9f0b",
         "shortName": "BM",
-        "longName": "BM",
+        "longName": "B Modified",
+        "categoryShortName": "M",
         "indexValues": [
             { "year": 2025, "value": 0.978 },
             { "year": 2026, "value": 0.966 }
@@ -416,7 +462,8 @@
     {
         "classId": "e7f8a9b0-c1d2-4e3f-4a5b-6c7d8e9f0a1c",
         "shortName": "CM",
-        "longName": "CM",
+        "longName": "C Modified",
+        "categoryShortName": "M",
         "indexValues": [
             { "year": 2025, "value": 0.899 },
             { "year": 2026, "value": 0.896 }
@@ -425,7 +472,8 @@
     {
         "classId": "f8a9b0c1-d2e3-4f4a-5b6c-7d8e9f0a1b2d",
         "shortName": "DM",
-        "longName": "DM",
+        "longName": "D Modified",
+        "categoryShortName": "M",
         "indexValues": [
             { "year": 2025, "value": 0.906 },
             { "year": 2026, "value": 0.906 }
@@ -434,7 +482,8 @@
     {
         "classId": "a9b0c1d2-e3f4-4a5b-6c7d-8e9f0a1b2c3e",
         "shortName": "EM",
-        "longName": "EM",
+        "longName": "E Modified",
+        "categoryShortName": "M",
         "indexValues": [
             { "year": 2025, "value": 0.916 },
             { "year": 2026, "value": 0.916 }
@@ -443,7 +492,8 @@
     {
         "classId": "b0c1d2e3-f4a5-4b6c-7d8e-9f0a1b2c3d4f",
         "shortName": "FM",
-        "longName": "FM",
+        "longName": "F Modified",
+        "categoryShortName": "M",
         "indexValues": [
             { "year": 2025, "value": 0.917 },
             { "year": 2026, "value": 0.917 }
@@ -452,7 +502,8 @@
     {
         "classId": "c1d2e3f4-a5b6-4c7d-8e9f-0a1b2c3d4e5a",
         "shortName": "FSAE",
-        "longName": "FSAE",
+        "longName": "Formula SAE",
+        "categoryShortName": "M",
         "indexValues": [
             { "year": 2025, "value": 0.98 },
             { "year": 2026, "value": 0.965 }
@@ -461,7 +512,8 @@
     {
         "classId": "d2e3f4a5-b6c7-4d8e-9f0a-1b2c3d4e5f6b",
         "shortName": "KM",
-        "longName": "KM",
+        "longName": "K Modified",
+        "categoryShortName": "M",
         "indexValues": [
             { "year": 2025, "value": 0.937 },
             { "year": 2026, "value": 0.936 }

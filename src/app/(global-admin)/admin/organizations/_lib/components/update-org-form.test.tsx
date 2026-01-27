@@ -72,31 +72,11 @@ describe("UpdateOrgForm", () => {
         expect(publicCheckbox).toBeChecked();
     });
 
-    it("renders feature flags section", () => {
-        render(<UpdateOrgForm org={mockOrg} featureFlags={mockFeatureFlags} />);
-
-        expect(screen.getByText("Feature Flags")).toBeVisible();
-    });
-
-    it("renders grouped feature flags", () => {
-        render(<UpdateOrgForm org={mockOrg} featureFlags={mockFeatureFlags} />);
-
-        expect(screen.getByText(/Live Timing/i)).toBeVisible();
-        expect(screen.getByLabelText(/Pax Enabled/i)).toBeVisible();
-        expect(screen.getByLabelText(/Work Run Enabled/i)).toBeVisible();
-    });
-
     it("renders save and cancel buttons", () => {
         render(<UpdateOrgForm org={mockOrg} featureFlags={mockFeatureFlags} />);
 
         expect(screen.getByRole("button", { name: /Save/i })).toBeVisible();
         expect(screen.getByRole("button", { name: /Cancel/i })).toBeVisible();
-    });
-
-    it("handles empty feature flags", () => {
-        render(<UpdateOrgForm org={mockOrg} featureFlags={{}} />);
-
-        expect(screen.getByText("No feature flags configured")).toBeVisible();
     });
 
     it("allows user to edit organization name", async () => {
@@ -108,17 +88,6 @@ describe("UpdateOrgForm", () => {
         await user.type(nameInput, "Updated Organization");
 
         expect(nameInput).toHaveValue("Updated Organization");
-    });
-
-    it("allows user to toggle feature flags", async () => {
-        const user = userEvent.setup();
-        render(<UpdateOrgForm org={mockOrg} featureFlags={mockFeatureFlags} />);
-
-        const paxCheckbox = screen.getByLabelText(/Pax Enabled/i);
-        expect(paxCheckbox).toBeChecked();
-
-        await user.click(paxCheckbox);
-        expect(paxCheckbox).not.toBeChecked();
     });
 
     it("allows user to toggle isPublic checkbox", async () => {

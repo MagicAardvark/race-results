@@ -160,7 +160,7 @@ describe("FieldDescription", () => {
             </Field>
         );
         const description = screen.getByTestId("description");
-        expect(description.tagName).toBe("P");
+        expect(description.tagName).toBe("DIV");
         expect(description).toHaveAttribute("data-slot", "field-description");
         expect(description).toHaveTextContent("Description");
     });

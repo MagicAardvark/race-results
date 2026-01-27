@@ -707,6 +707,27 @@ See `src/__tests__/README.md` for detailed testing guidelines.
 - [ ] Mobile sidebar trigger works correctly
 - [ ] Responsive design works across all pages
 
+## ⚠️ Known Issues / Technical Debt
+
+### Type Compatibility: @hookform/resolvers with Zod v4
+
+**Issue**: `@hookform/resolvers` v5.2.2 has incomplete TypeScript type support for Zod v4, even though runtime behavior works correctly.
+
+**Current Workaround**: Using type assertions (`zodResolver(schema as any)`) in form components to bypass TypeScript errors.
+
+**Affected Files**:
+
+- `src/app/(global-admin)/admin/classes/_lib/components/base-classes/update-base-class-form.tsx`
+- `src/app/(global-admin)/admin/classes/_lib/components/base-classes/add-base-class-dialog.tsx`
+- `src/app/(global-admin)/admin/organizations/_lib/components/class-groups/edit-class-group-dialog.tsx`
+- `src/app/(global-admin)/admin/organizations/_lib/components/class-groups/create-class-group-dialog.tsx`
+
+**TODO**:
+
+- Monitor `@hookform/resolvers` releases for improved Zod v4 type support
+- Remove type assertions once the library fully supports Zod v4 types
+- Consider alternative validation libraries if support doesn't improve
+
 ## 📦 Deployment
 
 ### Vercel Deployment
