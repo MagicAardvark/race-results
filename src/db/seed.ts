@@ -18,62 +18,115 @@ import {
 } from "@/db/tables/classes";
 import { generateApiKey } from "@/lib/auth/generate-api-key";
 
+/**
+ * Feature flag configuration for organizations
+ */
+export interface OrgFeatureFlags {
+    paxEnabled: boolean;
+    workRunEnabled: boolean;
+    trophiesEnabled: boolean;
+}
+
+/**
+ * Determines feature flag configuration based on organization slug
+ * @param orgSlug - The organization slug
+ * @returns Feature flag configuration
+ */
+export function getOrgFeatureFlags(orgSlug: string): OrgFeatureFlags {
+    switch (orgSlug) {
+        case "ne-svt":
+            // NE-SVT: disable pax and work run
+            return {
+                paxEnabled: false,
+                workRunEnabled: false,
+                trophiesEnabled: false,
+            };
+        case "boston-bmw":
+            // Boston BMW: enable pax, disable work run
+            return {
+                paxEnabled: true,
+                workRunEnabled: false,
+                trophiesEnabled: false,
+            };
+        case "ner":
+            // NER: enable all features
+            return {
+                paxEnabled: true,
+                workRunEnabled: true,
+                trophiesEnabled: true,
+            };
+        default:
+            // Default: enable pax and work run, disable trophies
+            return {
+                paxEnabled: true,
+                workRunEnabled: true,
+                trophiesEnabled: false,
+            };
+    }
+}
+
+/**
+ * Creates feature flag entries for an organization
+ * @param orgId - The organization ID
+ * @param flags - The feature flag configuration
+ * @returns Array of feature flag entries
+ */
+export function createFeatureFlagEntries(
+    orgId: string,
+    flags: OrgFeatureFlags
+): Array<{ orgId: string; featureKey: string; enabled: boolean }> {
+    return [
+        {
+            orgId,
+            featureKey: "feature.liveTiming.paxEnabled",
+            enabled: flags.paxEnabled,
+        },
+        {
+            orgId,
+            featureKey: "feature.liveTiming.workRunEnabled",
+            enabled: flags.workRunEnabled,
+        },
+        {
+            orgId,
+            featureKey: "feature.liveTiming.trophiesEnabled",
+            enabled: flags.trophiesEnabled,
+        },
+    ];
+}
+
 async function main() {
     // eslint-disable-next-line no-console
     console.log("Starting seed...");
 
-    await configureOrgs();
+    try {
+        await configureOrgs();
+        await configureUsers();
+        await configureClasses();
 
-    await configureUsers();
-
-    await configureClasses();
-
-    // eslint-disable-next-line no-console
-    console.log("Seed completed successfully!");
+        // eslint-disable-next-line no-console
+        console.log("Seed completed successfully!");
+    } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error("Seed failed:", error);
+        process.exit(1);
+    }
 }
 
-async function configureOrgs() {
+export async function configureOrgs() {
     await db.delete(orgs);
 
-    const insertedOrgs = await db
-        .insert(orgs)
-        .values((await import("@/db/seed-data/orgs.json")).default)
-        .returning();
+    const orgData = (await import("@/db/seed-data/orgs.json")).default;
+    const insertedOrgs = await db.insert(orgs).values(orgData).returning();
 
     const orgDefaultFeatureFlags = [];
     const orgDefaultApiKeys = [];
 
-    // Set feature flags for organizations
     for (const org of insertedOrgs) {
-        let paxEnabled = true;
-        let workRunEnabled = true;
+        const flags = getOrgFeatureFlags(org.slug);
+        orgDefaultFeatureFlags.push(
+            ...createFeatureFlagEntries(org.orgId, flags)
+        );
 
-        // Configure feature flags based on org slug
-        if (org.slug === "ne-svt") {
-            // NE-SVT: disable both
-            paxEnabled = false;
-            workRunEnabled = false;
-        } else if (org.slug === "boston-bmw") {
-            // Boston BMW: disable workRunEnabled only
-            paxEnabled = true;
-            workRunEnabled = false;
-        }
-        // ner (and any others): both enabled (defaults)
-
-        // Default feature flags
-        orgDefaultFeatureFlags.push({
-            orgId: org.orgId,
-            featureKey: "feature.liveTiming.paxEnabled",
-            enabled: paxEnabled,
-        });
-
-        orgDefaultFeatureFlags.push({
-            orgId: org.orgId,
-            featureKey: "feature.liveTiming.workRunEnabled",
-            enabled: workRunEnabled,
-        });
-
-        // Create an API key
         orgDefaultApiKeys.push({
             orgId: org.orgId,
             apiKey: generateApiKey(),
@@ -84,7 +137,7 @@ async function configureOrgs() {
     await db.insert(orgApiKeys).values(orgDefaultApiKeys);
 }
 
-async function configureUsers() {
+export async function configureUsers() {
     await db.delete(users);
     await db.delete(roles);
 
@@ -92,30 +145,41 @@ async function configureUsers() {
     const roleData = (await import("@/db/seed-data/roles.json")).default;
 
     await db.insert(users).values(
-        userData.map((user) => ({
-            userId: user.userId,
-            displayName: user.displayName,
-            authProviderId:
-                process.env[
-                    `AUTHPROVIDER_ID_${user.displayName.replaceAll(" ", "")}`
-                ]!,
-        }))
+        userData.map((user) => {
+            const envKey = `AUTHPROVIDER_ID_${user.displayName.replaceAll(" ", "")}`;
+            const authProviderId = process.env[envKey];
+            if (!authProviderId) {
+                throw new Error(
+                    `Missing environment variable: ${envKey} for user ${user.displayName}`
+                );
+            }
+            return {
+                userId: user.userId,
+                displayName: user.displayName,
+                authProviderId,
+            };
+        })
     );
 
-    await db.insert(roles).values(roleData).returning();
+    const insertedRoles = await db.insert(roles).values(roleData).returning();
 
     const userGlobalRoleMapping = userData.flatMap((user) =>
-        user.globalRoles.map((key) => ({
-            userId: userData.find((u) => u.displayName === user.displayName)!
-                .userId,
-            roleId: roleData.find((r) => r.key === key)!.roleId,
-        }))
+        user.globalRoles.map((key) => {
+            const role = insertedRoles.find((r) => r.key === key);
+            if (!role) {
+                throw new Error(`Role not found: ${key}`);
+            }
+            return {
+                userId: user.userId,
+                roleId: role.roleId,
+            };
+        })
     );
 
     await db.insert(userGlobalRoles).values(userGlobalRoleMapping);
 }
 
-async function configureClasses() {
+export async function configureClasses() {
     await db.delete(classTypes);
     await db.delete(classCategories);
     await db.delete(baseClasses);
@@ -153,6 +217,10 @@ async function configureClasses() {
 
     const baseClassData = (await import("@/db/seed-data/base-classes.json"))
         .default;
+
+    if (classTypeData.length === 0) {
+        throw new Error("No class types found in seed data");
+    }
 
     await db.insert(baseClasses).values(
         baseClassData.map((bc, index) => ({
@@ -194,17 +262,21 @@ async function configureClasses() {
         }))
     );
 
-    const classGroupClassMappings = [];
-    for (const bc of baseClassData) {
-        for (const cg of classGroupData) {
-            classGroupClassMappings.push({
-                classGroupId: cg.classGroupId,
-                classId: bc.classId,
-            });
-        }
-    }
+    const classGroupClassMappings = baseClassData.flatMap((bc) =>
+        classGroupData.map((cg) => ({
+            classGroupId: cg.classGroupId,
+            classId: bc.classId,
+        }))
+    );
 
     await db.insert(classGroupClasses).values(classGroupClassMappings);
 }
 
-main();
+// Only run main() if this file is executed directly (not when imported)
+// This prevents the seed from running when the file is imported in tests
+if (
+    (typeof require !== "undefined" && require.main === module) ||
+    (process.argv[1]?.includes("seed") && process.env.NODE_ENV !== "test")
+) {
+    void main();
+}

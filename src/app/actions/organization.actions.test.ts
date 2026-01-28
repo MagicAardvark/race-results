@@ -139,16 +139,13 @@ describe("organization.actions", () => {
                 motorsportregOrgId: null,
                 description: null,
                 isPublic: true,
-                featureFlags: {
-                    "feature.liveTiming.paxEnabled": false,
-                    "feature.liveTiming.workRunEnabled": false,
-                },
+                featureFlags: undefined,
             });
             expect(revalidatePath).toHaveBeenCalledWith(
                 "/admin/organizations/"
             );
             expect(redirect).toHaveBeenCalledWith(
-                "/admin/organizations/test-org"
+                "/admin/organizations/test-org?saved=true"
             );
         });
 
