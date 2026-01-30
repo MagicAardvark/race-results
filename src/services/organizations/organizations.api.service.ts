@@ -2,6 +2,7 @@ import { organizationsAPIRepository } from "@/db/repositories/organizations.api.
 
 interface IOrganizationsAPIService {
     validateApiRequest(slug: string, apiKey: string): Promise<boolean>;
+    getOrgIdFromApiKey(apiKey: string): Promise<string | null>;
 }
 
 export class OrganizationsAPIService implements IOrganizationsAPIService {
@@ -10,6 +11,10 @@ export class OrganizationsAPIService implements IOrganizationsAPIService {
             slug,
             apiKey
         );
+    }
+
+    async getOrgIdFromApiKey(apiKey: string): Promise<string | null> {
+        return await organizationsAPIRepository.getOrgIdFromApiKey(apiKey);
     }
 }
 

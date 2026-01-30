@@ -11,6 +11,7 @@ import { featureFlagsService } from "@/services/feature-flags/feature-flags.serv
 
 interface IOrganizationAdminService {
     getAll(): Promise<OrganizationExtended[]>;
+    findById(orgId: string): Promise<OrganizationExtended | null>;
     findBySlug(slug: string): Promise<OrganizationExtended | null>;
     createOrganization(dto: CreateOrgDTO): Promise<string>;
     updateOrganization(dto: UpdateOrgDTO): Promise<string>;
@@ -33,6 +34,12 @@ export class OrganizationAdminService implements IOrganizationAdminService {
         const orgs = await organizationsAdminRepository.findAll();
 
         return orgs.map((org) => mapOrganization(org));
+    }
+
+    async findById(orgId: string): Promise<OrganizationExtended | null> {
+        const org = await organizationsAdminRepository.findById(orgId);
+
+        return org ? mapOrganization(org) : null;
     }
 
     async findBySlug(slug: string): Promise<OrganizationExtended | null> {
