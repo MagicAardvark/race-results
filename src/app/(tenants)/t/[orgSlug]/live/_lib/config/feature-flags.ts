@@ -4,4 +4,5 @@
 export const FEATURE_FLAGS = {
     PAX_ENABLED: "feature.liveTiming.paxEnabled",
     WORK_RUN_ENABLED: "feature.liveTiming.workRunEnabled",
+    TROPHIES_ENABLED: "feature.liveTiming.trophiesEnabled",
 } as const;

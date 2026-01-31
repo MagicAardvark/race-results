@@ -5,11 +5,13 @@ import { OrganizationExtended } from "@/dto/organizations";
 import { OrgFeatureFlags } from "@/dto/feature-flags";
 import { Field, FieldGroup, FieldLabel } from "@/ui/field";
 import { Checkbox } from "@/ui/checkbox";
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
 import { updateOrganization } from "@/app/actions/organization.actions";
 import { useActionState } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import { Button } from "@/ui/button";
 import { nameof } from "@/lib/utils";
+import { toast } from "sonner";
 
 type FeatureFlagGroup = {
     namespace: string;
@@ -36,10 +38,29 @@ export const FeatureFlagsManagement = ({
     org: OrganizationExtended;
     featureFlags: OrgFeatureFlags;
 }) => {
+    const searchParams = useSearchParams();
+    const router = useRouter();
+    const currentTab = searchParams.get("tab") || "general";
+
     const [state, formAction, pending] = useActionState(updateOrganization, {
         isError: false,
         message: "",
     });
+
+    // Show success toast when redirected after save
+    useEffect(() => {
+        const saved = searchParams.get("saved");
+        if (saved === "true") {
+            toast.success("Feature flags saved successfully");
+            const params = new URLSearchParams(searchParams.toString());
+            params.delete("saved");
+            router.replace(
+                params.toString()
+                    ? `${window.location.pathname}?${params.toString()}`
+                    : window.location.pathname
+            );
+        }
+    }, [searchParams, router]);
 
     // Group feature flags by namespace
     const groupedFlags = useMemo(() => {
@@ -92,6 +113,12 @@ export const FeatureFlagsManagement = ({
                         name={nameof<OrganizationExtended>("orgId")}
                         value={org.orgId}
                     />
+                    <input
+                        type="hidden"
+                        name={nameof<OrganizationExtended>("name")}
+                        value={org.name}
+                    />
+                    <input type="hidden" name="tab" value={currentTab} />
 
                     <FieldGroup>
                         {groupedFlags.length > 0 ? (
@@ -110,12 +137,18 @@ export const FeatureFlagsManagement = ({
                                                     key={flag.key}
                                                     orientation="horizontal"
                                                 >
+                                                    <input
+                                                        type="hidden"
+                                                        name={flag.key}
+                                                        value="off"
+                                                    />
                                                     <Checkbox
                                                         defaultChecked={
                                                             flag.enabled
                                                         }
                                                         id={flag.key}
                                                         name={flag.key}
+                                                        value="on"
                                                     />
                                                     <FieldLabel
                                                         htmlFor={flag.key}

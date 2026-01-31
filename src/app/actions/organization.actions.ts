@@ -66,17 +66,23 @@ export async function updateOrganization(
         null;
     const isPublic = formData.get(nameof<Organization>("isPublic")) === "on";
 
-    // Feature flags
-    const paxEnabled = formData.get("feature.liveTiming.paxEnabled") === "on";
-    const workRunEnabled =
-        formData.get("feature.liveTiming.workRunEnabled") === "on";
-
     if (!orgId) {
         return { isError: true, message: "Organization ID is required" };
     }
 
     if (!name) {
         return { isError: true, message: "Name cannot be empty" };
+    }
+
+    const featureFlags: Record<string, boolean> = {};
+    for (const [key] of formData.entries()) {
+        if (key.startsWith("feature.")) {
+            // If checkbox is checked, it sends "on" (which overrides hidden "off")
+            // If checkbox is unchecked, only hidden input sends "off"
+            // Use getAll to check all values - if "on" is present, flag is true
+            const allValues = formData.getAll(key);
+            featureFlags[key] = allValues.includes("on");
+        }
     }
 
     let slug = null;
@@ -88,10 +94,8 @@ export async function updateOrganization(
             motorsportregOrgId,
             description,
             isPublic,
-            featureFlags: {
-                "feature.liveTiming.paxEnabled": paxEnabled,
-                "feature.liveTiming.workRunEnabled": workRunEnabled,
-            },
+            featureFlags:
+                Object.keys(featureFlags).length > 0 ? featureFlags : undefined,
         });
     } catch (error) {
         return {
@@ -110,8 +114,16 @@ export async function updateOrganization(
         };
     }
 
+    const tab = formData.get("tab")?.toString();
+    const params = new URLSearchParams();
+    if (tab && tab !== "general") {
+        params.set("tab", tab);
+    }
+    params.set("saved", "true");
+    const queryString = params.toString();
+
     revalidatePath("/admin/organizations/");
-    redirect(`/admin/organizations/${slug}`);
+    redirect(`/admin/organizations/${slug}?${queryString}`);
 }
 
 export async function updateApiKey(
