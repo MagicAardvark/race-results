@@ -21,7 +21,7 @@ export default async function LiveLayout({
         liveResultsService.getIndexedResults(orgSlug),
         liveResultsService.getRawResults(orgSlug),
         Promise.resolve(null), // TODO: Add getRunWork to service when available
-        tenant.isValid && !tenant.isGlobal && tenant.org
+        tenant.isValid && tenant.org
             ? featureFlagsService.getOrgFeatureFlags(tenant.org.orgId)
             : Promise.resolve({}),
     ]);

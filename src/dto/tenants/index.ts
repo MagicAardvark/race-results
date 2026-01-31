@@ -4,15 +4,9 @@ export type InvalidTenant = {
     isValid: false;
 };
 
-export type GlobalTenant = {
-    isValid: true;
-    isGlobal: true;
-};
-
 export type ValidTenant = {
     isValid: true;
-    isGlobal: false;
     org: Organization;
 };
 
-export type Tenant = InvalidTenant | GlobalTenant | ValidTenant;
+export type Tenant = InvalidTenant | ValidTenant;

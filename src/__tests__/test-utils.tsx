@@ -10,6 +10,25 @@ import type {
     RunWork,
 } from "@/app/(tenants)/t/[orgSlug]/live/_lib/types";
 import { DisplayMode } from "@/app/(tenants)/t/[orgSlug]/live/_lib/types";
+import { NextRequest } from "next/server";
+
+export const createRequest = (
+    path: string,
+    host: string,
+    headers?: Record<string, string>
+): NextRequest => {
+    const req = new NextRequest(new Request(`https://${host}${path}`), {});
+
+    req.headers.set("host", host);
+
+    if (headers) {
+        for (const [key, value] of Object.entries(headers)) {
+            req.headers.set(key, value);
+        }
+    }
+
+    return req;
+};
 
 type CustomRenderOptions = Omit<RenderOptions, "wrapper"> & {
     tenant?: Tenant;
@@ -25,7 +44,6 @@ type CustomRenderOptions = Omit<RenderOptions, "wrapper"> & {
 
 const defaultTenant: Tenant = {
     isValid: true,
-    isGlobal: false,
     org: {
         orgId: "test-org-id",
         name: "Test Organization",

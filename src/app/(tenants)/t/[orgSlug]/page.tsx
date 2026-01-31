@@ -25,7 +25,7 @@ import { formatDate, isSingleDay } from "./_lib/utils/date-utils";
 export default async function Page() {
     const tenant = await tenantService.getTenant();
 
-    if (!tenant.isValid || tenant.isGlobal) {
+    if (!tenant.isValid) {
         redirect("/");
     }
 

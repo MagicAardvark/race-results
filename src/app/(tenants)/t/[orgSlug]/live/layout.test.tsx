@@ -2,10 +2,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { featureFlagsService } from "@/services/feature-flags/feature-flags.service";
 import { liveResultsService } from "@/services/live-results/live-results.service";
 import { requireValidTenant } from "./_lib/utils/tenant-guard";
-import {
-    mockValidTenant,
-    mockGlobalTenant,
-} from "@/__tests__/mocks/mock-tenants";
+import { mockValidTenant } from "@/__tests__/mocks/mock-tenants";
 import { mockClassResults } from "@/__tests__/mocks/mock-class-results";
 import { mockPaxResults } from "@/__tests__/mocks/mock-pax-results";
 import { mockRawResults } from "@/__tests__/mocks/mock-raw-results";
@@ -83,17 +80,5 @@ describe("LiveLayout", () => {
         expect(featureFlagsService.getOrgFeatureFlags).toHaveBeenCalledWith(
             "org-123"
         );
-    });
-
-    it("handles global tenant", async () => {
-        setupMockData(mockGlobalTenant);
-
-        const LiveLayout = (await import("./layout")).default;
-
-        await LiveLayout({ children: <div>Test</div> });
-
-        expect(requireValidTenant).toHaveBeenCalled();
-        // Should not call getOrgFeatureFlags for global tenant
-        expect(featureFlagsService.getOrgFeatureFlags).not.toHaveBeenCalled();
     });
 });
