@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { tenantService } from "./tenant.service";
 import { organizationService } from "@/services/organizations/organization.service";
 import type { Organization } from "@/dto/organizations";
+import { InvalidTenant, ValidTenant } from "@/dto/tenants";
 
 // Mock Next.js headers
 vi.mock("next/headers", () => ({
@@ -44,20 +45,6 @@ describe("TenantService", () => {
             expect(result.isValid).toBe(false);
         });
 
-        it("returns global tenant when slug is 'global'", async () => {
-            const { headers } = await import("next/headers");
-            vi.mocked(headers).mockResolvedValue({
-                get: vi.fn().mockReturnValue("global"),
-            } as unknown as Headers);
-
-            const result = await tenantService.getTenant();
-
-            expect(result.isValid).toBe(true);
-            if (result.isValid) {
-                expect(result.isGlobal).toBe(true);
-            }
-        });
-
         it("returns valid tenant when organization exists", async () => {
             const { headers } = await import("next/headers");
             vi.mocked(headers).mockResolvedValue({
@@ -67,13 +54,11 @@ describe("TenantService", () => {
                 organizationService.getOrganizationBySlug
             ).mockResolvedValue(mockOrg);
 
-            const result = await tenantService.getTenant();
+            const result = (await tenantService.getTenant()) as ValidTenant;
 
             expect(result.isValid).toBe(true);
-            if (result.isValid && !result.isGlobal) {
-                expect(result.org.slug).toBe("test-org");
-                expect(result.org.name).toBe("Test Organization");
-            }
+            expect(result.org.slug).toBe("test-org");
+            expect(result.org.name).toBe("Test Organization");
         });
 
         it("returns invalid tenant when organization is undefined", async () => {
@@ -84,9 +69,9 @@ describe("TenantService", () => {
             // Service checks for undefined, not null
             vi.mocked(
                 organizationService.getOrganizationBySlug
-            ).mockResolvedValue(undefined as unknown as null);
+            ).mockResolvedValue(null);
 
-            const result = await tenantService.getTenant();
+            const result = (await tenantService.getTenant()) as InvalidTenant;
 
             expect(result.isValid).toBe(false);
         });

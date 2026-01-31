@@ -8,7 +8,7 @@ import { redirect } from "next/navigation";
 export async function requireValidTenant() {
     const tenant = await tenantService.getTenant();
 
-    if (!tenant.isValid || tenant.isGlobal) {
+    if (!tenant.isValid) {
         redirect("/");
     }
 

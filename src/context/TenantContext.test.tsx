@@ -9,7 +9,7 @@ describe("TenantContext", () => {
     it("provides tenant to children", () => {
         const TestComponent = () => {
             const tenant = useTenant();
-            if (tenant.isValid && !tenant.isGlobal) {
+            if (tenant.isValid) {
                 return <div>{tenant.org.name}</div>;
             }
             return <div>unexpected</div>;
@@ -44,7 +44,7 @@ describe("TenantContext", () => {
     it("provides access to tenant properties", () => {
         const TestComponent = () => {
             const tenant = useTenant();
-            if (tenant.isValid && !tenant.isGlobal) {
+            if (tenant.isValid) {
                 return (
                     <div>
                         <div>{tenant.org.slug}</div>

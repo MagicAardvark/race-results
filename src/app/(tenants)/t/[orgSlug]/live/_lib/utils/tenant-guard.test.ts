@@ -4,7 +4,6 @@ import { tenantService } from "@/services/tenants/tenant.service";
 import { redirect } from "next/navigation";
 import {
     mockValidTenant,
-    mockGlobalTenant,
     mockInvalidTenant,
 } from "@/__tests__/mocks/mock-tenants";
 
@@ -31,16 +30,6 @@ describe("requireValidTenant", () => {
 
     it("redirects when tenant is invalid", async () => {
         const mockTenant = mockInvalidTenant;
-
-        vi.mocked(tenantService.getTenant).mockResolvedValue(mockTenant);
-
-        await requireValidTenant();
-
-        expect(redirect).toHaveBeenCalledWith("/");
-    });
-
-    it("redirects when tenant is global", async () => {
-        const mockTenant = mockGlobalTenant;
 
         vi.mocked(tenantService.getTenant).mockResolvedValue(mockTenant);
 

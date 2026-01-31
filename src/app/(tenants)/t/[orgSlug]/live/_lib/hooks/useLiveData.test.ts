@@ -17,7 +17,6 @@ import type { ValidTenant } from "@/dto/tenants";
 
 const defaultTenant: ValidTenant = {
     isValid: true,
-    isGlobal: false,
     org: {
         orgId: "test-org-id",
         name: "Test Organization",

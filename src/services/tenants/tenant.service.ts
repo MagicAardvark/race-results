@@ -1,10 +1,5 @@
 import { HEADERS } from "@/constants/global";
-import {
-    GlobalTenant,
-    InvalidTenant,
-    Tenant,
-    ValidTenant,
-} from "@/dto/tenants";
+import { InvalidTenant, Tenant, ValidTenant } from "@/dto/tenants";
 import { organizationService } from "@/services/organizations/organization.service";
 import { headers } from "next/headers";
 
@@ -24,16 +19,9 @@ export class TenantService implements ITenantService {
             } as InvalidTenant;
         }
 
-        if (slug === "global") {
-            return {
-                isValid: true,
-                isGlobal: true,
-            } as GlobalTenant;
-        }
-
         const org = await organizationService.getOrganizationBySlug(slug);
 
-        if (typeof org === "undefined") {
+        if (!org) {
             return {
                 isValid: false,
             } as InvalidTenant;
