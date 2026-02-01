@@ -30,6 +30,7 @@ const mockOrg = {
     slug: "test-org",
     motorsportregOrgId: null,
     description: "",
+    headerImageUrl: null,
     isPublic: true,
     createdAt: new Date(),
     updatedAt: new Date(),

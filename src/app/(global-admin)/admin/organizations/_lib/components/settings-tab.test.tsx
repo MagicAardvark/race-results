@@ -30,6 +30,7 @@ describe("SettingsTab", () => {
         slug: "test-org",
         motorsportregOrgId: null,
         description: null,
+        headerImageUrl: null,
         isPublic: false,
         createdAt: new Date(),
         updatedAt: new Date(),
