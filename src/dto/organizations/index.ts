@@ -12,6 +12,7 @@ export interface Organization {
     slug: string;
     motorsportregOrgId: string | null;
     description: string | null;
+    headerImageUrl: string | null;
     isPublic: boolean;
     createdAt: Date;
     updatedAt: Date;
@@ -38,6 +39,7 @@ export interface UpdateOrgDTO {
     name: string;
     motorsportregOrgId?: string | null;
     description: string | null;
+    headerImageUrl?: string | null;
     isPublic: boolean;
     featureFlags?: Record<string, boolean>;
 }

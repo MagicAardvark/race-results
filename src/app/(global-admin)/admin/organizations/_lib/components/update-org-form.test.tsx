@@ -15,6 +15,7 @@ describe("UpdateOrgForm", () => {
         slug: "test-org",
         motorsportregOrgId: "msr-123",
         description: "Test description",
+        headerImageUrl: null,
         isPublic: true,
         createdAt: new Date(),
         updatedAt: new Date(),

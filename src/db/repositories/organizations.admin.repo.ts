@@ -94,6 +94,9 @@ export class OrganizationsAdminRepository implements IOrganizationsAdminReposito
                 name: dto.name,
                 motorsportregOrgId: dto.motorsportregOrgId,
                 description: dto.description,
+                ...(dto.headerImageUrl !== undefined && {
+                    headerImageUrl: dto.headerImageUrl,
+                }),
                 isPublic: dto.isPublic,
             })
             .where(eq(orgs.orgId, dto.orgId))

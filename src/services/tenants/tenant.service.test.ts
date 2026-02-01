@@ -23,6 +23,7 @@ describe("TenantService", () => {
         slug: "test-org",
         motorsportregOrgId: "msr-123",
         description: "Test description",
+        headerImageUrl: null,
         isPublic: true,
         createdAt: new Date("2024-01-01"),
         updatedAt: new Date("2024-01-02"),
