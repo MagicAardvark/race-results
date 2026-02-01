@@ -31,6 +31,11 @@ const tests = [
         request: testRequests.tenant.subDomainAndSlash,
         expected: { type: "TENANT", tenant: "org1" },
     },
+    {
+        label: "should return non-tenant for requests with www subdomain",
+        request: testRequests.public.wwwAsSubdomain,
+        expected: { type: "NON_TENANT" },
+    },
 ];
 
 describe("extractTenant", () => {

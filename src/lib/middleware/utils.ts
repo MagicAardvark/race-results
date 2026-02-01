@@ -38,6 +38,13 @@ export const extractTenant = (req: NextRequest) => {
         };
     }
 
+    // www subdomain is treated as non-tenant
+    if (domainParts[0].toLocaleLowerCase() === "www") {
+        return {
+            type: "NON_TENANT",
+        };
+    }
+
     // request in the form of [org].domain.tld
     return {
         type: "TENANT",
