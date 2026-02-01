@@ -1,3 +1,7 @@
+/** Main site URL for "Back to Organizations" etc. Use env in prod if you have multiple domains. */
+export const MAIN_SITE_URL =
+    process.env.NEXT_PUBLIC_MAIN_SITE_URL ?? "https://www.race-results.org";
+
 export const HEADERS = {
     TENANT_SLUG: "rr-tenant-slug",
 

@@ -1,6 +1,9 @@
+import { MAIN_SITE_URL } from "@/constants/global";
+import { getLiveBasePath } from "@/lib/middleware/utils";
 import { tenantService } from "@/services/tenants/tenant.service";
 import { motorsportRegService } from "@/services/motorsportreg/motorsportreg.service";
 import Link from "next/link";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import {
     Table,
@@ -29,6 +32,9 @@ export default async function Page() {
         redirect("/");
     }
 
+    const host = (await headers()).get("host") ?? "";
+    const liveHref = getLiveBasePath(host, tenant.org.slug);
+
     // Fetch events if organization has MotorsportReg ID
     let events: Awaited<
         ReturnType<typeof motorsportRegService.getOrganizationCalendar>
@@ -54,13 +60,13 @@ export default async function Page() {
             {/* Top Bar with Back Button and Live Timing */}
             <div className="mb-6 flex items-center justify-between">
                 <Button variant="ghost" size="sm" asChild>
-                    <Link href="/">
+                    <Link href={MAIN_SITE_URL}>
                         <ArrowLeftIcon className="mr-2 h-4 w-4" />
                         Back to Organizations
                     </Link>
                 </Button>
                 <Button size="lg" asChild>
-                    <Link href={`/t/${tenant.org.slug}/live`}>
+                    <Link href={liveHref}>
                         <LiveIcon className="mr-2 h-5 w-5 animate-pulse text-white" />
                         Live Timing
                     </Link>

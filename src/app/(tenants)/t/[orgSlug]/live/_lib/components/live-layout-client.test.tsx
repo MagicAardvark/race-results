@@ -20,7 +20,7 @@ describe("LiveLayoutClient", () => {
 
     it("renders navigation links", () => {
         renderWithProviders(
-            <LiveLayoutClient>
+            <LiveLayoutClient basePath="/t/test-org/live">
                 <div>Test Content</div>
             </LiveLayoutClient>
         );
@@ -31,7 +31,7 @@ describe("LiveLayoutClient", () => {
 
     it("renders refresh button", () => {
         renderWithProviders(
-            <LiveLayoutClient>
+            <LiveLayoutClient basePath="/t/test-org/live">
                 <div>Test Content</div>
             </LiveLayoutClient>
         );
@@ -43,7 +43,7 @@ describe("LiveLayoutClient", () => {
     it("calls router.refresh when refresh button is clicked", async () => {
         const user = userEvent.setup();
         renderWithProviders(
-            <LiveLayoutClient>
+            <LiveLayoutClient basePath="/t/test-org/live">
                 <div>Test Content</div>
             </LiveLayoutClient>
         );
@@ -56,7 +56,7 @@ describe("LiveLayoutClient", () => {
 
     it("renders children", () => {
         renderWithProviders(
-            <LiveLayoutClient>
+            <LiveLayoutClient basePath="/t/test-org/live">
                 <div data-testid="test-content">Test Content</div>
             </LiveLayoutClient>
         );

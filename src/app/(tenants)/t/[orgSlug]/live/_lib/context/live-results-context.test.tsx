@@ -33,6 +33,7 @@ describe("LiveResultsProvider", () => {
                 rawResults={null}
                 runWork={null}
                 displayMode={DisplayMode.autocross}
+                basePath="/t/test-org/live"
             >
                 <TestComponent />
             </LiveResultsProvider>
@@ -51,6 +52,7 @@ describe("LiveResultsProvider", () => {
                 rawResults={null}
                 runWork={null}
                 displayMode={DisplayMode.autocross}
+                basePath="/t/test-org/live"
             >
                 <TestComponent />
             </LiveResultsProvider>
@@ -67,6 +69,7 @@ describe("LiveResultsProvider", () => {
                 rawResults={mockRawResults}
                 runWork={null}
                 displayMode={DisplayMode.autocross}
+                basePath="/t/test-org/live"
             >
                 <TestComponent />
             </LiveResultsProvider>
@@ -83,6 +86,7 @@ describe("LiveResultsProvider", () => {
                 rawResults={null}
                 runWork={null}
                 displayMode={DisplayMode.rallycross}
+                basePath="/t/test-org/live"
             >
                 <TestComponent />
             </LiveResultsProvider>
@@ -111,6 +115,7 @@ describe("LiveResultsProvider", () => {
                 runWork={null}
                 displayMode={DisplayMode.autocross}
                 featureFlags={{ testFlag: true }}
+                basePath="/t/test-org/live"
             >
                 <FeatureFlagTest />
             </LiveResultsProvider>

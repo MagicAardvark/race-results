@@ -1,16 +1,13 @@
 "use client";
 
-import { useMemo } from "react";
 import Link from "next/link";
-import { useParams } from "next/navigation";
 import { Trophy } from "lucide-react";
 import { Card, CardContent } from "@/ui/card";
 import { Button } from "@/ui/button";
+import { useLiveResults } from "../../context/live-results-context";
 
 export function TrophiesCallout() {
-    const params = useParams();
-    const orgSlug = params.orgSlug as string;
-    const basePath = useMemo(() => `/t/${orgSlug}/live`, [orgSlug]);
+    const { basePath } = useLiveResults();
 
     // TODO: Once we have a toggle to show the trophies callout, we can remove that.
     const showTrophies = false;

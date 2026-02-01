@@ -39,6 +39,7 @@ type CustomRenderOptions = Omit<RenderOptions, "wrapper"> & {
         runWork?: RunWork | null;
         displayMode?: DisplayMode;
         featureFlags?: Record<string, boolean>;
+        basePath?: string;
     };
 };
 
@@ -64,6 +65,7 @@ const defaultLiveData = {
     runWork: null as RunWork | null,
     displayMode: DisplayMode.autocross,
     featureFlags: {},
+    basePath: "/t/test-org/live",
 };
 
 export function renderWithProviders(
@@ -94,6 +96,7 @@ export function renderWithProviders(
                 : defaultLiveData.runWork,
         displayMode: liveData?.displayMode ?? defaultLiveData.displayMode,
         featureFlags: liveData?.featureFlags ?? defaultLiveData.featureFlags,
+        basePath: liveData?.basePath ?? defaultLiveData.basePath,
     };
 
     function Wrapper({ children }: { children: React.ReactNode }) {
@@ -106,6 +109,7 @@ export function renderWithProviders(
                     runWork={mergedLiveData.runWork ?? null}
                     displayMode={mergedLiveData.displayMode}
                     featureFlags={mergedLiveData.featureFlags}
+                    basePath={mergedLiveData.basePath}
                 >
                     {children}
                 </LiveResultsProvider>

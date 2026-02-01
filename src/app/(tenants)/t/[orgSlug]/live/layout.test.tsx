@@ -8,6 +8,14 @@ import { mockPaxResults } from "@/__tests__/mocks/mock-pax-results";
 import { mockRawResults } from "@/__tests__/mocks/mock-raw-results";
 import type { Tenant } from "@/dto/tenants";
 
+// Mock next/headers so layout can call headers().get("host") in test (no request scope)
+vi.mock("next/headers", () => ({
+    headers: vi.fn().mockResolvedValue({
+        get: (name: string) =>
+            name === "host" ? "test-org.race-results.org" : null,
+    }),
+}));
+
 // Mock dependencies
 vi.mock("@/services/live-results/live-results.service", () => ({
     liveResultsService: {

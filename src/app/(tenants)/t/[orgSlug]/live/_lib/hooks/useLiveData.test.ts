@@ -49,6 +49,7 @@ describe("useLiveData", () => {
                     runWork: null,
                     displayMode: DisplayMode.autocross,
                     featureFlags: {},
+                    basePath: "/t/test-org/live",
                     children: children,
                 })
             );

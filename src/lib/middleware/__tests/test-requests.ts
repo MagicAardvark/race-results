@@ -49,6 +49,13 @@ export const testRequests = {
     },
     public: {
         home: { path: "/" },
+        wwwOrg: { path: "/", host: "www.race-results.org" },
+        wwwLive: { path: "/", host: "www.race-results.live" },
+        stagingOrg: { path: "/", host: "staging.race-results.org" },
+        stagingLive: { path: "/", host: "staging.race-results.live" },
+        /** Non-allowed base domain (e.g. Vercel preview or CNAME) → main site, not tenant */
+        vercelPreview: { path: "/", host: "pr-42-race-results.vercel.app" },
+        unknownBaseDomain: { path: "/", host: "myorg.evil.com" },
     },
 };
 

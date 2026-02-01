@@ -6,11 +6,13 @@ import { NextRequest, NextResponse } from "next/server";
 
 export class TenantHandler implements IRequestHandler {
     async handleRequest(req: NextRequest): Promise<NextResponse> {
-        const { tenant, type } = extractTenant(req);
+        const result = extractTenant(req);
 
-        if (!tenant || type !== "TENANT") {
+        if (result.type !== "TENANT") {
             return this.invalidTenantResponse(req);
         }
+
+        const tenant = result.tenant;
 
         const isValid = await tenantService.isValidTenant(tenant);
 

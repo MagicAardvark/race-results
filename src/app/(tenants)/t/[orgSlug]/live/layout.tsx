@@ -1,9 +1,11 @@
+import { getLiveBasePath } from "@/lib/middleware/utils";
 import { LiveResultsProvider } from "./_lib/context/live-results-context";
 import { DisplayMode } from "./_lib/types";
 import { requireValidTenant } from "./_lib/utils/tenant-guard";
 import { LiveLayoutClient } from "./_lib/components/live-layout-client";
 import { featureFlagsService } from "@/services/feature-flags/feature-flags.service";
 import { liveResultsService } from "@/services/live-results/live-results.service";
+import { headers } from "next/headers";
 
 export default async function LiveLayout({
     children,
@@ -12,6 +14,8 @@ export default async function LiveLayout({
 }) {
     const tenant = await requireValidTenant();
     const orgSlug = tenant.org?.slug || "";
+    const host = (await headers()).get("host") ?? "";
+    const liveBasePath = getLiveBasePath(host, orgSlug);
 
     // Fetch all data on the server in parallel
     // TODO: Get display mode from event/tenant configuration
@@ -37,8 +41,11 @@ export default async function LiveLayout({
             runWork={runWork}
             displayMode={displayMode}
             featureFlags={featureFlags}
+            basePath={liveBasePath}
         >
-            <LiveLayoutClient>{children}</LiveLayoutClient>
+            <LiveLayoutClient basePath={liveBasePath}>
+                {children}
+            </LiveLayoutClient>
         </LiveResultsProvider>
     );
 }
