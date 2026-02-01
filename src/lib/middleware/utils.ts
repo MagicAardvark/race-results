@@ -1,14 +1,5 @@
 import { NextRequest } from "next/server";
 
-/** Subdomains that serve the main site (NON_TENANT), not org-specific tenant pages. */
-const RESERVED_MAIN_SITE_SUBDOMAINS = ["www", "staging"] as const;
-
-/** Only these base domains support [tenant].domain.tld. Others (e.g. vercel.app) show main site. */
-const ALLOWED_TENANT_BASE_DOMAINS = [
-    "race-results.org",
-    "race-results.live",
-] as const;
-
 type TenantFromHostname =
     | { type: "TENANT"; tenant: string }
     | { type: "NON_TENANT" }
@@ -16,7 +7,7 @@ type TenantFromHostname =
 
 /**
  * Parses hostname to determine tenant (subdomain) or non-tenant. Single source of truth
- * for reserved subdomains and allowed base domains.
+ * for host-based tenant detection; used by extractTenant and getTenantRequestMode.
  */
 function parseTenantFromHostname(hostname: string): TenantFromHostname {
     const name = hostname.split(":")[0];
@@ -37,29 +28,13 @@ function parseTenantFromHostname(hostname: string): TenantFromHostname {
         return { type: "NON_TENANT" };
     }
 
-    // subdomain.base.tld: check reserved (www, staging) and base domain allowlist
-    const subdomain = domainParts[0];
-    const baseDomain = domainParts.slice(1).join(".");
-
-    if (
-        RESERVED_MAIN_SITE_SUBDOMAINS.includes(
-            subdomain as (typeof RESERVED_MAIN_SITE_SUBDOMAINS)[number]
-        )
-    ) {
+    // www subdomain is treated as non-tenant (main site)
+    if (domainParts[0].toLowerCase() === "www") {
         return { type: "NON_TENANT" };
     }
 
-    if (
-        !ALLOWED_TENANT_BASE_DOMAINS.includes(
-            baseDomain as (typeof ALLOWED_TENANT_BASE_DOMAINS)[number]
-        )
-    ) {
-        // e.g. xxx.vercel.app or myorg.evil.com → show main site, not tenant
-        return { type: "NON_TENANT" };
-    }
-
-    // request in the form of [org].race-results.org or [org].race-results.live
-    return { type: "TENANT", tenant: subdomain };
+    // request in the form of [org].domain.tld
+    return { type: "TENANT", tenant: domainParts[0] };
 }
 
 /**

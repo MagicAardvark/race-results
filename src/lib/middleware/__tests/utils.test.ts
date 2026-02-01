@@ -16,33 +16,18 @@ const tests = [
         expected: { type: "NON_TENANT" },
     },
     {
-        label: "should return non-tenant for www.race-results.org (reserved for main site)",
+        label: "should return non-tenant for www.race-results.org (www = main site)",
         request: testRequests.public.wwwOrg,
         expected: { type: "NON_TENANT" },
     },
     {
-        label: "should return non-tenant for www.race-results.live (reserved for main site)",
+        label: "should return non-tenant for www.race-results.live (www = main site)",
         request: testRequests.public.wwwLive,
         expected: { type: "NON_TENANT" },
     },
     {
-        label: "should return non-tenant for staging subdomain (reserved for main site)",
-        request: testRequests.public.stagingOrg,
-        expected: { type: "NON_TENANT" },
-    },
-    {
-        label: "should return non-tenant for staging.race-results.live",
-        request: testRequests.public.stagingLive,
-        expected: { type: "NON_TENANT" },
-    },
-    {
-        label: "should return non-tenant for Vercel preview (base domain not allowlisted)",
-        request: testRequests.public.vercelPreview,
-        expected: { type: "NON_TENANT" },
-    },
-    {
-        label: "should return non-tenant for unknown base domain",
-        request: testRequests.public.unknownBaseDomain,
+        label: "should return non-tenant for requests with www subdomain",
+        request: testRequests.public.wwwAsSubdomain,
         expected: { type: "NON_TENANT" },
     },
     {
@@ -64,11 +49,6 @@ const tests = [
         label: "should return tenant from /t/ path even if subdomain is present",
         request: testRequests.tenant.subDomainAndSlash,
         expected: { type: "TENANT", tenant: "org1" },
-    },
-    {
-        label: "should return non-tenant for requests with www subdomain",
-        request: testRequests.public.wwwAsSubdomain,
-        expected: { type: "NON_TENANT" },
     },
 ];
 
@@ -97,9 +77,6 @@ describe("getTenantRequestMode", () => {
     });
     it("returns path for apex race-results.org", () => {
         expect(getTenantRequestMode("race-results.org")).toBe("path");
-    });
-    it("returns path for vercel.app", () => {
-        expect(getTenantRequestMode("pr-42.vercel.app")).toBe("path");
     });
 });
 
