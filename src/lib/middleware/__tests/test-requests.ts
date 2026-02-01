@@ -49,6 +49,7 @@ export const testRequests = {
     },
     public: {
         home: { path: "/" },
+        wwwAsSubdomain: { path: "/", subdomain: "www" },
     },
 };
 
