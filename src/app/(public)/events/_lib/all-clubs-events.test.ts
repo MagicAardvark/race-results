@@ -39,16 +39,13 @@ vi.mock("@/app/(tenants)/t/[orgSlug]/_lib/events/merge-events", () => ({
     },
 }));
 
-function org(
-    overrides: Partial<Organization> = {}
-): Organization {
+function org(overrides: Partial<Organization> = {}): Organization {
     return {
         orgId: "org-1",
         name: "Test Org",
         slug: "test-org",
         motorsportregOrgId: null,
         description: null,
-        headerImageUrl: null,
         isPublic: true,
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -64,8 +61,6 @@ function orgEvent(
         eventId: "evt-1",
         orgId: "org-1",
         name: "Event",
-        startAt: overrides.startAt,
-        endAt: overrides.endAt,
         createdAt: new Date(),
         updatedAt: new Date(),
         ...overrides,
@@ -80,9 +75,15 @@ describe("mergeAllClubsEvents", () => {
         const start = new Date("2026-07-01T00:00:00");
         const end = new Date("2026-07-01T23:59:59");
         const orgsWithOrgEvents = [
-            { org: orgA, orgEvents: [orgEvent({ startAt: start, endAt: end })] },
+            {
+                org: orgA,
+                orgEvents: [orgEvent({ startAt: start, endAt: end })],
+            },
         ];
-        const orgsWithMrEvents: { org: Organization; events: MotorsportRegEvent[] }[] = [];
+        const orgsWithMrEvents: {
+            org: Organization;
+            events: MotorsportRegEvent[];
+        }[] = [];
 
         const { upcoming } = mergeAllClubsEvents(
             orgsWithOrgEvents,
@@ -112,7 +113,10 @@ describe("mergeAllClubsEvents", () => {
                 orgEvents: [orgEvent({ startAt: june, endAt: june })],
             },
         ];
-        const orgsWithMrEvents: { org: Organization; events: MotorsportRegEvent[] }[] = [];
+        const orgsWithMrEvents: {
+            org: Organization;
+            events: MotorsportRegEvent[];
+        }[] = [];
 
         const { upcoming } = mergeAllClubsEvents(
             orgsWithOrgEvents,
@@ -129,7 +133,10 @@ describe("mergeAllClubsEvents", () => {
         const orgsWithOrgEvents = [
             { org: org(), orgEvents: [] as OrgEventDTO[] },
         ];
-        const orgsWithMrEvents: { org: Organization; events: MotorsportRegEvent[] }[] = [];
+        const orgsWithMrEvents: {
+            org: Organization;
+            events: MotorsportRegEvent[];
+        }[] = [];
 
         const { upcoming, past } = mergeAllClubsEvents(
             orgsWithOrgEvents,

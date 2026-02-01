@@ -13,7 +13,10 @@ describe("EventExternalLink", () => {
 
         const link = screen.getByRole("link", { name: /View event & sign up/ });
         expect(link).toBeVisible();
-        expect(link).toHaveAttribute("href", "https://motorsportreg.com/event/123");
+        expect(link).toHaveAttribute(
+            "href",
+            "https://motorsportreg.com/event/123"
+        );
         expect(link).toHaveAttribute("target", "_blank");
         expect(link).toHaveAttribute("rel", "noopener noreferrer");
     });

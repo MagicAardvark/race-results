@@ -118,12 +118,18 @@ export function CalendarTab({ orgId, orgSlug, events }: CalendarTabProps) {
     const isEditDialogOpen = !!editingEventId;
     const isCreateDialogOpen = userOpenedCreateDialog;
 
-    // Close dialogs when the corresponding action succeeds
+    // Close dialogs when the corresponding action succeeds (useActionState never resets)
     useEffect(() => {
-        if (createSucceeded) setUserOpenedCreateDialog(false);
+        if (createSucceeded) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect -- sync dialog closed state after success; no reset API for useActionState
+            setUserOpenedCreateDialog(false);
+        }
     }, [createSucceeded]);
     useEffect(() => {
-        if (updateSucceeded) setEditingEventId(null);
+        if (updateSucceeded) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect -- sync dialog closed state after success; no reset API for useActionState
+            setEditingEventId(null);
+        }
     }, [updateSucceeded]);
 
     return (

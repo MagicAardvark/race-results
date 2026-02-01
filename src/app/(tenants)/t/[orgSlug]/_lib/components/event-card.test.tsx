@@ -53,7 +53,9 @@ describe("EventCard", () => {
             />
         );
 
-        expect(screen.getByRole("button", { name: "View event" })).toBeVisible();
+        expect(
+            screen.getByRole("button", { name: "View event" })
+        ).toBeVisible();
     });
 
     it("renders as list item", () => {

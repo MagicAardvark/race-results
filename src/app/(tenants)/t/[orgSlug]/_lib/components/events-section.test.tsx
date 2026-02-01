@@ -10,10 +10,14 @@ describe("EventsSection", () => {
                 title="Upcoming Events"
                 variant="primary"
                 hasItems={false}
-            />
+            >
+                {null}
+            </EventsSection>
         );
 
-        expect(screen.getByRole("heading", { name: "Upcoming Events" })).toBeVisible();
+        expect(
+            screen.getByRole("heading", { name: "Upcoming Events" })
+        ).toBeVisible();
         const section = screen.getByRole("region", {
             name: "Upcoming Events",
         });
@@ -28,7 +32,9 @@ describe("EventsSection", () => {
                 variant="primary"
                 hasItems={false}
                 emptyMessage="No upcoming events."
-            />
+            >
+                {null}
+            </EventsSection>
         );
 
         expect(screen.getByText("No upcoming events.")).toBeVisible();
@@ -59,7 +65,9 @@ describe("EventsSection", () => {
                 title="Past Events"
                 variant="muted"
                 hasItems={false}
-            />
+            >
+                {null}
+            </EventsSection>
         );
 
         expect(

@@ -30,7 +30,6 @@ describe("Tenant org page", () => {
     it("redirects when tenant is invalid", async () => {
         vi.mocked(tenantService.getTenant).mockResolvedValue({
             isValid: false,
-            org: null,
         });
 
         await expect(Page()).rejects.toThrow("redirect:/");
@@ -45,7 +44,6 @@ describe("Tenant org page", () => {
                 slug: "test-org",
                 motorsportregOrgId: null,
                 description: "Test description",
-                headerImageUrl: null,
                 isPublic: true,
                 createdAt: new Date(),
                 updatedAt: new Date(),
@@ -77,7 +75,6 @@ describe("Tenant org page", () => {
                 slug: "test-org",
                 motorsportregOrgId: null,
                 description: null,
-                headerImageUrl: null,
                 isPublic: true,
                 createdAt: new Date(),
                 updatedAt: new Date(),

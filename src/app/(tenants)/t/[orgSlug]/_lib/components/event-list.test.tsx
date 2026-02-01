@@ -29,7 +29,7 @@ function createOrgItem(overrides: Partial<EventListItem> = {}): EventListItem {
         orgEvent: baseOrgEvent,
         mrEvent: undefined,
         ...overrides,
-    };
+    } as EventListItem;
 }
 
 function createMrItem(overrides: Partial<EventListItem> = {}): EventListItem {
@@ -37,7 +37,7 @@ function createMrItem(overrides: Partial<EventListItem> = {}): EventListItem {
         source: "mr",
         event: baseMrEvent,
         ...overrides,
-    };
+    } as EventListItem;
 }
 
 describe("EventList", () => {
@@ -66,7 +66,10 @@ describe("EventList", () => {
 
         expect(screen.getByText("Org Event")).toBeVisible();
         const link = screen.getByRole("link", { name: /View event & sign up/ });
-        expect(link).toHaveAttribute("href", "https://motorsportreg.com/event/1");
+        expect(link).toHaveAttribute(
+            "href",
+            "https://motorsportreg.com/event/1"
+        );
     });
 
     it("renders MR-only event with link", () => {

@@ -20,8 +20,6 @@ function orgEvent(
         eventId: "evt-1",
         orgId: "org-1",
         name: "Org Event",
-        startAt: overrides.startAt,
-        endAt: overrides.endAt,
         createdAt: new Date(),
         updatedAt: new Date(),
         ...overrides,
@@ -69,12 +67,18 @@ describe("mergeOrgAndMrEvents", () => {
     it("returns upcoming org events with matching MR event when same date", () => {
         const start = new Date("2026-06-10T00:00:00");
         const end = new Date("2026-06-10T23:59:59");
-        const orgEvents = [orgEvent({ eventId: "e1", startAt: start, endAt: end })];
+        const orgEvents = [
+            orgEvent({ eventId: "e1", startAt: start, endAt: end }),
+        ];
         const mrEvents = [
             mrEvent({ id: "mr1", start: "2026-06-10", end: "2026-06-10" }),
         ];
 
-        const { upcoming, past } = mergeOrgAndMrEvents(orgEvents, mrEvents, today);
+        const { upcoming, past } = mergeOrgAndMrEvents(
+            orgEvents,
+            mrEvents,
+            today
+        );
 
         expect(upcoming).toHaveLength(1);
         expect(upcoming[0]!.source).toBe("org");
@@ -123,7 +127,9 @@ describe("mergeOrgAndMrEvents", () => {
     it("excludes MR event when org event exists on same start date", () => {
         const start = new Date("2026-06-10T00:00:00");
         const end = new Date("2026-06-10T23:59:59");
-        const orgEvents = [orgEvent({ eventId: "e1", startAt: start, endAt: end })];
+        const orgEvents = [
+            orgEvent({ eventId: "e1", startAt: start, endAt: end }),
+        ];
         const mrEvents = [
             mrEvent({ id: "mr1", start: "2026-06-10", end: "2026-06-10" }),
         ];
@@ -146,13 +152,19 @@ describe("mergeOrgAndMrEvents", () => {
         ];
         const mrEvents: MotorsportRegEvent[] = [];
 
-        const { upcoming, past } = mergeOrgAndMrEvents(orgEvents, mrEvents, today);
+        const { upcoming, past } = mergeOrgAndMrEvents(
+            orgEvents,
+            mrEvents,
+            today
+        );
 
         expect(upcoming).toHaveLength(1);
-        expect(upcoming[0]!.source === "org" && upcoming[0].orgEvent.eventId).toBe(
-            "e2"
-        );
+        expect(
+            upcoming[0]!.source === "org" && upcoming[0].orgEvent.eventId
+        ).toBe("e2");
         expect(past).toHaveLength(1);
-        expect(past[0]!.source === "org" && past[0].orgEvent.eventId).toBe("e1");
+        expect(past[0]!.source === "org" && past[0].orgEvent.eventId).toBe(
+            "e1"
+        );
     });
 });

@@ -105,10 +105,9 @@ async function main() {
         await configureUsers();
         await configureClasses();
 
-        // eslint-disable-next-line no-console
+        // eslint-disable-next-line no-console -- seed script success message
         console.log("Seed completed successfully!");
     } catch (error) {
-        // eslint-disable-next-line no-console
         console.error("Seed failed:", error);
         process.exit(1);
     }

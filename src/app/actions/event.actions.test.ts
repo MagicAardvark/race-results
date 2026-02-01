@@ -7,6 +7,7 @@ import {
 import { orgEventsRepository } from "@/db/repositories/org-events.repo";
 import { requireRole } from "@/lib/auth/require-role";
 import { revalidatePath } from "next/cache";
+import { createMockUserWithExtendedDetails } from "@/__tests__/mocks/mock-users";
 
 vi.mock("@/db/repositories/org-events.repo");
 vi.mock("@/lib/auth/require-role");
@@ -17,7 +18,9 @@ vi.mock("next/cache", () => ({
 describe("event.actions", () => {
     beforeEach(() => {
         vi.clearAllMocks();
-        vi.mocked(requireRole).mockResolvedValue(undefined);
+        vi.mocked(requireRole).mockResolvedValue(
+            createMockUserWithExtendedDetails({ roles: ["admin"] })
+        );
     });
 
     describe("createOrgEventAdmin", () => {
@@ -182,9 +185,7 @@ describe("event.actions", () => {
             );
 
             expect(result.isError).toBe(true);
-            expect(result.message).toBe(
-                "Event and organization are required"
-            );
+            expect(result.message).toBe("Event and organization are required");
         });
 
         it("returns error when update returns null", async () => {
@@ -202,9 +203,7 @@ describe("event.actions", () => {
             );
 
             expect(result.isError).toBe(true);
-            expect(result.message).toBe(
-                "Event not found or access denied"
-            );
+            expect(result.message).toBe("Event not found or access denied");
         });
     });
 
@@ -233,9 +232,7 @@ describe("event.actions", () => {
             const result = await deleteOrgEventAdmin("", "org-1", "test-org");
 
             expect(result.isError).toBe(true);
-            expect(result.message).toBe(
-                "Event and organization are required"
-            );
+            expect(result.message).toBe("Event and organization are required");
         });
 
         it("returns error when delete returns false", async () => {
@@ -248,9 +245,7 @@ describe("event.actions", () => {
             );
 
             expect(result.isError).toBe(true);
-            expect(result.message).toBe(
-                "Event not found or access denied"
-            );
+            expect(result.message).toBe("Event not found or access denied");
         });
     });
 });
