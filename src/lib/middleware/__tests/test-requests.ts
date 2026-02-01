@@ -49,6 +49,8 @@ export const testRequests = {
     },
     public: {
         home: { path: "/" },
+        /** www as subdomain (same as wwwOrg; used by tests from routing-fix) */
+        wwwAsSubdomain: { path: "/", subdomain: "www" },
         wwwOrg: { path: "/", host: "www.race-results.org" },
         wwwLive: { path: "/", host: "www.race-results.live" },
         stagingOrg: { path: "/", host: "staging.race-results.org" },
