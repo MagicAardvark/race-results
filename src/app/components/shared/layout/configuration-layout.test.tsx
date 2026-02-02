@@ -1,9 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen } from "@/__tests__/test-utils";
+import { defaultOrg, render, screen } from "@/__tests__/test-utils";
 import { ConfigurationLayout } from "./configuration-layout";
 import { tenantService } from "@/services/tenants/tenant.service";
 import type { NavGroup } from "@/lib/shared/layout/configuration/navigation";
-import { createMockValidTenant } from "@/__tests__/mocks/mock-tenants";
 
 vi.mock("@/services/tenants/tenant.service");
 vi.mock("./app-header", () => ({
@@ -47,14 +46,8 @@ describe("ConfigurationLayout", () => {
         },
     ];
 
-    const mockTenant = createMockValidTenant({
-        orgId: "org-1",
-        name: "Test Org",
-        slug: "test-org",
-    });
-
     beforeEach(() => {
-        vi.mocked(tenantService.getTenant).mockResolvedValue(mockTenant);
+        vi.mocked(tenantService.getTenant).mockResolvedValue(defaultOrg);
     });
 
     it("renders layout with header and sidebar", async () => {

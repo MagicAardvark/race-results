@@ -1,21 +1,19 @@
 "use client";
 
-import { Tenant } from "@/dto/tenants";
+import { Organization } from "@/dto/organizations";
 import { createContext, useContext } from "react";
 
-const TenantContext = createContext<Tenant | null>(null);
+const TenantContext = createContext<Organization | null>(null);
 
 export function TenantProvider({
-    tenant,
+    org,
     children,
 }: {
-    tenant: Tenant;
+    org: Organization;
     children: React.ReactNode;
 }) {
     return (
-        <TenantContext.Provider value={tenant}>
-            {children}
-        </TenantContext.Provider>
+        <TenantContext.Provider value={org}>{children}</TenantContext.Provider>
     );
 }
 

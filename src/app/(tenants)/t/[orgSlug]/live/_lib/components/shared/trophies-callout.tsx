@@ -1,10 +1,10 @@
 "use client";
 
-import Link from "next/link";
 import { Trophy } from "lucide-react";
 import { Card, CardContent } from "@/ui/card";
 import { Button } from "@/ui/button";
 import { useLiveResults } from "../../context/live-results-context";
+import { ClientTenantLink } from "@/app/(tenants)/t/_lib/components/client-tenant-link";
 
 export function TrophiesCallout() {
     const { basePath } = useLiveResults();
@@ -36,7 +36,12 @@ export function TrophiesCallout() {
                     size="sm"
                     className="bg-purple-700 text-white hover:bg-purple-800"
                 >
-                    <Link href={`${basePath}/trophies`}>View Trophies</Link>
+                    <ClientTenantLink
+                        pathFromTenantRoot="trophies"
+                        tenantBase={basePath}
+                    >
+                        View Trophies
+                    </ClientTenantLink>
                 </Button>
             </CardContent>
         </Card>

@@ -2,7 +2,6 @@ import { render, RenderOptions } from "@testing-library/react";
 import { ReactElement } from "react";
 import { TenantProvider } from "@/context/TenantContext";
 import { LiveResultsProvider } from "@/app/(tenants)/t/[orgSlug]/live/_lib/context/live-results-context";
-import type { Tenant } from "@/dto/tenants";
 import type {
     ProcessedLiveClassResults,
     ProcessedLiveIndexResults,
@@ -11,6 +10,7 @@ import type {
 } from "@/app/(tenants)/t/[orgSlug]/live/_lib/types";
 import { DisplayMode } from "@/app/(tenants)/t/[orgSlug]/live/_lib/types";
 import { NextRequest } from "next/server";
+import { Organization } from "@/dto/organizations";
 
 export const createRequest = (
     path: string,
@@ -31,7 +31,7 @@ export const createRequest = (
 };
 
 type CustomRenderOptions = Omit<RenderOptions, "wrapper"> & {
-    tenant?: Tenant;
+    org?: Organization;
     liveData?: {
         classResults?: ProcessedLiveClassResults | null;
         paxResults?: ProcessedLiveIndexResults | null;
@@ -43,19 +43,16 @@ type CustomRenderOptions = Omit<RenderOptions, "wrapper"> & {
     };
 };
 
-const defaultTenant: Tenant = {
-    isValid: true,
-    org: {
-        orgId: "test-org-id",
-        name: "Test Organization",
-        slug: "test-org",
-        motorsportregOrgId: null,
-        description: null,
-        isPublic: true,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        deletedAt: null,
-    },
+export const defaultOrg: Organization = {
+    orgId: "test-org-id",
+    name: "Test Organization",
+    slug: "test-org",
+    motorsportregOrgId: null,
+    description: null,
+    isPublic: true,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    deletedAt: null,
 };
 
 const defaultLiveData = {
@@ -70,11 +67,7 @@ const defaultLiveData = {
 
 export function renderWithProviders(
     ui: ReactElement,
-    {
-        tenant = defaultTenant,
-        liveData,
-        ...renderOptions
-    }: CustomRenderOptions = {}
+    { org = defaultOrg, liveData, ...renderOptions }: CustomRenderOptions = {}
 ) {
     // Merge with defaults, but allow explicit null/undefined to pass through
     const mergedLiveData = {
@@ -101,7 +94,7 @@ export function renderWithProviders(
 
     function Wrapper({ children }: { children: React.ReactNode }) {
         return (
-            <TenantProvider tenant={tenant}>
+            <TenantProvider org={org}>
                 <LiveResultsProvider
                     classResults={mergedLiveData.classResults ?? null}
                     paxResults={mergedLiveData.paxResults ?? null}

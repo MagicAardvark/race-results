@@ -30,7 +30,10 @@ export class TenantHandler implements IRequestHandler {
             );
         }
 
-        res.headers.set(HEADERS.TENANT_SLUG, tenant);
+        const tenantBase = result.basePath;
+
+        res.headers.set(HEADERS.TENANT.SLUG, tenant);
+        res.headers.set(HEADERS.TENANT.BASE_PATH, tenantBase);
 
         return res;
     }

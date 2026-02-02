@@ -2,11 +2,7 @@ import {
     createTestRequest,
     testRequests,
 } from "@/lib/middleware/__tests/test-requests";
-import {
-    extractTenant,
-    getLiveBasePath,
-    getTenantRequestMode,
-} from "@/lib/middleware/utils";
+import { extractTenant } from "@/lib/middleware/utils";
 import { describe, expect, it } from "vitest";
 
 const tests = [
@@ -33,12 +29,12 @@ const tests = [
     {
         label: "should return tenant for requests with /t/ path",
         request: testRequests.tenant.slashRoute,
-        expected: { type: "TENANT", tenant: "org1" },
+        expected: { type: "TENANT", tenant: "org1", basePath: "/t/org1" },
     },
     {
         label: "should return tenant for requests with subdomain",
         request: testRequests.tenant.subdomainRoute,
-        expected: { type: "TENANT", tenant: "org1" },
+        expected: { type: "TENANT", tenant: "org1", basePath: "/" },
     },
     {
         label: "should return invalid tenant format for requests with extra subdomain",
@@ -48,7 +44,7 @@ const tests = [
     {
         label: "should return tenant from /t/ path even if subdomain is present",
         request: testRequests.tenant.subDomainAndSlash,
-        expected: { type: "TENANT", tenant: "org1" },
+        expected: { type: "TENANT", tenant: "org1", basePath: "/t/org1" },
     },
 ];
 
@@ -60,40 +56,5 @@ describe("extractTenant", () => {
 
             expect(tenant).toEqual(expected);
         });
-    });
-});
-
-describe("getTenantRequestMode", () => {
-    it("returns subdomain for [org].race-results.org", () => {
-        expect(getTenantRequestMode("myorg.race-results.org")).toBe(
-            "subdomain"
-        );
-    });
-    it("returns subdomain for [org].localhost", () => {
-        expect(getTenantRequestMode("myorg.localhost")).toBe("subdomain");
-    });
-    it("returns path for www.race-results.org", () => {
-        expect(getTenantRequestMode("www.race-results.org")).toBe("path");
-    });
-    it("returns path for apex race-results.org", () => {
-        expect(getTenantRequestMode("race-results.org")).toBe("path");
-    });
-});
-
-describe("getLiveBasePath", () => {
-    it("returns /live for subdomain host", () => {
-        expect(getLiveBasePath("myorg.race-results.org", "myorg")).toBe(
-            "/live"
-        );
-    });
-    it("returns /t/[orgSlug]/live for path (apex) host", () => {
-        expect(getLiveBasePath("race-results.org", "myorg")).toBe(
-            "/t/myorg/live"
-        );
-    });
-    it("returns /t/[orgSlug]/live for www host", () => {
-        expect(getLiveBasePath("www.race-results.org", "myorg")).toBe(
-            "/t/myorg/live"
-        );
     });
 });

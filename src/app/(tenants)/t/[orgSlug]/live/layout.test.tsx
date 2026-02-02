@@ -1,19 +1,26 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { featureFlagsService } from "@/services/feature-flags/feature-flags.service";
 import { liveResultsService } from "@/services/live-results/live-results.service";
-import { requireValidTenant } from "./_lib/utils/tenant-guard";
-import { mockValidTenant } from "@/__tests__/mocks/mock-tenants";
 import { mockClassResults } from "@/__tests__/mocks/mock-class-results";
 import { mockPaxResults } from "@/__tests__/mocks/mock-pax-results";
 import { mockRawResults } from "@/__tests__/mocks/mock-raw-results";
-import type { Tenant } from "@/dto/tenants";
+import { tenantService } from "@/services/tenants/tenant.service";
 
 // Mock next/headers so layout can call headers().get("host") in test (no request scope)
 vi.mock("next/headers", () => ({
     headers: vi.fn().mockResolvedValue({
-        get: (name: string) =>
-            name === "host" ? "test-org.race-results.org" : null,
+        get: (_name: string) => "test-org", // Mock tenant slug
     }),
+}));
+
+vi.mock("next/navigation", () => ({
+    redirect: vi.fn(),
+}));
+
+vi.mock("@/services/tenants/tenant.service", () => ({
+    tenantService: {
+        getTenant: vi.fn(),
+    },
 }));
 
 // Mock dependencies
@@ -49,9 +56,19 @@ vi.mock("./_lib/components/live-layout-client", () => ({
 
 describe("LiveLayout", () => {
     // Helper to setup common mock return values
-    const setupMockData = (tenant: Tenant = mockValidTenant) => {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        vi.mocked(requireValidTenant).mockResolvedValue(tenant as any);
+    const setupMockData = () => {
+        vi.mocked(tenantService.getTenant).mockResolvedValue({
+            orgId: "test-org-id",
+            name: "Test Organization",
+            slug: "test-org",
+            motorsportregOrgId: null,
+            description: null,
+            isPublic: true,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            deletedAt: null,
+        });
+
         vi.mocked(liveResultsService.getClassResults).mockResolvedValue(
             mockClassResults
         );
@@ -75,7 +92,6 @@ describe("LiveLayout", () => {
 
         await LiveLayout({ children: <div>Test</div> });
 
-        expect(requireValidTenant).toHaveBeenCalled();
         expect(liveResultsService.getClassResults).toHaveBeenCalledWith(
             "test-org"
         );
@@ -86,7 +102,7 @@ describe("LiveLayout", () => {
             "test-org"
         );
         expect(featureFlagsService.getOrgFeatureFlags).toHaveBeenCalledWith(
-            "org-123"
+            "test-org-id"
         );
     });
 });
