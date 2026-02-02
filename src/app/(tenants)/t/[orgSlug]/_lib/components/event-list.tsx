@@ -22,7 +22,7 @@ const VARIANT_CONFIG = {
         buttonVariant: "default" as const,
         buttonClassName: undefined as string | undefined,
         badgeSize: "sm" as const,
-        listClassName: "space-y-4",
+        listClassName: "list-none space-y-4 p-0",
     },
     past: {
         linkLabel: "View event",
@@ -30,7 +30,7 @@ const VARIANT_CONFIG = {
         buttonVariant: "outline" as const,
         buttonClassName: "text-muted-foreground",
         badgeSize: "xs" as const,
-        listClassName: "space-y-3",
+        listClassName: "list-none space-y-3 p-0",
     },
 } as const;
 
@@ -57,7 +57,7 @@ export function EventList({ items, variant }: EventListProps) {
     const config = VARIANT_CONFIG[variant];
 
     return (
-        <ul className={config.listClassName}>
+        <ul className={config.listClassName} role="list">
             {items.map((item) => {
                 const name =
                     item.source === "org"

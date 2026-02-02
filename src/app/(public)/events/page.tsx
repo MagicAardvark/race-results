@@ -62,19 +62,25 @@ export default async function EventsPage() {
                 variant="primary"
                 emptyMessage="No upcoming events scheduled. Check back soon."
                 hasItems={upcoming.length > 0}
-            >
-                <EventList items={upcoming} variant="upcoming" />
-            </EventsSection>
+            />
+            {upcoming.length > 0 && (
+                <div className="mt-6 sm:mt-8">
+                    <EventList items={upcoming} variant="upcoming" />
+                </div>
+            )}
 
             {past.length > 0 && (
-                <EventsSection
-                    id="past-events"
-                    title="Past Events"
-                    variant="muted"
-                    hasItems
-                >
-                    <EventList items={past} variant="past" />
-                </EventsSection>
+                <>
+                    <EventsSection
+                        id="past-events"
+                        title="Past Events"
+                        variant="muted"
+                        hasItems
+                    />
+                    <div className="mt-6 sm:mt-8">
+                        <EventList items={past} variant="past" />
+                    </div>
+                </>
             )}
         </div>
     );

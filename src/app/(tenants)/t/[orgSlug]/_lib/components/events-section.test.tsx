@@ -10,9 +10,7 @@ describe("EventsSection", () => {
                 title="Upcoming Events"
                 variant="primary"
                 hasItems={false}
-            >
-                {null}
-            </EventsSection>
+            />
         );
 
         expect(
@@ -32,30 +30,26 @@ describe("EventsSection", () => {
                 variant="primary"
                 hasItems={false}
                 emptyMessage="No upcoming events."
-            >
-                {null}
-            </EventsSection>
+            />
         );
 
         expect(screen.getByText("No upcoming events.")).toBeVisible();
     });
 
-    it("renders children when hasItems is true", () => {
+    it("renders only heading when hasItems is true (list is rendered by parent)", () => {
         render(
             <EventsSection
                 id="upcoming-events"
                 title="Upcoming Events"
                 variant="primary"
                 hasItems
-            >
-                <ul data-testid="event-list">
-                    <li>Event 1</li>
-                </ul>
-            </EventsSection>
+            />
         );
 
-        expect(screen.getByTestId("event-list")).toBeVisible();
-        expect(screen.getByText("Event 1")).toBeVisible();
+        expect(
+            screen.getByRole("heading", { name: "Upcoming Events" })
+        ).toBeVisible();
+        expect(screen.queryByTestId("event-list")).not.toBeInTheDocument();
     });
 
     it("uses default empty message when not provided", () => {
@@ -65,9 +59,7 @@ describe("EventsSection", () => {
                 title="Past Events"
                 variant="muted"
                 hasItems={false}
-            >
-                {null}
-            </EventsSection>
+            />
         );
 
         expect(

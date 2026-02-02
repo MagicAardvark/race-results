@@ -2,6 +2,10 @@ import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 import { Button } from "@/ui/button";
 import { CgMediaLive } from "react-icons/cg";
+import {
+    LiveTimingLink,
+    LIVE_TIMING_LABEL,
+} from "@/app/components/shared/live-timing";
 import { ROLES } from "@/constants/global";
 import { getCurrentUserCached } from "@/services/users/user.service.cached";
 
@@ -43,13 +47,13 @@ export async function AppHeader({
                         >
                             Results
                         </Link>
-                        <Link
+                        <LiveTimingLink
                             href="/live"
                             className="flex h-full items-center gap-2 border-b-2 border-transparent transition-colors duration-500 ease-in-out hover:border-orange-400 hover:text-orange-600"
                         >
-                            Live Timing{" "}
                             <CgMediaLive className="animate-pulse text-red-500" />
-                        </Link>
+                            {LIVE_TIMING_LABEL}
+                        </LiveTimingLink>
                     </nav>
                 </div>
 

@@ -46,6 +46,7 @@ function org(overrides: Partial<Organization> = {}): Organization {
         slug: "test-org",
         motorsportregOrgId: null,
         description: null,
+        headerImageUrl: null,
         isPublic: true,
         createdAt: new Date(),
         updatedAt: new Date(),

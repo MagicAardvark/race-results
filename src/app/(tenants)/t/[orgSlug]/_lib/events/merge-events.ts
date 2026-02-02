@@ -11,7 +11,7 @@ export type MergedEventItem =
     | { source: "mr"; event: MotorsportRegEvent };
 
 export function formatVenue(venue: Venue): string {
-    return [venue.name, venue.city, venue.region].filter(Boolean).join(", ");
+    return [venue.city, venue.region].filter(Boolean).join(", ");
 }
 
 export function mergeOrgAndMrEvents(

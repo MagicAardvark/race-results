@@ -6,6 +6,10 @@ import { motorsportRegService } from "@/services/motorsportreg/motorsportreg.ser
 import { Button } from "@/ui/button";
 import { ArrowLeftIcon } from "lucide-react";
 import { CgMediaLive as LiveIcon } from "react-icons/cg";
+import {
+    LiveTimingLink,
+    LIVE_TIMING_LABEL,
+} from "@/app/components/shared/live-timing";
 import type { Event as MotorsportRegEvent } from "@/dto/motorsportreg";
 import { getDateString } from "./_lib/utils/date-utils";
 import { mergeOrgAndMrEvents } from "./_lib/events/merge-events";
@@ -53,10 +57,10 @@ export default async function Page() {
                     </Link>
                 </Button>
                 <Button size="lg" asChild>
-                    <Link href={`/t/${tenant.org.slug}/live`}>
+                    <LiveTimingLink href={`/t/${tenant.org.slug}/live`}>
                         <LiveIcon className="mr-2 h-5 w-5 animate-pulse text-white" />
-                        Live Timing
-                    </Link>
+                        {LIVE_TIMING_LABEL}
+                    </LiveTimingLink>
                 </Button>
             </header>
 
@@ -83,19 +87,25 @@ export default async function Page() {
                     variant="primary"
                     emptyMessage="No upcoming events scheduled. Check back soon."
                     hasItems={upcoming.length > 0}
-                >
-                    <EventList items={upcoming} variant="upcoming" />
-                </EventsSection>
+                />
+                {upcoming.length > 0 && (
+                    <div className="mt-6 sm:mt-8">
+                        <EventList items={upcoming} variant="upcoming" />
+                    </div>
+                )}
 
                 {past.length > 0 && (
-                    <EventsSection
-                        id="past-events"
-                        title="Past Events"
-                        variant="muted"
-                        hasItems
-                    >
-                        <EventList items={past} variant="past" />
-                    </EventsSection>
+                    <>
+                        <EventsSection
+                            id="past-events"
+                            title="Past Events"
+                            variant="muted"
+                            hasItems
+                        />
+                        <div className="mt-6 sm:mt-8">
+                            <EventList items={past} variant="past" />
+                        </div>
+                    </>
                 )}
             </main>
         </div>

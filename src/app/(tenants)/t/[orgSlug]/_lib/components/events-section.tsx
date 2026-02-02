@@ -7,20 +7,15 @@ type EventsSectionProps = {
     variant: "primary" | "muted";
     emptyMessage?: string;
     hasItems: boolean;
-    children: React.ReactNode;
 };
 
-const sectionWrapperClass = "rounded-2xl border p-6 sm:p-8";
-
-const primarySectionClass = "bg-gradient-to-b from-muted/50 to-muted/20";
-
-const mutedSectionClass = "mt-8 border-muted/50 bg-muted/10";
+const mutedSectionClass = "mt-8";
 
 const primaryHeadingClass =
-    "mb-6 flex items-center gap-3 text-2xl font-bold tracking-tight sm:text-3xl";
+    "flex items-center gap-3 text-xl font-bold tracking-tight sm:text-2xl";
 
 const mutedHeadingClass =
-    "mb-6 flex items-center gap-3 text-xl font-bold tracking-tight text-muted-foreground sm:text-2xl";
+    "flex items-center gap-3 text-xl font-bold tracking-tight text-muted-foreground sm:text-2xl";
 
 const primaryIconClass =
     "flex size-10 items-center justify-center rounded-lg bg-primary/10 text-primary";
@@ -34,15 +29,12 @@ export function EventsSection({
     variant,
     emptyMessage = "No events scheduled. Check back soon.",
     hasItems,
-    children,
 }: EventsSectionProps) {
     const isPrimary = variant === "primary";
+
     return (
         <section
-            className={cn(
-                sectionWrapperClass,
-                isPrimary ? primarySectionClass : mutedSectionClass
-            )}
+            className={!isPrimary ? mutedSectionClass : undefined}
             aria-labelledby={`${id}-heading`}
         >
             <h2
@@ -63,10 +55,8 @@ export function EventsSection({
                 </span>
                 {title}
             </h2>
-            {hasItems ? (
-                children
-            ) : (
-                <div className="py-12 text-center">
+            {!hasItems && (
+                <div className="mt-4 py-8 text-center">
                     <p className="text-muted-foreground">{emptyMessage}</p>
                 </div>
             )}

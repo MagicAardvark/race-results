@@ -1,6 +1,7 @@
 import { Separator } from "@/ui/separator";
 import { FaFacebookF, FaInstagram } from "react-icons/fa";
 import Link from "next/link";
+import { LiveTimingLink } from "@/app/components/shared/live-timing";
 
 export function AppFooter() {
     return (
@@ -42,9 +43,10 @@ export function AppFooter() {
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/live" className="hover:underline">
-                                    Live Timing
-                                </Link>
+                                <LiveTimingLink
+                                    href="/live"
+                                    className="hover:underline"
+                                />
                             </li>
                         </ul>
                     </div>

@@ -34,7 +34,7 @@ function mrEvent(overrides: Partial<MotorsportRegEvent>): MotorsportRegEvent {
         start: "2026-06-10",
         end: "2026-06-10",
         detailuri: "https://example.com/event",
-        venue: { id: "v1", name: "Track", city: "Boston", region: "MA" },
+        venue: { id: "v1", city: "Boston", region: "MA" },
         ...overrides,
     };
 }
@@ -43,21 +43,19 @@ describe("formatVenue", () => {
     it("joins name, city, and region", () => {
         const venue: Venue = {
             id: "v1",
-            name: "Devens",
             city: "Ayer",
             region: "MA",
         };
-        expect(formatVenue(venue)).toBe("Devens, Ayer, MA");
+        expect(formatVenue(venue)).toBe("Ayer, MA");
     });
 
     it("filters out empty parts", () => {
         const venue: Venue = {
             id: "v1",
-            name: "Track",
             city: "",
             region: "MA",
         };
-        expect(formatVenue(venue)).toBe("Track, MA");
+        expect(formatVenue(venue)).toBe("MA");
     });
 });
 
