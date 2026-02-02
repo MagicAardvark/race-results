@@ -3,10 +3,8 @@ import { getNavigationPages } from "./navigation";
 import { FEATURE_FLAGS } from "../config/feature-flags";
 
 describe("getNavigationPages", () => {
-    const basePath = "/t/test-org/live";
-
     it("returns all pages when no feature flags provided", () => {
-        const pages = getNavigationPages(basePath);
+        const pages = getNavigationPages();
 
         expect(pages).toHaveLength(5);
         expect(pages[0].name).toBe("Class");
@@ -17,13 +15,13 @@ describe("getNavigationPages", () => {
     });
 
     it("generates correct links", () => {
-        const pages = getNavigationPages(basePath);
+        const pages = getNavigationPages();
 
-        expect(pages[0].link).toBe(basePath);
-        expect(pages[1].link).toBe(`${basePath}/pax`);
-        expect(pages[2].link).toBe(`${basePath}/raw`);
-        expect(pages[3].link).toBe(`${basePath}/workrun`);
-        expect(pages[4].link).toBe(`${basePath}/me`);
+        expect(pages[0].link).toBe("/live");
+        expect(pages[1].link).toBe("/live/pax");
+        expect(pages[2].link).toBe("/live/raw");
+        expect(pages[3].link).toBe("/live/workrun");
+        expect(pages[4].link).toBe("/live/me");
     });
 
     it("filters out PAX page when feature flag is disabled", () => {
@@ -32,7 +30,7 @@ describe("getNavigationPages", () => {
             [FEATURE_FLAGS.WORK_RUN_ENABLED]: true,
         };
 
-        const pages = getNavigationPages(basePath, featureFlags);
+        const pages = getNavigationPages(featureFlags);
 
         expect(pages).toHaveLength(4);
         expect(pages.find((p) => p.name === "PAX")).toBeUndefined();
@@ -45,7 +43,7 @@ describe("getNavigationPages", () => {
             [FEATURE_FLAGS.WORK_RUN_ENABLED]: false,
         };
 
-        const pages = getNavigationPages(basePath, featureFlags);
+        const pages = getNavigationPages(featureFlags);
 
         expect(pages).toHaveLength(4);
         expect(pages.find((p) => p.name === "Work/Run")).toBeUndefined();
@@ -58,7 +56,7 @@ describe("getNavigationPages", () => {
             [FEATURE_FLAGS.WORK_RUN_ENABLED]: false,
         };
 
-        const pages = getNavigationPages(basePath, featureFlags);
+        const pages = getNavigationPages(featureFlags);
 
         expect(pages).toHaveLength(3);
         expect(pages.find((p) => p.name === "PAX")).toBeUndefined();
@@ -72,7 +70,7 @@ describe("getNavigationPages", () => {
             [FEATURE_FLAGS.WORK_RUN_ENABLED]: true,
         };
 
-        const pages = getNavigationPages(basePath, featureFlags);
+        const pages = getNavigationPages(featureFlags);
 
         expect(pages).toHaveLength(5);
         expect(pages.find((p) => p.name === "PAX")).toBeDefined();
@@ -85,7 +83,7 @@ describe("getNavigationPages", () => {
             [FEATURE_FLAGS.WORK_RUN_ENABLED]: false,
         };
 
-        const pages = getNavigationPages(basePath, featureFlags);
+        const pages = getNavigationPages(featureFlags);
 
         // Class, Raw, and Me don't have feature flags, so they should always be included
         expect(pages.find((p) => p.name === "Class")).toBeDefined();

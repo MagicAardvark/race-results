@@ -49,6 +49,10 @@ export const testRequests = {
     },
     public: {
         home: { path: "/" },
+        /** www subdomain → main site (non-tenant) */
+        wwwAsSubdomain: { path: "/", subdomain: "www" },
+        wwwOrg: { path: "/", host: "www.race-results.org" },
+        wwwLive: { path: "/", host: "www.race-results.live" },
     },
 };
 

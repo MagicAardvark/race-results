@@ -15,6 +15,8 @@ type LiveResultsData = {
     runWork: RunWork | null;
     displayMode: DisplayMode;
     featureFlags: Record<string, boolean>;
+    /** Base path for live section links (/live on subdomain, /t/[orgSlug]/live on path). */
+    basePath: string;
 };
 
 const LiveResultsContext = createContext<LiveResultsData | null>(null);
@@ -29,6 +31,7 @@ type LiveResultsProviderProps = {
     runWork: RunWork | null;
     displayMode: DisplayMode;
     featureFlags?: Record<string, boolean>;
+    basePath: string;
     children: React.ReactNode;
 };
 
@@ -39,6 +42,7 @@ export function LiveResultsProvider({
     runWork,
     displayMode,
     featureFlags = EMPTY_FEATURE_FLAGS,
+    basePath,
     children,
 }: LiveResultsProviderProps) {
     const value = useMemo(
@@ -49,6 +53,7 @@ export function LiveResultsProvider({
             runWork,
             displayMode,
             featureFlags,
+            basePath,
         }),
         [
             classResults,
@@ -57,6 +62,7 @@ export function LiveResultsProvider({
             runWork,
             displayMode,
             featureFlags,
+            basePath,
         ]
     );
 

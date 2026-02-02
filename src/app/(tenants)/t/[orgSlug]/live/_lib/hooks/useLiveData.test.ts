@@ -13,22 +13,18 @@ import type {
     ProcessedLiveIndexResults,
     ProcessedLiveRawResults,
 } from "../types";
-import type { ValidTenant } from "@/dto/tenants";
+import { Organization } from "@/dto/organizations";
 
-const defaultTenant: ValidTenant = {
-    isValid: true,
-    org: {
-        orgId: "test-org-id",
-        name: "Test Organization",
-        slug: "test-org",
-        motorsportregOrgId: null,
-        description: null,
-        headerImageUrl: null,
-        isPublic: true,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        deletedAt: null,
-    },
+const defaultTenant: Organization = {
+    orgId: "test-org-id",
+    name: "Test Organization",
+    slug: "test-org",
+    motorsportregOrgId: null,
+    description: null,
+    isPublic: true,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    deletedAt: null,
 };
 
 describe("useLiveData", () => {
@@ -41,7 +37,7 @@ describe("useLiveData", () => {
             // eslint-disable-next-line react/no-children-prop
             React.createElement(
                 TenantProvider,
-                { tenant: defaultTenant, children: undefined },
+                { org: defaultTenant, children: undefined },
                 // eslint-disable-next-line react/no-children-prop
                 React.createElement(LiveResultsProvider, {
                     classResults: liveData.classResults ?? null,
@@ -50,6 +46,7 @@ describe("useLiveData", () => {
                     runWork: null,
                     displayMode: DisplayMode.autocross,
                     featureFlags: {},
+                    basePath: "/t/test-org/live",
                     children: children,
                 })
             );

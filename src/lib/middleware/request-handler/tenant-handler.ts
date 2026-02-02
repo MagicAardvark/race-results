@@ -6,11 +6,13 @@ import { NextRequest, NextResponse } from "next/server";
 
 export class TenantHandler implements IRequestHandler {
     async handleRequest(req: NextRequest): Promise<NextResponse> {
-        const { tenant, type } = extractTenant(req);
+        const result = extractTenant(req);
 
-        if (!tenant || type !== "TENANT") {
+        if (result.type !== "TENANT") {
             return this.invalidTenantResponse(req);
         }
+
+        const tenant = result.tenant;
 
         const isValid = await tenantService.isValidTenant(tenant);
 
@@ -28,7 +30,10 @@ export class TenantHandler implements IRequestHandler {
             );
         }
 
-        res.headers.set(HEADERS.TENANT_SLUG, tenant);
+        const tenantBase = result.basePath;
+
+        res.headers.set(HEADERS.TENANT.SLUG, tenant);
+        res.headers.set(HEADERS.TENANT.BASE_PATH, tenantBase);
 
         return res;
     }

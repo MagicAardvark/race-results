@@ -10,31 +10,31 @@ export type NavigationPage = {
 };
 
 export function getNavigationPages(
-    basePath: string,
     featureFlags?: Record<string, boolean>
 ): NavigationPage[] {
+    const liveBasePath = "/live"; // Base path for live timing pages
     const pages: NavigationPage[] = [
         {
             name: "Class",
-            link: basePath,
+            link: liveBasePath,
         },
         {
             name: "PAX",
-            link: `${basePath}/pax`,
+            link: `${liveBasePath}/pax`,
             featureFlag: FEATURE_FLAGS.PAX_ENABLED,
         },
         {
             name: "Raw",
-            link: `${basePath}/raw`,
+            link: `${liveBasePath}/raw`,
         },
         {
             name: "Work/Run",
-            link: `${basePath}/workrun`,
+            link: `${liveBasePath}/workrun`,
             featureFlag: FEATURE_FLAGS.WORK_RUN_ENABLED,
         },
         {
             name: "Me",
-            link: `${basePath}/me`,
+            link: `${liveBasePath}/me`,
         },
     ];
 
