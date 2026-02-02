@@ -13,7 +13,6 @@ export default async function LiveLayout({
 }) {
     const org = await tenantService.getTenant();
     const basePath = await getTenantBasePath();
-    console.log("LiveLayout - org.slug:", org.slug);
 
     // Fetch all data on the server in parallel
     // TODO: Get display mode from event/tenant configuration
