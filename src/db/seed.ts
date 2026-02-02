@@ -106,7 +106,6 @@ async function main() {
         // eslint-disable-next-line no-console
         console.log("Seed completed successfully!");
     } catch (error) {
-        // eslint-disable-next-line no-console
         console.error("Seed failed:", error);
         process.exit(1);
     }

@@ -1,7 +1,7 @@
+import { MAIN_SITE_URL } from "@/constants/global";
 import { tenantService } from "@/services/tenants/tenant.service";
 import { motorsportRegService } from "@/services/motorsportreg/motorsportreg.service";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 import {
     Table,
     TableBody,
@@ -21,23 +21,20 @@ import {
     CardTitle,
 } from "@/ui/card";
 import { formatDate, isSingleDay } from "./_lib/utils/date-utils";
+import { TenantLink } from "@/app/(tenants)/t/_lib/components/tenant-link";
 
 export default async function Page() {
-    const tenant = await tenantService.getTenant();
-
-    if (!tenant.isValid) {
-        redirect("/");
-    }
+    const org = await tenantService.getTenant();
 
     // Fetch events if organization has MotorsportReg ID
     let events: Awaited<
         ReturnType<typeof motorsportRegService.getOrganizationCalendar>
     >["response"]["events"] = [];
 
-    if (tenant.org.motorsportregOrgId) {
+    if (org.motorsportregOrgId) {
         try {
             const response = await motorsportRegService.getOrganizationCalendar(
-                tenant.org.motorsportregOrgId,
+                org.motorsportregOrgId,
                 {
                     exclude_cancelled: true,
                 }
@@ -54,30 +51,28 @@ export default async function Page() {
             {/* Top Bar with Back Button and Live Timing */}
             <div className="mb-6 flex items-center justify-between">
                 <Button variant="ghost" size="sm" asChild>
-                    <Link href="/">
+                    <Link href={MAIN_SITE_URL}>
                         <ArrowLeftIcon className="mr-2 h-4 w-4" />
                         Back to Organizations
                     </Link>
                 </Button>
                 <Button size="lg" asChild>
-                    <Link href={`/t/${tenant.org.slug}/live`}>
+                    <TenantLink pathFromTenantRoot={"/live"}>
                         <LiveIcon className="mr-2 h-5 w-5 animate-pulse text-white" />
                         Live Timing
-                    </Link>
+                    </TenantLink>
                 </Button>
             </div>
 
             {/* Organization Header */}
             <div className="mb-8">
-                <h1 className="text-3xl font-bold sm:text-4xl">
-                    {tenant.org.name}
-                </h1>
-                {tenant.org.description && (
+                <h1 className="text-3xl font-bold sm:text-4xl">{org.name}</h1>
+                {org.description && (
                     <p className="text-muted-foreground mt-2 max-w-2xl">
-                        {tenant.org.description}
+                        {org.description}
                     </p>
                 )}
-                {!tenant.org.description && tenant.org.motorsportregOrgId && (
+                {!org.description && org.motorsportregOrgId && (
                     <p className="text-muted-foreground mt-2">
                         View upcoming events and results for this organization
                     </p>
@@ -85,7 +80,7 @@ export default async function Page() {
             </div>
 
             {/* Events Section */}
-            {tenant.org.motorsportregOrgId ? (
+            {org.motorsportregOrgId ? (
                 <Card>
                     <CardHeader>
                         <CardTitle className="flex items-center gap-2">

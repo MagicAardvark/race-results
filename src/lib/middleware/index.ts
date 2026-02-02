@@ -74,9 +74,5 @@ export const getRequestHandler = (req: NextRequest): RequestHandlerKey => {
         return "GENERAL_API_ROUTE";
     }
 
-    if (tenant.type !== "TENANT" && !isAdmin && !isIngestApi && !isGeneralApi) {
-        return "GLOBAL_ROUTE";
-    }
-
-    return "INVALID";
+    return "GLOBAL_ROUTE";
 };

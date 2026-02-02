@@ -7,10 +7,10 @@ export default async function TenantsLayout({
 }: {
     children: React.ReactNode;
 }) {
-    const tenant = await tenantService.getTenant();
+    const org = await tenantService.getTenant();
 
     return (
-        <TenantProvider tenant={tenant}>
+        <TenantProvider org={org}>
             <div className="flex min-h-screen flex-col">
                 <AppHeader />
                 <main className="flex-1">{children}</main>
