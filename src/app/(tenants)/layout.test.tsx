@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
 import { tenantService } from "@/services/tenants/tenant.service";
-import { mockValidTenant } from "@/__tests__/mocks/mock-tenants";
+import { defaultOrg } from "@/__tests__/test-utils";
 
 // Mock dependencies
 vi.mock("@/services/tenants/tenant.service", () => ({
@@ -21,9 +21,7 @@ vi.mock("@/app/components/shared/layout/app-header", () => ({
 
 describe("TenantsLayout", () => {
     it("calls tenantService.getTenant", async () => {
-        const mockTenant = mockValidTenant;
-
-        vi.mocked(tenantService.getTenant).mockResolvedValue(mockTenant);
+        vi.mocked(tenantService.getTenant).mockResolvedValue(defaultOrg);
 
         const TenantsLayout = (await import("./layout")).default;
 

@@ -15,7 +15,7 @@ export async function ConfigurationLayout({
     const tenant = await tenantService.getTenant();
 
     return (
-        <TenantProvider tenant={tenant}>
+        <TenantProvider org={tenant}>
             <SidebarProvider>
                 <div className="flex min-h-screen w-full flex-col">
                     <AppHeader

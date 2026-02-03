@@ -32,7 +32,7 @@ describe("TenantHandler", () => {
             expect(result.headers.get("x-middleware-rewrite")).toBe(
                 "https://org1.race-results.org/t/org1/"
             );
-            expect(result.headers.get(HEADERS.TENANT_SLUG)).toBe("org1");
+            expect(result.headers.get(HEADERS.TENANT.SLUG)).toBe("org1");
         });
 
         it("should rewrite to /tenant-not-found if tenant is missing", async () => {
@@ -56,7 +56,7 @@ describe("TenantHandler", () => {
             );
 
             expect(result.status).toBe(200);
-            expect(result.headers.get(HEADERS.TENANT_SLUG)).toBeNull();
+            expect(result.headers.get(HEADERS.TENANT.SLUG)).toBeNull();
         });
 
         it("should rewrite to /tenant-not-found for invalid tenant", async () => {
@@ -85,7 +85,7 @@ describe("TenantHandler", () => {
             expect(result.headers.get("x-middleware-rewrite")).toBe(
                 "https://org1.race-results.org/t/org1/live"
             );
-            expect(result.headers.get(HEADERS.TENANT_SLUG)).toBe("org1");
+            expect(result.headers.get(HEADERS.TENANT.SLUG)).toBe("org1");
         });
 
         it("should proceed without rewrite if URL already contains tenant", async () => {
@@ -110,7 +110,7 @@ describe("TenantHandler", () => {
 
             expect(result.status).toBe(200);
             expect(result.headers.get("x-middleware-rewrite")).toBeNull();
-            expect(result.headers.get(HEADERS.TENANT_SLUG)).toBe("org1");
+            expect(result.headers.get(HEADERS.TENANT.SLUG)).toBe("org1");
         });
     });
 });

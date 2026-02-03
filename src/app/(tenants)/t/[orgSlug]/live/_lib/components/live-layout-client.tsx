@@ -1,25 +1,27 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname, useParams, useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Button } from "@/ui/button";
 import { RefreshCw } from "lucide-react";
 import { getNavigationPages } from "../utils/navigation";
 import { useLiveData } from "../hooks/useLiveData";
 import { useState, useMemo, useCallback } from "react";
+import { ClientTenantLink } from "@/app/(tenants)/t/_lib/components/client-tenant-link";
 
-export function LiveLayoutClient({ children }: { children: React.ReactNode }) {
+export function LiveLayoutClient({
+    children,
+    basePath,
+}: {
+    children: React.ReactNode;
+    basePath: string;
+}) {
     const pathname = usePathname();
-    const params = useParams();
     const router = useRouter();
     const { featureFlags } = useLiveData();
     const [isRefreshing, setIsRefreshing] = useState(false);
-
-    const orgSlug = params.orgSlug as string;
-    const basePath = useMemo(() => `/t/${orgSlug}/live`, [orgSlug]);
     const navigationPages = useMemo(
-        () => getNavigationPages(basePath, featureFlags),
-        [basePath, featureFlags]
+        () => getNavigationPages(featureFlags),
+        [featureFlags]
     );
 
     const handleRefresh = useCallback(async () => {
@@ -44,7 +46,12 @@ export function LiveLayoutClient({ children }: { children: React.ReactNode }) {
                                 size="sm"
                                 asChild
                             >
-                                <Link href={page.link}>{page.name}</Link>
+                                <ClientTenantLink
+                                    pathFromTenantRoot={page.link}
+                                    tenantBase={basePath}
+                                >
+                                    {page.name}
+                                </ClientTenantLink>
                             </Button>
                         );
                     })}

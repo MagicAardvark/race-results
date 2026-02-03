@@ -1,13 +1,6 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect } from "vitest";
 import { renderWithProviders } from "@/__tests__/test-utils";
 import { TrophiesCallout } from "./trophies-callout";
-
-// Mock next/navigation
-vi.mock("next/navigation", () => ({
-    useParams: () => ({
-        orgSlug: "test-org",
-    }),
-}));
 
 describe("TrophiesCallout", () => {
     it("returns null when showTrophies is false", () => {
