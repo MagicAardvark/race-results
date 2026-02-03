@@ -1,27 +1,24 @@
 import { describe, it, expect, vi } from "vitest";
-import { render, screen } from "@/__tests__/test-utils";
+import { defaultOrg, render, screen } from "@/__tests__/test-utils";
 import { TenantProvider, useTenant } from "./TenantContext";
-import { mockValidTenant } from "@/__tests__/mocks/mock-tenants";
 
 describe("TenantContext", () => {
-    const mockTenant = mockValidTenant;
+    const mockTenant = defaultOrg;
 
     it("provides tenant to children", () => {
         const TestComponent = () => {
-            const tenant = useTenant();
-            if (tenant.isValid) {
-                return <div>{tenant.org.name}</div>;
-            }
-            return <div>unexpected</div>;
+            const org = useTenant();
+
+            return <div>{org.name}</div>;
         };
 
         render(
-            <TenantProvider tenant={mockTenant}>
+            <TenantProvider org={mockTenant}>
                 <TestComponent />
             </TenantProvider>
         );
 
-        expect(screen.getByText("Test Org")).toBeVisible();
+        expect(screen.getByText("Test Organization")).toBeVisible();
     });
 
     it("throws error when useTenant is used outside provider", () => {
@@ -43,21 +40,18 @@ describe("TenantContext", () => {
 
     it("provides access to tenant properties", () => {
         const TestComponent = () => {
-            const tenant = useTenant();
-            if (tenant.isValid) {
-                return (
-                    <div>
-                        <div>{tenant.org.slug}</div>
-                        <div>valid</div>
-                        <div>not-global</div>
-                    </div>
-                );
-            }
-            return <div>unexpected</div>;
+            const org = useTenant();
+            return (
+                <div>
+                    <div>{org.slug}</div>
+                    <div>valid</div>
+                    <div>not-global</div>
+                </div>
+            );
         };
 
         render(
-            <TenantProvider tenant={mockTenant}>
+            <TenantProvider org={mockTenant}>
                 <TestComponent />
             </TenantProvider>
         );

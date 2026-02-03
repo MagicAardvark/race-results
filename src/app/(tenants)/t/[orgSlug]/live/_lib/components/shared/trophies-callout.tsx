@@ -1,16 +1,13 @@
 "use client";
 
-import { useMemo } from "react";
-import Link from "next/link";
-import { useParams } from "next/navigation";
 import { Trophy } from "lucide-react";
 import { Card, CardContent } from "@/ui/card";
 import { Button } from "@/ui/button";
+import { useLiveResults } from "../../context/live-results-context";
+import { ClientTenantLink } from "@/app/(tenants)/t/_lib/components/client-tenant-link";
 
 export function TrophiesCallout() {
-    const params = useParams();
-    const orgSlug = params.orgSlug as string;
-    const basePath = useMemo(() => `/t/${orgSlug}/live`, [orgSlug]);
+    const { basePath } = useLiveResults();
 
     // TODO: Once we have a toggle to show the trophies callout, we can remove that.
     const showTrophies = false;
@@ -39,7 +36,12 @@ export function TrophiesCallout() {
                     size="sm"
                     className="bg-purple-700 text-white hover:bg-purple-800"
                 >
-                    <Link href={`${basePath}/trophies`}>View Trophies</Link>
+                    <ClientTenantLink
+                        pathFromTenantRoot="trophies"
+                        tenantBase={basePath}
+                    >
+                        View Trophies
+                    </ClientTenantLink>
                 </Button>
             </CardContent>
         </Card>

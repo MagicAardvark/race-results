@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { redirect } from "next/navigation";
 import { orgEventsRepository } from "@/db/repositories/org-events.repo";
 import { tenantService } from "@/services/tenants/tenant.service";
 import { motorsportRegService } from "@/services/motorsportreg/motorsportreg.service";
+import { MAIN_SITE_URL } from "@/constants/global";
 import { Button } from "@/ui/button";
 import { ArrowLeftIcon } from "lucide-react";
 import { CgMediaLive as LiveIcon } from "react-icons/cg";
@@ -11,19 +11,16 @@ import { getDateString } from "./_lib/utils/date-utils";
 import { mergeOrgAndMrEvents } from "./_lib/events/merge-events";
 import { EventsSection } from "./_lib/components/events-section";
 import { EventList } from "./_lib/components/event-list";
+import { TenantLink } from "@/app/(tenants)/t/_lib/components/tenant-link";
 
 export default async function Page() {
-    const tenant = await tenantService.getTenant();
-
-    if (!tenant.isValid) {
-        redirect("/");
-    }
+    const org = await tenantService.getTenant();
 
     const [orgEvents, events] = await Promise.all([
-        orgEventsRepository.listByOrgId(tenant.org.orgId),
-        tenant.org.motorsportregOrgId
+        orgEventsRepository.listByOrgId(org.orgId),
+        org.motorsportregOrgId
             ? motorsportRegService
-                  .getOrganizationCalendar(tenant.org.motorsportregOrgId, {
+                  .getOrganizationCalendar(org.motorsportregOrgId, {
                       exclude_cancelled: true,
                   })
                   .then((r) => r.response.events)
@@ -47,29 +44,29 @@ export default async function Page() {
                 role="banner"
             >
                 <Button variant="ghost" size="sm" asChild>
-                    <Link href="/">
+                    <Link href={MAIN_SITE_URL}>
                         <ArrowLeftIcon className="mr-2 h-4 w-4" />
                         Back to Organizations
                     </Link>
                 </Button>
                 <Button size="lg" asChild>
-                    <Link href={`/t/${tenant.org.slug}/live`}>
+                    <TenantLink pathFromTenantRoot={"/live"}>
                         <LiveIcon className="mr-2 h-5 w-5 animate-pulse text-white" />
                         Live Timing
-                    </Link>
+                    </TenantLink>
                 </Button>
             </header>
 
             <main className="contents">
                 <div className="mb-8">
                     <h1 className="text-3xl font-bold sm:text-4xl">
-                        {tenant.org.name}
+                        {org.name}
                     </h1>
-                    {tenant.org.description ? (
+                    {org.description ? (
                         <p className="text-muted-foreground mt-2 max-w-2xl">
-                            {tenant.org.description}
+                            {org.description}
                         </p>
-                    ) : tenant.org.motorsportregOrgId ? (
+                    ) : org.motorsportregOrgId ? (
                         <p className="text-muted-foreground mt-2">
                             View upcoming events and results for this
                             organization

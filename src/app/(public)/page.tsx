@@ -82,17 +82,18 @@ export default async function Page() {
                         aria-label={`View more about ${org.name}`}
                     >
                         <Card className="relative h-full overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
-                            <div className="relative h-48 w-full overflow-hidden bg-gradient-to-br from-orange-400 to-orange-500">
+                            <div className="relative -mt-4 h-48 w-full overflow-hidden bg-gradient-to-br from-orange-400 to-orange-500">
                                 <Image
                                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
                                     alt={org.name}
                                     width={400}
                                     height={225}
-                                    src={`https://picsum.photos/400/225?random=${index}`}
+                                    src={
+                                        org.headerImageUrl ??
+                                        `https://picsum.photos/400/225?random=${index}`
+                                    }
+                                    unoptimized={!!org.headerImageUrl}
                                 />
-                                <div className="absolute top-3 right-3 rounded-full bg-white/90 px-3 py-1 text-xs font-medium backdrop-blur">
-                                    Active
-                                </div>
                             </div>
 
                             <CardHeader className="space-y-3">

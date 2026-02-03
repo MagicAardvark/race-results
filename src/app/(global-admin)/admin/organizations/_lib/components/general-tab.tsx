@@ -1,6 +1,7 @@
 "use client";
 
 import { updateOrganization } from "@/app/actions/organization.actions";
+import { HeaderImageUpload } from "./header-image-upload";
 import { Button } from "@/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/ui/card";
 import { Checkbox } from "@/ui/checkbox";
@@ -40,6 +41,10 @@ export const GeneralTab = ({ org }: GeneralTabProps) => {
                         />
 
                         <FieldGroup>
+                            <HeaderImageUpload
+                                headerImageUrl={org.headerImageUrl}
+                                orgName={org.name}
+                            />
                             <div className="grid grid-cols-2 gap-4">
                                 <Field>
                                     <FieldLabel

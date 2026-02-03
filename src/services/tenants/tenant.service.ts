@@ -1,37 +1,30 @@
 import { HEADERS } from "@/constants/global";
-import { InvalidTenant, Tenant, ValidTenant } from "@/dto/tenants";
+import { Organization } from "@/dto/organizations";
 import { organizationService } from "@/services/organizations/organization.service";
 import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 
 interface ITenantService {
-    getTenant(): Promise<Tenant>;
+    getTenant(): Promise<Organization>;
     isValidTenant(slug: string): Promise<boolean>;
 }
 
 export class TenantService implements ITenantService {
-    async getTenant(): Promise<Tenant> {
+    async getTenant(): Promise<Organization> {
         const h = await headers();
-        const slug = h.get(HEADERS.TENANT_SLUG);
+        const slug = h.get(HEADERS.TENANT.SLUG);
 
         if (!slug) {
-            return {
-                isValid: false,
-            } as InvalidTenant;
+            redirect("/");
         }
 
         const org = await organizationService.getOrganizationBySlug(slug);
 
         if (!org) {
-            return {
-                isValid: false,
-            } as InvalidTenant;
+            redirect("/");
         }
 
-        return {
-            isValid: true,
-            org: org,
-            isGlobal: false,
-        } as ValidTenant;
+        return org;
     }
 
     async isValidTenant(slug: string): Promise<boolean> {

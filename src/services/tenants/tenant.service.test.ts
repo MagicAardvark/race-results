@@ -2,7 +2,6 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { tenantService } from "./tenant.service";
 import { organizationService } from "@/services/organizations/organization.service";
 import type { Organization } from "@/dto/organizations";
-import { InvalidTenant, ValidTenant } from "@/dto/tenants";
 
 // Mock Next.js headers
 vi.mock("next/headers", () => ({
@@ -16,6 +15,12 @@ vi.mock("@/services/organizations/organization.service", () => ({
     },
 }));
 
+vi.mock("next/navigation", () => ({
+    redirect: vi.fn(() => {
+        throw new Error("NEXT_REDIRECT");
+    }),
+}));
+
 describe("TenantService", () => {
     const mockOrg: Organization = {
         orgId: "org-1",
@@ -23,6 +28,7 @@ describe("TenantService", () => {
         slug: "test-org",
         motorsportregOrgId: "msr-123",
         description: "Test description",
+        headerImageUrl: null,
         isPublic: true,
         createdAt: new Date("2024-01-01"),
         updatedAt: new Date("2024-01-02"),
@@ -34,18 +40,18 @@ describe("TenantService", () => {
     });
 
     describe("getTenant", () => {
-        it("returns invalid tenant when no slug header", async () => {
+        it("redirects when no slug header", async () => {
             const { headers } = await import("next/headers");
             vi.mocked(headers).mockResolvedValue({
                 get: vi.fn().mockReturnValue(null),
             } as unknown as Headers);
 
-            const result = await tenantService.getTenant();
-
-            expect(result.isValid).toBe(false);
+            await expect(tenantService.getTenant()).rejects.toThrow(
+                "NEXT_REDIRECT"
+            );
         });
 
-        it("returns valid tenant when organization exists", async () => {
+        it("returns matching org when tenant slug exists", async () => {
             const { headers } = await import("next/headers");
             vi.mocked(headers).mockResolvedValue({
                 get: vi.fn().mockReturnValue("test-org"),
@@ -54,14 +60,13 @@ describe("TenantService", () => {
                 organizationService.getOrganizationBySlug
             ).mockResolvedValue(mockOrg);
 
-            const result = (await tenantService.getTenant()) as ValidTenant;
+            const result = await tenantService.getTenant();
 
-            expect(result.isValid).toBe(true);
-            expect(result.org.slug).toBe("test-org");
-            expect(result.org.name).toBe("Test Organization");
+            expect(result.slug).toBe("test-org");
+            expect(result.name).toBe("Test Organization");
         });
 
-        it("returns invalid tenant when organization is undefined", async () => {
+        it("redirects when no org found", async () => {
             const { headers } = await import("next/headers");
             vi.mocked(headers).mockResolvedValue({
                 get: vi.fn().mockReturnValue("non-existent"),
@@ -71,9 +76,9 @@ describe("TenantService", () => {
                 organizationService.getOrganizationBySlug
             ).mockResolvedValue(null);
 
-            const result = (await tenantService.getTenant()) as InvalidTenant;
-
-            expect(result.isValid).toBe(false);
+            await expect(tenantService.getTenant()).rejects.toThrow(
+                "NEXT_REDIRECT"
+            );
         });
     });
 

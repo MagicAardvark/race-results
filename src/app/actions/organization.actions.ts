@@ -5,6 +5,7 @@ import { Organization } from "@/dto/organizations";
 import { requireRole } from "@/lib/auth/require-role";
 import { nameof } from "@/lib/utils";
 import { organizationAdminService } from "@/services/organizations/organization.admin.service";
+import { put } from "@vercel/blob";
 import { refresh, revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
@@ -85,6 +86,31 @@ export async function updateOrganization(
         }
     }
 
+    let headerImageUrl: string | null | undefined = undefined;
+    const removeHeaderImage = formData.get("removeHeaderImage") === "on";
+    const headerImageFile = formData.get("headerImage") as File | null;
+
+    if (removeHeaderImage) {
+        headerImageUrl = null;
+    } else if (headerImageFile && headerImageFile.size > 0) {
+        try {
+            const blob = await put(
+                `org-headers/${orgId}/${headerImageFile.name}`,
+                headerImageFile,
+                { access: "public" }
+            );
+            headerImageUrl = blob.url;
+        } catch (err) {
+            return {
+                isError: true,
+                message:
+                    err instanceof Error
+                        ? err.message
+                        : "Failed to upload header image",
+            };
+        }
+    }
+
     let slug = null;
 
     try {
@@ -93,6 +119,7 @@ export async function updateOrganization(
             name,
             motorsportregOrgId,
             description,
+            ...(headerImageUrl !== undefined && { headerImageUrl }),
             isPublic,
             featureFlags:
                 Object.keys(featureFlags).length > 0 ? featureFlags : undefined,
