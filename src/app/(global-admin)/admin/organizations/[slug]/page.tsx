@@ -7,6 +7,7 @@ import {
     EmptyTitle,
 } from "@/ui/empty";
 import { LinkButton } from "@/ui/link-button";
+import { orgEventsRepository } from "@/db/repositories/org-events.repo";
 import { organizationAdminService } from "@/services/organizations/organization.admin.service";
 import { featureFlagsService } from "@/services/feature-flags/feature-flags.service";
 import { classGroupsService } from "@/services/class-groups/class-groups.service";
@@ -23,7 +24,7 @@ export default async function Page({
     const { slug } = await params;
     const { tab } = await searchParams;
     const currentTab =
-        tab && ["general", "event-setup", "settings"].includes(tab)
+        tab && ["general", "event-setup", "calendar", "settings"].includes(tab)
             ? tab
             : "general";
     const org = await organizationAdminService.findBySlug(slug);
@@ -51,9 +52,10 @@ export default async function Page({
         org.orgId
     );
 
-    const [classGroups, availableBaseClasses] = await Promise.all([
+    const [classGroups, availableBaseClasses, orgEvents] = await Promise.all([
         classGroupsService.getClassGroupsForOrg(org.orgId),
         classGroupsService.getAvailableBaseClasses(org.orgId),
+        orgEventsRepository.listByOrgId(org.orgId),
     ]);
 
     return (
@@ -67,6 +69,7 @@ export default async function Page({
                 featureFlags={featureFlags}
                 classGroups={classGroups}
                 availableBaseClasses={availableBaseClasses}
+                orgEvents={orgEvents}
                 currentTab={currentTab}
             />
         </div>

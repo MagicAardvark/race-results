@@ -23,7 +23,6 @@ export interface Event {
 
 export interface Venue {
     id: string;
-    name: string;
     city: string;
     region: string;
     country?: string;

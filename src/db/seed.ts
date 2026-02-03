@@ -3,6 +3,7 @@ import "dotenv/config";
 import {
     featureFlags,
     orgApiKeys,
+    orgEvents,
     orgs,
     roles,
     userGlobalRoles,
@@ -100,10 +101,11 @@ async function main() {
 
     try {
         await configureOrgs();
+        await configureOrgEvents();
         await configureUsers();
         await configureClasses();
 
-        // eslint-disable-next-line no-console
+        // eslint-disable-next-line no-console -- seed script success message
         console.log("Seed completed successfully!");
     } catch (error) {
         console.error("Seed failed:", error);
@@ -134,6 +136,41 @@ export async function configureOrgs() {
 
     await db.insert(featureFlags).values(orgDefaultFeatureFlags);
     await db.insert(orgApiKeys).values(orgDefaultApiKeys);
+}
+
+export async function configureOrgEvents() {
+    await db.delete(orgEvents);
+
+    const eventData = (await import("@/db/seed-data/org-events.json"))
+        .default as Array<{
+        orgSlug: string;
+        name: string;
+        year: number;
+        month: number;
+        day: number;
+    }>;
+
+    const orgRows = await db.query.orgs.findMany({
+        where: {
+            OR: [{ slug: "ner" }, { slug: "ne-svt" }, { slug: "boston-bmw" }],
+        },
+        columns: { orgId: true, slug: true },
+    });
+    const orgIdBySlug = new Map(orgRows.map((o) => [o.slug, o.orgId]));
+
+    const values = eventData
+        .map((e) => {
+            const orgId = orgIdBySlug.get(e.orgSlug);
+            if (!orgId) return null;
+            const startAt = new Date(e.year, e.month - 1, e.day, 0, 0, 0, 0);
+            const endAt = new Date(e.year, e.month - 1, e.day, 23, 59, 59, 999);
+            return { orgId, name: e.name, startAt, endAt };
+        })
+        .filter((v): v is NonNullable<typeof v> => v !== null);
+
+    if (values.length > 0) {
+        await db.insert(orgEvents).values(values);
+    }
 }
 
 export async function configureUsers() {

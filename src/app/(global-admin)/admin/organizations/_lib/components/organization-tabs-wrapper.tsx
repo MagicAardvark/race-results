@@ -5,16 +5,19 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/ui/tabs";
 import { GeneralTab } from "./general-tab";
 import { EventSetupTab } from "./event-setup-tab";
 import { SettingsTab } from "./settings-tab";
+import { CalendarTab } from "./calendar-tab";
 import { OrganizationExtended } from "@/dto/organizations";
 import { OrgFeatureFlags } from "@/dto/feature-flags";
 import type { ClassGroupWithClasses } from "@/dto/class-groups";
 import type { AvailableBaseClass } from "./class-groups/_lib/types";
+import type { OrgEventDTO } from "@/dto/org-events";
 
 type OrganizationTabsWrapperProps = {
     org: OrganizationExtended;
     featureFlags: OrgFeatureFlags;
     classGroups: ClassGroupWithClasses[];
     availableBaseClasses: AvailableBaseClass[];
+    orgEvents: OrgEventDTO[];
     currentTab: string;
 };
 
@@ -23,6 +26,7 @@ export const OrganizationTabsWrapper = ({
     featureFlags,
     classGroups,
     availableBaseClasses,
+    orgEvents,
     currentTab,
 }: OrganizationTabsWrapperProps) => {
     const router = useRouter();
@@ -47,6 +51,7 @@ export const OrganizationTabsWrapper = ({
             <TabsList>
                 <TabsTrigger value="general">General</TabsTrigger>
                 <TabsTrigger value="event-setup">Event Setup</TabsTrigger>
+                <TabsTrigger value="calendar">Calendar</TabsTrigger>
                 <TabsTrigger value="settings">Settings</TabsTrigger>
             </TabsList>
             <TabsContent value="general">
@@ -57,6 +62,13 @@ export const OrganizationTabsWrapper = ({
                     orgId={org.orgId}
                     initialClassGroups={classGroups}
                     availableBaseClasses={availableBaseClasses}
+                />
+            </TabsContent>
+            <TabsContent value="calendar">
+                <CalendarTab
+                    orgId={org.orgId}
+                    orgSlug={org.slug}
+                    events={orgEvents}
                 />
             </TabsContent>
             <TabsContent value="settings">

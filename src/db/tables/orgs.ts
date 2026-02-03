@@ -10,6 +10,7 @@ import {
     index,
     pgTable,
     text,
+    timestamp,
     uniqueIndex,
     uuid,
 } from "drizzle-orm/pg-core";
@@ -49,4 +50,20 @@ export const orgApiKeys = pgTable(
         uniqueIndex("org_api_key_idx").on(table.orgId, table.apiKey),
         index("api_key_enabled_idx").on(table.apiKeyEnabled),
     ]
+);
+
+export const orgEvents = pgTable(
+    "org_events",
+    {
+        eventId: uuid("id").primaryKey().defaultRandom(),
+        orgId: uuid("org_id")
+            .notNull()
+            .references(() => orgs.orgId, { onDelete: "cascade" }),
+        name: text("name").notNull(),
+        startAt: timestamp("start_at", { withTimezone: true }).notNull(),
+        endAt: timestamp("end_at", { withTimezone: true }).notNull(),
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+    },
+    (table) => [index("org_events_org_id_idx").on(table.orgId)]
 );

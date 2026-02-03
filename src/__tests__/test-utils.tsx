@@ -48,7 +48,7 @@ export const defaultOrg: Organization = {
     name: "Test Organization",
     slug: "test-org",
     motorsportregOrgId: null,
-    description: null,
+    description: "Test description",
     headerImageUrl: null,
     isPublic: true,
     createdAt: new Date(),

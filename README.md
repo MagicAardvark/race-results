@@ -36,14 +36,16 @@ This platform enables motorsports organizations to:
 
 ### Event Management
 
-- **MotorsportReg Integration** - Fetch events and calendars from MotorsportReg.com
-- **Event Calendar** - View upcoming events for organizations
-- **Event Details** - Comprehensive event information
+- **Organization Events** - Admins can create, edit, and delete events per organization (single-day or multi-day) via the Calendar tab in org admin
+- **Tenant Event Schedule** - Organization pages (`/t/[orgSlug]`) show **Upcoming** and **Past** events; org events are merged with MotorsportReg when the org has a MotorsportReg ID (org data takes precedence for same-date matches)
+- **Public Events** - `/events` lists upcoming and past events from all organizations in one view, with each event labeled by organization
+- **MotorsportReg Integration** - Fetch events and calendars from MotorsportReg.com; merged with org events for a unified schedule
 
 ### Administration
 
 - **Global Admin** - Platform-wide administration
     - Organization management
+    - **Organization Calendar** - Create, edit, and delete org events (Calendar tab per org); schedule is shown on the org’s tenant page and merged with MotorsportReg when configured
     - User management
         - View all users
         - Edit user display names
@@ -101,6 +103,9 @@ src/
 │   │       │       ├── organization-entry.tsx
 │   │       │       └── update-org-form.tsx
 │   │       ├── organizations/
+│   │       │   ├── [slug]/page.tsx
+│   │       │   └── _lib/components/
+│   │       │       └── calendar-tab.tsx  # Org events CRUD
 │   │       └── users/
 │   ├── (global-api)/           # Global API routes (no auth required)
 │   │   └── api/
@@ -109,7 +114,11 @@ src/
 │   │               ├── live/    # Live timing data ingestion
 │   │               └── results/ # Results data ingestion
 │   ├── (public)/                # Public routes
-│   │   └── page.tsx            # Landing page
+│   │   ├── page.tsx            # Landing page
+│   │   └── events/             # Public events (all organizations)
+│   │       ├── page.tsx
+│   │       └── _lib/
+│   │           └── all-clubs-events.ts
 │   ├── (tenants)/               # Tenant-scoped routes
 │   │   └── t/[orgSlug]/
 │   │       ├── live/            # Live timing system
@@ -121,7 +130,11 @@ src/
 │   │       │   │   ├── hooks/     # Custom hooks
 │   │       │   │   ├── types.ts   # TypeScript types
 │   │       │   │   └── utils/     # Utility functions
-│   │       └── page.tsx        # Tenant home page
+│   │       └── page.tsx        # Tenant home page (Upcoming / Past events)
+│   │           └── _lib/
+│   │               ├── components/  # EventCard, EventList, EventsSection, etc.
+│   │               ├── events/      # merge-events.ts (org + MotorsportReg)
+│   │               └── utils/       # date-utils.ts
 │   └── components/              # App-level shared components
 │       ├── confirmation-dialog.tsx
 │       └── shared/
@@ -132,9 +145,10 @@ src/
 │               └── sidebar-navigation.tsx     # Sidebar navigation
 ├── db/                          # Database
 │   ├── tables/                  # Drizzle table definitions
-│   ├── repositories/            # Data access layer
+│   ├── repositories/            # Data access layer (incl. org-events.repo)
+│   ├── seed-data/               # org-events.json, orgs.json, etc.
 │   └── seed.ts                  # Database seeding
-├── dto/                         # Data Transfer Objects
+├── dto/                         # Data Transfer Objects (incl. org-events)
 ├── services/                    # Business logic
 │   ├── motorsportreg/           # MotorsportReg API service
 │   ├── organizations/          # Organization service
@@ -175,8 +189,9 @@ src/
 
 #### Routing Conventions
 
-- **Tenant routes**: `/t/[orgSlug]/*`
+- **Tenant routes**: `/t/[orgSlug]/*` (home page shows Upcoming / Past events)
 - **Tenant admin**: `/t/[orgSlug]/admin/*`
+- **Public events**: `/events` - All organizations’ events in one list
 - **Global admin**: `/(global-admin)/admin/*`
 - **Global API**: `/(global-api)/api/*` - Public API endpoints for data ingestion
 - **Route guards**: Enforced in `layout.tsx` files as well as `proxy.ts`
@@ -307,6 +322,21 @@ Navigate to [http://localhost:3000](http://localhost:3000)
 
 **Note**: PAX and Work/Run navigation items only appear if enabled for your organization.
 
+### Events
+
+#### Tenant Organization Page
+
+1. Navigate to `/t/[orgSlug]` for a specific organization
+2. **Upcoming Events** and **Past Events** sections show the org’s schedule
+3. Events come from org events (admin Calendar) and MotorsportReg when the org has a MotorsportReg ID; same-date matches use org data
+4. Use "View results" or sign-up links when available
+
+#### Public Events Page
+
+1. Navigate to `/events`
+2. View upcoming and past events from **all** organizations in one list
+3. Each event shows its organization name; use the links to go to the org page or event details
+
 #### Personal Stats Dashboard
 
 1. Navigate to `/t/[orgSlug]/live/me`
@@ -330,6 +360,15 @@ Navigate to [http://localhost:3000](http://localhost:3000)
 2. Click "Create Organization"
 3. Fill in organization details
 4. Set MotorsportReg ID if applicable
+
+#### Managing Organization Events (Calendar)
+
+1. Navigate to global admin: `/admin/organizations` and open an organization
+2. Open the **Calendar** tab
+3. Create events: click "Create event", enter name and date(s), optionally enable multi-day and set end date
+4. Edit events: click the pencil icon on a row
+5. Delete events: click the trash icon and confirm (errors such as "Event not found or access denied" are shown in the dialog)
+6. The schedule is shown on the organization’s tenant page (`/t/[orgSlug]`) and merged with MotorsportReg when the org has a MotorsportReg ID
 
 #### Managing Organization Settings
 
@@ -467,6 +506,7 @@ pnpm drizzle-kit push
 #### Schema
 
 - **Organizations** (`orgs`): Organization data
+- **Organization Events** (`org_events`): Per-organization event schedule (name, start_at, end_at); shown on tenant page and merged with MotorsportReg when org has MotorsportReg ID
 - **Users** (`users`): User accounts (soft-deletable via `deletedAt`)
 - **Roles** (`roles`): User roles and permissions
 - **User Global Roles** (`user_global_roles`): Global role assignments for users
@@ -681,6 +721,9 @@ See `src/__tests__/README.md` for detailed testing guidelines.
 
 ### Manual Testing Checklist
 
+- [ ] Tenant page shows Upcoming and Past events correctly
+- [ ] Public /events page shows all organizations’ events
+- [ ] Org Calendar (admin): create, edit, delete events; dialogs reopen after success; delete errors shown in dialog
 - [ ] Live timing pages render correctly
 - [ ] Class filtering works with URL persistence
 - [ ] Driver selection persists in URL
