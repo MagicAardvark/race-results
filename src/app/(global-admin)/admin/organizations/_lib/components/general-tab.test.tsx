@@ -14,6 +14,7 @@ describe("GeneralTab", () => {
         slug: "test-org",
         motorsportregOrgId: "msr-123",
         description: "Test description",
+        headerImageUrl: null,
         isPublic: true,
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -30,11 +31,36 @@ describe("GeneralTab", () => {
     it("renders all organization fields", () => {
         renderWithProviders(<GeneralTab org={mockOrg} />);
 
+        expect(screen.getByText("Header Image")).toBeVisible();
         expect(screen.getByLabelText("Name")).toBeVisible();
         expect(screen.getByLabelText("URL Slug")).toBeVisible();
         expect(screen.getByLabelText("MotorsportReg Org ID")).toBeVisible();
         expect(screen.getByLabelText("Description")).toBeVisible();
         expect(screen.getByLabelText("Publicly Viewable")).toBeVisible();
+    });
+
+    it("shows current header image when set", () => {
+        const orgWithImage: OrganizationExtended = {
+            ...mockOrg,
+            headerImageUrl: "https://example.com/header.jpg",
+        };
+        renderWithProviders(<GeneralTab org={orgWithImage} />);
+
+        const img = screen.getByRole("img", {
+            name: /test organization header/i,
+        });
+        expect(img).toBeVisible();
+        expect(img).toHaveAttribute("src", "https://example.com/header.jpg");
+    });
+
+    it("shows Remove button when org has header image", () => {
+        const orgWithImage = {
+            ...mockOrg,
+            headerImageUrl: "https://example.com/header.jpg",
+        };
+        renderWithProviders(<GeneralTab org={orgWithImage} />);
+
+        expect(screen.getByRole("button", { name: "Remove" })).toBeVisible();
     });
 
     it("pre-fills form with organization data", () => {

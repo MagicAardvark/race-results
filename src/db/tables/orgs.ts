@@ -22,6 +22,7 @@ export const orgs = pgTable(
         slug: text("slug").unique().notNull(),
         motorsportregOrgId: text("motorsportreg_org_id").unique(),
         description: text("description"),
+        headerImageUrl: text("header_image_url"),
         isPublic: boolean("is_public").notNull().default(false),
         createdAt: createdAt,
         updatedAt: updatedAt,

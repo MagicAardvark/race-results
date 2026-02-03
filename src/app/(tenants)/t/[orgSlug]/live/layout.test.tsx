@@ -63,6 +63,7 @@ describe("LiveLayout", () => {
             slug: "test-org",
             motorsportregOrgId: null,
             description: null,
+            headerImageUrl: null,
             isPublic: true,
             createdAt: new Date(),
             updatedAt: new Date(),
