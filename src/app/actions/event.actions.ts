@@ -16,9 +16,6 @@ export async function createOrgEvent(
     formData: FormData
 ): Promise<CreateEventState> {
     const tenant = await tenantService.getTenant();
-    if (!tenant.isValid) {
-        return { isError: true, message: "Invalid organization context" };
-    }
 
     const name = formData.get("name")?.toString().trim();
     const startDate = formData.get("startDate")?.toString();
@@ -52,7 +49,7 @@ export async function createOrgEvent(
 
     try {
         await orgEventsRepository.create({
-            orgId: tenant.org.orgId,
+            orgId: tenant.orgId,
             name,
             startAt,
             endAt,
@@ -67,7 +64,7 @@ export async function createOrgEvent(
         };
     }
 
-    revalidatePath(`/t/${tenant.org.slug}`);
+    revalidatePath(`/t/${tenant.slug}`);
     return { isError: false, message: "Event created" };
 }
 

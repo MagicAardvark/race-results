@@ -6,18 +6,18 @@ import Link from "next/link";
 import { Button } from "@/ui/button";
 import { ArrowLeftIcon } from "lucide-react";
 import { CgMediaLive as LiveIcon } from "react-icons/cg";
-import {
-    LiveTimingLink,
-    LIVE_TIMING_LABEL,
-} from "@/app/components/shared/live-timing";
+import { LIVE_TIMING_LABEL } from "@/app/components/shared/live-timing";
 import type { Event as MotorsportRegEvent } from "@/dto/motorsportreg";
 import { getDateString } from "./_lib/utils/date-utils";
 import { mergeOrgAndMrEvents } from "./_lib/events/merge-events";
 import { EventsSection } from "./_lib/components/events-section";
 import { EventList } from "./_lib/components/event-list";
+import { ClientTenantLink } from "@/app/(tenants)/t/_lib/components/client-tenant-link";
+import { getTenantBasePath } from "@/app/(tenants)/t/_lib/utils/get-tenant-base-path";
 
 export default async function Page() {
     const org = await tenantService.getTenant();
+    const basePath = await getTenantBasePath();
 
     const [orgEvents, events] = await Promise.all([
         orgEventsRepository.listByOrgId(org.orgId),
@@ -53,10 +53,13 @@ export default async function Page() {
                     </Link>
                 </Button>
                 <Button size="lg" asChild>
-                    <LiveTimingLink href={`/t/${org.slug}/live`}>
+                    <ClientTenantLink
+                        pathFromTenantRoot="/live"
+                        tenantBase={basePath}
+                    >
                         <LiveIcon className="mr-2 h-5 w-5 animate-pulse text-white" />
                         {LIVE_TIMING_LABEL}
-                    </LiveTimingLink>
+                    </ClientTenantLink>
                 </Button>
             </header>
 
