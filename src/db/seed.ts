@@ -3,7 +3,7 @@ import "dotenv/config";
 import {
     featureFlags,
     orgApiKeys,
-    orgEvents,
+    events,
     orgs,
     roles,
     userGlobalRoles,
@@ -18,6 +18,7 @@ import {
     classTypes,
 } from "@/db/tables/classes";
 import { generateApiKey } from "@/lib/auth/generate-api-key";
+import { generateSlug } from "@/lib/generate-slug";
 
 /**
  * Feature flag configuration for organizations
@@ -139,7 +140,7 @@ export async function configureOrgs() {
 }
 
 export async function configureOrgEvents() {
-    await db.delete(orgEvents);
+    await db.delete(events);
 
     const eventData = (await import("@/db/seed-data/org-events.json"))
         .default as Array<{
@@ -164,12 +165,18 @@ export async function configureOrgEvents() {
             if (!orgId) return null;
             const startAt = new Date(e.year, e.month - 1, e.day, 0, 0, 0, 0);
             const endAt = new Date(e.year, e.month - 1, e.day, 23, 59, 59, 999);
-            return { orgId, name: e.name, startAt, endAt };
+            return {
+                orgId,
+                name: e.name,
+                slug: generateSlug(e.name),
+                startAt,
+                endAt,
+            };
         })
         .filter((v): v is NonNullable<typeof v> => v !== null);
 
     if (values.length > 0) {
-        await db.insert(orgEvents).values(values);
+        await db.insert(events).values(values);
     }
 }
 

@@ -1,4 +1,4 @@
-import type { OrgEventDTO } from "@/dto/org-events";
+import type { EventDTO } from "@/dto/events";
 import type { Event as MotorsportRegEvent } from "@/dto/motorsportreg";
 import type { Organization } from "@/dto/organizations";
 import { getDateString } from "@/app/(tenants)/t/[orgSlug]/_lib/utils/date-utils";
@@ -20,7 +20,7 @@ function getSortKey(item: MergedEventItem): string {
 }
 
 export function mergeAllClubsEvents(
-    orgsWithOrgEvents: { org: Organization; orgEvents: OrgEventDTO[] }[],
+    orgsWithOrgEvents: { org: Organization; orgEvents: EventDTO[] }[],
     orgsWithMrEvents: {
         org: Organization;
         events: MotorsportRegEvent[];

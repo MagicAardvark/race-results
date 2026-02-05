@@ -7,6 +7,7 @@ import {
     UpdateOrgDTO,
 } from "@/dto/organizations";
 import { ValidationError } from "@/lib/errors/app-errors";
+import { generateSlug } from "@/lib/generate-slug";
 import { featureFlagsService } from "@/services/feature-flags/feature-flags.service";
 
 interface IOrganizationAdminService {
@@ -23,13 +24,6 @@ interface IOrganizationAdminService {
 }
 
 export class OrganizationAdminService implements IOrganizationAdminService {
-    private generateSlug(name: string): string {
-        return name
-            .toLowerCase()
-            .replace(/[^a-z0-9]+/g, "-")
-            .replace(/(^-|-$)/g, "");
-    }
-
     async getAll(): Promise<OrganizationExtended[]> {
         const orgs = await organizationsAdminRepository.findAll();
 
@@ -49,7 +43,7 @@ export class OrganizationAdminService implements IOrganizationAdminService {
     }
 
     async createOrganization(dto: CreateOrgDTO): Promise<string> {
-        const slug = this.generateSlug(dto.name);
+        const slug = generateSlug(dto.name);
 
         const existing = await organizationsAdminRepository.findBySlug(slug);
 
