@@ -18,9 +18,9 @@ export const relations = defineRelations(schema, (r) => ({
             from: r.orgs.orgId,
             to: r.orgApiKeys.orgId,
         }),
-        orgEvents: r.many.orgEvents({
+        events: r.many.events({
             from: r.orgs.orgId,
-            to: r.orgEvents.orgId,
+            to: r.events.orgId,
         }),
     },
     featureFlags: {
@@ -105,9 +105,9 @@ export const relations = defineRelations(schema, (r) => ({
             optional: false,
         }),
     },
-    orgEvents: {
+    events: {
         org: r.one.orgs({
-            from: r.orgEvents.orgId,
+            from: r.events.orgId,
             to: r.orgs.orgId,
             optional: false,
         }),

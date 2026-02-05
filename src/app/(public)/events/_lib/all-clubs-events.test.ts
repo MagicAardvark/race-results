@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
 import { mergeAllClubsEvents } from "./all-clubs-events";
-import type { OrgEventDTO } from "@/dto/org-events";
+import type { EventDTO } from "@/dto/events";
 import type { Event as MotorsportRegEvent } from "@/dto/motorsportreg";
 import type { Organization } from "@/dto/organizations";
 
@@ -17,7 +17,7 @@ vi.mock("@/app/(tenants)/t/[orgSlug]/_lib/utils/date-utils", () => ({
 
 vi.mock("@/app/(tenants)/t/[orgSlug]/_lib/events/merge-events", () => ({
     mergeOrgAndMrEvents: (
-        orgEvents: OrgEventDTO[],
+        orgEvents: EventDTO[],
         _mrEvents: MotorsportRegEvent[],
         _today: string
     ) => {
@@ -56,8 +56,8 @@ function org(overrides: Partial<Organization> = {}): Organization {
 }
 
 function orgEvent(
-    overrides: Partial<OrgEventDTO> & { startAt: Date; endAt: Date }
-): OrgEventDTO {
+    overrides: Partial<EventDTO> & { startAt: Date; endAt: Date }
+): EventDTO {
     return {
         eventId: "evt-1",
         orgId: "org-1",
@@ -131,9 +131,7 @@ describe("mergeAllClubsEvents", () => {
     });
 
     it("returns empty when no orgs have events", () => {
-        const orgsWithOrgEvents = [
-            { org: org(), orgEvents: [] as OrgEventDTO[] },
-        ];
+        const orgsWithOrgEvents = [{ org: org(), orgEvents: [] as EventDTO[] }];
         const orgsWithMrEvents: {
             org: Organization;
             events: MotorsportRegEvent[];

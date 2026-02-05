@@ -1,77 +1,10 @@
-import {
-    Empty,
-    EmptyContent,
-    EmptyDescription,
-    EmptyHeader,
-    EmptyMedia,
-    EmptyTitle,
-} from "@/ui/empty";
-import { LinkButton } from "@/ui/link-button";
-import { orgEventsRepository } from "@/db/repositories/org-events.repo";
-import { organizationAdminService } from "@/services/organizations/organization.admin.service";
-import { featureFlagsService } from "@/services/feature-flags/feature-flags.service";
-import { classGroupsService } from "@/services/class-groups/class-groups.service";
-import { TriangleAlert } from "lucide-react";
-import { OrganizationTabsWrapper } from "@/app/(global-admin)/admin/organizations/_lib/components/organization-tabs-wrapper";
+"use client";
 
-export default async function Page({
-    params,
-    searchParams,
-}: {
-    params: Promise<{ slug: string }>;
-    searchParams: Promise<{ tab?: string }>;
-}) {
-    const { slug } = await params;
-    const { tab } = await searchParams;
-    const currentTab =
-        tab && ["general", "event-setup", "calendar", "settings"].includes(tab)
-            ? tab
-            : "general";
-    const org = await organizationAdminService.findBySlug(slug);
+import { useOrganizationData } from "@/app/(global-admin)/admin/organizations/[slug]/_lib/organization-data-context";
+import { GeneralTab } from "@/app/(global-admin)/admin/organizations/_lib/components/general-tab";
 
-    if (org === null) {
-        return (
-            <Empty>
-                <EmptyHeader>
-                    <EmptyMedia variant="icon">
-                        <TriangleAlert />
-                    </EmptyMedia>
-                    <EmptyTitle>Organization Not Found</EmptyTitle>
-                    <EmptyDescription>
-                        The organization you are looking for does not exist.
-                    </EmptyDescription>
-                </EmptyHeader>
-                <EmptyContent>
-                    <LinkButton href="/admin/organizations">Go Back</LinkButton>
-                </EmptyContent>
-            </Empty>
-        );
-    }
+export default function OrganizationGeneralPage() {
+    const { org } = useOrganizationData();
 
-    const featureFlags = await featureFlagsService.getOrgFeatureFlags(
-        org.orgId
-    );
-
-    const [classGroups, availableBaseClasses, orgEvents] = await Promise.all([
-        classGroupsService.getClassGroupsForOrg(org.orgId),
-        classGroupsService.getAvailableBaseClasses(org.orgId),
-        orgEventsRepository.listByOrgId(org.orgId),
-    ]);
-
-    return (
-        <div className="flex w-full flex-col gap-4">
-            <div className="flex items-center justify-between">
-                <h1 className="text-2xl font-semibold">{org.name}</h1>
-                <LinkButton href="/admin/organizations">Go Back</LinkButton>
-            </div>
-            <OrganizationTabsWrapper
-                org={org}
-                featureFlags={featureFlags}
-                classGroups={classGroups}
-                availableBaseClasses={availableBaseClasses}
-                orgEvents={orgEvents}
-                currentTab={currentTab}
-            />
-        </div>
-    );
+    return <GeneralTab org={org} />;
 }

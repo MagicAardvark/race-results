@@ -102,7 +102,7 @@ export class ClassGroupsRepository implements IClassGroupsRepository {
                           )
                       )
             )
-            .orderBy(asc(baseClasses.shortName));
+            .orderBy(asc(baseClasses.relativeOrder));
 
         return classes;
     }

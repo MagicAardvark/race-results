@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
 import { formatVenue, mergeOrgAndMrEvents } from "./merge-events";
-import type { OrgEventDTO } from "@/dto/org-events";
+import type { EventDTO } from "@/dto/events";
 import type { Event as MotorsportRegEvent, Venue } from "@/dto/motorsportreg";
 
 vi.mock("../utils/date-utils", () => ({
@@ -14,8 +14,8 @@ vi.mock("../utils/date-utils", () => ({
 }));
 
 function orgEvent(
-    overrides: Partial<OrgEventDTO> & { startAt: Date; endAt: Date }
-): OrgEventDTO {
+    overrides: Partial<EventDTO> & { startAt: Date; endAt: Date }
+): EventDTO {
     return {
         eventId: "evt-1",
         orgId: "org-1",
@@ -108,7 +108,7 @@ describe("mergeOrgAndMrEvents", () => {
     });
 
     it("includes MR-only events when no org event on that date", () => {
-        const orgEvents: OrgEventDTO[] = [];
+        const orgEvents: EventDTO[] = [];
         const mrEvents = [
             mrEvent({ id: "mr1", start: "2026-06-10", end: "2026-06-10" }),
         ];

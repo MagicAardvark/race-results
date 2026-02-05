@@ -1,11 +1,11 @@
-import type { OrgEventDTO } from "@/dto/org-events";
+import type { EventDTO } from "@/dto/events";
 import type { Event as MotorsportRegEvent, Venue } from "@/dto/motorsportreg";
 import { getDateString } from "../utils/date-utils";
 
 export type MergedEventItem =
     | {
           source: "org";
-          orgEvent: OrgEventDTO;
+          orgEvent: EventDTO;
           mrEvent?: MotorsportRegEvent;
       }
     | { source: "mr"; event: MotorsportRegEvent };
@@ -15,7 +15,7 @@ export function formatVenue(venue: Venue): string {
 }
 
 export function mergeOrgAndMrEvents(
-    orgEvents: OrgEventDTO[],
+    orgEvents: EventDTO[],
     mrEvents: MotorsportRegEvent[],
     today: string
 ): { upcoming: MergedEventItem[]; past: MergedEventItem[] } {

@@ -1,82 +1,83 @@
-import { db } from "@/db";
-import type {
-    CreateOrgEventDTO,
-    OrgEventDTO,
-    UpdateOrgEventDTO,
-} from "@/dto/org-events";
-import { orgEvents } from "@/db/tables/orgs";
+import { db, events } from "@/db";
+import type { CreateEventDTO, EventDTO, UpdateEventDTO } from "@/dto/events";
+import { generateSlug } from "@/lib/generate-slug";
 import { eq, and } from "drizzle-orm";
 
 interface IOrgEventsRepository {
-    listByOrgId(orgId: string): Promise<OrgEventDTO[]>;
-    findById(eventId: string): Promise<OrgEventDTO | null>;
-    create(dto: CreateOrgEventDTO): Promise<OrgEventDTO>;
+    listByOrgId(orgId: string): Promise<EventDTO[]>;
+    findById(eventId: string): Promise<EventDTO | null>;
+    create(dto: CreateEventDTO): Promise<EventDTO>;
     update(
         eventId: string,
         orgId: string,
-        dto: UpdateOrgEventDTO
-    ): Promise<OrgEventDTO | null>;
+        dto: UpdateEventDTO
+    ): Promise<EventDTO>;
     delete(eventId: string, orgId: string): Promise<boolean>;
 }
 
 export class OrgEventsRepository implements IOrgEventsRepository {
-    async listByOrgId(orgId: string): Promise<OrgEventDTO[]> {
-        const rows = await db.query.orgEvents.findMany({
-            where: { orgId },
+    async listByOrgId(orgId: string): Promise<EventDTO[]> {
+        const rows = await db.query.events.findMany({
+            where: { orgId, deletedAt: { isNull: true } },
             orderBy: (events, { asc }) => [asc(events.startAt)],
         });
         return rows;
     }
 
-    async findById(eventId: string): Promise<OrgEventDTO | null> {
-        const row = await db.query.orgEvents.findFirst({
-            where: { eventId },
+    async findById(eventId: string): Promise<EventDTO | null> {
+        const row = await db.query.events.findFirst({
+            where: {
+                eventId,
+                deletedAt: { isNull: true },
+            },
         });
         return row ?? null;
     }
 
-    async create(dto: CreateOrgEventDTO): Promise<OrgEventDTO> {
+    async create(dto: CreateEventDTO): Promise<EventDTO> {
         const [row] = await db
-            .insert(orgEvents)
+            .insert(events)
             .values({
                 orgId: dto.orgId,
                 name: dto.name,
+                slug: generateSlug(dto.name),
                 startAt: dto.startAt,
                 endAt: dto.endAt,
             })
             .returning();
+
         if (!row) {
             throw new Error("Failed to create org event");
         }
+
         return row;
     }
 
     async update(
         eventId: string,
         orgId: string,
-        dto: UpdateOrgEventDTO
-    ): Promise<OrgEventDTO | null> {
+        dto: UpdateEventDTO
+    ): Promise<EventDTO> {
         const [row] = await db
-            .update(orgEvents)
+            .update(events)
             .set({
                 name: dto.name,
                 startAt: dto.startAt,
                 endAt: dto.endAt,
                 updatedAt: new Date(),
             })
-            .where(
-                and(eq(orgEvents.eventId, eventId), eq(orgEvents.orgId, orgId))
-            )
+            .where(and(eq(events.eventId, eventId), eq(events.orgId, orgId)))
             .returning();
-        return row ?? null;
+
+        return row;
     }
 
     async delete(eventId: string, orgId: string): Promise<boolean> {
         const result = await db
-            .delete(orgEvents)
-            .where(
-                and(eq(orgEvents.eventId, eventId), eq(orgEvents.orgId, orgId))
-            );
+            .update(events)
+            .set({ deletedAt: new Date() })
+            .where(and(eq(events.eventId, eventId), eq(events.orgId, orgId)));
+
         return (result.rowCount ?? 0) > 0;
     }
 }
