@@ -105,11 +105,27 @@ export const relations = defineRelations(schema, (r) => ({
             optional: false,
         }),
     },
+    seasons: {
+        org: r.one.orgs({
+            from: r.seasons.orgId,
+            to: r.orgs.orgId,
+            optional: false,
+        }),
+        events: r.many.events({
+            from: r.seasons.seasonId,
+            to: r.events.seasonId,
+        }),
+    },
     events: {
         org: r.one.orgs({
             from: r.events.orgId,
             to: r.orgs.orgId,
             optional: false,
+        }),
+        season: r.one.seasons({
+            from: r.events.seasonId,
+            to: r.seasons.seasonId,
+            optional: true,
         }),
     },
     activeOrgApiKeys: {

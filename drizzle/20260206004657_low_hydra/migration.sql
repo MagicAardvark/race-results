@@ -1,0 +1,1 @@
+ALTER TABLE "results_events" ALTER COLUMN "season_id" SET NOT NULL;
