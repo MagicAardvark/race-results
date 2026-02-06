@@ -2,8 +2,12 @@
 
 import { CreateEventDialog } from "@/app/(global-admin)/admin/organizations/_lib/components/calendar/create-event-dialog";
 import { DeleteEventDialog } from "@/app/(global-admin)/admin/organizations/_lib/components/calendar/delete-event-dialog";
+import { ChangeSeasonDialog } from "@/app/(global-admin)/admin/organizations/_lib/components/calendar/seasons/change-season";
 import { UpdateEventDialog } from "@/app/(global-admin)/admin/organizations/_lib/components/calendar/update-event-dialog";
+import { Stack } from "@/app/components/shared/stack";
 import { EventDTO } from "@/dto/events";
+import { Season } from "@/dto/events/seasons";
+import { Button } from "@/ui/button-wrapper";
 import {
     Card,
     CardContent,
@@ -19,6 +23,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/ui/table";
+import { useRouter } from "next/navigation";
 
 function formatEventDate(d: Date): string {
     const parts = d.toISOString().slice(0, 10).split("-");
@@ -56,22 +61,83 @@ type CalendarTabProps = {
     orgId: string;
     orgSlug: string;
     events: EventDTO[];
+    seasons: Season[];
+    selectedSeason: Season | undefined;
 };
 
-export function CalendarTab({ orgId, orgSlug, events }: CalendarTabProps) {
+export function CalendarTab({
+    orgId,
+    orgSlug,
+    events,
+    seasons,
+    selectedSeason,
+}: CalendarTabProps) {
+    const router = useRouter();
+
+    if (seasons.length === 0 || !selectedSeason) {
+        return (
+            <div className="space-y-6">
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Events</CardTitle>
+                        <CardDescription>
+                            <Stack>
+                                <p className="leading-relaxed">
+                                    You need to create at least one season
+                                    before adding events.
+                                </p>
+
+                                <div>
+                                    <Button>Create Season</Button>
+                                </div>
+                            </Stack>
+                        </CardDescription>
+                    </CardHeader>
+                </Card>
+            </div>
+        );
+    }
+
     return (
         <div className="space-y-6">
             <Card>
                 <CardHeader>
                     <div className="flex items-center justify-between">
-                        <CardTitle>Organization events</CardTitle>
-                        <CreateEventDialog orgId={orgId} orgSlug={orgSlug} />
+                        <CardTitle>
+                            <Stack
+                                orientation="horizontal"
+                                className="items-center"
+                            >
+                                <div>{selectedSeason.name}</div>
+                                <div>
+                                    <ChangeSeasonDialog
+                                        orgId={orgId}
+                                        orgSlug={orgSlug}
+                                        seasons={seasons}
+                                        onChange={(seasonSlug: string) => {
+                                            router.push(
+                                                `/admin/organizations/${orgSlug}/calendar/${seasonSlug}`
+                                            );
+                                            router.refresh();
+                                        }}
+                                    />
+                                </div>
+                                {selectedSeason.isCurrent && (
+                                    <div className="rounded-full bg-green-200 px-2 py-1 text-xs leading-relaxed">
+                                        Active Season
+                                    </div>
+                                )}
+                            </Stack>
+                        </CardTitle>
+                        <CreateEventDialog
+                            orgId={orgId}
+                            orgSlug={orgSlug}
+                            seasonId={selectedSeason.seasonId}
+                        />
                     </div>
                     <CardDescription>
                         <p className="leading-relaxed">
-                            This schedule is shown on the organization’s page.
-                            When a matching MotorsportReg event is found, it
-                            will be linked automatically.
+                            The events for the {selectedSeason.name} season.
                         </p>
                     </CardDescription>
                 </CardHeader>

@@ -17,6 +17,8 @@ export interface EventDTO {
     eventId: string;
     orgId: string;
     name: string;
+    slug: string;
+    seasonId: string;
     startAt: Date;
     endAt: Date;
     createdAt: Date;
@@ -25,6 +27,7 @@ export interface EventDTO {
 
 export interface CreateEventData {
     orgId: string;
+    seasonId: string;
     name: string;
     startAt: Date;
     endAt: Date | undefined;
@@ -32,6 +35,7 @@ export interface CreateEventData {
 
 export interface CreateEventDTO {
     orgId: string;
+    seasonId: string;
     name: string;
     startAt: Date;
     endAt: Date;

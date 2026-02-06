@@ -5,6 +5,10 @@ import { eq, and } from "drizzle-orm";
 
 interface IOrgEventsRepository {
     listByOrgId(orgId: string): Promise<EventDTO[]>;
+    listByOrgIdAndSeasonId(
+        seasonId: string,
+        orgId: string
+    ): Promise<EventDTO[]>;
     findById(eventId: string): Promise<EventDTO | null>;
     create(dto: CreateEventDTO): Promise<EventDTO>;
     update(
@@ -19,6 +23,17 @@ export class OrgEventsRepository implements IOrgEventsRepository {
     async listByOrgId(orgId: string): Promise<EventDTO[]> {
         const rows = await db.query.events.findMany({
             where: { orgId, deletedAt: { isNull: true } },
+            orderBy: (events, { asc }) => [asc(events.startAt)],
+        });
+        return rows;
+    }
+
+    async listByOrgIdAndSeasonId(
+        seasonId: string,
+        orgId: string
+    ): Promise<EventDTO[]> {
+        const rows = await db.query.events.findMany({
+            where: { orgId, seasonId, deletedAt: { isNull: true } },
             orderBy: (events, { asc }) => [asc(events.startAt)],
         });
         return rows;
@@ -39,6 +54,7 @@ export class OrgEventsRepository implements IOrgEventsRepository {
             .insert(events)
             .values({
                 orgId: dto.orgId,
+                seasonId: dto.seasonId,
                 name: dto.name,
                 slug: generateSlug(dto.name),
                 startAt: dto.startAt,

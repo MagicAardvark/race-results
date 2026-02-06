@@ -8,6 +8,7 @@ import {
     roles,
     userGlobalRoles,
     users,
+    seasons,
 } from "./schema";
 import {
     baseClasses,
@@ -102,7 +103,6 @@ async function main() {
 
     try {
         await configureOrgs();
-        await configureOrgEvents();
         await configureUsers();
         await configureClasses();
 
@@ -137,46 +137,67 @@ export async function configureOrgs() {
 
     await db.insert(featureFlags).values(orgDefaultFeatureFlags);
     await db.insert(orgApiKeys).values(orgDefaultApiKeys);
+    await configureOrgEvents(insertedOrgs);
 }
 
-export async function configureOrgEvents() {
+export async function configureOrgEvents(
+    insertedOrgs: Array<{ orgId: string; slug: string }>
+) {
     await db.delete(events);
 
     const eventData = (await import("@/db/seed-data/org-events.json"))
         .default as Array<{
+        seasonName: string;
         orgSlug: string;
-        name: string;
-        year: number;
-        month: number;
-        day: number;
+        events: Array<{
+            name: string;
+            year: number;
+            month: number;
+            day: number;
+        }>;
     }>;
 
-    const orgRows = await db.query.orgs.findMany({
-        where: {
-            OR: [{ slug: "ner" }, { slug: "ne-svt" }, { slug: "boston-bmw" }],
-        },
-        columns: { orgId: true, slug: true },
-    });
-    const orgIdBySlug = new Map(orgRows.map((o) => [o.slug, o.orgId]));
+    const orgIdBySlug = new Map(insertedOrgs.map((o) => [o.slug, o.orgId]));
 
-    const values = eventData
-        .map((e) => {
-            const orgId = orgIdBySlug.get(e.orgSlug);
-            if (!orgId) return null;
+    for (const season of eventData) {
+        const orgId = orgIdBySlug.get(season.orgSlug);
+        if (!orgId) continue;
+
+        const [insertedSeason] = await db
+            .insert(seasons)
+            .values({
+                orgId,
+                name: season.seasonName,
+                slug: generateSlug(season.seasonName),
+                startAt: new Date(season.events[0].year, 0, 1, 0, 0, 0, 0),
+                endAt: new Date(
+                    season.events[season.events.length - 1].year,
+                    11,
+                    31,
+                    23,
+                    59,
+                    59,
+                    999
+                ),
+            })
+            .returning();
+
+        const values = season.events.map((e) => {
             const startAt = new Date(e.year, e.month - 1, e.day, 0, 0, 0, 0);
             const endAt = new Date(e.year, e.month - 1, e.day, 23, 59, 59, 999);
             return {
                 orgId,
+                seasonId: insertedSeason.seasonId,
                 name: e.name,
                 slug: generateSlug(e.name),
                 startAt,
                 endAt,
             };
-        })
-        .filter((v): v is NonNullable<typeof v> => v !== null);
+        });
 
-    if (values.length > 0) {
-        await db.insert(events).values(values);
+        if (values.length > 0) {
+            await db.insert(events).values(values);
+        }
     }
 }
 

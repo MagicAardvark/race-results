@@ -14,13 +14,20 @@ import { EventsSection } from "./_lib/components/events-section";
 import { EventList } from "./_lib/components/event-list";
 import { ClientTenantLink } from "@/app/(tenants)/t/_lib/components/client-tenant-link";
 import { getTenantBasePath } from "@/app/(tenants)/t/_lib/utils/get-tenant-base-path";
+import { seasonsService } from "@/services/events/seasons.service";
 
 export default async function Page() {
     const org = await tenantService.getTenant();
     const basePath = await getTenantBasePath();
+    const currentSeason = (
+        await seasonsService.getSeasonsForOrg(org.orgId)
+    ).filter((season) => season.isCurrent)[0];
 
     const [orgEvents, events] = await Promise.all([
-        orgEventsRepository.listByOrgId(org.orgId),
+        orgEventsRepository.listByOrgIdAndSeasonId(
+            currentSeason.seasonId,
+            org.orgId
+        ),
         org.motorsportregOrgId
             ? motorsportRegService
                   .getOrganizationCalendar(org.motorsportregOrgId, {
