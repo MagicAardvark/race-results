@@ -5,8 +5,10 @@ import type { EventListItem } from "./event-list";
 
 const baseOrgEvent = {
     eventId: "evt-1",
+    seasonId: "season-1",
     orgId: "org-1",
     name: "Org Event",
+    slug: "org-event",
     startAt: new Date("2026-06-10"),
     endAt: new Date("2026-06-10"),
     createdAt: new Date(),
