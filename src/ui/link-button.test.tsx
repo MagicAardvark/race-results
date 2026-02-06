@@ -19,18 +19,19 @@ describe("LinkButton", () => {
 
     it("applies button wrapper classes", () => {
         renderWithProviders(<LinkButton href="/test">Test</LinkButton>);
-        const button = screen.getByRole("button");
+        const button = screen.getByText("Test").closest("a");
         expect(button).toHaveClass("flex", "cursor-pointer", "items-center");
     });
 
-    it("passes through button props", () => {
+    it("passes through button props", async () => {
         renderWithProviders(
-            <LinkButton href="/test" disabled>
-                Disabled Link
+            <LinkButton href="/test" title="test title">
+                Test Link
             </LinkButton>
         );
-        const button = screen.getByRole("button");
-        expect(button).toBeDisabled();
+
+        const button = await screen.findByTitle("test title");
+        expect(button).toHaveTextContent("Test Link");
     });
 
     it("handles different href values", () => {

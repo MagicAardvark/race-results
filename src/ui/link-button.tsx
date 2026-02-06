@@ -11,7 +11,7 @@ export const LinkButton = ({
     children: React.ReactNode;
 }) => {
     return (
-        <Button {...props}>
+        <Button {...props} asChild>
             <Link href={href} className="flex items-center gap-2">
                 {children}
             </Link>
