@@ -31,11 +31,13 @@ import { Button } from "@/ui/button-wrapper";
 type CreateEventDialogProps = {
     orgId: string;
     orgSlug: string;
+    seasonId: string;
 };
 
 export const CreateEventDialog = ({
     orgId,
     orgSlug,
+    seasonId,
 }: CreateEventDialogProps) => {
     const form = useForm<z.infer<typeof baseEventSchema>>({
         // @hookform/resolvers v5.2.2 types don't fully support Zod v4 yet, but runtime works correctly
@@ -53,7 +55,7 @@ export const CreateEventDialog = ({
     const [open, setOpen] = useState(false);
 
     const onSubmit = async (data: z.infer<typeof baseEventSchema>) => {
-        const result = await createEvent(orgId, orgSlug, data);
+        const result = await createEvent(orgId, orgSlug, seasonId, data);
 
         if (result.isError) {
             setError(result);

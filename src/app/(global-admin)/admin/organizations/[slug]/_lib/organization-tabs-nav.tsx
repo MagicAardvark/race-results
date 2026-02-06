@@ -12,9 +12,9 @@ export function OrganizationTabsNav({ orgSlug }: OrganizationTabsNavProps) {
     const pathname = usePathname();
 
     const getCurrentTab = () => {
-        if (pathname.endsWith("/event-setup")) return "event-setup";
-        if (pathname.endsWith("/calendar")) return "calendar";
-        if (pathname.endsWith("/settings")) return "settings";
+        if (pathname.includes("/event-setup")) return "event-setup";
+        if (pathname.includes("/calendar")) return "calendar";
+        if (pathname.includes("/settings")) return "settings";
         return "general";
     };
 

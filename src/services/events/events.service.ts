@@ -40,6 +40,7 @@ export class EventsService implements IEventsService {
 
         return await orgEventsRepository.create({
             orgId: event.orgId,
+            seasonId: event.seasonId,
             name: event.name,
             startAt: ensureStartOfStartDate,
             endAt: ensureEndOfEndDate,

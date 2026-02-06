@@ -11,6 +11,7 @@ import z from "zod";
 export async function createEvent(
     orgId: string,
     orgSlug: string,
+    seasonId: string,
     data: z.infer<typeof baseEventSchema>
 ): Promise<FormResponse> {
     await requireRole(ROLES.admin);
@@ -33,6 +34,7 @@ export async function createEvent(
     try {
         await eventsService.createEvent({
             orgId: orgId,
+            seasonId: seasonId,
             name: data.name,
             startAt: data.startDate,
             endAt: data.endDate,
