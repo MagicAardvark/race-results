@@ -125,7 +125,55 @@ export const relations = defineRelations(schema, (r) => ({
         season: r.one.seasons({
             from: r.events.seasonId,
             to: r.seasons.seasonId,
+            optional: false,
+        }),
+        segments: r.many.eventSegments({
+            from: r.events.eventId,
+            to: r.eventSegments.eventId,
+        }),
+        entries: r.many.eventEntries({
+            from: r.events.eventId,
+            to: r.eventEntries.eventId,
+        }),
+    },
+    eventSegments: {
+        event: r.one.events({
+            from: r.eventSegments.eventId,
+            to: r.events.eventId,
+            optional: false,
+        }),
+        eventRuns: r.many.eventRuns({
+            from: r.eventSegments.segmentId,
+            to: r.eventRuns.segmentId,
+        }),
+    },
+    eventEntries: {
+        event: r.one.events({
+            from: r.eventEntries.eventId,
+            to: r.events.eventId,
+            optional: false,
+        }),
+        baseClass: r.one.baseClasses({
+            from: r.eventEntries.classId,
+            to: r.baseClasses.classId,
+            optional: false,
+        }),
+        classGroup: r.one.classGroups({
+            from: r.eventEntries.classGroupId,
+            to: r.classGroups.classGroupId,
             optional: true,
+        }),
+    },
+    eventRuns: {
+        eventSegment: r.one.eventSegments({
+            from: r.eventRuns.segmentId,
+            to: r.eventSegments.segmentId,
+            optional: false,
+        }),
+        eventEntry: r.one.eventEntries({
+            from: r.eventRuns.entryId,
+            to: r.eventEntries.entryId,
+            optional: false,
         }),
     },
     activeOrgApiKeys: {
