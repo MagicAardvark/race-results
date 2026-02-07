@@ -71,7 +71,7 @@ export class UserService implements IUserService {
                 (role) => role.roleKey === ROLES.admin
             )
         ) {
-            return (await organizationService.getAllOrganizations()).map(
+            return (await organizationService.getAllOrganizations(false)).map(
                 (org) => ({
                     org: {
                         orgId: org.orgId,

@@ -1,10 +1,16 @@
+import { GeneralTab } from "@/app/(global-admin)/admin/_lib/components/organizations/general/general-tab";
+import { getStoredTenant } from "@/app/(global-admin)/admin/_lib/get-stored-tenant";
+import { organizationAdminService } from "@/services/organizations/organization.admin.service";
+
 export default async function Page() {
-    return (
-        <div className="flex w-full flex-col gap-4">
-            <h1 className="text-2xl font-semibold">Admin Dashboard</h1>
-            <p className="text-muted-foreground">
-                Manage organizations, users, and platform settings.
-            </p>
-        </div>
-    );
+    const storedTenant = await getStoredTenant();
+
+    // Todo: Ensure user has access to this tenant, otherwise throw an error or redirect.
+    const org = await organizationAdminService.findBySlug(storedTenant);
+
+    if (!org) {
+        throw new Error("Organization not found");
+    }
+
+    return <GeneralTab org={org} />;
 }

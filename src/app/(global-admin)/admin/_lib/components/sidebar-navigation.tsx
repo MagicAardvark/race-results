@@ -24,7 +24,8 @@ import {
 import { ChevronsUpDown, Earth, Plus } from "lucide-react";
 import { OrgWithRoles } from "@/dto/users";
 import { switchTenant } from "@/app/(global-admin)/admin/_lib/actions/switch-teant";
-import { CreateOrgDialog } from "@/app/(global-admin)/admin/organizations/_lib/components/create-org-dialog";
+import { CreateOrgDialog } from "@/app/(global-admin)/admin/_lib/components/organizations/create-org-dialog";
+import { useState } from "react";
 
 export const SidebarNavigation = ({
     roles,
@@ -38,6 +39,8 @@ export const SidebarNavigation = ({
     selectedOrg: OrgWithRoles;
 }) => {
     const pathname = usePathname();
+    const [open, setOpen] = useState(false);
+    const [createOrgDialogOpen, setCreateOrgDialogOpen] = useState(false);
 
     const handleSelectOrg = async (orgSlug: string) => {
         await switchTenant(orgSlug);
@@ -48,7 +51,7 @@ export const SidebarNavigation = ({
             <SidebarHeader>
                 <SidebarMenu>
                     <SidebarMenuItem>
-                        <DropdownMenu>
+                        <DropdownMenu open={open} onOpenChange={setOpen}>
                             <DropdownMenuTrigger asChild>
                                 <SidebarMenuButton
                                     size="lg"
@@ -80,22 +83,20 @@ export const SidebarNavigation = ({
                                     </DropdownMenuItem>
                                 ))}
                                 {roles.includes("admin") && (
-                                    <CreateOrgDialog
-                                        trigger={
-                                            <DropdownMenuItem
-                                                onSelect={(e) => {
-                                                    e.preventDefault();
-                                                }}
-                                            >
-                                                <div className="flex size-6 items-center justify-center rounded-md border bg-transparent">
-                                                    <Plus className="size-4" />
-                                                </div>
-                                                <div className="text-muted-foreground font-medium">
-                                                    Create Organization
-                                                </div>
-                                            </DropdownMenuItem>
-                                        }
-                                    />
+                                    <DropdownMenuItem
+                                        onSelect={(e) => {
+                                            e.preventDefault();
+                                            setOpen(false);
+                                            setCreateOrgDialogOpen(true);
+                                        }}
+                                    >
+                                        <div className="flex size-6 items-center justify-center rounded-md border bg-transparent">
+                                            <Plus className="size-4" />
+                                        </div>
+                                        <div className="text-muted-foreground font-medium">
+                                            Create Organization
+                                        </div>
+                                    </DropdownMenuItem>
                                 )}
                             </DropdownMenuContent>
                         </DropdownMenu>
@@ -128,6 +129,10 @@ export const SidebarNavigation = ({
                     </SidebarGroup>
                 ))}
             </SidebarContent>
+            <CreateOrgDialog
+                open={createOrgDialogOpen}
+                setOpen={setCreateOrgDialogOpen}
+            />
         </Sidebar>
     );
 };

@@ -1,9 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import {
-    createOrganization,
-    updateOrganization,
-    updateApiKey,
-} from "./organization.actions";
+import { updateOrganization, updateApiKey } from "./organization.actions";
 import { organizationAdminService } from "@/services/organizations/organization.admin.service";
 import {
     mockAdminUser,
@@ -32,84 +28,6 @@ vi.mock("next/navigation", () => ({
 describe("organization.actions", () => {
     beforeEach(() => {
         vi.clearAllMocks();
-    });
-
-    describe("createOrganization", () => {
-        it("creates organization successfully", async () => {
-            vi.mocked(
-                organizationAdminService.createOrganization
-            ).mockResolvedValue("test-org");
-
-            const formData = new FormData();
-            formData.append("name", "Test Organization");
-
-            await expect(
-                createOrganization({ isError: false, message: "" }, formData)
-            ).rejects.toThrow("redirect called");
-
-            expect(
-                organizationAdminService.createOrganization
-            ).toHaveBeenCalledWith({
-                name: "Test Organization",
-            });
-            expect(revalidatePath).toHaveBeenCalledWith(
-                "/admin/organizations/"
-            );
-            expect(redirect).toHaveBeenCalledWith(
-                "/admin/organizations/test-org"
-            );
-        });
-
-        it("returns error when name is empty", async () => {
-            const formData = new FormData();
-
-            const result = await createOrganization(
-                { isError: false, message: "" },
-                formData
-            );
-
-            expect(result.isError).toBe(true);
-            expect(result.message).toBe("Name cannot be empty");
-            expect(
-                organizationAdminService.createOrganization
-            ).not.toHaveBeenCalled();
-        });
-
-        it("returns error when service throws", async () => {
-            vi.mocked(
-                organizationAdminService.createOrganization
-            ).mockRejectedValue(new Error("Service error"));
-
-            const formData = new FormData();
-            formData.append("name", "Test Organization");
-
-            const result = await createOrganization(
-                { isError: false, message: "" },
-                formData
-            );
-
-            expect(result.isError).toBe(true);
-            expect(result.message).toBe("Service error");
-        });
-
-        it("returns error when slug is null", async () => {
-            vi.mocked(
-                organizationAdminService.createOrganization
-            ).mockResolvedValue(null as unknown as string);
-
-            const formData = new FormData();
-            formData.append("name", "Test Organization");
-
-            const result = await createOrganization(
-                { isError: false, message: "" },
-                formData
-            );
-
-            expect(result.isError).toBe(true);
-            expect(result.message).toBe(
-                "Organization could not be found after save"
-            );
-        });
     });
 
     describe("updateOrganization", () => {

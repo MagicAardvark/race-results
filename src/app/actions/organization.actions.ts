@@ -14,41 +14,6 @@ type ActionState = {
     message: string;
 };
 
-export async function createOrganization(
-    _: ActionState,
-    formData: FormData
-): Promise<ActionState> {
-    const name = formData.get(nameof<Organization>("name"))?.toString().trim();
-
-    if (!name) {
-        return { isError: true, message: "Name cannot be empty" };
-    }
-
-    let slug = null;
-
-    try {
-        slug = await organizationAdminService.createOrganization({ name });
-    } catch (error) {
-        return {
-            isError: true,
-            message:
-                error instanceof Error
-                    ? error.message
-                    : "An unknown error occurred",
-        };
-    }
-
-    if (slug === null) {
-        return {
-            isError: true,
-            message: "Organization could not be found after save",
-        };
-    }
-
-    revalidatePath("/admin/organizations/");
-    redirect(`/admin/organizations/${slug}`);
-}
-
 export async function updateOrganization(
     _: ActionState,
     formData: FormData
