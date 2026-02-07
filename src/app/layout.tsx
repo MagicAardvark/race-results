@@ -5,6 +5,7 @@ import { Geist, Geist_Mono, Noto_Sans } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
 import { getCurrentUserCached } from "@/services/users/user.service.cached";
+import { cookies } from "next/headers";
 
 const notoSans = Noto_Sans({ variable: "--font-sans" });
 

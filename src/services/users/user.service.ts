@@ -8,12 +8,13 @@ import {
 import { auth } from "@clerk/nextjs/server";
 import { ROLES } from "@/constants/global";
 import { rolesService } from "@/services/roles/roles.service";
+import { organizationService } from "@/services/organizations/organization.service";
 
 interface IUserService {
     getAllUsers(): Promise<User[]>;
     getCurrentUser(): Promise<UserWithExtendedDetails | null>;
     getUserById(userId: string): Promise<UserWithExtendedDetails | null>;
-    getUserOrgsWithPermissions(userId: string): Promise<OrgWithRoles[]>;
+    getUserOrgsWithPermissions(user: UserDTO): Promise<OrgWithRoles[]>;
     updateUser(userId: string, data: { displayName?: string }): Promise<void>;
     deleteUser(userId: string): Promise<void>;
     addUserToOrganization(userId: string, orgId: string): Promise<void>;
@@ -49,7 +50,7 @@ export class UserService implements IUserService {
 
         return {
             ...mapUser(user),
-            orgs: await this.getUserOrgsWithPermissions(user.userId),
+            orgs: await this.getUserOrgsWithPermissions(user),
         };
     }
 
@@ -58,13 +59,35 @@ export class UserService implements IUserService {
         return user
             ? {
                   ...mapUser(user),
-                  orgs: await this.getUserOrgsWithPermissions(user.userId),
+                  orgs: await this.getUserOrgsWithPermissions(user),
               }
             : null;
     }
 
-    async getUserOrgsWithPermissions(userId: string): Promise<OrgWithRoles[]> {
-        const roles = await usersRepository.findOrgRoles(userId);
+    async getUserOrgsWithPermissions(user: UserDTO): Promise<OrgWithRoles[]> {
+        // If the user has the global admin role, they should have access to all organizations with all roles.
+        if (
+            user.assignedGlobalRoles.some(
+                (role) => role.roleKey === ROLES.admin
+            )
+        ) {
+            return (await organizationService.getAllOrganizations()).map(
+                (org) => ({
+                    org: {
+                        orgId: org.orgId,
+                        name: org.name,
+                        slug: org.slug,
+                    },
+                    roles: user.assignedGlobalRoles.map((role) => ({
+                        roleId: role.roleId,
+                        key: role.roleKey,
+                        name: role.roleName,
+                    })),
+                })
+            );
+        }
+
+        const roles = await usersRepository.findOrgRoles(user.userId);
 
         const orgsWithRoles: OrgWithRoles[] = [];
 
@@ -115,6 +138,12 @@ export class UserService implements IUserService {
     }
 
     async addUserToOrganization(userId: string, orgId: string): Promise<void> {
+        const user = await usersRepository.findByUserId(userId);
+
+        if (!user) {
+            throw new Error("User not found.");
+        }
+
         const defaultRole = await rolesService.getRoleByKey(ROLES.orgManager);
 
         if (!defaultRole) {
@@ -123,7 +152,7 @@ export class UserService implements IUserService {
             );
         }
 
-        const orgRoles = (await this.getUserOrgsWithPermissions(userId)).filter(
+        const orgRoles = (await this.getUserOrgsWithPermissions(user)).filter(
             (role) => role.org.orgId === orgId
         );
 
@@ -150,7 +179,13 @@ export class UserService implements IUserService {
         orgId: string,
         roleId: string
     ): Promise<void> {
-        const orgRoles = (await this.getUserOrgsWithPermissions(userId)).filter(
+        const user = await usersRepository.findByUserId(userId);
+
+        if (!user) {
+            throw new Error("User not found.");
+        }
+
+        const orgRoles = (await this.getUserOrgsWithPermissions(user)).filter(
             (role) => role.org.orgId === orgId
         );
 
