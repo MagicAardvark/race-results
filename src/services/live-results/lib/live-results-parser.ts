@@ -64,8 +64,14 @@ export class LiveResultsParser {
                 entry.runs
             );
 
+            const entryKey =
+                `${normalizedClassKey}-${entry.carNumber}-${entry.driverName}`.replace(
+                    /\s+/g,
+                    ""
+                );
+
             const resultEntry = {
-                entryKey: `${normalizedClassKey}-${entry.carNumber}-${entry.driverName}`,
+                entryKey: entryKey,
                 msrId: entry.msrId,
                 email: entry.email,
                 class: normalizedClassKey,
