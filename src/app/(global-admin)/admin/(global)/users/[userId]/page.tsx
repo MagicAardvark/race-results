@@ -1,0 +1,69 @@
+import {
+    Empty,
+    EmptyContent,
+    EmptyDescription,
+    EmptyHeader,
+    EmptyMedia,
+    EmptyTitle,
+} from "@/ui/empty";
+import { LinkButton } from "@/ui/link-button";
+import { TriangleAlert } from "lucide-react";
+import { rolesService } from "@/services/roles/roles.service";
+import { organizationService } from "@/services/organizations/organization.service";
+import { getUserByIdCached } from "@/services/users/user.service.cached";
+import { DeleteUserButton } from "@/app/(global-admin)/admin/(global)/users/_lib/components/delete-user-button";
+import { UserInfoForm } from "@/app/(global-admin)/admin/(global)/users/_lib/components/user-info-form";
+import { GlobalRoles } from "@/app/(global-admin)/admin/(global)/users/_lib/components/roles/global-roles";
+import { UserOrgs } from "@/app/(global-admin)/admin/(global)/users/_lib/components/org/user-orgs";
+
+export default async function Page({
+    params,
+}: {
+    params: Promise<{ userId: string }>;
+}) {
+    const { userId } = await params;
+    const user = await getUserByIdCached(userId);
+
+    if (user === null) {
+        return (
+            <Empty>
+                <EmptyHeader>
+                    <EmptyMedia variant="icon">
+                        <TriangleAlert />
+                    </EmptyMedia>
+                    <EmptyTitle>User Not Found</EmptyTitle>
+                    <EmptyDescription>
+                        The user you are looking for does not exist.
+                    </EmptyDescription>
+                </EmptyHeader>
+                <EmptyContent>
+                    <LinkButton href="/admin/users">Go Back</LinkButton>
+                </EmptyContent>
+            </Empty>
+        );
+    }
+
+    const globalRoles = await rolesService.getGlobalRoles();
+    const orgRoles = await rolesService.getOrgRoles();
+    const orgs = await organizationService.getAllOrganizations();
+
+    return (
+        <div className="flex w-full flex-col gap-4">
+            <div className="flex items-center justify-between">
+                <h1 className="text-2xl font-semibold">
+                    {user.displayName || "User"}
+                </h1>
+                <div className="flex items-center gap-2">
+                    <DeleteUserButton
+                        userId={user.userId}
+                        userName={user.displayName}
+                    />
+                    <LinkButton href="/admin/users">Go Back</LinkButton>
+                </div>
+            </div>
+            <UserInfoForm user={user} />
+            <GlobalRoles user={user} availableRoles={globalRoles} />
+            <UserOrgs user={user} orgs={orgs} availableRoles={orgRoles} />
+        </div>
+    );
+}

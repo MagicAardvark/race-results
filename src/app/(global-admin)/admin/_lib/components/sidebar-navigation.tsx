@@ -27,6 +27,7 @@ import { switchTenant } from "@/app/(global-admin)/admin/_lib/actions/switch-tea
 import { CreateOrgDialog } from "@/app/(global-admin)/admin/_lib/components/organizations/create-org-dialog";
 import { useState } from "react";
 import { ROLES } from "@/constants/global";
+import { useRouter } from "next/navigation";
 
 export const SidebarNavigation = ({
     roles,
@@ -40,11 +41,14 @@ export const SidebarNavigation = ({
     selectedOrg: OrgWithRoles | null;
 }) => {
     const pathname = usePathname();
+    const router = useRouter();
     const [open, setOpen] = useState(false);
     const [createOrgDialogOpen, setCreateOrgDialogOpen] = useState(false);
 
     const handleSelectOrg = async (orgSlug: string) => {
         await switchTenant(orgSlug);
+        // Force a navigation to the current path to refetch server component data
+        router.replace(pathname);
     };
 
     return (
@@ -119,9 +123,9 @@ export const SidebarNavigation = ({
                                         .map((item) => (
                                             <SidebarMenuItem key={item.href}>
                                                 <SidebarMenuButton
-                                                    isActive={pathname.includes(
-                                                        item.href
-                                                    )}
+                                                    isActive={
+                                                        pathname === item.href
+                                                    }
                                                     asChild
                                                 >
                                                     <Link

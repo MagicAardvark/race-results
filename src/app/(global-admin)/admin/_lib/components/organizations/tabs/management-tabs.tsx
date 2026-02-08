@@ -6,12 +6,6 @@ import { usePathname, useRouter } from "next/navigation";
 
 const tabs = [
     { value: "general", label: "General", allowedRoles: ADMIN_ROLES },
-    {
-        value: "event-setup",
-        label: "Event Setup",
-        allowedRoles: ADMIN_ROLES,
-    },
-    { value: "calendar", label: "Calendar", allowedRoles: ADMIN_ROLES },
     { value: "settings", label: "Settings", allowedRoles: ADMIN_ROLES },
 ];
 
@@ -24,8 +18,6 @@ export function ManagementTabs({ roles }: ManagementTabsProps) {
     const pathname = usePathname();
 
     const getCurrentTab = () => {
-        if (pathname.includes("/event-setup")) return "event-setup";
-        if (pathname.includes("/calendar")) return "calendar";
         if (pathname.includes("/settings")) return "settings";
         return "general";
     };

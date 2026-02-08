@@ -5,7 +5,12 @@ import { cookies } from "next/headers";
 
 export async function switchTenant(orgSlug: string) {
     const cookieStore = await cookies();
-    cookieStore.set("rr-admin-tenant", orgSlug);
+    cookieStore.set("rr-admin-tenant", orgSlug, {
+        path: "/",
+        maxAge: 60 * 60 * 24 * 365,
+        sameSite: "lax",
+    });
 
-    revalidatePath("/admin", "page");
+    // Revalidate the entire admin section
+    revalidatePath("/admin", "layout");
 }

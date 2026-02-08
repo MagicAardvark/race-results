@@ -5,7 +5,6 @@ import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/ui/sidebar";
 import { AppHeader } from "@/app/components/shared/layout/app-header";
 import { SidebarNavigation } from "@/app/(global-admin)/admin/_lib/components/sidebar-navigation";
 import { getStoredTenant } from "@/app/(global-admin)/admin/_lib/get-stored-tenant";
-import { ManagementTabs } from "@/app/(global-admin)/admin/_lib/components/organizations/tabs/management-tabs";
 import { InvalidOrg } from "@/app/(global-admin)/admin/_lib/components/organizations/invalid-org";
 
 export default async function AdminLayout({
@@ -23,10 +22,14 @@ export default async function AdminLayout({
 
     const storedTenant = await getStoredTenant();
 
-    const matchedOrg = orgs.find((org) => org.org.slug === storedTenant);
+    const matchedOrg = storedTenant
+        ? orgs.find((org) => org.org.slug === storedTenant)
+        : null;
     const isValidTenantSelected = !!matchedOrg;
 
     const selectedOrg = matchedOrg ?? null;
+
+    console.log(selectedOrg);
 
     const navItems = getNavigationConfiguration(user.roles || []);
 
@@ -49,12 +52,7 @@ export default async function AdminLayout({
                     />
                     <SidebarInset className="pt-0">
                         <main className="flex flex-1 flex-col gap-4 p-4 md:p-6">
-                            {isValidTenantSelected && (
-                                <>
-                                    <ManagementTabs roles={user.roles || []} />
-                                    {children}
-                                </>
-                            )}
+                            {isValidTenantSelected && <>{children}</>}
                             {!isValidTenantSelected && (
                                 <InvalidOrg orgs={orgs} />
                             )}

@@ -22,6 +22,16 @@ const ADMIN_NAVIGATION = [
                 href: "/admin",
                 roles: [ROLES.admin, ROLES.orgManager, ROLES.orgOwner],
             },
+            {
+                text: "Event Setup",
+                href: "/admin/event-setup",
+                roles: [ROLES.admin, ROLES.orgManager, ROLES.orgOwner],
+            },
+            {
+                text: "Calendar",
+                href: "/admin/calendar",
+                roles: [ROLES.admin, ROLES.orgManager, ROLES.orgOwner],
+            },
         ],
     },
     {

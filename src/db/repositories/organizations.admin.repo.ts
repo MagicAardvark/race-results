@@ -37,6 +37,10 @@ export class OrganizationsAdminRepository implements IOrganizationsAdminReposito
     }
 
     async findById(orgId: string): Promise<OrganizationAdminDTO | null> {
+        if (orgId === undefined) {
+            return null;
+        }
+
         const org = await db.query.orgs.findFirst({
             with: {
                 orgApiKeys: true,
@@ -53,6 +57,10 @@ export class OrganizationsAdminRepository implements IOrganizationsAdminReposito
     }
 
     async findBySlug(slug: string): Promise<OrganizationAdminDTO | null> {
+        if (slug === undefined) {
+            return null;
+        }
+
         const org = await db.query.orgs.findFirst({
             with: {
                 orgApiKeys: true,
