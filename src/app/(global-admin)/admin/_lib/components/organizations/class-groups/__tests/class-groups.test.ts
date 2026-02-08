@@ -1,15 +1,15 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import {
-    createClassGroup,
-    updateClassGroup,
-    deleteClassGroup,
-    getClassGroup,
-} from "../../../../actions/organizations/class-groups/class-groups";
 import { classGroupsService } from "@/services/class-groups/class-groups.service";
 import { requireOrgRole } from "@/lib/auth/require-org-role";
 import { revalidatePath } from "next/cache";
 import type { ClassGroupWithClasses } from "@/dto/class-groups";
 import { ROLES } from "@/constants/global";
+import {
+    createClassGroup,
+    deleteClassGroup,
+    getClassGroup,
+    updateClassGroup,
+} from "@/app/(global-admin)/admin/_lib/actions/organizations/class-groups/class-groups";
 
 vi.mock("@/services/class-groups/class-groups.service");
 vi.mock("@/lib/auth/require-org-role");

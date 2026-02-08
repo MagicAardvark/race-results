@@ -1,5 +1,7 @@
 "use server";
 
+import { ROLES } from "@/constants/global";
+import { requireRole } from "@/lib/auth/require-role";
 import { organizationAdminService } from "@/services/organizations/organization.admin.service";
 import { FormResponse } from "@/types/forms";
 import { revalidatePath } from "next/cache";
@@ -7,6 +9,8 @@ import { revalidatePath } from "next/cache";
 export async function createOrganization(
     name: string
 ): Promise<FormResponse<{ slug: string }>> {
+    await requireRole(ROLES.admin);
+
     if (!name) {
         return { isError: true, errors: "Name cannot be empty" };
     }

@@ -26,6 +26,7 @@ import { OrgWithRoles } from "@/dto/users";
 import { switchTenant } from "@/app/(global-admin)/admin/_lib/actions/switch-teant";
 import { CreateOrgDialog } from "@/app/(global-admin)/admin/_lib/components/organizations/create-org-dialog";
 import { useState } from "react";
+import { ROLES } from "@/constants/global";
 
 export const SidebarNavigation = ({
     roles,
@@ -83,7 +84,7 @@ export const SidebarNavigation = ({
                                             {org.org.name}
                                         </DropdownMenuItem>
                                     ))}
-                                    {roles.includes("admin") && (
+                                    {roles.includes(ROLES.admin) && (
                                         <DropdownMenuItem
                                             onSelect={(e) => {
                                                 e.preventDefault();
@@ -106,30 +107,36 @@ export const SidebarNavigation = ({
                 </SidebarHeader>
             )}
             <SidebarContent>
-                {navItems.map((group) => (
-                    <SidebarGroup key={group.name}>
-                        <SidebarGroupLabel>{group.name}</SidebarGroupLabel>
-                        <SidebarGroupContent>
-                            <SidebarMenu>
-                                {group.items.map((item) => (
-                                    <SidebarMenuItem key={item.href}>
-                                        <SidebarMenuButton
-                                            isActive={pathname === item.href}
-                                            asChild
-                                        >
-                                            <Link
-                                                href={item.href}
-                                                className="w-full"
-                                            >
-                                                {item.text}
-                                            </Link>
-                                        </SidebarMenuButton>
-                                    </SidebarMenuItem>
-                                ))}
-                            </SidebarMenu>
-                        </SidebarGroupContent>
-                    </SidebarGroup>
-                ))}
+                {navItems
+                    .filter((group) => group.show)
+                    .map((group) => (
+                        <SidebarGroup key={group.name}>
+                            <SidebarGroupLabel>{group.name}</SidebarGroupLabel>
+                            <SidebarGroupContent>
+                                <SidebarMenu>
+                                    {group.items
+                                        .filter((item) => item.show)
+                                        .map((item) => (
+                                            <SidebarMenuItem key={item.href}>
+                                                <SidebarMenuButton
+                                                    isActive={pathname.includes(
+                                                        item.href
+                                                    )}
+                                                    asChild
+                                                >
+                                                    <Link
+                                                        href={item.href}
+                                                        className="w-full"
+                                                    >
+                                                        {item.text}
+                                                    </Link>
+                                                </SidebarMenuButton>
+                                            </SidebarMenuItem>
+                                        ))}
+                                </SidebarMenu>
+                            </SidebarGroupContent>
+                        </SidebarGroup>
+                    ))}
             </SidebarContent>
             <CreateOrgDialog
                 open={createOrgDialogOpen}

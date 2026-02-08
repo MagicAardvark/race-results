@@ -4,11 +4,17 @@ import { organizationAdminService } from "@/services/organizations/organization.
 import { revalidatePath } from "next/cache";
 import { createOrganization } from "@/app/(global-admin)/admin/_lib/actions/organizations/create-org";
 import { beforeEach } from "node:test";
+import { ROLES } from "@/constants/global";
+import { requireRole } from "@/lib/auth/require-role";
+import { mockAdminUser } from "@/__tests__/mocks/mock-users";
+import { getCurrentUserCached } from "@/services/users/user.service.cached";
 
 vi.mock("@/services/organizations/organization.admin.service");
 vi.mock("@/services/users/user.service.cached", () => ({
     getCurrentUserCached: vi.fn(),
 }));
+
+vi.mock("@/lib/auth/require-role");
 
 vi.mock("next/cache", () => ({
     revalidatePath: vi.fn(),
@@ -23,6 +29,8 @@ vi.mock("next/navigation", () => ({
 describe("createOrganization", () => {
     beforeEach(() => {
         vi.clearAllMocks();
+        vi.mocked(getCurrentUserCached).mockResolvedValue(mockAdminUser);
+        vi.mocked(requireRole).mockResolvedValue({} as never);
     });
 
     it("creates organization successfully", async () => {
@@ -34,6 +42,7 @@ describe("createOrganization", () => {
 
         const result = await createOrganization(name);
 
+        expect(requireRole).toHaveBeenCalledWith(ROLES.admin);
         expect(
             organizationAdminService.createOrganization
         ).toHaveBeenCalledWith({
@@ -49,13 +58,6 @@ describe("createOrganization", () => {
         const result = await createOrganization(name);
 
         expect(result.isError).toBe(true);
-
-        // if (result.isError) {
-        //     expect(result.errors).toBe("Name cannot be empty");
-        //     expect(
-        //         organizationAdminService.createOrganization
-        //     ).not.toHaveBeenCalled();
-        // }
     });
 
     it("returns error when service throws", async () => {

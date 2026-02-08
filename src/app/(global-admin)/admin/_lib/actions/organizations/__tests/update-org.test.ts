@@ -8,11 +8,15 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { getCurrentUserCached } from "@/services/users/user.service.cached";
 import { updateOrganization } from "@/app/(global-admin)/admin/_lib/actions/organizations/update-org";
+import { requireRole } from "@/lib/auth/require-role";
+import { ROLES } from "@/constants/global";
 
 vi.mock("@/services/organizations/organization.admin.service");
 vi.mock("@/services/users/user.service.cached", () => ({
     getCurrentUserCached: vi.fn(),
 }));
+
+vi.mock("@/lib/auth/require-role");
 
 vi.mock("next/cache", () => ({
     revalidatePath: vi.fn(),
@@ -27,10 +31,8 @@ vi.mock("next/navigation", () => ({
 describe("updateOrganization", () => {
     beforeEach(() => {
         vi.clearAllMocks();
-    });
-
-    beforeEach(() => {
         vi.mocked(getCurrentUserCached).mockResolvedValue(mockAdminUser);
+        vi.mocked(requireRole).mockResolvedValue({} as never);
     });
 
     it("updates organization successfully", async () => {
@@ -47,6 +49,7 @@ describe("updateOrganization", () => {
             updateOrganization({ isError: false, message: "" }, formData)
         ).rejects.toThrow("redirect called");
 
+        expect(requireRole).toHaveBeenCalledWith(ROLES.admin);
         expect(
             organizationAdminService.updateOrganization
         ).toHaveBeenCalledWith({

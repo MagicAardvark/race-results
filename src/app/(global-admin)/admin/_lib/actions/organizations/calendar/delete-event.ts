@@ -2,7 +2,7 @@
 
 import { ROLES } from "@/constants/global";
 import { orgEventsRepository } from "@/db/repositories/org-events.repo";
-import { requireRole } from "@/lib/auth/require-role";
+import { requireOrgRole } from "@/lib/auth/require-org-role";
 import { FormResponse } from "@/types/forms";
 import { revalidatePath } from "next/cache";
 
@@ -10,7 +10,7 @@ export async function deleteEvent(
     eventId: string,
     orgId: string
 ): Promise<FormResponse> {
-    await requireRole(ROLES.admin);
+    await requireOrgRole(orgId, ROLES.orgOwner);
 
     if (!eventId || !orgId) {
         return {

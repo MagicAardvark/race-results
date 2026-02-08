@@ -3,7 +3,7 @@
 import { createSeasonSchema } from "@/app/(global-admin)/admin/_lib/schema/organizations/calendar/seasons";
 import { ROLES } from "@/constants/global";
 import { Season } from "@/dto/events/seasons";
-import { requireRole } from "@/lib/auth/require-role";
+import { requireOrgRole } from "@/lib/auth/require-org-role";
 import { seasonsService } from "@/services/events/seasons.service";
 import { FormResponse } from "@/types/forms";
 import { revalidatePath } from "next/dist/server/web/spec-extension/revalidate";
@@ -13,7 +13,7 @@ export async function createSeason(
     orgId: string,
     data: z.infer<typeof createSeasonSchema>
 ): Promise<FormResponse<Season>> {
-    await requireRole(ROLES.admin);
+    await requireOrgRole(orgId, ROLES.orgOwner);
 
     const result = await createSeasonSchema.safeParseAsync(data);
 

@@ -5,6 +5,10 @@ import { organizationAdminService } from "@/services/organizations/organization.
 export default async function Page() {
     const storedTenant = await getStoredTenant();
 
+    if (!storedTenant) {
+        return null;
+    }
+
     // Todo: Ensure user has access to this tenant, otherwise throw an error or redirect.
     const org = await organizationAdminService.findBySlug(storedTenant);
 

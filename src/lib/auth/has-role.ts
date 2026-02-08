@@ -1,35 +1,36 @@
 import { ROLES } from "@/constants/global";
 import { getCurrentUserCached } from "@/services/users/user.service.cached";
-import { redirect } from "next/navigation";
 
-export async function requireRole(role: (typeof ROLES)[keyof typeof ROLES]) {
+export async function hasRole(
+    role: (typeof ROLES)[keyof typeof ROLES]
+): Promise<boolean> {
     const user = await getCurrentUserCached();
 
     if (!user) {
-        redirect("/");
+        return false;
     }
 
     if (!user.roles.includes(role)) {
-        redirect("/");
+        return false;
     }
 
-    return user;
+    return true;
 }
 
-export async function requireAnyRole(
+export async function hasAnyRole(
     roles: (typeof ROLES)[keyof typeof ROLES][]
-) {
+): Promise<boolean> {
     const user = await getCurrentUserCached();
 
     if (!user) {
-        redirect("/");
+        return false;
     }
 
     const hasRole = roles.some((role) => user.roles.includes(role));
 
     if (!hasRole) {
-        redirect("/");
+        return false;
     }
 
-    return user;
+    return true;
 }

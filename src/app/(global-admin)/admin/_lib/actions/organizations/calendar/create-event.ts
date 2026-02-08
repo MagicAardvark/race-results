@@ -2,7 +2,7 @@
 
 import { baseEventSchema } from "@/app/(global-admin)/admin/_lib/schema/organizations/calendar";
 import { ROLES } from "@/constants/global";
-import { requireRole } from "@/lib/auth/require-role";
+import { requireOrgRole } from "@/lib/auth/require-org-role";
 import { eventsService } from "@/services/events/events.service";
 import { FormResponse } from "@/types/forms";
 import { revalidatePath } from "next/dist/server/web/spec-extension/revalidate";
@@ -13,7 +13,7 @@ export async function createEvent(
     seasonId: string,
     data: z.infer<typeof baseEventSchema>
 ): Promise<FormResponse> {
-    await requireRole(ROLES.admin);
+    await requireOrgRole(orgId, ROLES.orgOwner);
 
     const result = await baseEventSchema.safeParseAsync(data);
     if (!result.success) {

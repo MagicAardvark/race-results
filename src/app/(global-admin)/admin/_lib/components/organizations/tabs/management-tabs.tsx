@@ -1,9 +1,25 @@
 "use client";
 
+import { ADMIN_ROLES } from "@/constants/global";
 import { Tabs, TabsList, TabsTrigger } from "@/ui/tabs";
 import { usePathname, useRouter } from "next/navigation";
 
-export function ManagementTabs() {
+const tabs = [
+    { value: "general", label: "General", allowedRoles: ADMIN_ROLES },
+    {
+        value: "event-setup",
+        label: "Event Setup",
+        allowedRoles: ADMIN_ROLES,
+    },
+    { value: "calendar", label: "Calendar", allowedRoles: ADMIN_ROLES },
+    { value: "settings", label: "Settings", allowedRoles: ADMIN_ROLES },
+];
+
+type ManagementTabsProps = {
+    roles: string[];
+};
+
+export function ManagementTabs({ roles }: ManagementTabsProps) {
     const router = useRouter();
     const pathname = usePathname();
 
@@ -29,10 +45,15 @@ export function ManagementTabs() {
             className="w-full"
         >
             <TabsList>
-                <TabsTrigger value="general">General</TabsTrigger>
-                <TabsTrigger value="event-setup">Event Setup</TabsTrigger>
-                <TabsTrigger value="calendar">Calendar</TabsTrigger>
-                <TabsTrigger value="settings">Settings</TabsTrigger>
+                {tabs
+                    .filter((tab) =>
+                        tab.allowedRoles.some((role) => roles.includes(role))
+                    )
+                    .map((tab) => (
+                        <TabsTrigger key={tab.value} value={tab.value}>
+                            {tab.label}
+                        </TabsTrigger>
+                    ))}
             </TabsList>
         </Tabs>
     );

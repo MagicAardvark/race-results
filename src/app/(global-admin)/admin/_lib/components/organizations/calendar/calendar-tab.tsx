@@ -115,7 +115,6 @@ export function CalendarTab({
                                             router.push(
                                                 `/admin/calendar/${seasonSlug}`
                                             );
-                                            router.refresh();
                                         }}
                                     />
                                 </div>

@@ -7,5 +7,5 @@ export async function switchTenant(orgSlug: string) {
     const cookieStore = await cookies();
     cookieStore.set("rr-admin-tenant", orgSlug);
 
-    revalidatePath("/admin");
+    revalidatePath("/admin", "page");
 }
