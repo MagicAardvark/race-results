@@ -36,7 +36,7 @@ export const SidebarNavigation = ({
     roles: string[];
     navItems: NavGroup[];
     organizations: OrgWithRoles[];
-    selectedOrg: OrgWithRoles;
+    selectedOrg: OrgWithRoles | null;
 }) => {
     const pathname = usePathname();
     const [open, setOpen] = useState(false);
@@ -48,61 +48,63 @@ export const SidebarNavigation = ({
 
     return (
         <Sidebar>
-            <SidebarHeader>
-                <SidebarMenu>
-                    <SidebarMenuItem>
-                        <DropdownMenu open={open} onOpenChange={setOpen}>
-                            <DropdownMenuTrigger asChild>
-                                <SidebarMenuButton
-                                    size="lg"
-                                    className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
-                                >
-                                    <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
-                                        <Earth className="size-4" />
-                                    </div>
-                                    <div className="grid flex-1 text-left text-sm leading-tight">
-                                        <span className="truncate font-medium">
-                                            {selectedOrg.org.name}
-                                        </span>
-                                    </div>
-                                    <ChevronsUpDown className="ml-auto" />
-                                </SidebarMenuButton>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent>
-                                <DropdownMenuLabel>
-                                    Organization
-                                </DropdownMenuLabel>
-                                {organizations.map((org) => (
-                                    <DropdownMenuItem
-                                        key={org.org.slug}
-                                        onSelect={() =>
-                                            handleSelectOrg(org.org.slug)
-                                        }
+            {selectedOrg && (
+                <SidebarHeader>
+                    <SidebarMenu>
+                        <SidebarMenuItem>
+                            <DropdownMenu open={open} onOpenChange={setOpen}>
+                                <DropdownMenuTrigger asChild>
+                                    <SidebarMenuButton
+                                        size="lg"
+                                        className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
                                     >
-                                        {org.org.name}
-                                    </DropdownMenuItem>
-                                ))}
-                                {roles.includes("admin") && (
-                                    <DropdownMenuItem
-                                        onSelect={(e) => {
-                                            e.preventDefault();
-                                            setOpen(false);
-                                            setCreateOrgDialogOpen(true);
-                                        }}
-                                    >
-                                        <div className="flex size-6 items-center justify-center rounded-md border bg-transparent">
-                                            <Plus className="size-4" />
+                                        <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
+                                            <Earth className="size-4" />
                                         </div>
-                                        <div className="text-muted-foreground font-medium">
-                                            Create Organization
+                                        <div className="grid flex-1 text-left text-sm leading-tight">
+                                            <span className="truncate font-medium">
+                                                {selectedOrg.org.name}
+                                            </span>
                                         </div>
-                                    </DropdownMenuItem>
-                                )}
-                            </DropdownMenuContent>
-                        </DropdownMenu>
-                    </SidebarMenuItem>
-                </SidebarMenu>
-            </SidebarHeader>
+                                        <ChevronsUpDown className="ml-auto" />
+                                    </SidebarMenuButton>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent>
+                                    <DropdownMenuLabel>
+                                        Organization
+                                    </DropdownMenuLabel>
+                                    {organizations.map((org) => (
+                                        <DropdownMenuItem
+                                            key={org.org.slug}
+                                            onSelect={() =>
+                                                handleSelectOrg(org.org.slug)
+                                            }
+                                        >
+                                            {org.org.name}
+                                        </DropdownMenuItem>
+                                    ))}
+                                    {roles.includes("admin") && (
+                                        <DropdownMenuItem
+                                            onSelect={(e) => {
+                                                e.preventDefault();
+                                                setOpen(false);
+                                                setCreateOrgDialogOpen(true);
+                                            }}
+                                        >
+                                            <div className="flex size-6 items-center justify-center rounded-md border bg-transparent">
+                                                <Plus className="size-4" />
+                                            </div>
+                                            <div className="text-muted-foreground font-medium">
+                                                Create Organization
+                                            </div>
+                                        </DropdownMenuItem>
+                                    )}
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+                        </SidebarMenuItem>
+                    </SidebarMenu>
+                </SidebarHeader>
+            )}
             <SidebarContent>
                 {navItems.map((group) => (
                     <SidebarGroup key={group.name}>

@@ -9,7 +9,7 @@ export default async function Page() {
     const org = await organizationAdminService.findBySlug(storedTenant);
 
     if (!org) {
-        throw new Error("Organization not found");
+        return null;
     }
 
     return <GeneralTab org={org} />;
