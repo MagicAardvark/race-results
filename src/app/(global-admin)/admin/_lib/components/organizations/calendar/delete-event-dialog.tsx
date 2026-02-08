@@ -20,15 +20,10 @@ import { toast } from "sonner";
 
 type DeleteEventDialogProps = {
     orgId: string;
-    orgSlug: string;
     event: EventDTO;
 };
 
-export const DeleteEventDialog = ({
-    orgId,
-    orgSlug,
-    event,
-}: DeleteEventDialogProps) => {
+export const DeleteEventDialog = ({ orgId, event }: DeleteEventDialogProps) => {
     const [error, setError] = useState<FormResponse | null>(null);
     const [open, setOpen] = useState(false);
     // const [deleteEvent, setDeleteEvent] = useState<OrgEventDTO | null>(null);
@@ -37,7 +32,7 @@ export const DeleteEventDialog = ({
     const handleDelete = async () => {
         setDeletePending(true);
 
-        const result = await deleteEvent(event.eventId, orgId, orgSlug);
+        const result = await deleteEvent(event.eventId, orgId);
 
         setDeletePending(false);
 

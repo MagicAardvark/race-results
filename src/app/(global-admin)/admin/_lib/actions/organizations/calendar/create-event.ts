@@ -10,7 +10,6 @@ import z from "zod";
 
 export async function createEvent(
     orgId: string,
-    orgSlug: string,
     seasonId: string,
     data: z.infer<typeof baseEventSchema>
 ): Promise<FormResponse> {
@@ -49,8 +48,7 @@ export async function createEvent(
         };
     }
 
-    revalidatePath(`/admin/organizations/${orgSlug}`);
-    revalidatePath("/admin/organizations");
+    revalidatePath("/admin/");
 
     return { isError: false, message: `${data.name} created` };
 }

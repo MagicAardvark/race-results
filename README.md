@@ -167,7 +167,7 @@ src/
 #### Architecture Principles
 
 - **Page-Centric**: Components are organized near the pages that use them
-    - Admin components: `app/(global-admin)/admin/organizations/_lib/components/`
+    - Admin components: `app/(global-admin)/admin/_lib/components/`
     - Live timing components: `app/(tenants)/t/[orgSlug]/live/_lib/components/`
     - App-level shared: `app/components/shared/`
 - **Design System at Top Level**: All reusable UI components in `/src/ui/`
@@ -356,14 +356,14 @@ Navigate to [http://localhost:3000](http://localhost:3000)
 
 #### Creating an Organization
 
-1. Navigate to global admin: `/admin/organizations`
+1. Navigate to global admin: `/admin`
 2. Click "Create Organization"
 3. Fill in organization details
 4. Set MotorsportReg ID if applicable
 
 #### Managing Organization Events (Calendar)
 
-1. Navigate to global admin: `/admin/organizations` and open an organization
+1. Navigate to global admin: `/admin` and open an organization
 2. Open the **Calendar** tab
 3. Create events: click "Create event", enter name and date(s), optionally enable multi-day and set end date
 4. Edit events: click the pencil icon on a row
@@ -389,7 +389,7 @@ Navigate to [http://localhost:3000](http://localhost:3000)
 
 #### Configuring Feature Flags
 
-1. Navigate to global admin: `/admin/organizations/[slug]`
+1. Navigate to global admin: `/admin`
 2. Scroll to the "Feature Flags" section
 3. Toggle features on/off for the organization:
  - **Enable PAX Results** - Shows PAX navigation and statistics
@@ -398,7 +398,7 @@ Navigate to [http://localhost:3000](http://localhost:3000)
 
 #### Managing API Keys
 
-1. Navigate to global admin: `/admin/organizations/[slug]`
+1. Navigate to global admin: `/admin`
 2. Scroll to the "API Keys" section
 3. **Generate New Key**: Creates a new API key and disables the previous one
 4. **Disable Access**: Generates a new disabled key, revoking API access
@@ -760,10 +760,7 @@ See `src/__tests__/README.md` for detailed testing guidelines.
 
 **Affected Files**:
 
-- `src/app/(global-admin)/admin/classes/_lib/components/base-classes/update-base-class-form.tsx`
-- `src/app/(global-admin)/admin/classes/_lib/components/base-classes/add-base-class-dialog.tsx`
-- `src/app/(global-admin)/admin/organizations/_lib/components/class-groups/edit-class-group-dialog.tsx`
-- `src/app/(global-admin)/admin/organizations/_lib/components/class-groups/create-class-group-dialog.tsx`
+- Anything using react hook form with a zod schema
 
 **TODO**:
 

@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
 import { renderWithProviders, screen, userEvent } from "@/__tests__/test-utils";
-import { HeaderImageUpload } from "./header-image-upload";
+import { HeaderImageUpload } from "../header-image-upload";
 
 describe("HeaderImageUpload", () => {
     it("renders Header Image label", () => {

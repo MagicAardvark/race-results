@@ -1,13 +1,16 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { renderHook, waitFor } from "@testing-library/react";
-import { useApiKeyActions } from "./use-api-key-actions";
-import { updateApiKey } from "@/app/actions/organization.actions";
 import { toast } from "sonner";
+import { useApiKeyActions } from "@/app/(global-admin)/admin/_lib/components/organizations/api-key-management/_lib/hooks/use-api-key-actions";
+import { generateApiKey } from "@/app/(global-admin)/admin/_lib/actions/organizations/api-key-management/generate-api-key";
 
 // Mock dependencies
-vi.mock("@/app/actions/organization.actions", () => ({
-    updateApiKey: vi.fn(),
-}));
+vi.mock(
+    "@/app/(global-admin)/admin/_lib/actions/organizations/api-key-management/generate-api-key",
+    () => ({
+        generateApiKey: vi.fn(),
+    })
+);
 
 vi.mock("sonner", () => ({
     toast: {
@@ -31,36 +34,36 @@ describe("useApiKeyActions", () => {
         expect(result.current.isPending).toBe(false);
     });
 
-    it("calls updateApiKey with correct parameters when enabling", async () => {
-        vi.mocked(updateApiKey).mockResolvedValue(undefined);
+    it("calls generateApiKey with correct parameters when enabling", async () => {
+        vi.mocked(generateApiKey).mockResolvedValue(undefined);
 
         const { result } = renderHook(() => useApiKeyActions(orgId));
 
         await result.current.handleUpdateApiKey({ isEnabled: true });
 
         await waitFor(() => {
-            expect(updateApiKey).toHaveBeenCalledWith(orgId, {
+            expect(generateApiKey).toHaveBeenCalledWith(orgId, {
                 isEnabled: true,
             });
         });
     });
 
-    it("calls updateApiKey with correct parameters when disabling", async () => {
-        vi.mocked(updateApiKey).mockResolvedValue(undefined);
+    it("calls generateApiKey with correct parameters when disabling", async () => {
+        vi.mocked(generateApiKey).mockResolvedValue(undefined);
 
         const { result } = renderHook(() => useApiKeyActions(orgId));
 
         await result.current.handleUpdateApiKey({ isEnabled: false });
 
         await waitFor(() => {
-            expect(updateApiKey).toHaveBeenCalledWith(orgId, {
+            expect(generateApiKey).toHaveBeenCalledWith(orgId, {
                 isEnabled: false,
             });
         });
     });
 
     it("shows success toast when enabling API key", async () => {
-        vi.mocked(updateApiKey).mockResolvedValue(undefined);
+        vi.mocked(generateApiKey).mockResolvedValue(undefined);
 
         const { result } = renderHook(() => useApiKeyActions(orgId));
 
@@ -75,7 +78,7 @@ describe("useApiKeyActions", () => {
     });
 
     it("shows success toast when disabling API key", async () => {
-        vi.mocked(updateApiKey).mockResolvedValue(undefined);
+        vi.mocked(generateApiKey).mockResolvedValue(undefined);
 
         const { result } = renderHook(() => useApiKeyActions(orgId));
 
@@ -89,9 +92,9 @@ describe("useApiKeyActions", () => {
         });
     });
 
-    it("shows error toast when updateApiKey fails", async () => {
+    it("shows error toast when generateApiKey fails", async () => {
         const error = new Error("Update failed");
-        vi.mocked(updateApiKey).mockRejectedValue(error);
+        vi.mocked(generateApiKey).mockRejectedValue(error);
 
         const { result } = renderHook(() => useApiKeyActions(orgId));
 
@@ -113,7 +116,7 @@ describe("useApiKeyActions", () => {
     });
 
     it("handles unknown error types", async () => {
-        vi.mocked(updateApiKey).mockRejectedValue("Unknown error");
+        vi.mocked(generateApiKey).mockRejectedValue("Unknown error");
 
         const { result } = renderHook(() => useApiKeyActions(orgId));
 

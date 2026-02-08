@@ -8,8 +8,7 @@ import { revalidatePath } from "next/cache";
 
 export async function deleteEvent(
     eventId: string,
-    orgId: string,
-    slug: string
+    orgId: string
 ): Promise<FormResponse> {
     await requireRole(ROLES.admin);
 
@@ -38,7 +37,7 @@ export async function deleteEvent(
         };
     }
 
-    revalidatePath(`/admin/organizations/${slug}`);
-    revalidatePath("/admin/organizations");
+    revalidatePath("/admin");
+
     return { isError: false, message: "Event deleted" };
 }

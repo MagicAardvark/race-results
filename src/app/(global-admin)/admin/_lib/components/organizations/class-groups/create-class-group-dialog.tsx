@@ -15,7 +15,7 @@ import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Stack } from "@/app/components/shared/stack";
-import { createClassGroup } from "@/app/(global-admin)/admin/_lib/components/organizations/class-groups/class-groups";
+import { createClassGroup } from "@/app/(global-admin)/admin/_lib/actions/organizations/class-groups/class-groups";
 import { useState } from "react";
 import { FormResponse } from "@/types/forms";
 import { Form, FormError } from "@/app/components/forms/form";

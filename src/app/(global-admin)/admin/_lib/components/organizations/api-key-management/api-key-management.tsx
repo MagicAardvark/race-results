@@ -3,7 +3,7 @@
 import {
     ApiKeyManagementProvider,
     useApiKeyManagementContext,
-} from "./api-key-management-context";
+} from "./_lib/context/api-key-management-context";
 import { CurrentApiKeyDisplay } from "./current-api-key-display";
 import { KeyControlPanel } from "./key-control-panel";
 import { PreviousApiKeysTable } from "./previous-api-keys-table";

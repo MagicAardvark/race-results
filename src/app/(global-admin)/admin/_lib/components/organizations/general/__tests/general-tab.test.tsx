@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
 import { renderWithProviders, screen, userEvent } from "@/__tests__/test-utils";
-import { GeneralTab } from "./general-tab";
+import { GeneralTab } from "../general-tab";
 import type { OrganizationExtended } from "@/dto/organizations";
 
 vi.mock("@/app/actions/organization.actions", () => ({

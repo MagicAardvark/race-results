@@ -1,24 +1,29 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { renderWithProviders, screen, userEvent } from "@/__tests__/test-utils";
-import { ClassGroupsList } from "./class-groups-list";
+import { ClassGroupsList } from "../class-groups-list";
 import type { ClassGroupWithClasses } from "@/dto/class-groups";
-import type { AvailableBaseClass } from "./_lib/types";
-
-vi.mock("./edit-class-group-dialog", () => ({
-    EditClassGroupDialog: ({
-        open,
-        classGroupId,
-    }: {
-        open: boolean;
-        classGroupId: string;
-    }) =>
-        open ? (
-            <div data-testid="edit-dialog">Edit Dialog for {classGroupId}</div>
-        ) : null,
-}));
+import type { AvailableBaseClass } from "../_lib/types";
 
 vi.mock(
-    "@/app/(global-admin)/admin/organizations/_lib/actions/class-groups",
+    "@/app/(global-admin)/admin/_lib/components/organizations/class-groups/edit-class-group-dialog",
+    () => ({
+        EditClassGroupDialog: ({
+            open,
+            classGroupId,
+        }: {
+            open: boolean;
+            classGroupId: string;
+        }) =>
+            open ? (
+                <div data-testid="edit-dialog">
+                    Edit Dialog for {classGroupId}
+                </div>
+            ) : null,
+    })
+);
+
+vi.mock(
+    "@/app/(global-admin)/admin/_lib/actions/organizations/class-groups/class-groups",
     () => ({
         deleteClassGroup: vi.fn(),
     })

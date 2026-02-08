@@ -75,12 +75,10 @@ const SelectSeason = ({
 
 const CreateNewSeason = ({
     orgId,
-    orgSlug,
     onCreate,
     onCancel,
 }: {
     orgId: string;
-    orgSlug: string;
     onCreate: (season: Season) => void;
     onCancel: () => void;
 }) => {
@@ -98,7 +96,7 @@ const CreateNewSeason = ({
     const [error, setError] = useState<FormResponse<Season> | null>(null);
 
     const onSubmit = async (data: z.infer<typeof createSeasonSchema>) => {
-        const result = await createSeason(orgId, orgSlug, data);
+        const result = await createSeason(orgId, data);
 
         if (result.isError || !result.data) {
             setError(result);
@@ -162,14 +160,12 @@ const CreateNewSeason = ({
 
 interface SeasonSelectProps {
     orgId: string;
-    orgSlug: string;
     seasons: Season[];
     onChange: (seasonSlug: string) => void;
 }
 
 export const ChangeSeasonDialog = ({
     orgId,
-    orgSlug,
     seasons,
     onChange,
 }: SeasonSelectProps) => {
@@ -208,7 +204,6 @@ export const ChangeSeasonDialog = ({
                 {createNewSeasonMode && (
                     <CreateNewSeason
                         orgId={orgId}
-                        orgSlug={orgSlug}
                         onCreate={(season: Season) => {
                             setCreateNewSeasonMode(false);
                             setOpen(false);

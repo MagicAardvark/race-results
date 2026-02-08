@@ -59,7 +59,6 @@ function eventDateRange(start: Date, end: Date): string {
 
 type CalendarTabProps = {
     orgId: string;
-    orgSlug: string;
     events: EventDTO[];
     seasons: Season[];
     selectedSeason: Season | undefined;
@@ -67,7 +66,6 @@ type CalendarTabProps = {
 
 export function CalendarTab({
     orgId,
-    orgSlug,
     events,
     seasons,
     selectedSeason,
@@ -112,7 +110,6 @@ export function CalendarTab({
                                 <div>
                                     <ChangeSeasonDialog
                                         orgId={orgId}
-                                        orgSlug={orgSlug}
                                         seasons={seasons}
                                         onChange={(seasonSlug: string) => {
                                             router.push(
@@ -131,7 +128,6 @@ export function CalendarTab({
                         </CardTitle>
                         <CreateEventDialog
                             orgId={orgId}
-                            orgSlug={orgSlug}
                             seasonId={selectedSeason.seasonId}
                         />
                     </div>
@@ -177,12 +173,10 @@ export function CalendarTab({
                                             <div className="flex justify-end gap-2">
                                                 <UpdateEventDialog
                                                     orgId={orgId}
-                                                    orgSlug={orgSlug}
                                                     event={event}
                                                 />
                                                 <DeleteEventDialog
                                                     orgId={orgId}
-                                                    orgSlug={orgSlug}
                                                     event={event}
                                                 />
                                             </div>

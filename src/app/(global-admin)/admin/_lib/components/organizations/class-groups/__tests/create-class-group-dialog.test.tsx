@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { renderWithProviders, screen, userEvent } from "@/__tests__/test-utils";
-import { CreateClassGroupDialog } from "./create-class-group-dialog";
-import type { AvailableBaseClass } from "./_lib/types";
+import { CreateClassGroupDialog } from "../create-class-group-dialog";
+import type { AvailableBaseClass } from "../_lib/types";
 
 vi.mock(
     "@/app/(global-admin)/admin/organizations/_lib/actions/class-groups",

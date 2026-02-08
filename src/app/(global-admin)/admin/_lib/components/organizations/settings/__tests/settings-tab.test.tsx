@@ -1,27 +1,33 @@
 import { describe, it, expect, vi } from "vitest";
 import { renderWithProviders, screen } from "@/__tests__/test-utils";
-import { SettingsTab } from "./settings-tab";
+import { SettingsTab } from "../settings-tab";
 import type { OrganizationExtended } from "@/dto/organizations";
 import type { OrgFeatureFlags } from "@/dto/feature-flags";
 
-vi.mock("../api-key-management/api-key-management", () => ({
-    ApiKeyManagement: ({ org }: { org: OrganizationExtended }) => (
-        <div data-testid="api-key-management">API Keys for {org.name}</div>
-    ),
-}));
+vi.mock(
+    "@/app/(global-admin)/admin/_lib/components/organizations/api-key-management/api-key-management",
+    () => ({
+        ApiKeyManagement: ({ org }: { org: OrganizationExtended }) => (
+            <div data-testid="api-key-management">API Keys for {org.name}</div>
+        ),
+    })
+);
 
-vi.mock("./feature-flags-management", () => ({
-    FeatureFlagsManagement: ({
-        org,
-    }: {
-        org: OrganizationExtended;
-        featureFlags: OrgFeatureFlags;
-    }) => (
-        <div data-testid="feature-flags-management">
-            Feature Flags for {org.name}
-        </div>
-    ),
-}));
+vi.mock(
+    "@/app/(global-admin)/admin/_lib/components/organizations/settings/feature-flags-management",
+    () => ({
+        FeatureFlagsManagement: ({
+            org,
+        }: {
+            org: OrganizationExtended;
+            featureFlags: OrgFeatureFlags;
+        }) => (
+            <div data-testid="feature-flags-management">
+                Feature Flags for {org.name}
+            </div>
+        ),
+    })
+);
 
 describe("SettingsTab", () => {
     const mockOrg: OrganizationExtended = {

@@ -62,7 +62,7 @@ function handleServiceError(error: unknown): FormResponse<never> {
  * Revalidates the organizations admin path
  */
 function revalidateOrganizationsPath() {
-    revalidatePath("/admin/organizations", "layout");
+    revalidatePath("/admin", "layout");
 }
 
 export async function createClassGroup(

@@ -1,8 +1,8 @@
-import z from "zod";
 import {
     toTitleCase,
     toUpperCase,
-} from "../../../components/organizations/class-groups/_lib/utils";
+} from "@/app/(global-admin)/admin/_lib/components/organizations/class-groups/_lib/utils";
+import z from "zod";
 
 export const createClassGroupSchema = z.object({
     shortName: z

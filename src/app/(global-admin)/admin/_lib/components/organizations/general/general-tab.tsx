@@ -1,6 +1,5 @@
 "use client";
 
-import { updateOrganization } from "@/app/actions/organization.actions";
 import { HeaderImageUpload } from "./header-image-upload";
 import { Button } from "@/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/ui/card";
@@ -11,6 +10,7 @@ import { Textarea } from "@/ui/textarea";
 import { OrganizationExtended } from "@/dto/organizations";
 import { nameof } from "@/lib/utils";
 import { useActionState } from "react";
+import { updateOrganization } from "@/app/(global-admin)/admin/_lib/actions/organizations/update-org";
 
 interface GeneralTabProps {
     org: OrganizationExtended;

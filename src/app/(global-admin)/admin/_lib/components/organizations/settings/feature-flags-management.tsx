@@ -6,12 +6,12 @@ import { OrgFeatureFlags } from "@/dto/feature-flags";
 import { Field, FieldGroup, FieldLabel } from "@/ui/field";
 import { Checkbox } from "@/ui/checkbox";
 import { useMemo, useEffect } from "react";
-import { updateOrganization } from "@/app/actions/organization.actions";
 import { useActionState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Button } from "@/ui/button";
 import { nameof } from "@/lib/utils";
 import { toast } from "sonner";
+import { updateOrganization } from "@/app/(global-admin)/admin/_lib/actions/organizations/update-org";
 
 type FeatureFlagGroup = {
     namespace: string;

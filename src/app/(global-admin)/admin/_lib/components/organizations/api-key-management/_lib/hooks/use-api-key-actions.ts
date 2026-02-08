@@ -1,4 +1,4 @@
-import { updateApiKey } from "@/app/actions/organization.actions";
+import { generateApiKey } from "@/app/(global-admin)/admin/_lib/actions/organizations/api-key-management/generate-api-key";
 import { useTransition } from "react";
 import { toast } from "sonner";
 
@@ -9,7 +9,7 @@ export function useApiKeyActions(orgId: string) {
         return new Promise<void>((resolve, reject) => {
             startTransition(async () => {
                 try {
-                    await updateApiKey(orgId, options);
+                    await generateApiKey(orgId, options);
                     toast.success(
                         options.isEnabled
                             ? "API Key Generated"

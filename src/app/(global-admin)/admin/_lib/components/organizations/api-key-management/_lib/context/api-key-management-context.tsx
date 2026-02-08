@@ -1,5 +1,5 @@
 import { OrganizationExtended } from "@/dto/organizations";
-import { useApiKeyActions } from "@/hooks/admin/use-api-key-actions";
+import { useApiKeyActions } from "@/app/(global-admin)/admin/_lib/components/organizations/api-key-management/_lib/hooks/use-api-key-actions";
 import { createContext, useContext } from "react";
 
 interface ApiKeyContextValue {

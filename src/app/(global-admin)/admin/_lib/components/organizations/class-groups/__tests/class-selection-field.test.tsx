@@ -5,9 +5,9 @@ import {
     userEvent,
     waitFor,
 } from "@/__tests__/test-utils";
-import { ClassSelectionField } from "./class-selection-field";
+import { ClassSelectionField } from "../_lib/class-selection-field";
 import { useForm } from "react-hook-form";
-import type { AvailableBaseClass } from "./types";
+import type { AvailableBaseClass } from "../_lib/types";
 
 const mockAvailableClasses: AvailableBaseClass[] = [
     {

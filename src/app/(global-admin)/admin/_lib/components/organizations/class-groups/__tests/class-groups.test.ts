@@ -4,7 +4,7 @@ import {
     updateClassGroup,
     deleteClassGroup,
     getClassGroup,
-} from "./class-groups";
+} from "../../../../actions/organizations/class-groups/class-groups";
 import { classGroupsService } from "@/services/class-groups/class-groups.service";
 import { requireOrgRole } from "@/lib/auth/require-org-role";
 import { revalidatePath } from "next/cache";
@@ -63,10 +63,7 @@ describe("class-groups actions", () => {
                 orgId,
                 classIds: [validClassId1, validClassId2],
             });
-            expect(revalidatePath).toHaveBeenCalledWith(
-                "/admin/organizations",
-                "layout"
-            );
+            expect(revalidatePath).toHaveBeenCalledWith("/admin", "layout");
         });
 
         it("filters out invalid class IDs", async () => {
@@ -191,10 +188,7 @@ describe("class-groups actions", () => {
                 isEnabled: true,
                 classIds: [validClassId1],
             });
-            expect(revalidatePath).toHaveBeenCalledWith(
-                "/admin/organizations",
-                "layout"
-            );
+            expect(revalidatePath).toHaveBeenCalledWith("/admin", "layout");
         });
 
         it("filters out invalid class IDs", async () => {
@@ -285,10 +279,7 @@ describe("class-groups actions", () => {
                 validGroupId,
                 orgId
             );
-            expect(revalidatePath).toHaveBeenCalledWith(
-                "/admin/organizations",
-                "layout"
-            );
+            expect(revalidatePath).toHaveBeenCalledWith("/admin", "layout");
         });
 
         it("returns error when service throws", async () => {

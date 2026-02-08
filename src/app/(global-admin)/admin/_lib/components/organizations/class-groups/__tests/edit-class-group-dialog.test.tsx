@@ -5,15 +5,15 @@ import {
     userEvent,
     waitFor,
 } from "@/__tests__/test-utils";
-import { EditClassGroupDialog } from "./edit-class-group-dialog";
-import type { AvailableBaseClass } from "./_lib/types";
+import { EditClassGroupDialog } from "../edit-class-group-dialog";
+import type { AvailableBaseClass } from "../_lib/types";
 import type { ClassGroupWithClasses } from "@/dto/class-groups";
 
 const mockGetClassGroup = vi.fn();
 const mockUpdateClassGroup = vi.fn();
 
 vi.mock(
-    "@/app/(global-admin)/admin/_lib/components/organizations/class-groups/class-groups",
+    "@/app/(global-admin)/admin/_lib/actions/organizations/class-groups/class-groups",
     () => ({
         getClassGroup: (...args: unknown[]) => mockGetClassGroup(...args),
         updateClassGroup: (...args: unknown[]) => mockUpdateClassGroup(...args),

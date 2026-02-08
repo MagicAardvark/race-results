@@ -1,5 +1,8 @@
+import {
+    toTitleCase,
+    toUpperCase,
+} from "@/app/(global-admin)/admin/_lib/components/organizations/class-groups/_lib/utils";
 import { describe, it, expect } from "vitest";
-import { toTitleCase, toUpperCase } from "./utils";
 
 describe("toTitleCase", () => {
     it("converts lowercase string to title case", () => {

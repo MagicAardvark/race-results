@@ -6,7 +6,7 @@ import { requireRole } from "@/lib/auth/require-role";
 import { nameof } from "@/lib/utils";
 import { organizationAdminService } from "@/services/organizations/organization.admin.service";
 import { put } from "@vercel/blob";
-import { refresh, revalidatePath } from "next/cache";
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 type ActionState = {
@@ -114,19 +114,6 @@ export async function updateOrganization(
     params.set("saved", "true");
     const queryString = params.toString();
 
-    revalidatePath("/admin/organizations/");
-    redirect(`/admin/organizations/${slug}?${queryString}`);
-}
-
-export async function updateApiKey(
-    orgId: string,
-    options: {
-        isEnabled: boolean;
-    }
-) {
-    await requireRole(ROLES.admin);
-
-    await organizationAdminService.createApiKey(orgId, options.isEnabled);
-
-    refresh();
+    revalidatePath("/admin");
+    redirect(`/admin/?${queryString}`);
 }

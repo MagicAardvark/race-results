@@ -30,15 +30,10 @@ import z from "zod";
 
 type UpdateEventDialogProps = {
     orgId: string;
-    orgSlug: string;
     event: EventDTO;
 };
 
-export const UpdateEventDialog = ({
-    orgId,
-    orgSlug,
-    event,
-}: UpdateEventDialogProps) => {
+export const UpdateEventDialog = ({ orgId, event }: UpdateEventDialogProps) => {
     const form = useForm<z.infer<typeof baseEventSchema>>({
         // @hookform/resolvers v5.2.2 types don't fully support Zod v4 yet, but runtime works correctly
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -61,7 +56,7 @@ export const UpdateEventDialog = ({
     };
 
     const onSubmit = async (data: z.infer<typeof baseEventSchema>) => {
-        const result = await updateEvent(orgId, orgSlug, event.eventId, data);
+        const result = await updateEvent(orgId, event.eventId, data);
 
         if (result.isError) {
             setError(result);

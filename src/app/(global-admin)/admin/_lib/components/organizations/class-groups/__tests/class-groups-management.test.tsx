@@ -1,67 +1,73 @@
 import { describe, it, expect, vi } from "vitest";
 import { renderWithProviders, screen, userEvent } from "@/__tests__/test-utils";
-import { ClassGroupsManagement } from "./class-groups-management";
+import { ClassGroupsManagement } from "../class-groups-management";
 import type { ClassGroupWithClasses } from "@/dto/class-groups";
-import type { AvailableBaseClass } from "./_lib/types";
+import type { AvailableBaseClass } from "../_lib/types";
 
-vi.mock("./class-groups-list", () => ({
-    ClassGroupsList: ({
-        classGroups,
-    }: {
-        classGroups: ClassGroupWithClasses[];
-        onUpdate: (group: ClassGroupWithClasses) => void;
-        onDelete: (id: string) => void;
-    }) => (
-        <div data-testid="class-groups-list">
-            {classGroups.length === 0 ? (
-                <div>No groups</div>
-            ) : (
-                classGroups.map((g) => (
-                    <div
-                        key={g.classGroupId}
-                        data-testid={`group-${g.classGroupId}`}
-                    >
-                        {g.shortName}
-                    </div>
-                ))
-            )}
-        </div>
-    ),
-}));
-
-vi.mock("./create-class-group-dialog", () => ({
-    CreateClassGroupDialog: ({
-        open,
-        onSuccess,
-        onOpenChange,
-    }: {
-        open: boolean;
-        onSuccess: (group: ClassGroupWithClasses) => void;
-        onOpenChange: (open: boolean) => void;
-    }) =>
-        open ? (
-            <div data-testid="create-dialog">
-                <button onClick={() => onOpenChange(false)}>Close</button>
-                <button
-                    data-testid="create-dialog-submit"
-                    onClick={() =>
-                        onSuccess({
-                            classGroupId: "new-group",
-                            shortName: "NEW",
-                            longName: "New Group",
-                            isEnabled: true,
-                            orgId: "org-1",
-                            classIds: [],
-                            createdAt: new Date(),
-                            updatedAt: new Date(),
-                        })
-                    }
-                >
-                    Create
-                </button>
+vi.mock(
+    "@/app/(global-admin)/admin/_lib/components/organizations/class-groups/class-groups-list",
+    () => ({
+        ClassGroupsList: ({
+            classGroups,
+        }: {
+            classGroups: ClassGroupWithClasses[];
+            onUpdate: (group: ClassGroupWithClasses) => void;
+            onDelete: (id: string) => void;
+        }) => (
+            <div data-testid="class-groups-list">
+                {classGroups.length === 0 ? (
+                    <div>No groups</div>
+                ) : (
+                    classGroups.map((g) => (
+                        <div
+                            key={g.classGroupId}
+                            data-testid={`group-${g.classGroupId}`}
+                        >
+                            {g.shortName}
+                        </div>
+                    ))
+                )}
             </div>
-        ) : null,
-}));
+        ),
+    })
+);
+
+vi.mock(
+    "@/app/(global-admin)/admin/_lib/components/organizations/class-groups/create-class-group-dialog",
+    () => ({
+        CreateClassGroupDialog: ({
+            open,
+            onSuccess,
+            onOpenChange,
+        }: {
+            open: boolean;
+            onSuccess: (group: ClassGroupWithClasses) => void;
+            onOpenChange: (open: boolean) => void;
+        }) =>
+            open ? (
+                <div data-testid="create-dialog">
+                    <button onClick={() => onOpenChange(false)}>Close</button>
+                    <button
+                        data-testid="create-dialog-submit"
+                        onClick={() =>
+                            onSuccess({
+                                classGroupId: "new-group",
+                                shortName: "NEW",
+                                longName: "New Group",
+                                isEnabled: true,
+                                orgId: "org-1",
+                                classIds: [],
+                                createdAt: new Date(),
+                                updatedAt: new Date(),
+                            })
+                        }
+                    >
+                        Create
+                    </button>
+                </div>
+            ) : null,
+    })
+);
 
 describe("ClassGroupsManagement", () => {
     const mockOrgId = "org-1";

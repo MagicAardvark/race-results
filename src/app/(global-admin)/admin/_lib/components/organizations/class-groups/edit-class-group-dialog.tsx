@@ -18,7 +18,7 @@ import { Stack } from "@/app/components/shared/stack";
 import {
     updateClassGroup,
     getClassGroup,
-} from "@/app/(global-admin)/admin/_lib/components/organizations/class-groups/class-groups";
+} from "@/app/(global-admin)/admin/_lib/actions/organizations/class-groups/class-groups";
 import { useState, useEffect } from "react";
 import { FormResponse } from "@/types/forms";
 import { Form, FormError } from "@/app/components/forms/form";
@@ -142,7 +142,7 @@ export const EditClassGroupDialog = ({
                 <DialogContent>
                     <DialogHeader>
                         <DialogTitle>Edit Class Group</DialogTitle>
-                        <DialogDescription>
+                        <DialogDescription asChild>
                             <div className="text-destructive py-8 text-center">
                                 Class group not found
                             </div>

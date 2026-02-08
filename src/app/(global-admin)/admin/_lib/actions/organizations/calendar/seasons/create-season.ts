@@ -11,7 +11,6 @@ import z from "zod";
 
 export async function createSeason(
     orgId: string,
-    orgSlug: string,
     data: z.infer<typeof createSeasonSchema>
 ): Promise<FormResponse<Season>> {
     await requireRole(ROLES.admin);
@@ -31,7 +30,7 @@ export async function createSeason(
             ...data,
         });
 
-        revalidatePath(`/admin/organizations/${orgSlug}/calendar`);
+        revalidatePath(`/admin`);
 
         return {
             isError: false,

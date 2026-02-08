@@ -1,6 +1,5 @@
 "use client";
 
-import { updateOrganization } from "@/app/actions/organization.actions";
 import { Button } from "@/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/ui/card";
 import { Checkbox } from "@/ui/checkbox";
@@ -13,6 +12,7 @@ import { OrganizationExtended } from "@/dto/organizations";
 import { OrgFeatureFlags } from "@/dto/feature-flags";
 import { nameof } from "@/lib/utils";
 import { useActionState } from "react";
+import { updateOrganization } from "@/app/(global-admin)/admin/_lib/actions/organizations/update-org";
 
 export const UpdateOrgForm = ({
     org,

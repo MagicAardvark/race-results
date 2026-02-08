@@ -45,7 +45,6 @@ export default async function OrganizationCalendarPage({
     return (
         <CalendarTab
             orgId={org.orgId}
-            orgSlug={org.slug}
             events={events}
             seasons={seasons}
             selectedSeason={selectedSeason}

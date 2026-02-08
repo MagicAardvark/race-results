@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, userEvent } from "@/__tests__/test-utils";
-import { KeyControlPanel } from "./key-control-panel";
+import { KeyControlPanel } from "@/app/(global-admin)/admin/_lib/components/organizations/api-key-management/key-control-panel";
 
 describe("KeyControlPanel", () => {
     const mockOnGenerateNew = vi.fn();

@@ -1,9 +1,9 @@
 "use client";
 
-import { ApiKeyManagement } from "../api-key-management/api-key-management";
 import { FeatureFlagsManagement } from "./feature-flags-management";
 import { OrganizationExtended } from "@/dto/organizations";
 import { OrgFeatureFlags } from "@/dto/feature-flags";
+import { ApiKeyManagement } from "@/app/(global-admin)/admin/_lib/components/organizations/api-key-management/api-key-management";
 
 interface SettingsTabProps {
     org: OrganizationExtended;

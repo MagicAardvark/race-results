@@ -1,13 +1,15 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen } from "@testing-library/react";
+import { useApiKeyActions } from "@/app/(global-admin)/admin/_lib/components/organizations/api-key-management/_lib/hooks/use-api-key-actions";
+import type { OrganizationExtended } from "@/dto/organizations";
 import {
     ApiKeyManagementProvider,
     useApiKeyManagementContext,
-} from "./api-key-management-context";
-import { useApiKeyActions } from "@/hooks/admin/use-api-key-actions";
-import type { OrganizationExtended } from "@/dto/organizations";
+} from "@/app/(global-admin)/admin/_lib/components/organizations/api-key-management/_lib/context/api-key-management-context";
 
-vi.mock("@/hooks/admin/use-api-key-actions");
+vi.mock(
+    "@/app/(global-admin)/admin/_lib/components/organizations/api-key-management/_lib/hooks/use-api-key-actions"
+);
 
 function TestComponent() {
     const context = useApiKeyManagementContext();

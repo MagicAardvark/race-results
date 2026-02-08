@@ -1,8 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, userEvent } from "@/__tests__/test-utils";
-import { CurrentApiKeyDisplay } from "./current-api-key-display";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
 import { toast } from "sonner";
+import { CurrentApiKeyDisplay } from "@/app/(global-admin)/admin/_lib/components/organizations/api-key-management/current-api-key-display";
 
 vi.mock("@/hooks/use-copy-to-clipboard");
 vi.mock("sonner", () => ({

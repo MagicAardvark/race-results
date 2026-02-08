@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@/__tests__/test-utils";
-import { PreviousApiKeysTable } from "./previous-api-keys-table";
 import type { OrgApiKey } from "@/dto/organizations";
+import { PreviousApiKeysTable } from "@/app/(global-admin)/admin/_lib/components/organizations/api-key-management/previous-api-keys-table";
 
 describe("PreviousApiKeysTable", () => {
     const mockKeys: OrgApiKey[] = [
