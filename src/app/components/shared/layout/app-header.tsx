@@ -7,14 +7,18 @@ import {
     LIVE_TIMING_LABEL,
 } from "@/app/components/shared/live-timing";
 import { ROLES } from "@/constants/global";
-import { getCurrentUserCached } from "@/services/users/user.service.cached";
+import { hasAnyRole } from "@/lib/auth/has-role";
 
 export async function AppHeader({
     sidebarTrigger,
 }: {
     sidebarTrigger?: React.ReactNode;
 }) {
-    const user = await getCurrentUserCached();
+    const showAdmin = await hasAnyRole([
+        ROLES.admin,
+        ROLES.orgManager,
+        ROLES.orgOwner,
+    ]);
 
     return (
         <header className="bg-background relative z-50 w-full border-b">
@@ -58,7 +62,7 @@ export async function AppHeader({
                 </div>
 
                 <div className="flex items-center gap-4">
-                    {user?.roles.includes(ROLES.admin) && (
+                    {showAdmin && (
                         <Button variant="ghost" size="sm" asChild>
                             <Link href="/admin">Admin</Link>
                         </Button>

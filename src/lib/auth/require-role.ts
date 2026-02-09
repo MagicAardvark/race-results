@@ -15,3 +15,21 @@ export async function requireRole(role: (typeof ROLES)[keyof typeof ROLES]) {
 
     return user;
 }
+
+export async function requireAnyRole(
+    roles: (typeof ROLES)[keyof typeof ROLES][]
+) {
+    const user = await getCurrentUserCached();
+
+    if (!user) {
+        redirect("/");
+    }
+
+    const hasRole = roles.some((role) => user.roles.includes(role));
+
+    if (!hasRole) {
+        redirect("/");
+    }
+
+    return user;
+}

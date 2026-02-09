@@ -20,6 +20,12 @@ export const ROLES = {
     user: "user",
 } as const;
 
+export const ADMIN_ROLES = [
+    ROLES.admin,
+    ROLES.orgManager,
+    ROLES.orgOwner,
+] as const;
+
 export const CLASSING = {
     DEFAULT_INDEX_VALUE: 1,
 };
