@@ -1,4 +1,5 @@
-import { SettingsTab } from "@/app/(global-admin)/admin/_lib/components/organizations/settings/settings-tab";
+import { ApiKeyManagement } from "@/app/(global-admin)/admin/(organization)/settings/_lib/api-key-management/components/api-key-management";
+import { FeatureFlagsManagement } from "@/app/(global-admin)/admin/(organization)/settings/_lib/feature-flags/components/feature-flags-management";
 import { ManagementTabs } from "@/app/(global-admin)/admin/_lib/components/organizations/tabs/management-tabs";
 import { getStoredTenant } from "@/app/(global-admin)/admin/_lib/get-stored-tenant";
 import { featureFlagsService } from "@/services/feature-flags/feature-flags.service";
@@ -27,7 +28,10 @@ export default async function OrganizationSettingsPage() {
     return (
         <>
             <ManagementTabs roles={user?.roles || []} />
-            <SettingsTab org={org} featureFlags={featureFlags} />
+            <div className="space-y-4">
+                <ApiKeyManagement org={org} />
+                <FeatureFlagsManagement org={org} featureFlags={featureFlags} />
+            </div>
         </>
     );
 }

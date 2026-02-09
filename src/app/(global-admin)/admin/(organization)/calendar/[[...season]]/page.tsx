@@ -1,4 +1,4 @@
-import { CalendarTab } from "@/app/(global-admin)/admin/_lib/components/organizations/calendar/calendar-tab";
+import { CalendarTab } from "@/app/(global-admin)/admin/(organization)/calendar/_lib/components/calendar/calendar-tab";
 import { getStoredTenant } from "@/app/(global-admin)/admin/_lib/get-stored-tenant";
 import { orgEventsRepository } from "@/db/repositories/org-events.repo";
 import { EventDTO } from "@/dto/events";

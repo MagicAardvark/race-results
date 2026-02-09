@@ -1,4 +1,4 @@
-import { EventSetupTab } from "@/app/(global-admin)/admin/_lib/components/organizations/event-setup/event-setup-tab";
+import { ClassGroupsManagement } from "@/app/(global-admin)/admin/(organization)/event-setup/_lib/components/class-groups-management";
 import { getStoredTenant } from "@/app/(global-admin)/admin/_lib/get-stored-tenant";
 import { classGroupsService } from "@/services/class-groups/class-groups.service";
 import { organizationAdminService } from "@/services/organizations/organization.admin.service";
@@ -22,10 +22,12 @@ export default async function OrganizationEventSetupPage() {
     ]);
 
     return (
-        <EventSetupTab
-            orgId={org.orgId}
-            initialClassGroups={classGroups}
-            availableBaseClasses={availableBaseClasses}
-        />
+        <div className="space-y-4">
+            <ClassGroupsManagement
+                orgId={org.orgId}
+                initialClassGroups={classGroups}
+                availableBaseClasses={availableBaseClasses}
+            />
+        </div>
     );
 }

@@ -29,8 +29,6 @@ export default async function AdminLayout({
 
     const selectedOrg = matchedOrg ?? null;
 
-    console.log(selectedOrg);
-
     const navItems = getNavigationConfiguration(user.roles || []);
 
     return (
