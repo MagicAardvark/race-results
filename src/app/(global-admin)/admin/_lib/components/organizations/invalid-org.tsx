@@ -7,7 +7,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/ui/select";
-import { switchTenant } from "@/app/(global-admin)/admin/_lib/actions/switch-teant";
+import { switchTenant } from "@/app/(global-admin)/admin/_lib/actions/switch-tenant";
 import { OrgWithRoles } from "@/dto/users";
 
 type InvalidOrgProps = {

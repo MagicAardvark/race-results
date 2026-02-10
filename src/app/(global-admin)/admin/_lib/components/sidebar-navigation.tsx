@@ -23,7 +23,7 @@ import {
 } from "@/ui/dropdown-menu";
 import { ChevronsUpDown, Earth, Plus } from "lucide-react";
 import { OrgWithRoles } from "@/dto/users";
-import { switchTenant } from "@/app/(global-admin)/admin/_lib/actions/switch-teant";
+import { switchTenant } from "@/app/(global-admin)/admin/_lib/actions/switch-tenant";
 import { CreateOrgDialog } from "@/app/(global-admin)/admin/_lib/components/organizations/create-org-dialog";
 import { useState } from "react";
 import { ROLES } from "@/constants/global";
