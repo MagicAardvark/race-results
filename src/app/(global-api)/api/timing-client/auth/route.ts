@@ -1,3 +1,4 @@
+import { eventsService } from "@/services/events/events.service";
 import { featureFlagsService } from "@/services/feature-flags/feature-flags.service";
 import { organizationAdminService } from "@/services/organizations/organization.admin.service";
 import { organizationsAPIService } from "@/services/organizations/organizations.api.service";
@@ -35,17 +36,17 @@ export async function POST(request: NextRequest, _params: unknown) {
             );
         }
 
-        const runWorkEnabled = await featureFlagsService.isFeatureEnabled(
-            orgId,
-            "feature.liveTiming.workRunEnabled"
-        );
+        const [featureFlags, currentEvent] = await Promise.all([
+            featureFlagsService.getOrgFeatureFlags(orgId),
+            eventsService.getCurrentEvent(orgId),
+        ]);
 
         const apis: Record<string, string> = {
             "live-timing": `api/ingest/${org.slug}/live/results`,
             "close-event": `api/ingest/${org.slug}/event/close`,
         };
 
-        if (runWorkEnabled) {
+        if (featureFlags["feature.liveTiming.workRunEnabled"]) {
             apis["run-work"] = `api/ingest/${org.slug}/live/runwork`;
         }
 
@@ -56,6 +57,7 @@ export async function POST(request: NextRequest, _params: unknown) {
                 slug: org.slug,
                 apis: apis,
             },
+            event: currentEvent,
         });
     } catch (error) {
         if (error instanceof z.ZodError) {

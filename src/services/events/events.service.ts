@@ -10,6 +10,7 @@ import {
 interface IEventsService {
     getEventConfiguration(): Promise<EventConfiguration>;
     getEvent(eventId: string, orgId: string): Promise<EventDTO | null>;
+    getCurrentEvent(orgId: string): Promise<EventDTO | null>;
     createEvent(event: CreateEventData): Promise<EventDTO>;
     updateEvent(event: UpdateEventData): Promise<EventDTO>;
     deleteEvent(orgId: string, eventId: string): Promise<void>;
@@ -32,6 +33,10 @@ export class EventsService implements IEventsService {
                 value: 33,
             },
         });
+    }
+
+    async getCurrentEvent(orgId: string): Promise<EventDTO | null> {
+        return await eventsRepository.getCurrentEvent(orgId);
     }
 
     async getEvent(orgId: string, eventId: string): Promise<EventDTO | null> {
