@@ -1,4 +1,4 @@
-import { CalendarTab } from "@/app/(global-admin)/admin/(organization)/calendar/_lib/components/calendar/calendar-tab";
+import { CalendarTab } from "@/app/(global-admin)/admin/(organization)/calendar/_lib/components/calendar-tab";
 import { getStoredTenant } from "@/app/(global-admin)/admin/_lib/get-stored-tenant";
 import { orgEventsRepository } from "@/db/repositories/org-events.repo";
 import { EventDTO } from "@/dto/events";
@@ -6,14 +6,7 @@ import { Season } from "@/dto/events/seasons";
 import { seasonsService } from "@/services/events/seasons.service";
 import { organizationAdminService } from "@/services/organizations/organization.admin.service";
 
-export default async function OrganizationCalendarPage({
-    params,
-}: {
-    params: Promise<{ season?: string[] }>;
-}) {
-    const { season } = await params;
-    // Catch all route [[...season]]: season is an array or undefined
-    const seasonSlug = season ? season[0] : undefined;
+export default async function Page() {
     const storedTenant = await getStoredTenant();
 
     if (!storedTenant) {
@@ -32,13 +25,7 @@ export default async function OrganizationCalendarPage({
     let selectedSeason: Season | undefined;
 
     if (seasons.length > 0) {
-        if (seasonSlug) {
-            selectedSeason = seasons.find((s) => s.slug === seasonSlug);
-        }
-
-        if (!selectedSeason) {
-            selectedSeason = seasons[0];
-        }
+        selectedSeason = seasons[0];
     }
 
     if (selectedSeason) {

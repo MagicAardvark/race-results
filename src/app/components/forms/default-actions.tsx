@@ -1,5 +1,5 @@
 import { FormActions } from "@/app/components/forms/form-actions";
-import { Button } from "@/ui/button";
+import { Button } from "@/ui/button-wrapper";
 import { LinkButton } from "@/ui/link-button";
 
 interface DefaultFormActionsProps {

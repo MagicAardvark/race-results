@@ -52,7 +52,7 @@ export function FormSelect<T extends FieldValues>({
                             <SelectTrigger>
                                 <SelectValue placeholder={placeholder} />
                             </SelectTrigger>
-                            <SelectContent>
+                            <SelectContent position="popper">
                                 {items.map((item) => {
                                     const itemStringValue =
                                         item.value.toString();

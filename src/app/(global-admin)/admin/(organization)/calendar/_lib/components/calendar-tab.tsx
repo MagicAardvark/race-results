@@ -1,9 +1,8 @@
 "use client";
 
-import { CreateEventDialog } from "@/app/(global-admin)/admin/(organization)/calendar/_lib/components/calendar/create-event-dialog";
-import { DeleteEventDialog } from "@/app/(global-admin)/admin/(organization)/calendar/_lib/components/calendar/delete-event-dialog";
-import { ChangeSeasonDialog } from "@/app/(global-admin)/admin/(organization)/calendar/_lib/components/calendar/seasons/change-season";
-import { UpdateEventDialog } from "@/app/(global-admin)/admin/(organization)/calendar/_lib/components/calendar/update-event-dialog";
+import { CreateEventDialog } from "@/app/(global-admin)/admin/(organization)/calendar/_lib/components/create-event-dialog";
+import { DeleteEventDialog } from "@/app/(global-admin)/admin/(organization)/calendar/_lib/components/delete-event-dialog";
+import { ChangeSeasonDialog } from "@/app/(global-admin)/admin/(organization)/calendar/_lib/components/seasons/change-season";
 import { Stack } from "@/app/components/shared/stack";
 import { EventDTO } from "@/dto/events";
 import { Season } from "@/dto/events/seasons";
@@ -23,6 +22,8 @@ import {
     TableHeader,
     TableRow,
 } from "@/ui/table";
+import { Pencil } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 function formatEventDate(d: Date): string {
@@ -170,10 +171,17 @@ export function CalendarTab({
                                         </TableCell>
                                         <TableCell className="text-right">
                                             <div className="flex justify-end gap-2">
-                                                <UpdateEventDialog
-                                                    orgId={orgId}
-                                                    event={event}
-                                                />
+                                                <Button
+                                                    asChild
+                                                    variant="outline"
+                                                    size="sm"
+                                                >
+                                                    <Link
+                                                        href={`/admin/calendar/${selectedSeason?.slug}/event/${event.eventId}`}
+                                                    >
+                                                        <Pencil />
+                                                    </Link>
+                                                </Button>
                                                 <DeleteEventDialog
                                                     orgId={orgId}
                                                     event={event}

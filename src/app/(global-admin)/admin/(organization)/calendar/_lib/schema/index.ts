@@ -2,6 +2,8 @@ import z from "zod";
 
 export const baseEventSchema = z
     .object({
+        isLinkedToMsrEvent: z.boolean().default(false),
+        msrEventId: z.string().optional(),
         name: z.string().min(1, "Name is required"),
         isMultiDay: z.boolean().default(false),
         startDate: z.coerce.date(),
@@ -23,4 +25,17 @@ export const baseEventSchema = z
                 });
             }
         }
+
+        if (data.isLinkedToMsrEvent && !data.msrEventId) {
+            ctx.addIssue({
+                code: "custom",
+                path: ["msrEventId"],
+                message:
+                    "An MSR event is required when linking to an MSR event",
+            });
+        }
     });
+
+export const linkMsrEventSchema = z.object({
+    msrEventId: z.string().min(1, "Please select an MSR event to link"),
+});

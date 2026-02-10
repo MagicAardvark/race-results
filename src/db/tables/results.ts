@@ -39,6 +39,7 @@ export const events = pgTable(
         slug: text("slug").notNull(),
         startAt: startAt,
         endAt: endAt,
+        msrEventId: text("msr_event_id"),
         createdAt: createdAt,
         updatedAt: updatedAt,
         deletedAt: deletedAt,

@@ -22,6 +22,7 @@ function orgEvent(
         name: "Org Event",
         slug: "org-event",
         seasonId: "season-1",
+        msrEventId: null,
         createdAt: new Date(),
         updatedAt: new Date(),
         ...overrides,
