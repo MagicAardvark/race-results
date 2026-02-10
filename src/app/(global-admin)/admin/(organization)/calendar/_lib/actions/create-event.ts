@@ -37,6 +37,7 @@ export async function createEvent(
             name: data.name,
             startAt: data.startDate,
             endAt: data.endDate,
+            msrEventId: data.isLinkedToMsrEvent ? data.msrEventId : undefined,
         });
     } catch (error) {
         return {

@@ -1,0 +1,1 @@
+ALTER TABLE "results_events" ADD COLUMN "msr_event_id" text;

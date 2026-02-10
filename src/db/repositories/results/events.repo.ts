@@ -1,8 +1,14 @@
-import { db } from "@/db";
+import { db, events } from "@/db";
 import { EventDTO } from "@/dto/events";
+import { and, eq } from "drizzle-orm";
 
 interface IEventsRepository {
     getEvent(orgId: string, eventId: string): Promise<EventDTO>;
+    linkToMsrEvent(
+        orgId: string,
+        eventId: string,
+        msrEventId: string | null
+    ): Promise<void>;
 }
 
 export class EventsRepository implements IEventsRepository {
@@ -26,4 +32,19 @@ export class EventsRepository implements IEventsRepository {
 
         return event;
     }
+
+    async linkToMsrEvent(
+        orgId: string,
+        eventId: string,
+        msrEventId: string | null
+    ): Promise<void> {
+        await db
+            .update(events)
+            .set({
+                msrEventId: msrEventId,
+            })
+            .where(and(eq(events.eventId, eventId), eq(events.orgId, orgId)));
+    }
 }
+
+export const eventsRepository = new EventsRepository();

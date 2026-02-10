@@ -59,6 +59,7 @@ export class OrgEventsRepository implements IOrgEventsRepository {
                 slug: generateSlug(dto.name),
                 startAt: dto.startAt,
                 endAt: dto.endAt,
+                msrEventId: dto.msrEventId ?? null,
             })
             .returning();
 

@@ -6,6 +6,7 @@ import type { EventListItem } from "./event-list";
 const baseOrgEvent = {
     eventId: "evt-1",
     seasonId: "season-1",
+    msrEventId: null,
     orgId: "org-1",
     name: "Org Event",
     slug: "org-event",
@@ -46,7 +47,11 @@ describe("EventList", () => {
     it("renders org event with coming soon when no MR link", () => {
         const items: EventListItem[] = [
             createOrgItem({
-                orgEvent: { ...baseOrgEvent, name: "Test Org Event" },
+                orgEvent: {
+                    ...baseOrgEvent,
+                    name: "Test Org Event",
+                    msrEventId: null,
+                },
             }),
         ];
         render(<EventList items={items} variant="upcoming" />);

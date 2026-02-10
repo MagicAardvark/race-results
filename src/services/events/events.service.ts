@@ -1,4 +1,5 @@
 import { orgEventsRepository } from "@/db/repositories/org-events.repo";
+import { eventsRepository } from "@/db/repositories/results/events.repo";
 import {
     CreateEventData,
     EventConfiguration,
@@ -8,9 +9,16 @@ import {
 
 interface IEventsService {
     getEventConfiguration(): Promise<EventConfiguration>;
+    getEvent(eventId: string, orgId: string): Promise<EventDTO | null>;
     createEvent(event: CreateEventData): Promise<EventDTO>;
     updateEvent(event: UpdateEventData): Promise<EventDTO>;
-    deleteEvent(eventId: string, orgId: string): Promise<void>;
+    deleteEvent(orgId: string, eventId: string): Promise<void>;
+    linkEventToMsrEvent(
+        orgId: string,
+        eventId: string,
+        msrEventId: string
+    ): Promise<void>;
+    unlinkEventFromMsrEvent(orgId: string, eventId: string): Promise<void>;
 }
 
 export class EventsService implements IEventsService {
@@ -24,6 +32,10 @@ export class EventsService implements IEventsService {
                 value: 33,
             },
         });
+    }
+
+    async getEvent(orgId: string, eventId: string): Promise<EventDTO | null> {
+        return await eventsRepository.getEvent(orgId, eventId);
     }
 
     async createEvent(event: CreateEventData): Promise<EventDTO> {
@@ -44,6 +56,7 @@ export class EventsService implements IEventsService {
             name: event.name,
             startAt: ensureStartOfStartDate,
             endAt: ensureEndOfEndDate,
+            msrEventId: event.msrEventId,
         });
     }
 
@@ -68,6 +81,21 @@ export class EventsService implements IEventsService {
 
     async deleteEvent(eventId: string, orgId: string): Promise<void> {
         await orgEventsRepository.delete(eventId, orgId);
+    }
+
+    async linkEventToMsrEvent(
+        orgId: string,
+        eventId: string,
+        msrEventId: string
+    ): Promise<void> {
+        await eventsRepository.linkToMsrEvent(orgId, eventId, msrEventId);
+    }
+
+    async unlinkEventFromMsrEvent(
+        orgId: string,
+        eventId: string
+    ): Promise<void> {
+        await eventsRepository.linkToMsrEvent(orgId, eventId, null);
     }
 }
 
