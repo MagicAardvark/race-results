@@ -4,6 +4,8 @@ import { and, eq } from "drizzle-orm";
 
 interface IEventsRepository {
     getEvent(orgId: string, eventId: string): Promise<EventDTO>;
+    getCurrentEvent(orgId: string): Promise<EventDTO | null>;
+    getCurrentEventId(orgId: string): Promise<string | null>;
     linkToMsrEvent(
         orgId: string,
         eventId: string,
@@ -20,8 +22,8 @@ export class EventsRepository implements IEventsRepository {
                 entries: false,
             },
             where: {
-                orgId,
-                eventId,
+                orgId: { eq: orgId },
+                eventId: { eq: eventId },
                 deletedAt: { isNull: true },
             },
         });
@@ -31,6 +33,29 @@ export class EventsRepository implements IEventsRepository {
         }
 
         return event;
+    }
+
+    async getCurrentEvent(orgId: string): Promise<EventDTO | null> {
+        const currentEvent = await db.query.events.findFirst({
+            where: {
+                orgId: { eq: orgId },
+                startAt: { lte: new Date() },
+                endAt: { gte: new Date() },
+                deletedAt: { isNull: true },
+            },
+        });
+
+        if (!currentEvent) {
+            return null;
+        }
+
+        return currentEvent;
+    }
+
+    async getCurrentEventId(orgId: string): Promise<string | null> {
+        const currentEvent = await this.getCurrentEvent(orgId);
+
+        return currentEvent ? currentEvent.eventId : null;
     }
 
     async linkToMsrEvent(

@@ -20,7 +20,22 @@ vi.mock("@/services/organizations/organization.admin.service", () => ({
 
 vi.mock("@/services/feature-flags/feature-flags.service", () => ({
     featureFlagsService: {
-        isFeatureEnabled: vi.fn().mockResolvedValue(true),
+        getOrgFeatureFlags: vi.fn(),
+    },
+}));
+
+vi.mock("@/services/events/events.service", () => ({
+    eventsService: {
+        getCurrentEvent: vi.fn().mockResolvedValue({
+            eventId: "event-123",
+            name: "Test Event",
+            slug: "test-event",
+            orgId: "org-123",
+            startAt: new Date(),
+            endAt: new Date(Date.now() + 3600000),
+            seasonId: null,
+            deletedAt: null,
+        }),
     },
 }));
 
@@ -43,9 +58,9 @@ const setupValidAuth = (featureEnabled = true) => {
         "org-123"
     );
     vi.mocked(organizationAdminService.findById).mockResolvedValue(mockOrg);
-    vi.mocked(featureFlagsService.isFeatureEnabled).mockResolvedValue(
-        featureEnabled
-    );
+    vi.mocked(featureFlagsService.getOrgFeatureFlags).mockResolvedValue({
+        "feature.liveTiming.workRunEnabled": featureEnabled,
+    });
 };
 
 const callAuthEndpoint = async (apiKey: string) => {

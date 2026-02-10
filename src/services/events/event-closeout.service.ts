@@ -7,6 +7,7 @@ import { eventsService } from "@/services/events/events.service";
 import { LiveResultsParser } from "@/services/live-results/lib/live-results-parser";
 import { Organization } from "@/dto/organizations";
 import { eventCloseoutRepository } from "@/db/repositories/results/event-closeout.repo";
+import { eventsRepository } from "@/db/repositories/results/events.repo";
 
 interface IEventCloseoutService {
     closeEvent(orgSlug: string, data: LiveResultsSnapshot): Promise<void>;
@@ -23,7 +24,9 @@ export class EventCloseoutService implements IEventCloseoutService {
             throw new Error("Organization not found");
         }
 
-        const currentEventId = await this.getCurrentEventId(org.orgId);
+        const currentEventId = await eventsRepository.getCurrentEventId(
+            org.orgId
+        );
 
         if (!currentEventId) {
             throw new Error("No active event found to close out");
@@ -105,23 +108,6 @@ export class EventCloseoutService implements IEventCloseoutService {
         }
 
         return results;
-    }
-
-    private async getCurrentEventId(orgId: string): Promise<string | null> {
-        const currentEvent = await db.query.events.findFirst({
-            where: {
-                orgId,
-                startAt: { lte: new Date() },
-                endAt: { gte: new Date() },
-                deletedAt: { isNull: true },
-            },
-        });
-
-        if (!currentEvent) {
-            return null;
-        }
-
-        return currentEvent.eventId;
     }
 
     private async getEventSegments(eventId: string): Promise<string[]> {

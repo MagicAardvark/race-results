@@ -28,8 +28,8 @@ export async function POST(
 
     try {
         await eventCloseoutService.closeEvent(orgSlug, data);
-    } catch (error) {
-        throw error;
+    } catch {
+        // TODO: Log the error in a real application
         return Response.json({
             success: false,
             message: "Error closing out event.",
