@@ -21,7 +21,7 @@ import {
 import { FormResponse } from "@/types/forms";
 import { createOrganization } from "@/app/(global-admin)/admin/(organization)/(general)/_lib/actions/create-org";
 import { toast } from "sonner";
-import { switchTenant } from "@/app/(global-admin)/admin/_lib/actions/switch-teant";
+import { switchTenant } from "@/app/(global-admin)/admin/_lib/actions/switch-tenant";
 
 const createOrganizationSchema = z.object({
     name: z.string().min(1, "Name cannot be empty"),

@@ -1,8 +1,8 @@
 import { CalendarTab } from "@/app/(global-admin)/admin/(organization)/calendar/_lib/components/calendar-tab";
-import { getStoredTenant } from "@/app/(global-admin)/admin/_lib/get-stored-tenant";
 import { orgEventsRepository } from "@/db/repositories/org-events.repo";
 import { EventDTO } from "@/dto/events";
 import { Season } from "@/dto/events/seasons";
+import { requireOrgAccess } from "@/lib/auth/require-org-access";
 import { seasonsService } from "@/services/events/seasons.service";
 import { organizationAdminService } from "@/services/organizations/organization.admin.service";
 
@@ -14,13 +14,10 @@ export default async function OrganizationCalendarPage({
     const { season } = await params;
     // Catch all route [[...season]]: season is an array or undefined
     const seasonSlug = season ?? undefined;
-    const storedTenant = await getStoredTenant();
 
-    if (!storedTenant) {
-        return null;
-    }
+    const { currentOrg } = await requireOrgAccess();
 
-    const org = await organizationAdminService.findBySlug(storedTenant);
+    const org = await organizationAdminService.findBySlug(currentOrg.slug);
 
     if (org === null) {
         return null;

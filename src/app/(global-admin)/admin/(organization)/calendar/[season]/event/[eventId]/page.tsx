@@ -1,5 +1,5 @@
 import { UpdateEventForm } from "@/app/(global-admin)/admin/(organization)/calendar/_lib/components/update-event";
-import { getStoredTenant } from "@/app/(global-admin)/admin/_lib/get-stored-tenant";
+import { requireOrgAccess } from "@/lib/auth/require-org-access";
 import { eventsService } from "@/services/events/events.service";
 import { organizationAdminService } from "@/services/organizations/organization.admin.service";
 
@@ -10,13 +10,9 @@ export default async function Page({
 }) {
     const { season, eventId } = await params;
 
-    const storedTenant = await getStoredTenant();
+    const { currentOrg } = await requireOrgAccess();
 
-    if (!storedTenant) {
-        return null;
-    }
-
-    const org = await organizationAdminService.findBySlug(storedTenant);
+    const org = await organizationAdminService.findBySlug(currentOrg.slug);
 
     if (org === null) {
         return null;

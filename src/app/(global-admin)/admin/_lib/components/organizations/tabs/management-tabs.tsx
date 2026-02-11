@@ -10,7 +10,7 @@ const tabs = [
 ];
 
 type ManagementTabsProps = {
-    roles: string[];
+    roles: Set<string>;
 };
 
 export function ManagementTabs({ roles }: ManagementTabsProps) {
@@ -39,7 +39,7 @@ export function ManagementTabs({ roles }: ManagementTabsProps) {
             <TabsList>
                 {tabs
                     .filter((tab) =>
-                        tab.allowedRoles.some((role) => roles.includes(role))
+                        tab.allowedRoles.some((role) => roles.has(role))
                     )
                     .map((tab) => (
                         <TabsTrigger key={tab.value} value={tab.value}>

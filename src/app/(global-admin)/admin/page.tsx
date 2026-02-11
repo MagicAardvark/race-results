@@ -1,28 +1,20 @@
 import { GeneralTab } from "@/app/(global-admin)/admin/(organization)/(general)/_lib/components/general-tab";
 import { ManagementTabs } from "@/app/(global-admin)/admin/_lib/components/organizations/tabs/management-tabs";
-import { getStoredTenant } from "@/app/(global-admin)/admin/_lib/get-stored-tenant";
+import { requireOrgAccess } from "@/lib/auth/require-org-access";
 import { organizationAdminService } from "@/services/organizations/organization.admin.service";
-import { getCurrentUserCached } from "@/services/users/user.service.cached";
 
 export default async function Page() {
-    const user = await getCurrentUserCached();
+    const { currentOrg, currentRoles } = await requireOrgAccess();
 
-    const storedTenant = await getStoredTenant();
-
-    if (!storedTenant) {
-        return null;
-    }
-
-    // Todo: Ensure user has access to this tenant, otherwise throw an error or redirect.
-    const org = await organizationAdminService.findBySlug(storedTenant);
+    const org = await organizationAdminService.findBySlug(currentOrg.slug);
 
     if (!org) {
-        return null;
+        return <div className="p-4">Organization not found.</div>;
     }
 
     return (
         <>
-            <ManagementTabs roles={user?.roles || []} />
+            <ManagementTabs roles={currentRoles} />
             <GeneralTab org={org} />
         </>
     );
