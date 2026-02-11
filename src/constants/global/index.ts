@@ -26,6 +26,8 @@ export const ADMIN_ROLES = [
     ROLES.orgOwner,
 ] as const;
 
+export const ORG_ROLES = [ROLES.orgManager, ROLES.orgOwner] as const;
+
 export const CLASSING = {
     DEFAULT_INDEX_VALUE: 1,
 };

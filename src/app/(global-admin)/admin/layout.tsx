@@ -1,35 +1,17 @@
 import { getNavigationConfiguration } from "@/lib/shared/layout/configuration/navigation";
-import { ROLES } from "@/constants/global";
-import { requireAnyRole } from "@/lib/auth/require-role";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/ui/sidebar";
 import { AppHeader } from "@/app/components/shared/layout/app-header";
 import { SidebarNavigation } from "@/app/(global-admin)/admin/_lib/components/sidebar-navigation";
-import { getStoredTenant } from "@/app/(global-admin)/admin/_lib/get-stored-tenant";
-import { InvalidOrg } from "@/app/(global-admin)/admin/_lib/components/organizations/invalid-org";
+import { requireAdminAccess } from "@/lib/auth/require-admin-access";
 
 export default async function AdminLayout({
     children,
 }: {
     children: React.ReactNode;
 }) {
-    const user = await requireAnyRole([
-        ROLES.admin,
-        ROLES.orgManager,
-        ROLES.orgOwner,
-    ]);
+    const { user, currentOrg, currentRoles } = await requireAdminAccess();
 
-    const orgs = user.orgs;
-
-    const storedTenant = await getStoredTenant();
-
-    const matchedOrg = storedTenant
-        ? orgs.find((org) => org.org.slug === storedTenant)
-        : null;
-    const isValidTenantSelected = !!matchedOrg;
-
-    const selectedOrg = matchedOrg ?? null;
-
-    const navItems = getNavigationConfiguration(user.roles || []);
+    const navItems = getNavigationConfiguration(user.roles);
 
     return (
         <SidebarProvider>
@@ -43,17 +25,14 @@ export default async function AdminLayout({
                 />
                 <div className="flex flex-1">
                     <SidebarNavigation
-                        roles={user.roles || []}
+                        roles={currentRoles}
                         navItems={navItems}
-                        organizations={orgs}
-                        selectedOrg={selectedOrg}
+                        organizations={user.orgs}
+                        currentOrg={currentOrg}
                     />
                     <SidebarInset className="pt-0">
                         <main className="flex flex-1 flex-col gap-4 p-4 md:p-6">
-                            {isValidTenantSelected && <>{children}</>}
-                            {!isValidTenantSelected && (
-                                <InvalidOrg orgs={orgs} />
-                            )}
+                            {children}
                         </main>
                     </SidebarInset>
                 </div>
