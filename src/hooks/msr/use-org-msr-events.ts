@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export const useOrgMsrEvents = () => {
+export const useOrgMsrEvents = (isMsrConfigured: boolean) => {
     const [isLoading, setIsLoading] = useState(true);
     const [isError, setIsError] = useState(false);
     const [msrEvents, setMsrEvents] = useState<{ id: string; name: string }[]>(
@@ -9,6 +9,11 @@ export const useOrgMsrEvents = () => {
 
     useEffect(() => {
         const fetchData = async () => {
+            if (!isMsrConfigured) {
+                setIsLoading(false);
+                return;
+            }
+
             try {
                 const response = await fetch("/api/msr/events");
 
@@ -23,7 +28,7 @@ export const useOrgMsrEvents = () => {
         };
 
         fetchData();
-    }, []);
+    }, [isMsrConfigured]);
 
     return { msrEvents, isLoading, isError };
 };

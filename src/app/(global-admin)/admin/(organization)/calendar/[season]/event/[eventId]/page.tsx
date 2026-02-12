@@ -26,7 +26,7 @@ export default async function Page({
 
     return (
         <div>
-            <UpdateEventForm orgId={org.orgId} event={event} season={season} />
+            <UpdateEventForm org={org} event={event} season={season} />
         </div>
     );
 }

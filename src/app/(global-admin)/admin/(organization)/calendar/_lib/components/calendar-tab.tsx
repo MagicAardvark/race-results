@@ -7,6 +7,7 @@ import { CreateNewSeasonDialog } from "@/app/(global-admin)/admin/(organization)
 import { Stack } from "@/app/components/shared/stack";
 import { EventDTO } from "@/dto/events";
 import { Season } from "@/dto/events/seasons";
+import { OrganizationExtended } from "@/dto/organizations";
 import { Button } from "@/ui/button-wrapper";
 import {
     Card,
@@ -60,19 +61,22 @@ function eventDateRange(start: Date, end: Date): string {
 }
 
 type CalendarTabProps = {
-    orgId: string;
+    org: OrganizationExtended;
     events: EventDTO[];
     seasons: Season[];
     selectedSeason: Season | undefined;
 };
 
 export function CalendarTab({
-    orgId,
+    org,
     events,
     seasons,
     selectedSeason,
 }: CalendarTabProps) {
     const router = useRouter();
+
+    const isMsrConfigured = !!org.motorsportregOrgId;
+    const orgId = org.orgId;
 
     if (seasons.length === 0 || !selectedSeason) {
         return (
@@ -136,6 +140,7 @@ export function CalendarTab({
                         </CardTitle>
                         <CreateEventDialog
                             orgId={orgId}
+                            isMsrConfigured={isMsrConfigured}
                             seasonId={selectedSeason.seasonId}
                         />
                     </div>

@@ -43,7 +43,7 @@ export default function LinkMsrEventDialog({
         },
     });
 
-    const { isLoading, isError: isMsrError, msrEvents } = useOrgMsrEvents();
+    const { isLoading, isError: isMsrError, msrEvents } = useOrgMsrEvents(true);
     const [error, setError] = useState<FormResponse | null>(null);
 
     const onSubmit = async (data: z.infer<typeof linkMsrEventSchema>) => {

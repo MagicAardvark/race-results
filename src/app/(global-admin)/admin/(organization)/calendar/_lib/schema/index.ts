@@ -2,7 +2,7 @@ import z from "zod";
 
 export const baseEventSchema = z
     .object({
-        isLinkedToMsrEvent: z.boolean().default(false),
+        isLinkedToMsrEvent: z.boolean().default(false).optional(),
         msrEventId: z.string().optional(),
         name: z.string().min(1, "Name is required"),
         isMultiDay: z.boolean().default(false),
