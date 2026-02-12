@@ -35,6 +35,7 @@ export async function createEvent(
             orgId: orgId,
             seasonId: seasonId,
             name: data.name,
+            isMultiDay: data.isMultiDay,
             startAt: data.startDate,
             endAt: data.endDate,
             msrEventId: data.isLinkedToMsrEvent ? data.msrEventId : undefined,

@@ -44,14 +44,11 @@ export class EventsService implements IEventsService {
     }
 
     async createEvent(event: CreateEventData): Promise<EventDTO> {
-        const isSingleDay =
-            !event.endAt || event.startAt.getTime() === event.endAt.getTime();
-
         const ensureStartOfStartDate = new Date(event.startAt);
         ensureStartOfStartDate.setHours(0, 0, 0, 0);
 
         const ensureEndOfEndDate = new Date(
-            isSingleDay ? event.startAt : event.endAt!
+            !event.isMultiDay ? event.startAt : event.endAt!
         );
         ensureEndOfEndDate.setHours(23, 59, 59, 999);
 
@@ -66,14 +63,11 @@ export class EventsService implements IEventsService {
     }
 
     async updateEvent(event: UpdateEventData): Promise<EventDTO> {
-        const isSingleDay =
-            !event.endAt || event.startAt.getTime() === event.endAt.getTime();
-
         const ensureStartOfStartDate = new Date(event.startAt);
         ensureStartOfStartDate.setHours(0, 0, 0, 0);
 
         const ensureEndOfEndDate = new Date(
-            isSingleDay ? event.startAt : event.endAt!
+            !event.isMultiDay ? event.startAt : event.endAt!
         );
         ensureEndOfEndDate.setHours(23, 59, 59, 999);
 

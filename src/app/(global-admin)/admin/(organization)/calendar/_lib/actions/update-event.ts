@@ -15,15 +15,20 @@ export async function updateEvent(
 ): Promise<FormResponse> {
     await requireOrgRole(orgId, ROLES.orgOwner);
 
-    const result = await baseEventSchema.safeParseAsync(data);
-    if (!result.success) {
+    const {
+        success,
+        data: event,
+        error,
+    } = await baseEventSchema.safeParseAsync(data);
+
+    if (!success) {
         return {
             isError: true,
-            errors: result.error.issues.map((err) => err.message),
+            errors: error.issues.map((err) => err.message),
         };
     }
 
-    if (data.endDate && data.endDate < data.startDate) {
+    if (event.endDate && event.endDate < event.startDate) {
         return {
             isError: true,
             errors: "End date must be on or after start date",
@@ -34,9 +39,10 @@ export async function updateEvent(
         const updated = await eventsService.updateEvent({
             eventId: eventId,
             orgId: orgId,
-            name: data.name,
-            startAt: data.startDate,
-            endAt: data.endDate ?? data.startDate,
+            name: event.name,
+            isMultiDay: event.isMultiDay,
+            startAt: event.startDate,
+            endAt: event.endDate,
         });
         if (!updated) {
             return {
@@ -54,7 +60,7 @@ export async function updateEvent(
         };
     }
 
-    revalidatePath("/admin");
+    revalidatePath("/admin/calendar");
 
     return { isError: false, message: "Event updated" };
 }
