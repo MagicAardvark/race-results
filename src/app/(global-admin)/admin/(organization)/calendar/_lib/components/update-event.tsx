@@ -24,7 +24,6 @@ import { AlertTriangle } from "lucide-react";
 import { useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
-import { isSameDay } from "date-fns";
 import z from "zod";
 
 type UpdateEventDialogProps = {
