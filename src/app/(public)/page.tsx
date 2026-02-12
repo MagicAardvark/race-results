@@ -27,7 +27,7 @@ export default async function Page() {
         (acc, org, i) => {
             const events = orgEventsByOrg[i] ?? [];
             acc[org.orgId] = events.filter(
-                (e) => getDateString(e.endAt) >= today
+                (e) => getDateString(e.endDate) >= today
             ).length;
             return acc;
         },
@@ -35,17 +35,21 @@ export default async function Page() {
     );
 
     const nextEventByOrgId = orgs.reduce<
-        Record<string, { name: string; startAt: Date; endAt: Date } | null>
+        Record<string, { name: string; startDate: Date; endDate: Date } | null>
     >((acc, org, i) => {
         const events = (orgEventsByOrg[i] ?? [])
-            .filter((e) => getDateString(e.endAt) >= today)
-            .sort((a, b) => a.startAt.getTime() - b.startAt.getTime());
+            .filter((e) => getDateString(e.endDate) >= today)
+            .sort(
+                (a, b) =>
+                    new Date(a.startDate).getTime() -
+                    new Date(b.startDate).getTime()
+            );
         acc[org.orgId] =
             events.length > 0
                 ? {
                       name: events[0]!.name,
-                      startAt: events[0]!.startAt,
-                      endAt: events[0]!.endAt,
+                      startDate: new Date(events[0]!.startDate),
+                      endDate: new Date(events[0]!.endDate),
                   }
                 : null;
         return acc;
@@ -124,8 +128,8 @@ export default async function Page() {
                         const next = nextEventByOrgId[org.orgId];
                         const isNextToday =
                             next &&
-                            getDateString(next.startAt) <= today &&
-                            getDateString(next.endAt) >= today;
+                            getDateString(next.startDate) <= today &&
+                            getDateString(next.endDate) >= today;
 
                         return (
                             <Card
@@ -185,8 +189,8 @@ export default async function Page() {
                                             </p>
                                             <p className="text-muted-foreground mt-0.5 text-xs">
                                                 {formatDateRange(
-                                                    next.startAt,
-                                                    next.endAt
+                                                    next.startDate,
+                                                    next.endDate
                                                 )}
                                             </p>
                                         </div>

@@ -14,7 +14,7 @@ vi.mock("../utils/date-utils", () => ({
 }));
 
 function orgEvent(
-    overrides: Partial<EventDTO> & { startAt: Date; endAt: Date }
+    overrides: Partial<EventDTO> & { startDate: string; endDate: string }
 ): EventDTO {
     return {
         eventId: "evt-1",
@@ -25,6 +25,8 @@ function orgEvent(
         msrEventId: null,
         createdAt: new Date(),
         updatedAt: new Date(),
+        startTime: "00:00:00",
+        endTime: "23:59:59",
         ...overrides,
     };
 }
@@ -66,10 +68,12 @@ describe("mergeOrgAndMrEvents", () => {
     const today = "2026-06-01";
 
     it("returns upcoming org events with matching MR event when same date", () => {
-        const start = new Date("2026-06-10T00:00:00");
-        const end = new Date("2026-06-10T23:59:59");
         const orgEvents = [
-            orgEvent({ eventId: "e1", startAt: start, endAt: end }),
+            orgEvent({
+                eventId: "e1",
+                startDate: "2026-06-10",
+                endDate: "2026-06-10",
+            }),
         ];
         const mrEvents = [
             mrEvent({ id: "mr1", start: "2026-06-10", end: "2026-06-10" }),
@@ -91,10 +95,12 @@ describe("mergeOrgAndMrEvents", () => {
     });
 
     it("returns org event without MR link when no matching MR date", () => {
-        const start = new Date("2026-06-15T00:00:00");
-        const end = new Date("2026-06-15T23:59:59");
         const orgEvents = [
-            orgEvent({ eventId: "e1", startAt: start, endAt: end }),
+            orgEvent({
+                eventId: "e1",
+                startDate: "2026-06-15",
+                endDate: "2026-06-15",
+            }),
         ];
         const mrEvents = [
             mrEvent({ id: "mr1", start: "2026-06-10", end: "2026-06-10" }),
@@ -126,10 +132,12 @@ describe("mergeOrgAndMrEvents", () => {
     });
 
     it("excludes MR event when org event exists on same start date", () => {
-        const start = new Date("2026-06-10T00:00:00");
-        const end = new Date("2026-06-10T23:59:59");
         const orgEvents = [
-            orgEvent({ eventId: "e1", startAt: start, endAt: end }),
+            orgEvent({
+                eventId: "e1",
+                startDate: "2026-06-10",
+                endDate: "2026-06-10",
+            }),
         ];
         const mrEvents = [
             mrEvent({ id: "mr1", start: "2026-06-10", end: "2026-06-10" }),
@@ -143,13 +151,17 @@ describe("mergeOrgAndMrEvents", () => {
     });
 
     it("splits past and upcoming by end date", () => {
-        const pastStart = new Date("2026-05-01T00:00:00");
-        const pastEnd = new Date("2026-05-01T23:59:59");
-        const futureStart = new Date("2026-07-01T00:00:00");
-        const futureEnd = new Date("2026-07-01T23:59:59");
         const orgEvents = [
-            orgEvent({ eventId: "e1", startAt: pastStart, endAt: pastEnd }),
-            orgEvent({ eventId: "e2", startAt: futureStart, endAt: futureEnd }),
+            orgEvent({
+                eventId: "e1",
+                startDate: "2026-05-01",
+                endDate: "2026-05-01",
+            }),
+            orgEvent({
+                eventId: "e2",
+                startDate: "2026-07-01",
+                endDate: "2026-07-01",
+            }),
         ];
         const mrEvents: MotorsportRegEvent[] = [];
 

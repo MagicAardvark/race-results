@@ -20,10 +20,10 @@ export function mergeOrgAndMrEvents(
     today: string
 ): { upcoming: MergedEventItem[]; past: MergedEventItem[] } {
     const upcomingOrg = orgEvents.filter(
-        (e) => getDateString(e.endAt) >= today
+        (e) => getDateString(e.startDate) >= today
     );
     const pastOrg = orgEvents
-        .filter((e) => getDateString(e.endAt) < today)
+        .filter((e) => getDateString(e.endDate) < today)
         .reverse();
     const upcomingMr = mrEvents.filter((e) => e.end >= today);
     const pastMr = mrEvents
@@ -31,23 +31,23 @@ export function mergeOrgAndMrEvents(
         .sort((a, b) => b.end.localeCompare(a.end));
 
     const orgStartDates = new Set(
-        orgEvents.map((e) => getDateString(e.startAt))
+        orgEvents.map((e) => getDateString(e.startDate))
     );
 
     function findMrForDate(
-        startAt: Date | string
+        startDate: Date | string
     ): MotorsportRegEvent | undefined {
-        return mrEvents.find((e) => e.start === getDateString(startAt));
+        return mrEvents.find((e) => e.start === getDateString(startDate));
     }
 
     const sortByDateAsc = (a: MergedEventItem, b: MergedEventItem) => {
         const dateA =
             a.source === "org"
-                ? getDateString(a.orgEvent.startAt)
+                ? getDateString(a.orgEvent.startDate)
                 : a.event.start;
         const dateB =
             b.source === "org"
-                ? getDateString(b.orgEvent.startAt)
+                ? getDateString(b.orgEvent.startDate)
                 : b.event.start;
         return dateA.localeCompare(dateB);
     };
@@ -58,7 +58,7 @@ export function mergeOrgAndMrEvents(
         ...upcomingOrg.map((orgEvent) => ({
             source: "org" as const,
             orgEvent,
-            mrEvent: findMrForDate(orgEvent.startAt),
+            mrEvent: findMrForDate(orgEvent.startDate),
         })),
         ...upcomingMr
             .filter((e) => !orgStartDates.has(e.start))
@@ -69,7 +69,7 @@ export function mergeOrgAndMrEvents(
         ...pastOrg.map((orgEvent) => ({
             source: "org" as const,
             orgEvent,
-            mrEvent: findMrForDate(orgEvent.startAt),
+            mrEvent: findMrForDate(orgEvent.startDate),
         })),
         ...pastMr
             .filter((e) => !orgStartDates.has(e.start))

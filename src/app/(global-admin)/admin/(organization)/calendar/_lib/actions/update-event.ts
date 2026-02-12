@@ -28,7 +28,7 @@ export async function updateEvent(
         };
     }
 
-    if (event.endDate && event.endDate < event.startDate) {
+    if (event.isMultiDay && event.endDate < event.startDate) {
         return {
             isError: true,
             errors: "End date must be on or after start date",
@@ -41,8 +41,8 @@ export async function updateEvent(
             orgId: orgId,
             name: event.name,
             isMultiDay: event.isMultiDay,
-            startAt: event.startDate,
-            endAt: event.endDate,
+            startDate: event.startDate,
+            endDate: event.endDate,
         });
         if (!updated) {
             return {
@@ -60,7 +60,7 @@ export async function updateEvent(
         };
     }
 
-    revalidatePath("/admin/calendar");
+    revalidatePath("/admin");
 
     return { isError: false, message: "Event updated" };
 }

@@ -169,29 +169,22 @@ export async function configureOrgEvents(
                 orgId,
                 name: season.seasonName,
                 slug: generateSlug(season.seasonName),
-                startAt: new Date(season.events[0].year, 0, 1, 0, 0, 0, 0),
-                endAt: new Date(
-                    season.events[season.events.length - 1].year,
-                    11,
-                    31,
-                    23,
-                    59,
-                    59,
-                    999
-                ),
+                startDate: `${season.events[0].year}-01-01`,
+                endDate: `${season.events[season.events.length - 1].year}-12-31`,
             })
             .returning();
 
         const values = season.events.map((e) => {
-            const startAt = new Date(e.year, e.month - 1, e.day, 0, 0, 0, 0);
-            const endAt = new Date(e.year, e.month - 1, e.day, 23, 59, 59, 999);
             return {
                 orgId,
                 seasonId: insertedSeason.seasonId,
                 name: e.name,
                 slug: generateSlug(e.name),
-                startAt,
-                endAt,
+                startDate: `${e.year}-${e.month}-${e.day}`,
+                startTime: "00:00:00",
+                endDate: `${e.year}-${e.month}-${e.day}`,
+                endTime: "23:59:59",
+                timezone: "America/New_York",
             };
         });
 

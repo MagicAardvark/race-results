@@ -44,19 +44,23 @@ function formatEventDate(d: Date): string {
     });
 }
 
-function isSingleDayEvent(start: Date, end: Date): boolean {
+function isSingleDayEvent(start: string, end: string): boolean {
+    const startDate = new Date(start);
+    const endDate = new Date(end);
+
     const sameUtcDay =
-        start.getUTCFullYear() === end.getUTCFullYear() &&
-        start.getUTCMonth() === end.getUTCMonth() &&
-        start.getUTCDate() === end.getUTCDate();
-    const within24Hours = end.getTime() - start.getTime() < 24 * 60 * 60 * 1000;
+        startDate.getUTCFullYear() === endDate.getUTCFullYear() &&
+        startDate.getUTCMonth() === endDate.getUTCMonth() &&
+        startDate.getUTCDate() === endDate.getUTCDate();
+    const within24Hours =
+        endDate.getTime() - startDate.getTime() < 24 * 60 * 60 * 1000;
     return sameUtcDay || within24Hours;
 }
 
-function eventDateRange(start: Date, end: Date): string {
-    const startStr = formatEventDate(start);
+function eventDateRange(start: string, end: string): string {
+    const startStr = formatEventDate(new Date(start));
     if (isSingleDayEvent(start, end)) return startStr;
-    const endStr = formatEventDate(end);
+    const endStr = formatEventDate(new Date(end));
     return `${startStr} – ${endStr}`;
 }
 
@@ -178,8 +182,8 @@ export function CalendarTab({
                                         </TableCell>
                                         <TableCell>
                                             {eventDateRange(
-                                                event.startAt,
-                                                event.endAt
+                                                event.startDate,
+                                                event.endDate
                                             )}
                                         </TableCell>
                                         <TableCell className="text-right">

@@ -30,6 +30,7 @@ import { createEvent } from "@/app/(global-admin)/admin/(organization)/calendar/
 import { Button } from "@/ui/button-wrapper";
 import { useOrgMsrEvents } from "@/hooks/msr/use-org-msr-events";
 import { AlertTriangle } from "lucide-react";
+import { addDays, format } from "date-fns";
 
 type CreateEventDialogProps = {
     orgId: string;
@@ -42,6 +43,7 @@ export const CreateEventDialog = ({
     isMsrConfigured,
     seasonId,
 }: CreateEventDialogProps) => {
+    const today = new Date();
     const form = useForm<z.infer<typeof baseEventSchema>>({
         // @hookform/resolvers v5.2.2 types don't fully support Zod v4 yet, but runtime works correctly
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -50,9 +52,9 @@ export const CreateEventDialog = ({
             isLinkedToMsrEvent: isMsrConfigured,
             msrEventId: "",
             name: "",
-            startDate: new Date(),
+            startDate: format(today, "yyyy-MM-dd"),
             isMultiDay: false,
-            endDate: undefined,
+            endDate: format(addDays(today, 1), "yyyy-MM-dd"),
         },
     });
 
@@ -146,7 +148,7 @@ export const CreateEventDialog = ({
                             </Stack>
                         )}
 
-                        {!isLoading && !isMsrError && (
+                        {!isLoading && (
                             <>
                                 <FieldGroup>
                                     {isMsrConfigured && (
@@ -197,21 +199,25 @@ export const CreateEventDialog = ({
                                         label="Multi-day event"
                                     />
 
-                                    <Stack orientation="horizontal">
-                                        <FormDatePicker
-                                            form={form}
-                                            name="startDate"
-                                            label={`${watchIsMultiDay ? "Start Date" : "Date"}`}
-                                        />
-
-                                        {watchIsMultiDay && (
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <div>
                                             <FormDatePicker
                                                 form={form}
-                                                name="endDate"
-                                                label="End Date"
+                                                name="startDate"
+                                                label={`${watchIsMultiDay ? "Start Date" : "Date"}`}
                                             />
-                                        )}
-                                    </Stack>
+                                        </div>
+
+                                        <div>
+                                            {watchIsMultiDay && (
+                                                <FormDatePicker
+                                                    form={form}
+                                                    name="endDate"
+                                                    label="End Date"
+                                                />
+                                            )}
+                                        </div>
+                                    </div>
                                 </FieldGroup>
 
                                 <DefaultFormActions

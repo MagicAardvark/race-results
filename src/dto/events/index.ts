@@ -19,8 +19,10 @@ export interface EventDTO {
     name: string;
     slug: string;
     seasonId: string;
-    startAt: Date;
-    endAt: Date;
+    startDate: string;
+    startTime: string;
+    endDate: string;
+    endTime: string;
     msrEventId: string | null;
     createdAt: Date;
     updatedAt: Date;
@@ -31,8 +33,8 @@ export interface CreateEventData {
     seasonId: string;
     name: string;
     isMultiDay: boolean;
-    startAt: Date;
-    endAt: Date | undefined;
+    startDate: string;
+    endDate: string | undefined;
     msrEventId?: string;
 }
 
@@ -40,8 +42,8 @@ export interface CreateEventDTO {
     orgId: string;
     seasonId: string;
     name: string;
-    startAt: Date;
-    endAt: Date;
+    startDate: string;
+    endDate: string;
     msrEventId?: string;
 }
 
@@ -50,12 +52,12 @@ export interface UpdateEventData {
     orgId: string;
     name: string;
     isMultiDay: boolean;
-    startAt: Date;
-    endAt: Date | undefined;
+    startDate: string;
+    endDate: string | undefined;
 }
 
 export interface UpdateEventDTO {
     name: string;
-    startAt: Date;
-    endAt: Date;
+    startDate: string;
+    endDate: string;
 }

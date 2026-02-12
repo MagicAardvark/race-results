@@ -39,8 +39,8 @@ export class EventsRepository implements IEventsRepository {
         const currentEvent = await db.query.events.findFirst({
             where: {
                 orgId: { eq: orgId },
-                startAt: { lte: new Date() },
-                endAt: { gte: new Date() },
+                startDate: { lte: new Date().toISOString().split("T")[0] },
+                endDate: { gte: new Date().toISOString().split("T")[0] },
                 deletedAt: { isNull: true },
             },
         });

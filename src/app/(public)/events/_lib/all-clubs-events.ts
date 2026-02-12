@@ -14,7 +14,7 @@ export type AllClubsEventItem = MergedEventItem & {
 
 function getSortKey(item: MergedEventItem): string {
     if (item.source === "org") {
-        return getDateString(item.orgEvent.startAt);
+        return getDateString(item.orgEvent.startDate);
     }
     return item.event.start;
 }

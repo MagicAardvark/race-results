@@ -23,7 +23,7 @@ export class OrgEventsRepository implements IOrgEventsRepository {
     async listByOrgId(orgId: string): Promise<EventDTO[]> {
         const rows = await db.query.events.findMany({
             where: { orgId, deletedAt: { isNull: true } },
-            orderBy: (events, { asc }) => [asc(events.startAt)],
+            orderBy: (events, { asc }) => [asc(events.startDate)],
         });
         return rows;
     }
@@ -34,7 +34,7 @@ export class OrgEventsRepository implements IOrgEventsRepository {
     ): Promise<EventDTO[]> {
         const rows = await db.query.events.findMany({
             where: { orgId, seasonId, deletedAt: { isNull: true } },
-            orderBy: (events, { asc }) => [asc(events.startAt)],
+            orderBy: (events, { asc }) => [asc(events.startDate)],
         });
         return rows;
     }
@@ -57,8 +57,11 @@ export class OrgEventsRepository implements IOrgEventsRepository {
                 seasonId: dto.seasonId,
                 name: dto.name,
                 slug: generateSlug(dto.name),
-                startAt: dto.startAt,
-                endAt: dto.endAt,
+                startDate: dto.startDate,
+                startTime: "00:00:00",
+                endDate: dto.endDate,
+                endTime: "23:59:59",
+                timezone: "America/New_York",
                 msrEventId: dto.msrEventId ?? null,
             })
             .returning();
@@ -79,8 +82,8 @@ export class OrgEventsRepository implements IOrgEventsRepository {
             .update(events)
             .set({
                 name: dto.name,
-                startAt: dto.startAt,
-                endAt: dto.endAt,
+                startDate: dto.startDate,
+                endDate: dto.endDate,
                 updatedAt: new Date(),
             })
             .where(and(eq(events.eventId, eventId), eq(events.orgId, orgId)))

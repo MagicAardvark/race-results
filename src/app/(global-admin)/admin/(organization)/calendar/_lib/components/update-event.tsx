@@ -46,10 +46,10 @@ export const UpdateEventForm = ({
         resolver: zodResolver(baseEventSchema as any),
         defaultValues: {
             name: event.name,
-            startDate: event.startAt,
+            startDate: event.startDate,
             // Single-day events are stored with start 00:00, end 23:59 — same calendar day = single-day
-            isMultiDay: !isSameDay(event.startAt, event.endAt),
-            endDate: event.endAt || undefined,
+            isMultiDay: !isSameDay(event.startDate, event.endDate),
+            endDate: event.endDate || undefined,
         },
     });
 
@@ -107,21 +107,25 @@ export const UpdateEventForm = ({
                                         label="Multi-day event"
                                     />
 
-                                    <Stack orientation="horizontal">
-                                        <FormDatePicker
-                                            form={form}
-                                            name="startDate"
-                                            label={`${watchIsMultiDay ? "Start Date" : "Date"}`}
-                                        />
-
-                                        {watchIsMultiDay && (
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <div>
                                             <FormDatePicker
                                                 form={form}
-                                                name="endDate"
-                                                label="End Date"
+                                                name="startDate"
+                                                label={`${watchIsMultiDay ? "Start Date" : "Date"}`}
                                             />
-                                        )}
-                                    </Stack>
+                                        </div>
+
+                                        <div>
+                                            {watchIsMultiDay && (
+                                                <FormDatePicker
+                                                    form={form}
+                                                    name="endDate"
+                                                    label="End Date"
+                                                />
+                                            )}
+                                        </div>
+                                    </div>
                                 </FieldGroup>
 
                                 <DefaultFormActions
