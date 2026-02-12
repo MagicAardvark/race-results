@@ -20,7 +20,7 @@ export class SeasonsRepository implements ISeasonsRepository {
                 },
             },
             orderBy: {
-                startAt: "desc",
+                startDate: "desc",
             },
         });
 
@@ -34,8 +34,8 @@ export class SeasonsRepository implements ISeasonsRepository {
                 orgId: dto.orgId,
                 name: dto.name,
                 slug: generateSlug(dto.name),
-                startAt: dto.startAt,
-                endAt: dto.endAt,
+                startDate: dto.startDate,
+                endDate: dto.endDate,
             })
             .returning();
 

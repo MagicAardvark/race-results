@@ -1,13 +1,15 @@
 import { baseClasses, classGroups } from "@/db/schema";
 import { orgs } from "@/db/tables/orgs";
+import { createdAt, deletedAt, updatedAt } from "@/db/utils/columns";
 import {
-    createdAt,
-    deletedAt,
-    endAt,
-    startAt,
-    updatedAt,
-} from "@/db/utils/columns";
-import { index, integer, pgTable, text, uuid } from "drizzle-orm/pg-core";
+    date,
+    index,
+    integer,
+    pgTable,
+    text,
+    time,
+    uuid,
+} from "drizzle-orm/pg-core";
 
 export const seasons = pgTable("results_seasons", {
     seasonId: uuid("id").primaryKey().defaultRandom(),
@@ -19,8 +21,8 @@ export const seasons = pgTable("results_seasons", {
     createdAt: createdAt,
     updatedAt: updatedAt,
     deletedAt: deletedAt,
-    startAt: startAt,
-    endAt: endAt,
+    startDate: date("start_date").notNull(),
+    endDate: date("end_date").notNull(),
 });
 
 export const events = pgTable(
@@ -37,8 +39,11 @@ export const events = pgTable(
             }),
         name: text("name").notNull(),
         slug: text("slug").notNull(),
-        startAt: startAt,
-        endAt: endAt,
+        startDate: date("start_date").notNull(),
+        startTime: time("start_time").notNull(),
+        endDate: date("end_date").notNull(),
+        endTime: time("end_time").notNull(),
+        timezone: text("timezone").notNull(),
         msrEventId: text("msr_event_id"),
         createdAt: createdAt,
         updatedAt: updatedAt,

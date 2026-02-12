@@ -22,14 +22,14 @@ vi.mock("@/app/(tenants)/t/[orgSlug]/_lib/events/merge-events", () => ({
         _today: string
     ) => {
         const upcoming = orgEvents
-            .filter((e) => e.endAt >= new Date("2026-06-01"))
+            .filter((e) => new Date(e.startDate) >= new Date("2026-06-01"))
             .map((e) => ({
                 source: "org" as const,
                 orgEvent: e,
                 mrEvent: undefined,
             }));
         const past = orgEvents
-            .filter((e) => e.endAt < new Date("2026-06-01"))
+            .filter((e) => new Date(e.endDate) < new Date("2026-06-01"))
             .map((e) => ({
                 source: "org" as const,
                 orgEvent: e,
@@ -56,7 +56,7 @@ function org(overrides: Partial<Organization> = {}): Organization {
 }
 
 function orgEvent(
-    overrides: Partial<EventDTO> & { startAt: Date; endAt: Date }
+    overrides: Partial<EventDTO> & { startDate: string; endDate: string }
 ): EventDTO {
     return {
         eventId: "evt-1",
@@ -67,6 +67,8 @@ function orgEvent(
         msrEventId: null,
         createdAt: new Date(),
         updatedAt: new Date(),
+        startTime: "00:00:00",
+        endTime: "23:59:59",
         ...overrides,
     };
 }
@@ -76,12 +78,15 @@ describe("mergeAllClubsEvents", () => {
 
     it("tags each item with org name and slug", () => {
         const orgA = org({ orgId: "org-a", name: "Club A", slug: "club-a" });
-        const start = new Date("2026-07-01T00:00:00");
-        const end = new Date("2026-07-01T23:59:59");
         const orgsWithOrgEvents = [
             {
                 org: orgA,
-                orgEvents: [orgEvent({ startAt: start, endAt: end })],
+                orgEvents: [
+                    orgEvent({
+                        startDate: "2026-07-01",
+                        endDate: "2026-07-01",
+                    }),
+                ],
             },
         ];
         const orgsWithMrEvents: {
@@ -105,16 +110,24 @@ describe("mergeAllClubsEvents", () => {
     it("merges multiple orgs and sorts upcoming by start date", () => {
         const orgA = org({ orgId: "org-a", name: "A", slug: "a" });
         const orgB = org({ orgId: "org-b", name: "B", slug: "b" });
-        const july = new Date("2026-07-15T00:00:00");
-        const june = new Date("2026-06-15T00:00:00");
         const orgsWithOrgEvents = [
             {
                 org: orgA,
-                orgEvents: [orgEvent({ startAt: july, endAt: july })],
+                orgEvents: [
+                    orgEvent({
+                        startDate: "2026-07-15",
+                        endDate: "2026-07-15",
+                    }),
+                ],
             },
             {
                 org: orgB,
-                orgEvents: [orgEvent({ startAt: june, endAt: june })],
+                orgEvents: [
+                    orgEvent({
+                        startDate: "2026-06-15",
+                        endDate: "2026-06-15",
+                    }),
+                ],
             },
         ];
         const orgsWithMrEvents: {

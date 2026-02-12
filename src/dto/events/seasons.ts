@@ -6,15 +6,15 @@ export interface CreateSeasonDTO {
     orgId: string;
     name: string;
     slug: string;
-    startAt: Date;
-    endAt: Date;
+    startDate: string;
+    endDate: string;
 }
 
 export interface CreateSeasonData {
     orgId: string;
     name: string;
-    startAt: Date;
-    endAt: Date;
+    startDate: string;
+    endDate: string;
 }
 
 export interface Season {
@@ -22,7 +22,7 @@ export interface Season {
     orgId: string;
     name: string;
     slug: string;
-    startAt: Date;
-    endAt: Date;
+    startDate: string;
+    endDate: string;
     isCurrent: boolean;
 }

@@ -12,6 +12,7 @@ import { Season } from "@/dto/events/seasons";
 import { FormResponse } from "@/types/forms";
 import { FieldGroup } from "@/ui/field";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { format } from "date-fns";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -34,8 +35,8 @@ export const CreateNewSeasonForm = ({
         resolver: zodResolver(createSeasonSchema as any),
         defaultValues: {
             name: "",
-            startAt: undefined,
-            endAt: undefined,
+            startDate: format(new Date(), "yyyy-MM-dd"),
+            endDate: format(new Date(), "yyyy-MM-dd"),
         },
     });
 
@@ -71,12 +72,12 @@ export const CreateNewSeasonForm = ({
                         <Stack orientation="horizontal">
                             <FormDatePicker
                                 form={form}
-                                name="startAt"
+                                name="startDate"
                                 label="Start Date"
                             />
                             <FormDatePicker
                                 form={form}
-                                name="endAt"
+                                name="endDate"
                                 label="End Date"
                             />
                         </Stack>

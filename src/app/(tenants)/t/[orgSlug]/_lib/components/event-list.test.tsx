@@ -10,8 +10,10 @@ const baseOrgEvent = {
     orgId: "org-1",
     name: "Org Event",
     slug: "org-event",
-    startAt: new Date("2026-06-10"),
-    endAt: new Date("2026-06-10"),
+    startDate: "2026-06-10",
+    startTime: "00:00:00",
+    endDate: "2026-06-10",
+    endTime: "23:59:59",
     createdAt: new Date(),
     updatedAt: new Date(),
 };

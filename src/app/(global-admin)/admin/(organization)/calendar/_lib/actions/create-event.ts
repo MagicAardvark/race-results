@@ -23,7 +23,7 @@ export async function createEvent(
         };
     }
 
-    if (data.endDate && data.endDate < data.startDate) {
+    if (data.isMultiDay && data.endDate < data.startDate) {
         return {
             isError: true,
             errors: "End date must be on or after start date",
@@ -36,8 +36,8 @@ export async function createEvent(
             seasonId: seasonId,
             name: data.name,
             isMultiDay: data.isMultiDay,
-            startAt: data.startDate,
-            endAt: data.endDate,
+            startDate: data.startDate,
+            endDate: data.endDate,
             msrEventId: data.isLinkedToMsrEvent ? data.msrEventId : undefined,
         });
     } catch (error) {
@@ -50,7 +50,7 @@ export async function createEvent(
         };
     }
 
-    revalidatePath("/admin/");
+    revalidatePath("/admin");
 
     return { isError: false, message: `${data.name} created` };
 }

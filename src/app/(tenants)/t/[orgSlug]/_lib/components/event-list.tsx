@@ -36,7 +36,7 @@ const VARIANT_CONFIG = {
 
 function getDateLabel(item: MergedEventItem): string {
     if (item.source === "org") {
-        return formatDateRange(item.orgEvent.startAt, item.orgEvent.endAt);
+        return formatDateRange(item.orgEvent.startDate, item.orgEvent.endDate);
     }
     return formatDateRange(item.event.start, item.event.end);
 }

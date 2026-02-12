@@ -44,37 +44,27 @@ export class EventsService implements IEventsService {
     }
 
     async createEvent(event: CreateEventData): Promise<EventDTO> {
-        const ensureStartOfStartDate = new Date(event.startAt);
-        ensureStartOfStartDate.setHours(0, 0, 0, 0);
-
-        const ensureEndOfEndDate = new Date(
-            !event.isMultiDay ? event.startAt : event.endAt!
-        );
-        ensureEndOfEndDate.setHours(23, 59, 59, 999);
+        const eventEndDate =
+            event.isMultiDay && event.endDate ? event.endDate : event.startDate;
 
         return await orgEventsRepository.create({
             orgId: event.orgId,
             seasonId: event.seasonId,
             name: event.name,
-            startAt: ensureStartOfStartDate,
-            endAt: ensureEndOfEndDate,
+            startDate: event.startDate,
+            endDate: eventEndDate,
             msrEventId: event.msrEventId,
         });
     }
 
     async updateEvent(event: UpdateEventData): Promise<EventDTO> {
-        const ensureStartOfStartDate = new Date(event.startAt);
-        ensureStartOfStartDate.setHours(0, 0, 0, 0);
-
-        const ensureEndOfEndDate = new Date(
-            !event.isMultiDay ? event.startAt : event.endAt!
-        );
-        ensureEndOfEndDate.setHours(23, 59, 59, 999);
+        const eventEndDate =
+            event.isMultiDay && event.endDate ? event.endDate : event.startDate;
 
         return await orgEventsRepository.update(event.eventId, event.orgId, {
             name: event.name,
-            startAt: ensureStartOfStartDate,
-            endAt: ensureEndOfEndDate,
+            startDate: event.startDate,
+            endDate: eventEndDate,
         });
     }
 
