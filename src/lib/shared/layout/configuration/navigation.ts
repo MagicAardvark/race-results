@@ -23,11 +23,6 @@ const ADMIN_NAVIGATION = [
                 roles: [ROLES.admin, ROLES.orgManager, ROLES.orgOwner],
             },
             {
-                text: "Event Setup",
-                href: "/admin/event-setup",
-                roles: [ROLES.admin, ROLES.orgManager, ROLES.orgOwner],
-            },
-            {
                 text: "Calendar",
                 href: "/admin/calendar",
                 roles: [ROLES.admin, ROLES.orgManager, ROLES.orgOwner],
@@ -51,6 +46,11 @@ const ADMIN_NAVIGATION = [
                 text: "Base Classes",
                 href: "/admin/classes",
                 roles: [ROLES.admin],
+            },
+            {
+                text: "Class Groups",
+                href: "/admin/event-setup",
+                roles: [ROLES.admin, ROLES.orgManager, ROLES.orgOwner],
             },
         ],
     },

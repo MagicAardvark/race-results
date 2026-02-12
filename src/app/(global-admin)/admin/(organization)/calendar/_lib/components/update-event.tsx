@@ -4,6 +4,7 @@ import { updateEvent } from "@/app/(global-admin)/admin/(organization)/calendar/
 import LinkMsrEventDialog from "@/app/(global-admin)/admin/(organization)/calendar/_lib/components/link-event/link-msr-event-dialog";
 import UnlinkMsrEventDialog from "@/app/(global-admin)/admin/(organization)/calendar/_lib/components/link-event/unlink-msr-event-dialog";
 import { baseEventSchema } from "@/app/(global-admin)/admin/(organization)/calendar/_lib/schema";
+import { isSameDay } from "date-fns";
 import {
     DefaultFormActions,
     Form,
