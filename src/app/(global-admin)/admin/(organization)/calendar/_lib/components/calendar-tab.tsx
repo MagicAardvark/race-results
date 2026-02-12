@@ -2,7 +2,8 @@
 
 import { CreateEventDialog } from "@/app/(global-admin)/admin/(organization)/calendar/_lib/components/create-event-dialog";
 import { DeleteEventDialog } from "@/app/(global-admin)/admin/(organization)/calendar/_lib/components/delete-event-dialog";
-import { ChangeSeasonDialog } from "@/app/(global-admin)/admin/(organization)/calendar/_lib/components/seasons/change-season";
+import { ChangeSeasonDialog } from "@/app/(global-admin)/admin/(organization)/calendar/_lib/components/seasons/change-season-dialog";
+import { CreateNewSeasonDialog } from "@/app/(global-admin)/admin/(organization)/calendar/_lib/components/seasons/create-new-season-dialog";
 import { Stack } from "@/app/components/shared/stack";
 import { EventDTO } from "@/dto/events";
 import { Season } from "@/dto/events/seasons";
@@ -87,7 +88,14 @@ export function CalendarTab({
                                 </p>
 
                                 <div>
-                                    <Button>Create Season</Button>
+                                    <CreateNewSeasonDialog
+                                        orgId={orgId}
+                                        onChange={(seasonSlug: string) => {
+                                            router.push(
+                                                `/admin/calendar/${seasonSlug}`
+                                            );
+                                        }}
+                                    />
                                 </div>
                             </Stack>
                         </CardDescription>
