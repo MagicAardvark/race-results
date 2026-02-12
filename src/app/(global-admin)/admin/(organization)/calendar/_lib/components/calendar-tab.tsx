@@ -2,10 +2,12 @@
 
 import { CreateEventDialog } from "@/app/(global-admin)/admin/(organization)/calendar/_lib/components/create-event-dialog";
 import { DeleteEventDialog } from "@/app/(global-admin)/admin/(organization)/calendar/_lib/components/delete-event-dialog";
-import { ChangeSeasonDialog } from "@/app/(global-admin)/admin/(organization)/calendar/_lib/components/seasons/change-season";
+import { ChangeSeasonDialog } from "@/app/(global-admin)/admin/(organization)/calendar/_lib/components/seasons/change-season-dialog";
+import { CreateNewSeasonDialog } from "@/app/(global-admin)/admin/(organization)/calendar/_lib/components/seasons/create-new-season-dialog";
 import { Stack } from "@/app/components/shared/stack";
 import { EventDTO } from "@/dto/events";
 import { Season } from "@/dto/events/seasons";
+import { OrganizationExtended } from "@/dto/organizations";
 import { Button } from "@/ui/button-wrapper";
 import {
     Card,
@@ -59,19 +61,22 @@ function eventDateRange(start: Date, end: Date): string {
 }
 
 type CalendarTabProps = {
-    orgId: string;
+    org: OrganizationExtended;
     events: EventDTO[];
     seasons: Season[];
     selectedSeason: Season | undefined;
 };
 
 export function CalendarTab({
-    orgId,
+    org,
     events,
     seasons,
     selectedSeason,
 }: CalendarTabProps) {
     const router = useRouter();
+
+    const isMsrConfigured = !!org.motorsportregOrgId;
+    const orgId = org.orgId;
 
     if (seasons.length === 0 || !selectedSeason) {
         return (
@@ -87,7 +92,14 @@ export function CalendarTab({
                                 </p>
 
                                 <div>
-                                    <Button>Create Season</Button>
+                                    <CreateNewSeasonDialog
+                                        orgId={orgId}
+                                        onChange={(seasonSlug: string) => {
+                                            router.push(
+                                                `/admin/calendar/${seasonSlug}`
+                                            );
+                                        }}
+                                    />
                                 </div>
                             </Stack>
                         </CardDescription>
@@ -128,6 +140,7 @@ export function CalendarTab({
                         </CardTitle>
                         <CreateEventDialog
                             orgId={orgId}
+                            isMsrConfigured={isMsrConfigured}
                             seasonId={selectedSeason.seasonId}
                         />
                     </div>

@@ -33,7 +33,7 @@ export default async function Page() {
 
     return (
         <CalendarTab
-            orgId={org.orgId}
+            org={org}
             events={events}
             seasons={seasons}
             selectedSeason={selectedSeason}

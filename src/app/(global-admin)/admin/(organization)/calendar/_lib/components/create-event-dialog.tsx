@@ -33,11 +33,13 @@ import { AlertTriangle } from "lucide-react";
 
 type CreateEventDialogProps = {
     orgId: string;
+    isMsrConfigured: boolean;
     seasonId: string;
 };
 
 export const CreateEventDialog = ({
     orgId,
+    isMsrConfigured,
     seasonId,
 }: CreateEventDialogProps) => {
     const form = useForm<z.infer<typeof baseEventSchema>>({
@@ -45,7 +47,7 @@ export const CreateEventDialog = ({
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         resolver: zodResolver(baseEventSchema as any),
         defaultValues: {
-            isLinkedToMsrEvent: true,
+            isLinkedToMsrEvent: isMsrConfigured,
             msrEventId: "",
             name: "",
             startDate: new Date(),
@@ -54,7 +56,11 @@ export const CreateEventDialog = ({
         },
     });
 
-    const { isLoading, isError: isMsrError, msrEvents } = useOrgMsrEvents();
+    const {
+        isLoading,
+        isError: isMsrError,
+        msrEvents,
+    } = useOrgMsrEvents(isMsrConfigured);
 
     const [error, setError] = useState<FormResponse | null>(null);
     const [open, setOpen] = useState(false);
@@ -130,7 +136,7 @@ export const CreateEventDialog = ({
                             />
                         )}
 
-                        {isMsrError && (
+                        {isMsrError && isMsrConfigured && (
                             <Stack className="text-red-700">
                                 <AlertTriangle className="mx-auto" size={24} />
                                 <div className="text-center text-sm text-red-700">
@@ -143,35 +149,39 @@ export const CreateEventDialog = ({
                         {!isLoading && !isMsrError && (
                             <>
                                 <FieldGroup>
-                                    <FormCheckbox
-                                        form={form}
-                                        name="isLinkedToMsrEvent"
-                                        label="Link to MotorsportReg event"
-                                    />
+                                    {isMsrConfigured && (
+                                        <>
+                                            <FormCheckbox
+                                                form={form}
+                                                name="isLinkedToMsrEvent"
+                                                label="Link to MotorsportReg event"
+                                            />
 
-                                    {watchIsLinkedToMsrEvent && (
-                                        <FormSelect
-                                            form={form}
-                                            name="msrEventId"
-                                            label="MotorsportReg event"
-                                            placeholder={
-                                                isLoading
-                                                    ? "Loading events…"
-                                                    : isMsrError
-                                                      ? "Error loading events"
-                                                      : "Select an event"
-                                            }
-                                            items={
-                                                msrEvents
-                                                    ? msrEvents.map(
-                                                          (event) => ({
-                                                              value: event.id,
-                                                              label: event.name,
-                                                          })
-                                                      )
-                                                    : []
-                                            }
-                                        />
+                                            {watchIsLinkedToMsrEvent && (
+                                                <FormSelect
+                                                    form={form}
+                                                    name="msrEventId"
+                                                    label="MotorsportReg event"
+                                                    placeholder={
+                                                        isLoading
+                                                            ? "Loading events…"
+                                                            : isMsrError
+                                                              ? "Error loading events"
+                                                              : "Select an event"
+                                                    }
+                                                    items={
+                                                        msrEvents
+                                                            ? msrEvents.map(
+                                                                  (event) => ({
+                                                                      value: event.id,
+                                                                      label: event.name,
+                                                                  })
+                                                              )
+                                                            : []
+                                                    }
+                                                />
+                                            )}
+                                        </>
                                     )}
 
                                     <FormInput

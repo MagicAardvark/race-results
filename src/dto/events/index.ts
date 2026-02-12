@@ -30,6 +30,7 @@ export interface CreateEventData {
     orgId: string;
     seasonId: string;
     name: string;
+    isMultiDay: boolean;
     startAt: Date;
     endAt: Date | undefined;
     msrEventId?: string;
@@ -48,6 +49,7 @@ export interface UpdateEventData {
     eventId: string;
     orgId: string;
     name: string;
+    isMultiDay: boolean;
     startAt: Date;
     endAt: Date | undefined;
 }

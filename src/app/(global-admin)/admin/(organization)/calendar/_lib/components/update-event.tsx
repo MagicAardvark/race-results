@@ -14,6 +14,7 @@ import { FormCheckbox } from "@/app/components/forms/form-checkbox";
 import { FormDatePicker } from "@/app/components/forms/form-date-picker";
 import { Stack } from "@/app/components/shared/stack";
 import { EventDTO } from "@/dto/events";
+import { OrganizationExtended } from "@/dto/organizations";
 import { FormResponse } from "@/types/forms";
 import { Card, CardContent, CardHeader, CardTitle } from "@/ui/card";
 import { FieldGroup } from "@/ui/field";
@@ -22,19 +23,23 @@ import { AlertTriangle } from "lucide-react";
 import { useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
+import { isSameDay } from "date-fns";
 import z from "zod";
 
 type UpdateEventDialogProps = {
-    orgId: string;
+    org: OrganizationExtended;
     season: string;
     event: EventDTO;
 };
 
 export const UpdateEventForm = ({
-    orgId,
+    org,
     season,
     event,
 }: UpdateEventDialogProps) => {
+    const orgId = org.orgId;
+    const isMsrConfigured = !!org.motorsportregOrgId;
+
     const form = useForm<z.infer<typeof baseEventSchema>>({
         // @hookform/resolvers v5.2.2 types don't fully support Zod v4 yet, but runtime works correctly
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -42,7 +47,8 @@ export const UpdateEventForm = ({
         defaultValues: {
             name: event.name,
             startDate: event.startAt,
-            isMultiDay: event.endAt !== event.startAt,
+            // Single-day events are stored with start 00:00, end 23:59 — same calendar day = single-day
+            isMultiDay: !isSameDay(event.startAt, event.endAt),
             endDate: event.endAt || undefined,
         },
     });
@@ -50,7 +56,6 @@ export const UpdateEventForm = ({
     const [error, setError] = useState<FormResponse | null>(null);
 
     const cleanup = () => {
-        form.reset();
         setError(null);
     };
 
@@ -135,42 +140,47 @@ export const UpdateEventForm = ({
                     </Stack>
                 </CardContent>
             </Card>
-            <Card className={`${event.msrEventId ? "" : "bg-red-50"}`}>
-                <CardHeader>
-                    <CardTitle>Linked MSR Event</CardTitle>
-                </CardHeader>
-                <CardContent>
-                    {event.msrEventId ? (
-                        <Stack>
-                            <div>
-                                This event has been linked to an MSR event.
-                            </div>
-                            <div>TODO: Show linked MSR event details here.</div>
-                            <div>
-                                <UnlinkMsrEventDialog
-                                    orgId={orgId}
-                                    eventId={event.eventId}
-                                />
-                            </div>
-                        </Stack>
-                    ) : (
-                        <Stack>
-                            <div className="inline-flex items-center gap-2 text-red-800">
-                                <AlertTriangle size={16} />{" "}
-                                <span>
-                                    This event is not linked to an MSR event.
-                                </span>
-                            </div>
-                            <div>
-                                <LinkMsrEventDialog
-                                    orgId={orgId}
-                                    eventId={event.eventId}
-                                />
-                            </div>
-                        </Stack>
-                    )}
-                </CardContent>
-            </Card>
+            {isMsrConfigured && (
+                <Card className={`${event.msrEventId ? "" : "bg-red-50"}`}>
+                    <CardHeader>
+                        <CardTitle>Linked MSR Event</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        {event.msrEventId ? (
+                            <Stack>
+                                <div>
+                                    This event has been linked to an MSR event.
+                                </div>
+                                <div>
+                                    TODO: Show linked MSR event details here.
+                                </div>
+                                <div>
+                                    <UnlinkMsrEventDialog
+                                        orgId={orgId}
+                                        eventId={event.eventId}
+                                    />
+                                </div>
+                            </Stack>
+                        ) : (
+                            <Stack>
+                                <div className="inline-flex items-center gap-2 text-red-800">
+                                    <AlertTriangle size={16} />{" "}
+                                    <span>
+                                        This event is not linked to an MSR
+                                        event.
+                                    </span>
+                                </div>
+                                <div>
+                                    <LinkMsrEventDialog
+                                        orgId={orgId}
+                                        eventId={event.eventId}
+                                    />
+                                </div>
+                            </Stack>
+                        )}
+                    </CardContent>
+                </Card>
+            )}
         </Stack>
     );
 };

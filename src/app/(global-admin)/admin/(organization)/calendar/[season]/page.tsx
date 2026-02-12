@@ -48,7 +48,7 @@ export default async function OrganizationCalendarPage({
     return (
         <>
             <CalendarTab
-                orgId={org.orgId}
+                org={org}
                 events={events}
                 seasons={seasons}
                 selectedSeason={selectedSeason}
