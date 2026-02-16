@@ -19,6 +19,11 @@ export interface Event {
         start?: string;
         end?: string;
     };
+    description?: string;
+    image?: {
+        standard: string;
+        thumbnail: string;
+    };
 }
 
 export interface Venue {
@@ -27,6 +32,10 @@ export interface Venue {
     region: string;
     country?: string;
     postalCode?: string;
+    geo?: {
+        coordinates?: [number, number];
+    };
+    uri: string;
 }
 
 export interface CalendarResponse {

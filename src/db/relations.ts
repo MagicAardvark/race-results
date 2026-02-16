@@ -22,6 +22,10 @@ export const relations = defineRelations(schema, (r) => ({
             from: r.orgs.orgId,
             to: r.events.orgId,
         }),
+        msrEvents: r.many.msrEvents({
+            from: r.orgs.orgId,
+            to: r.msrEvents.orgId,
+        }),
     },
     featureFlags: {
         org: r.one.orgs({
@@ -135,6 +139,11 @@ export const relations = defineRelations(schema, (r) => ({
             from: r.events.eventId,
             to: r.eventEntries.eventId,
         }),
+        msrEvent: r.one.msrEvents({
+            from: r.events.msrEventId,
+            to: r.msrEvents.msrEventId,
+            optional: true,
+        }),
     },
     eventSegments: {
         event: r.one.events({
@@ -174,6 +183,28 @@ export const relations = defineRelations(schema, (r) => ({
             from: r.eventRuns.entryId,
             to: r.eventEntries.entryId,
             optional: false,
+        }),
+    },
+    msrEvents: {
+        event: r.one.events({
+            from: r.msrEvents.msrEventId,
+            to: r.events.eventId,
+        }),
+        org: r.one.orgs({
+            from: r.msrEvents.orgId,
+            to: r.orgs.orgId,
+            optional: false,
+        }),
+        venue: r.one.msrEventVenues({
+            from: r.msrEvents.venueId,
+            to: r.msrEventVenues.msrEventVenueId,
+            optional: true,
+        }),
+    },
+    msrEventVenues: {
+        msrEvents: r.many.msrEvents({
+            from: r.msrEventVenues.msrEventVenueId,
+            to: r.msrEvents.venueId,
         }),
     },
     activeOrgApiKeys: {
