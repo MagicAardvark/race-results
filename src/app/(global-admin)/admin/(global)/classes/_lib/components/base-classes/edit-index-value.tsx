@@ -70,7 +70,7 @@ export const EditIndexValueDialog = ({
                     <PencilIcon size={16} />
                 </Button>
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent size="large">
                 <Form onSubmit={form.handleSubmit(onSubmit)}>
                     <Stack>
                         <DialogHeader>

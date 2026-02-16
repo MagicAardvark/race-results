@@ -65,7 +65,7 @@ export const AddOrgRoleButton = ({
             <DialogTrigger asChild>
                 <Button>Add Role</Button>
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent size="large">
                 <DialogTitle>Add Organization Role</DialogTitle>
                 <p>Select the role to give this user within {orgName}.</p>
                 <form action={formAction}>

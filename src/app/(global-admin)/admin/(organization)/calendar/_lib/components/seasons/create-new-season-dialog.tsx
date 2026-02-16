@@ -35,7 +35,7 @@ export const CreateNewSeasonDialog = ({
                     <Plus /> Create New Season
                 </Button>
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent size="large">
                 <DialogHeader>
                     <DialogTitle>Create New Season</DialogTitle>
                     <DialogDescription>

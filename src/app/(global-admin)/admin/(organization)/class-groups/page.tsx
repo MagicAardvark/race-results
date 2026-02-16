@@ -1,4 +1,4 @@
-import { ClassGroupsManagement } from "@/app/(global-admin)/admin/(organization)/event-setup/_lib/components/class-groups-management";
+import { ClassGroupsManagement } from "@/app/(global-admin)/admin/(organization)/class-groups/_lib/components/class-groups-management";
 import { requireOrgAccess } from "@/lib/auth/require-org-access";
 import { classGroupsService } from "@/services/class-groups/class-groups.service";
 import { organizationAdminService } from "@/services/organizations/organization.admin.service";

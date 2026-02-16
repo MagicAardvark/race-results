@@ -108,7 +108,7 @@ export const CreateEventDialog = ({
             <DialogTrigger asChild>
                 <Button>Create event</Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-md">
+            <DialogContent size="large">
                 <Form onSubmit={form.handleSubmit(onSubmit)}>
                     <Stack>
                         <DialogHeader>

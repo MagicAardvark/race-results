@@ -81,7 +81,7 @@ export const AddIndexValueDialog = ({
             <DialogTrigger asChild>
                 <Button>Add Index Value</Button>
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent size="large">
                 <Form onSubmit={form.handleSubmit(onSubmit)}>
                     <Stack>
                         <DialogHeader>

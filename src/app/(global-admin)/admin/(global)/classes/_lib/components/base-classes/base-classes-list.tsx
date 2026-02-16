@@ -69,7 +69,7 @@ export const BaseClassesList = ({ baseClasses }: BaseClassesListProps) => {
                         <TableCell className="w-0 whitespace-nowrap">
                             <LinkButton
                                 variant="outline"
-                                href={`/admin/classes/${bc.classId}`}
+                                href={`/admin/classes?edit=${bc.classId}`}
                             >
                                 <PencilIcon />
                             </LinkButton>

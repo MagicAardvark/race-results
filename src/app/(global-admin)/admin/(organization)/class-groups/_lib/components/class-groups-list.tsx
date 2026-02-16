@@ -13,7 +13,7 @@ import { Button } from "@/ui/button-wrapper";
 import { PencilIcon, TrashIcon, Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import { EditClassGroupDialog } from "./edit-class-group-dialog";
-import { deleteClassGroup } from "@/app/(global-admin)/admin/(organization)/event-setup/_lib/actions/class-groups";
+import { deleteClassGroup } from "@/app/(global-admin)/admin/(organization)/class-groups/_lib/actions/class-groups";
 import { toast } from "sonner";
 import { TooltipIcon } from "@/app/components/shared/tooltip-icon";
 import { AvailableBaseClass } from "../types";

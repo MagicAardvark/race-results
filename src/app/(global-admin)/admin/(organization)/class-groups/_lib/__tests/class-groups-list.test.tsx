@@ -18,7 +18,7 @@ vi.mock("../components/edit-class-group-dialog", () => ({
 }));
 
 vi.mock(
-    "@/app/(global-admin)/admin/(organization)/event-setup/_lib/actions/class-groups",
+    "@/app/(global-admin)/admin/(organization)/class-groups/_lib/actions/class-groups",
     () => ({
         deleteClassGroup: vi.fn(),
     })

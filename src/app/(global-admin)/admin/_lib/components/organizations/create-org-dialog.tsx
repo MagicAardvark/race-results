@@ -78,7 +78,7 @@ export const CreateOrgDialog = ({ setOpen, open }: CreateOrgDialogProps) => {
                 }
             }}
         >
-            <DialogContent>
+            <DialogContent size="large">
                 <Form onSubmit={form.handleSubmit(onSumit)}>
                     <DialogHeader>
                         <DialogTitle>Create Organization</DialogTitle>

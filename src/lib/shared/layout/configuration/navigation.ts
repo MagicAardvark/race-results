@@ -59,7 +59,7 @@ const ADMIN_NAVIGATION = [
             },
             {
                 text: "Class Groups",
-                href: "/admin/event-setup",
+                href: "/admin/class-groups",
                 roles: [ROLES.admin, ROLES.orgManager, ROLES.orgOwner],
             },
         ],

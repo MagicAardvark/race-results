@@ -3,7 +3,7 @@
 import {
     createClassGroupSchema,
     updateClassGroupSchema,
-} from "@/app/(global-admin)/admin/(organization)/event-setup/_lib/schema/class-groups";
+} from "@/app/(global-admin)/admin/(organization)/class-groups/_lib/schema/class-groups";
 import { ROLES } from "@/constants/global";
 import { ClassGroupWithClasses } from "@/dto/class-groups";
 import { requireOrgRole } from "@/lib/auth/require-org-role";

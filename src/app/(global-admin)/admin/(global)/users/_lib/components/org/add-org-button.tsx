@@ -53,7 +53,7 @@ export const AddOrgButton = ({ user, orgs }: AddOrgButtonProps) => {
             <DialogTrigger asChild>
                 <Button>Add Organization</Button>
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent size="large">
                 <DialogTitle>Add User to Organization</DialogTitle>
                 <p>
                     Select an organization to add the user to. This will give

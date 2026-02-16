@@ -18,12 +18,12 @@ import { Stack } from "@/app/components/shared/stack";
 import {
     updateClassGroup,
     getClassGroup,
-} from "@/app/(global-admin)/admin/(organization)/event-setup/_lib/actions/class-groups";
+} from "@/app/(global-admin)/admin/(organization)/class-groups/_lib/actions/class-groups";
 import { useState, useEffect } from "react";
 import { FormResponse } from "@/types/forms";
 import { Form, FormError } from "@/app/components/forms/form";
 import { FormCheckbox } from "@/app/components/forms/form-checkbox";
-import { updateClassGroupSchema } from "@/app/(global-admin)/admin/(organization)/event-setup/_lib/schema/class-groups";
+import { updateClassGroupSchema } from "@/app/(global-admin)/admin/(organization)/class-groups/_lib/schema/class-groups";
 import { ClassGroupWithClasses } from "@/dto/class-groups";
 import { toast } from "sonner";
 import { ClassGroupDialogProps } from "../types";
@@ -126,7 +126,7 @@ export const EditClassGroupDialog = ({
     if (loading) {
         return (
             <Dialog open={open} onOpenChange={onOpenChange}>
-                <DialogContent>
+                <DialogContent size="large">
                     <DialogHeader>
                         <DialogTitle>Edit Class Group</DialogTitle>
                         <DialogDescription>Loading...</DialogDescription>
@@ -139,7 +139,7 @@ export const EditClassGroupDialog = ({
     if (!classGroup) {
         return (
             <Dialog open={open} onOpenChange={onOpenChange}>
-                <DialogContent>
+                <DialogContent size="large">
                     <DialogHeader>
                         <DialogTitle>Edit Class Group</DialogTitle>
                         <DialogDescription asChild>
@@ -163,7 +163,7 @@ export const EditClassGroupDialog = ({
                 }
             }}
         >
-            <DialogContent>
+            <DialogContent size="large">
                 <Form
                     onSubmit={(e) => {
                         e.preventDefault();

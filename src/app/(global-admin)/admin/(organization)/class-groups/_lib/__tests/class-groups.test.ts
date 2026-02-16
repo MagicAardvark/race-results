@@ -9,7 +9,7 @@ import {
     deleteClassGroup,
     getClassGroup,
     updateClassGroup,
-} from "@/app/(global-admin)/admin/(organization)/event-setup/_lib/actions/class-groups";
+} from "@/app/(global-admin)/admin/(organization)/class-groups/_lib/actions/class-groups";
 
 vi.mock("@/services/class-groups/class-groups.service");
 vi.mock("@/lib/auth/require-org-role");

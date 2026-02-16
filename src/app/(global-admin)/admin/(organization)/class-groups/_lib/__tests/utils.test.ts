@@ -1,7 +1,7 @@
 import {
     toTitleCase,
     toUpperCase,
-} from "@/app/(global-admin)/admin/(organization)/event-setup/_lib/utils";
+} from "@/app/(global-admin)/admin/(organization)/class-groups/_lib/utils";
 import { describe, it, expect } from "vitest";
 
 describe("toTitleCase", () => {

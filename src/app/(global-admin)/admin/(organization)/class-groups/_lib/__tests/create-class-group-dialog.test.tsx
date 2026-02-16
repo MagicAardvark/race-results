@@ -4,7 +4,7 @@ import { CreateClassGroupDialog } from "../components/create-class-group-dialog"
 import type { AvailableBaseClass } from "../types";
 
 vi.mock(
-    "@/app/(global-admin)/admin/(organization)/event-setup/_lib/actions/class-groups",
+    "@/app/(global-admin)/admin/(organization)/class-groups/_lib/actions/class-groups",
     () => ({
         createClassGroup: vi.fn(),
     })

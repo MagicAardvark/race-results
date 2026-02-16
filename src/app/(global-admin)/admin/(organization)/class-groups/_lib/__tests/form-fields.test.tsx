@@ -6,7 +6,7 @@ import {
     waitFor,
 } from "@/__tests__/test-utils";
 import { useForm } from "react-hook-form";
-import { FormattedInput } from "@/app/(global-admin)/admin/(organization)/event-setup/_lib/form-fields";
+import { FormattedInput } from "@/app/(global-admin)/admin/(organization)/class-groups/_lib/form-fields";
 
 const TestForm = ({
     format,

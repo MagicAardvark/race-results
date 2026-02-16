@@ -15,11 +15,11 @@ import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Stack } from "@/app/components/shared/stack";
-import { createClassGroup } from "@/app/(global-admin)/admin/(organization)/event-setup/_lib/actions/class-groups";
+import { createClassGroup } from "@/app/(global-admin)/admin/(organization)/class-groups/_lib/actions/class-groups";
 import { useState } from "react";
 import { FormResponse } from "@/types/forms";
 import { Form, FormError } from "@/app/components/forms/form";
-import { createClassGroupSchema } from "@/app/(global-admin)/admin/(organization)/event-setup/_lib/schema/class-groups";
+import { createClassGroupSchema } from "@/app/(global-admin)/admin/(organization)/class-groups/_lib/schema/class-groups";
 import { ClassGroupWithClasses } from "@/dto/class-groups";
 import { toast } from "sonner";
 import { ClassGroupDialogProps } from "../types";
@@ -108,7 +108,7 @@ export const CreateClassGroupDialog = ({
                 }
             }}
         >
-            <DialogContent>
+            <DialogContent size="large">
                 <Form onSubmit={handleFormSubmit}>
                     <Stack>
                         <DialogHeader>

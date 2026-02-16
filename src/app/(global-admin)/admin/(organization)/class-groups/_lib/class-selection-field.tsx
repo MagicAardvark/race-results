@@ -10,7 +10,7 @@ import {
 import { Field, FieldLabel } from "@/ui/field";
 import { Button } from "@/ui/button-wrapper";
 import { Checkbox } from "@/ui/checkbox";
-import { AvailableBaseClass } from "@/app/(global-admin)/admin/(organization)/event-setup/_lib/types";
+import { AvailableBaseClass } from "@/app/(global-admin)/admin/(organization)/class-groups/_lib/types";
 
 interface ClassSelectionFieldProps<T extends FieldValues> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

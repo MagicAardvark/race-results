@@ -1,14 +1,25 @@
 import { AddBaseClassDialog } from "@/app/(global-admin)/admin/(global)/classes/_lib/components/base-classes/add-base-class-dialog";
 import { BaseClassesList } from "@/app/(global-admin)/admin/(global)/classes/_lib/components/base-classes/base-classes-list";
+import { EditBaseClassDialog } from "@/app/(global-admin)/admin/(global)/classes/_lib/components/base-classes/edit-base-class-dialog";
 import { Card, CardContent, CardHeader } from "@/ui/card";
 import { classesAdminService } from "@/services/classes-admin/classes-admin.service";
 
-export default async function Page() {
-    const [baseClasses, classTypes, classCategories] = await Promise.all([
-        classesAdminService.getGlobalBaseClasses(),
-        classesAdminService.getClassTypes(),
-        classesAdminService.getClassCategories(),
-    ]);
+export default async function Page({
+    searchParams,
+}: {
+    searchParams: Promise<{ edit?: string }>;
+}) {
+    const { edit: editClassId } = await searchParams;
+
+    const [baseClasses, classTypes, classCategories, editingBaseClass] =
+        await Promise.all([
+            classesAdminService.getGlobalBaseClasses(),
+            classesAdminService.getClassTypes(),
+            classesAdminService.getClassCategories(),
+            editClassId
+                ? classesAdminService.getGlobalBaseClass(editClassId)
+                : Promise.resolve(null),
+        ]);
 
     return (
         <div className="space-y-4">
@@ -30,6 +41,11 @@ export default async function Page() {
                     <BaseClassesList baseClasses={baseClasses} />
                 </CardContent>
             </Card>
+            <EditBaseClassDialog
+                editingBaseClass={editingBaseClass}
+                classTypes={classTypes}
+                classCategories={classCategories}
+            />
         </div>
     );
 }

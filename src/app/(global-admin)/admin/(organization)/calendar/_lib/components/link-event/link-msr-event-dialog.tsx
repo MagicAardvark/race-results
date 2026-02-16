@@ -61,7 +61,7 @@ export default function LinkMsrEventDialog({
             <DialogTrigger asChild>
                 <Button>Link Event</Button>
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent size="large">
                 <Form onSubmit={form.handleSubmit(onSubmit)}>
                     <Stack className="relative">
                         <DialogHeader>

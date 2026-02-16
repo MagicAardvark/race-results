@@ -1,7 +1,7 @@
 import {
     createClassGroupSchema,
     updateClassGroupSchema,
-} from "@/app/(global-admin)/admin/(organization)/event-setup/_lib/schema/class-groups";
+} from "@/app/(global-admin)/admin/(organization)/class-groups/_lib/schema/class-groups";
 import { describe, it, expect } from "vitest";
 
 describe("createClassGroupSchema", () => {

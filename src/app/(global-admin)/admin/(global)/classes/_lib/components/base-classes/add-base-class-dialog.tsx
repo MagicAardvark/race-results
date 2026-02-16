@@ -68,7 +68,7 @@ export const AddBaseClassDialog = ({
 
         toast.success(result.message);
         cleanup();
-        router.push(`/admin/classes/${result.data?.classId}`);
+        router.push(`/admin/classes?edit=${result.data?.classId}`);
     };
 
     const cleanup = () => {
@@ -96,7 +96,7 @@ export const AddBaseClassDialog = ({
                 <Button>Add Class</Button>
             </DialogTrigger>
 
-            <DialogContent>
+            <DialogContent size="large">
                 <Form onSubmit={form.handleSubmit(onSubmit)}>
                     <Stack>
                         <DialogHeader>

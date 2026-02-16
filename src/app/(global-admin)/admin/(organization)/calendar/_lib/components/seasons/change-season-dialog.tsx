@@ -50,7 +50,7 @@ export const ChangeSeasonDialog = ({
                     <Pencil />
                 </Button>
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent size="large">
                 <DialogHeader>
                     <DialogTitle>
                         {createNewSeasonMode

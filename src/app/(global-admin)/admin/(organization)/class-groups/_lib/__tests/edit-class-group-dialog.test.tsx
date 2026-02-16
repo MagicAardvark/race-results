@@ -13,7 +13,7 @@ const mockGetClassGroup = vi.fn();
 const mockUpdateClassGroup = vi.fn();
 
 vi.mock(
-    "@/app/(global-admin)/admin/(organization)/event-setup/_lib/actions/class-groups",
+    "@/app/(global-admin)/admin/(organization)/class-groups/_lib/actions/class-groups",
     () => ({
         getClassGroup: (...args: unknown[]) => mockGetClassGroup(...args),
         updateClassGroup: (...args: unknown[]) => mockUpdateClassGroup(...args),
