@@ -33,7 +33,8 @@ export const ClassGroupsList = ({
     onUpdate,
     onDelete,
 }: ClassGroupsListProps) => {
-    const [editingGroupId, setEditingGroupId] = useState<string | null>(null);
+    const [editingGroup, setEditingGroup] =
+        useState<ClassGroupWithClasses | null>(null);
 
     const handleDelete = async (classGroupId: string) => {
         if (!confirm("Are you sure you want to delete this class group?")) {
@@ -118,9 +119,7 @@ export const ClassGroupsList = ({
                                         size="sm"
                                         aria-label={`Edit ${group.shortName}`}
                                         onClick={() =>
-                                            setEditingGroupId(
-                                                group.classGroupId
-                                            )
+                                            setEditingGroup(group)
                                         }
                                     >
                                         <PencilIcon size={16} />
@@ -141,16 +140,16 @@ export const ClassGroupsList = ({
                     ))}
                 </TableBody>
             </Table>
-            {editingGroupId && (
+            {editingGroup && (
                 <EditClassGroupDialog
                     orgId={orgId}
-                    classGroupId={editingGroupId}
+                    classGroup={editingGroup}
                     availableBaseClasses={availableBaseClasses}
-                    open={editingGroupId !== null}
-                    onOpenChange={(open) => !open && setEditingGroupId(null)}
+                    open
+                    onOpenChange={(open) => !open && setEditingGroup(null)}
                     onSuccess={(updated) => {
                         onUpdate(updated);
-                        setEditingGroupId(null);
+                        setEditingGroup(null);
                     }}
                 />
             )}

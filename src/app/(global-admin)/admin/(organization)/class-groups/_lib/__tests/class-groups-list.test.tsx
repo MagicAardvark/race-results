@@ -7,13 +7,15 @@ import type { AvailableBaseClass } from "../types";
 vi.mock("../components/edit-class-group-dialog", () => ({
     EditClassGroupDialog: ({
         open,
-        classGroupId,
+        classGroup,
     }: {
         open: boolean;
-        classGroupId: string;
+        classGroup: ClassGroupWithClasses | null;
     }) =>
-        open ? (
-            <div data-testid="edit-dialog">Edit Dialog for {classGroupId}</div>
+        open && classGroup ? (
+            <div data-testid="edit-dialog">
+                Edit Dialog for {classGroup.shortName}
+            </div>
         ) : null,
 }));
 
@@ -180,7 +182,7 @@ describe("ClassGroupsList", () => {
         await user.click(editButton);
 
         expect(screen.getByTestId("edit-dialog")).toBeVisible();
-        expect(screen.getByText(/Edit Dialog for group-1/i)).toBeVisible();
+        expect(screen.getByText(/Edit Dialog for SSM/i)).toBeVisible();
     });
 
     it("shows empty state when no class groups", () => {

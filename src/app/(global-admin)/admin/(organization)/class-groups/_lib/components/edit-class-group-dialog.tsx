@@ -15,10 +15,7 @@ import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Stack } from "@/app/components/shared/stack";
-import {
-    updateClassGroup,
-    getClassGroup,
-} from "@/app/(global-admin)/admin/(organization)/class-groups/_lib/actions/class-groups";
+import { updateClassGroup } from "@/app/(global-admin)/admin/(organization)/class-groups/_lib/actions/class-groups";
 import { useState, useEffect } from "react";
 import { FormResponse } from "@/types/forms";
 import { Form, FormError } from "@/app/components/forms/form";
@@ -31,21 +28,20 @@ import { FormattedInput } from "../form-fields";
 import { ClassSelectionField } from "../class-selection-field";
 
 interface EditClassGroupDialogProps extends ClassGroupDialogProps {
-    classGroupId: string;
+    /** Class group to edit. Passed from server-fed list to avoid client fetch (SSR). */
+    classGroup: ClassGroupWithClasses | null;
 }
 
 export const EditClassGroupDialog = ({
     orgId,
-    classGroupId,
+    classGroup,
     availableBaseClasses,
     open,
     onOpenChange,
     onSuccess,
 }: EditClassGroupDialogProps) => {
-    const [loading, setLoading] = useState(true);
-    const [classGroup, setClassGroup] = useState<ClassGroupWithClasses | null>(
-        null
-    );
+    const [error, setError] =
+        useState<FormResponse<ClassGroupWithClasses> | null>(null);
 
     type FormData = z.infer<typeof updateClassGroupSchema>;
 
@@ -62,47 +58,18 @@ export const EditClassGroupDialog = ({
         },
     });
 
-    const [error, setError] =
-        useState<FormResponse<ClassGroupWithClasses> | null>(null);
-
+    // Sync form when dialog opens with server-provided class group (no client fetch)
     useEffect(() => {
-        if (!open || !classGroupId) {
-            return;
+        if (open && classGroup) {
+            form.reset({
+                classGroupId: classGroup.classGroupId,
+                shortName: classGroup.shortName,
+                longName: classGroup.longName,
+                isEnabled: classGroup.isEnabled,
+                classIds: classGroup.classIds,
+            });
         }
-
-        let cancelled = false;
-
-        const loadClassGroup = async () => {
-            try {
-                const group = await getClassGroup(orgId, classGroupId);
-                if (!cancelled && group) {
-                    setClassGroup(group);
-                    form.reset({
-                        classGroupId: group.classGroupId,
-                        shortName: group.shortName,
-                        longName: group.longName,
-                        isEnabled: group.isEnabled,
-                        classIds: group.classIds,
-                    });
-                }
-            } catch {
-                if (!cancelled) {
-                    toast.error("Failed to load class group");
-                }
-            } finally {
-                if (!cancelled) {
-                    setLoading(false);
-                }
-            }
-        };
-
-        setLoading(true);
-        loadClassGroup();
-
-        return () => {
-            cancelled = true;
-        };
-    }, [open, classGroupId, orgId, form]);
+    }, [open, classGroup, form]);
 
     const onSubmit = async (data: FormData) => {
         const result = await updateClassGroup(orgId, data);
@@ -123,20 +90,7 @@ export const EditClassGroupDialog = ({
         setError(null);
     };
 
-    if (loading) {
-        return (
-            <Dialog open={open} onOpenChange={onOpenChange}>
-                <DialogContent size="large">
-                    <DialogHeader>
-                        <DialogTitle>Edit Class Group</DialogTitle>
-                        <DialogDescription>Loading...</DialogDescription>
-                    </DialogHeader>
-                </DialogContent>
-            </Dialog>
-        );
-    }
-
-    if (!classGroup) {
+    if (open && !classGroup) {
         return (
             <Dialog open={open} onOpenChange={onOpenChange}>
                 <DialogContent size="large">
@@ -151,6 +105,10 @@ export const EditClassGroupDialog = ({
                 </DialogContent>
             </Dialog>
         );
+    }
+
+    if (!classGroup) {
+        return null;
     }
 
     return (

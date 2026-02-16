@@ -9,13 +9,11 @@ import { EditClassGroupDialog } from "../components/edit-class-group-dialog";
 import type { AvailableBaseClass } from "../types";
 import type { ClassGroupWithClasses } from "@/dto/class-groups";
 
-const mockGetClassGroup = vi.fn();
 const mockUpdateClassGroup = vi.fn();
 
 vi.mock(
     "@/app/(global-admin)/admin/(organization)/class-groups/_lib/actions/class-groups",
     () => ({
-        getClassGroup: (...args: unknown[]) => mockGetClassGroup(...args),
         updateClassGroup: (...args: unknown[]) => mockUpdateClassGroup(...args),
     })
 );
@@ -29,7 +27,6 @@ vi.mock("sonner", () => ({
 
 describe("EditClassGroupDialog", () => {
     const mockOrgId = "org-1";
-    const mockClassGroupId = "group-1";
     const mockAvailableClasses: AvailableBaseClass[] = [
         {
             classId: "class-1",
@@ -40,7 +37,7 @@ describe("EditClassGroupDialog", () => {
     ];
 
     const mockClassGroup: ClassGroupWithClasses = {
-        classGroupId: mockClassGroupId,
+        classGroupId: "group-1",
         shortName: "SSM",
         longName: "Super Street Modified",
         isEnabled: true,
@@ -55,7 +52,6 @@ describe("EditClassGroupDialog", () => {
 
     beforeEach(() => {
         vi.clearAllMocks();
-        mockGetClassGroup.mockResolvedValue(mockClassGroup);
         mockUpdateClassGroup.mockResolvedValue({
             isError: false,
             message: "Class group updated successfully",
@@ -63,26 +59,11 @@ describe("EditClassGroupDialog", () => {
         });
     });
 
-    it("shows loading state initially", () => {
+    it("displays class group data from server-fed prop", async () => {
         renderWithProviders(
             <EditClassGroupDialog
                 orgId={mockOrgId}
-                classGroupId={mockClassGroupId}
-                availableBaseClasses={mockAvailableClasses}
-                open={true}
-                onOpenChange={mockOnOpenChange}
-                onSuccess={mockOnSuccess}
-            />
-        );
-
-        expect(screen.getByText("Loading...")).toBeVisible();
-    });
-
-    it("loads and displays class group data", async () => {
-        renderWithProviders(
-            <EditClassGroupDialog
-                orgId={mockOrgId}
-                classGroupId={mockClassGroupId}
+                classGroup={mockClassGroup}
                 availableBaseClasses={mockAvailableClasses}
                 open={true}
                 onOpenChange={mockOnOpenChange}
@@ -101,13 +82,11 @@ describe("EditClassGroupDialog", () => {
         expect(screen.getByLabelText("Is Enabled")).toBeChecked();
     });
 
-    it("shows error when class group not found", async () => {
-        mockGetClassGroup.mockResolvedValue(null);
-
+    it("shows not found when classGroup is null and open", () => {
         renderWithProviders(
             <EditClassGroupDialog
                 orgId={mockOrgId}
-                classGroupId={mockClassGroupId}
+                classGroup={null}
                 availableBaseClasses={mockAvailableClasses}
                 open={true}
                 onOpenChange={mockOnOpenChange}
@@ -115,35 +94,14 @@ describe("EditClassGroupDialog", () => {
             />
         );
 
-        await waitFor(() => {
-            expect(screen.getByText("Class group not found")).toBeVisible();
-        });
+        expect(screen.getByText("Class group not found")).toBeVisible();
     });
 
-    it("shows error when loading fails", async () => {
-        mockGetClassGroup.mockRejectedValue(new Error("Failed to load"));
-
+    it("renders form fields when class group provided", async () => {
         renderWithProviders(
             <EditClassGroupDialog
                 orgId={mockOrgId}
-                classGroupId={mockClassGroupId}
-                availableBaseClasses={mockAvailableClasses}
-                open={true}
-                onOpenChange={mockOnOpenChange}
-                onSuccess={mockOnSuccess}
-            />
-        );
-
-        await waitFor(() => {
-            expect(screen.getByText("Class group not found")).toBeVisible();
-        });
-    });
-
-    it("renders form fields when loaded", async () => {
-        renderWithProviders(
-            <EditClassGroupDialog
-                orgId={mockOrgId}
-                classGroupId={mockClassGroupId}
+                classGroup={mockClassGroup}
                 availableBaseClasses={mockAvailableClasses}
                 open={true}
                 onOpenChange={mockOnOpenChange}
@@ -164,7 +122,7 @@ describe("EditClassGroupDialog", () => {
         renderWithProviders(
             <EditClassGroupDialog
                 orgId={mockOrgId}
-                classGroupId={mockClassGroupId}
+                classGroup={mockClassGroup}
                 availableBaseClasses={mockAvailableClasses}
                 open={true}
                 onOpenChange={mockOnOpenChange}
@@ -186,7 +144,7 @@ describe("EditClassGroupDialog", () => {
         renderWithProviders(
             <EditClassGroupDialog
                 orgId={mockOrgId}
-                classGroupId={mockClassGroupId}
+                classGroup={mockClassGroup}
                 availableBaseClasses={mockAvailableClasses}
                 open={true}
                 onOpenChange={mockOnOpenChange}
@@ -210,7 +168,7 @@ describe("EditClassGroupDialog", () => {
         renderWithProviders(
             <EditClassGroupDialog
                 orgId={mockOrgId}
-                classGroupId={mockClassGroupId}
+                classGroup={mockClassGroup}
                 availableBaseClasses={mockAvailableClasses}
                 open={false}
                 onOpenChange={mockOnOpenChange}
