@@ -98,7 +98,7 @@ export const ApiKeyManagement = ({ org }: { org: OrganizationExtended }) => {
                     it.
                 </p>
                 <Card className="w-full">
-                    <CardContent className="pt-6">
+                    <CardContent>
                         {org.orgApiKeys.length === 0 ? (
                             <NoApiKeys />
                         ) : (

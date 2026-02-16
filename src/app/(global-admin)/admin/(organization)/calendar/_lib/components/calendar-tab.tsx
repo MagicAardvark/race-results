@@ -153,7 +153,7 @@ export function CalendarTab({
                 </CardHeader>
                 <CardContent>
                     {events.length === 0 ? (
-                        <p className="text-muted-foreground py-6 text-center">
+                        <p className="text-muted-foreground py-6 text-center text-sm">
                             No events yet. Create one to get started.
                         </p>
                     ) : (
@@ -166,7 +166,7 @@ export function CalendarTab({
                                     <TableHead className="min-w-[180px]">
                                         Date
                                     </TableHead>
-                                    <TableHead className="w-[100px] text-right">
+                                    <TableHead className="w-0 text-right">
                                         Actions
                                     </TableHead>
                                 </TableRow>
@@ -183,7 +183,7 @@ export function CalendarTab({
                                                 event.endDate
                                             )}
                                         </TableCell>
-                                        <TableCell className="text-right">
+                                        <TableCell className="w-0 whitespace-nowrap text-right">
                                             <div className="flex justify-end gap-2">
                                                 <Button
                                                     asChild

@@ -53,8 +53,8 @@ export const ClassGroupsList = ({
 
     if (classGroups.length === 0) {
         return (
-            <div className="text-muted-foreground py-6 text-center">
-                No class groups found. Create one to get started.
+            <div className="text-muted-foreground py-6 text-center text-sm">
+                No class groups yet. Add one to get started.
             </div>
         );
     }
@@ -70,7 +70,7 @@ export const ClassGroupsList = ({
                         <TableHead className="w-1 text-center">
                             Status
                         </TableHead>
-                        <TableHead></TableHead>
+                        <TableHead className="w-0 text-right">Actions</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -109,8 +109,8 @@ export const ClassGroupsList = ({
                                     )}
                                 </div>
                             </TableCell>
-                            <TableCell className="w-0 whitespace-nowrap">
-                                <div className="flex items-center gap-2">
+                            <TableCell className="w-0 whitespace-nowrap text-right">
+                                <div className="flex justify-end gap-2">
                                     <Button
                                         variant="outline"
                                         size="sm"

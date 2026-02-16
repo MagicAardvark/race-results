@@ -1,13 +1,17 @@
 "use client";
 
 import { addUserToOrganization } from "@/app/actions/user.actions";
+import { Stack } from "@/app/components/shared/stack";
 import { Organization } from "@/dto/organizations";
 import { UserWithExtendedDetails } from "@/dto/users";
-import { Button } from "@/ui/button";
+import { Button } from "@/ui/button-wrapper";
 import {
     Dialog,
     DialogClose,
     DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
     DialogTitle,
     DialogTrigger,
 } from "@/ui/dialog";
@@ -54,60 +58,69 @@ export const AddOrgButton = ({ user, orgs }: AddOrgButtonProps) => {
                 <Button>Add Organization</Button>
             </DialogTrigger>
             <DialogContent size="large">
-                <DialogTitle>Add User to Organization</DialogTitle>
-                <p>
-                    Select an organization to add the user to. This will give
-                    them the initial role of Organization Manager.
-                </p>
                 <form action={formAction}>
-                    {state.isError && (
-                        <div className="text-red-500">{state.message}</div>
-                    )}
+                    <Stack>
+                        <DialogHeader>
+                            <DialogTitle>Add User to Organization</DialogTitle>
+                            <DialogDescription>
+                                Select an organization to add the user to. They
+                                will get the initial role of Organization
+                                Manager.
+                            </DialogDescription>
+                        </DialogHeader>
 
-                    <input type="hidden" name="userId" value={user.userId} />
+                        {state.isError && (
+                            <div className="text-red-500">{state.message}</div>
+                        )}
 
-                    <FieldGroup>
-                        <Field>
-                            <FieldLabel htmlFor="orgId">
-                                Organization
-                            </FieldLabel>
-                            <Select
-                                name="orgId"
-                                value={selectedOrg}
-                                onValueChange={setSelectedOrg}
-                            >
-                                <SelectTrigger>
-                                    <SelectValue placeholder="Select an organization" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    {availableOrgs.map((org) => (
-                                        <SelectItem
-                                            key={org.orgId}
-                                            value={org.orgId}
-                                        >
-                                            {org.name}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                        </Field>
-                        <Field orientation="horizontal">
-                            <DialogClose asChild>
-                                <Button
-                                    variant="outline"
-                                    type="button"
-                                    onClick={handleClose}
+                        <input type="hidden" name="userId" value={user.userId} />
+
+                        <FieldGroup>
+                            <Field>
+                                <FieldLabel htmlFor="orgId">
+                                    Organization
+                                </FieldLabel>
+                                <Select
+                                    name="orgId"
+                                    value={selectedOrg}
+                                    onValueChange={setSelectedOrg}
                                 >
-                                    Cancel
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Select an organization" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {availableOrgs.map((org) => (
+                                            <SelectItem
+                                                key={org.orgId}
+                                                value={org.orgId}
+                                            >
+                                                {org.name}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            </Field>
+                        </FieldGroup>
+
+                        <DialogFooter>
+                            <Field orientation="horizontal">
+                                <DialogClose asChild>
+                                    <Button
+                                        variant="outline"
+                                        type="button"
+                                        onClick={handleClose}
+                                    >
+                                        Cancel
+                                    </Button>
+                                </DialogClose>
+                                <Button type="submit" disabled={pending}>
+                                    {pending
+                                        ? "Saving…"
+                                        : "Add User to Organization"}
                                 </Button>
-                            </DialogClose>
-                            <Button type="submit" disabled={pending}>
-                                {pending
-                                    ? "Saving…"
-                                    : "Add User to Organization"}
-                            </Button>
-                        </Field>
-                    </FieldGroup>
+                            </Field>
+                        </DialogFooter>
+                    </Stack>
                 </form>
             </DialogContent>
         </Dialog>

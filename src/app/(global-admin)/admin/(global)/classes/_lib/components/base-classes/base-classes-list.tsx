@@ -17,6 +17,14 @@ type BaseClassesListProps = {
 };
 
 export const BaseClassesList = ({ baseClasses }: BaseClassesListProps) => {
+    if (baseClasses.length === 0) {
+        return (
+            <div className="text-muted-foreground py-6 text-center text-sm">
+                No base classes yet. Add one to get started.
+            </div>
+        );
+    }
+
     return (
         <Table>
             <TableHeader>
@@ -25,8 +33,8 @@ export const BaseClassesList = ({ baseClasses }: BaseClassesListProps) => {
                     <TableHead className="w-1">Category</TableHead>
                     <TableHead className="w-1">Short Name</TableHead>
                     <TableHead>Long Name</TableHead>
-                    <TableHead className="w-1 text-center"></TableHead>
-                    <TableHead></TableHead>
+                    <TableHead className="w-1 text-center">Status</TableHead>
+                    <TableHead className="w-0 text-right">Actions</TableHead>
                 </TableRow>
             </TableHeader>
             <TableBody>
@@ -66,13 +74,15 @@ export const BaseClassesList = ({ baseClasses }: BaseClassesListProps) => {
                                 )}
                             </div>
                         </TableCell>
-                        <TableCell className="w-0 whitespace-nowrap">
-                            <LinkButton
-                                variant="outline"
-                                href={`/admin/classes?edit=${bc.classId}`}
-                            >
-                                <PencilIcon />
-                            </LinkButton>
+                        <TableCell className="w-0 whitespace-nowrap text-right">
+                            <div className="flex justify-end">
+                                <LinkButton
+                                    variant="outline"
+                                    href={`/admin/classes?edit=${bc.classId}`}
+                                >
+                                    <PencilIcon />
+                                </LinkButton>
+                            </div>
                         </TableCell>
                     </TableRow>
                 ))}

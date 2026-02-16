@@ -107,7 +107,7 @@ export const FeatureFlagsManagement = ({
                 expose incomplete or experimental behavior.
             </p>
             <Card className="w-full">
-                <CardContent className="pt-6">
+                <CardContent>
                     <form action={formAction}>
                     {state.isError && (
                         <div className="text-red-500">{state.message}</div>

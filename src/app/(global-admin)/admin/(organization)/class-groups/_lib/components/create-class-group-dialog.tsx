@@ -165,8 +165,8 @@ export const CreateClassGroupDialog = ({
                                     disabled={form.formState.isSubmitting}
                                 >
                                     {form.formState.isSubmitting
-                                        ? "Creating…"
-                                        : "Create"}
+                                        ? "Saving…"
+                                        : "Save"}
                                 </Button>
                             </Field>
                         </DialogFooter>

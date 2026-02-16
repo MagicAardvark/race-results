@@ -36,7 +36,7 @@ export const OrganizationInformation = ({
                 MotorsportReg into the calendar.
             </p>
             <Card className="w-full">
-                <CardContent className="pt-6">
+                <CardContent>
                     <form action={formAction}>
                         {state.isError && (
                             <div className="text-red-500">{state.message}</div>

@@ -5,7 +5,7 @@ import { updateIndexValueSchema } from "@/app/(global-admin)/admin/(global)/clas
 import { Form, FormError, FormInput } from "@/app/components/forms/form";
 import { Stack } from "@/app/components/shared/stack";
 import { FormResponse } from "@/types/forms";
-import { Button } from "@/ui/button";
+import { Button } from "@/ui/button-wrapper";
 import {
     Dialog,
     DialogClose,
@@ -17,7 +17,7 @@ import {
     DialogTrigger,
 } from "@/ui/dialog";
 import { Field } from "@/ui/field";
-import { zodResolver } from "@hookform/resolvers/zod/dist/zod.js";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { PencilIcon } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";

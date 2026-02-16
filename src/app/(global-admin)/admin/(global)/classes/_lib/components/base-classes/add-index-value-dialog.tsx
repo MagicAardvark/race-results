@@ -8,7 +8,7 @@ import {
 } from "@/app/components/forms/form";
 import { Stack } from "@/app/components/shared/stack";
 import { FormResponse } from "@/types/forms";
-import { Button } from "@/ui/button";
+import { Button } from "@/ui/button-wrapper";
 import {
     Dialog,
     DialogClose,
@@ -131,7 +131,7 @@ export const AddIndexValueDialog = ({
                                     type="submit"
                                     disabled={form.formState.isSubmitting}
                                 >
-                                    {form.formState.isSubmitting
+                                    {                                    form.formState.isSubmitting
                                         ? "Saving…"
                                         : "Save"}
                                 </Button>

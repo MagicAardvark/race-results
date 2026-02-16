@@ -3,7 +3,7 @@ import { requireOrgAccess } from "@/lib/auth/require-org-access";
 import { classGroupsService } from "@/services/class-groups/class-groups.service";
 import { organizationAdminService } from "@/services/organizations/organization.admin.service";
 
-export default async function OrganizationEventSetupPage() {
+export default async function ClassGroupsPage() {
     const { currentOrg } = await requireOrgAccess();
 
     const org = await organizationAdminService.findBySlug(currentOrg.slug);

@@ -2,24 +2,22 @@
 
 import { updateEventLink } from "@/app/(global-admin)/admin/(organization)/calendar/_lib/actions/link-event/update-event-link";
 import { linkMsrEventSchema } from "@/app/(global-admin)/admin/(organization)/calendar/_lib/schema";
-import {
-    DefaultFormActions,
-    Form,
-    FormError,
-    FormSelect,
-} from "@/app/components/forms/form";
+import { Form, FormError, FormSelect } from "@/app/components/forms/form";
 import { Stack } from "@/app/components/shared/stack";
 import { useOrgMsrEvents } from "@/hooks/msr/use-org-msr-events";
 import { FormResponse } from "@/types/forms";
 import { Button } from "@/ui/button-wrapper";
 import {
     Dialog,
+    DialogClose,
     DialogContent,
     DialogDescription,
+    DialogFooter,
     DialogHeader,
     DialogTitle,
     DialogTrigger,
 } from "@/ui/dialog";
+import { Field } from "@/ui/field";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AlertTriangle } from "lucide-react";
 import { useState } from "react";
@@ -126,17 +124,25 @@ export default function LinkMsrEventDialog({
                                     }
                                 />
 
-                                <DefaultFormActions
-                                    onCancel={() => {}}
-                                    onSubmitDisabled={
-                                        form.formState.isSubmitting
-                                    }
-                                    onSubmitText={
-                                        form.formState.isSubmitting
-                                            ? "Saving…"
-                                            : "Link Event"
-                                    }
-                                />
+                                <DialogFooter>
+                                    <Field orientation="horizontal">
+                                        <DialogClose asChild>
+                                            <Button variant="outline">
+                                                Cancel
+                                            </Button>
+                                        </DialogClose>
+                                        <Button
+                                            type="submit"
+                                            disabled={
+                                                form.formState.isSubmitting
+                                            }
+                                        >
+                                            {form.formState.isSubmitting
+                                                ? "Saving…"
+                                                : "Save"}
+                                        </Button>
+                                    </Field>
+                                </DialogFooter>
                             </>
                         )}
                     </Stack>

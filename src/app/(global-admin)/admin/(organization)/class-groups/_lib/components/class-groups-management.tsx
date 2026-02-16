@@ -57,11 +57,11 @@ export const ClassGroupsManagement = ({
             <Card className="w-full">
                 <CardHeader className="flex flex-row items-center justify-end space-y-0">
                     <Button onClick={() => setIsCreateDialogOpen(true)}>
-                        Add Group
+                        Add Class Group
                     </Button>
                 </CardHeader>
                 <CardContent>
-                <ClassGroupsList
+                    <ClassGroupsList
                     orgId={orgId}
                     classGroups={classGroups}
                     availableBaseClasses={availableBaseClasses}
@@ -75,7 +75,7 @@ export const ClassGroupsManagement = ({
                     onOpenChange={setIsCreateDialogOpen}
                     onSuccess={handleClassGroupCreated}
                 />
-                </CardContent>
+                    </CardContent>
             </Card>
         </div>
     );

@@ -24,14 +24,14 @@ export default async function Page() {
                 immediately.
             </p>
             <Card className="w-full">
-                <CardContent className="pt-6">
+                <CardContent>
                     <Table>
                         <TableHeader>
                             <TableRow>
                                 <TableHead>Name</TableHead>
                                 <TableHead>Roles</TableHead>
-                                <TableHead>
-                                    <span className="sr-only">Actions</span>
+                                <TableHead className="w-0 text-right">
+                                    Actions
                                 </TableHead>
                             </TableRow>
                         </TableHeader>
@@ -42,13 +42,15 @@ export default async function Page() {
                                     <TableCell>
                                         {user.roles.map((r) => r).join(", ")}
                                     </TableCell>
-                                    <TableCell className="flex justify-end">
-                                        <LinkButton
+                                    <TableCell className="w-0 whitespace-nowrap text-right">
+                                        <div className="flex justify-end">
+                                            <LinkButton
                                             variant="outline"
-                                            href={`/admin/users/${user.userId}`}
-                                        >
-                                            <PencilIcon />
-                                        </LinkButton>
+                                                href={`/admin/users/${user.userId}`}
+                                            >
+                                                <PencilIcon />
+                                            </LinkButton>
+                                        </div>
                                     </TableCell>
                                 </TableRow>
                             ))}

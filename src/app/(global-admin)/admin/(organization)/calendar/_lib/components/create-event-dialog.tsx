@@ -106,13 +106,13 @@ export const CreateEventDialog = ({
             }}
         >
             <DialogTrigger asChild>
-                <Button>Create event</Button>
+                <Button>Create Event</Button>
             </DialogTrigger>
             <DialogContent size="large">
                 <Form onSubmit={form.handleSubmit(onSubmit)}>
                     <Stack>
                         <DialogHeader>
-                            <DialogTitle>Create event</DialogTitle>
+                            <DialogTitle>Create Event</DialogTitle>
                             <DialogDescription asChild>
                                 <Stack>
                                     <span className="leading-relaxed">
@@ -232,9 +232,9 @@ export const CreateEventDialog = ({
                                         form.formState.isSubmitting
                                     }
                                     onSubmitText={
-                                        form.formState.isSubmitting
-                                            ? "Saving…"
-                                            : "Save"
+form.formState.isSubmitting
+                                        ? "Saving…"
+                                        : "Save"
                                     }
                                 />
                             </>

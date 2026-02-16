@@ -117,7 +117,7 @@ describe("CreateClassGroupDialog", () => {
         );
 
         expect(screen.getByRole("button", { name: /Cancel/i })).toBeVisible();
-        expect(screen.getByRole("button", { name: /Create/i })).toBeVisible();
+        expect(screen.getByRole("button", { name: /Save/i })).toBeVisible();
     });
 
     it("closes dialog when cancel is clicked", async () => {
