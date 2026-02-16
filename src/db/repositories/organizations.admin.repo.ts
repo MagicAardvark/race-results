@@ -105,6 +105,9 @@ export class OrganizationsAdminRepository implements IOrganizationsAdminReposito
                 ...(dto.headerImageUrl !== undefined && {
                     headerImageUrl: dto.headerImageUrl,
                 }),
+                ...(dto.profileIconUrl !== undefined && {
+                    profileIconUrl: dto.profileIconUrl,
+                }),
                 isPublic: dto.isPublic,
             })
             .where(eq(orgs.orgId, dto.orgId))

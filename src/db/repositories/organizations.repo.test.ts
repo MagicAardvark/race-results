@@ -23,6 +23,7 @@ describe("OrganizationsRepository", () => {
         motorsportregOrgId: "msr-123",
         description: "Test description",
         headerImageUrl: null,
+        profileIconUrl: null,
         isPublic: true,
         createdAt: new Date("2024-01-01"),
         updatedAt: new Date("2024-01-02"),

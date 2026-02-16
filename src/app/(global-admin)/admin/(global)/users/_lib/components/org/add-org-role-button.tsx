@@ -1,6 +1,7 @@
 "use client";
 
 import { addUserOrganizationRole } from "@/app/actions/user.actions";
+import { Stack } from "@/app/components/shared/stack";
 import { AvailableRole } from "@/dto/roles";
 import { OrgWithRoles } from "@/dto/users";
 import { Button } from "@/ui/button";
@@ -8,6 +9,9 @@ import {
     Dialog,
     DialogClose,
     DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
     DialogTitle,
     DialogTrigger,
 } from "@/ui/dialog";
@@ -65,58 +69,69 @@ export const AddOrgRoleButton = ({
             <DialogTrigger asChild>
                 <Button>Add Role</Button>
             </DialogTrigger>
-            <DialogContent>
-                <DialogTitle>Add Organization Role</DialogTitle>
-                <p>Select the role to give this user within {orgName}.</p>
+            <DialogContent size="large">
                 <form action={formAction}>
-                    {state.isError && (
-                        <div className="text-red-500">{state.message}</div>
-                    )}
+                    <Stack>
+                        <DialogHeader>
+                            <DialogTitle>Add Organization Role</DialogTitle>
+                            <DialogDescription>
+                                Select the role to give this user within{" "}
+                                {orgName}.
+                            </DialogDescription>
+                        </DialogHeader>
 
-                    <input type="hidden" name="userId" value={userId} />
-                    <input type="hidden" name="orgId" value={orgId} />
+                        {state.isError && (
+                            <div className="text-red-500">{state.message}</div>
+                        )}
 
-                    <FieldGroup>
-                        <Field>
-                            <FieldLabel htmlFor="roleId">Role</FieldLabel>
-                            <Select
-                                onValueChange={setSelectedRole}
-                                value={selectedRole}
-                                name="roleId"
-                            >
-                                <SelectTrigger>
-                                    <SelectValue placeholder="Select Role" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    {availableRoles.map((role) => (
-                                        <SelectItem
-                                            key={role.key}
-                                            value={role.roleId}
-                                        >
-                                            {role.name}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                        </Field>
-                        <Field orientation="horizontal">
-                            <DialogClose asChild>
-                                <Button
-                                    variant="outline"
-                                    type="button"
-                                    onClick={handleClose}
+                        <input type="hidden" name="userId" value={userId} />
+                        <input type="hidden" name="orgId" value={orgId} />
+
+                        <FieldGroup>
+                            <Field>
+                                <FieldLabel htmlFor="roleId">Role</FieldLabel>
+                                <Select
+                                    onValueChange={setSelectedRole}
+                                    value={selectedRole}
+                                    name="roleId"
                                 >
-                                    Cancel
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Select Role" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {availableRoles.map((role) => (
+                                            <SelectItem
+                                                key={role.key}
+                                                value={role.roleId}
+                                            >
+                                                {role.name}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            </Field>
+                        </FieldGroup>
+
+                        <DialogFooter>
+                            <Field orientation="horizontal">
+                                <DialogClose asChild>
+                                    <Button
+                                        variant="outline"
+                                        type="button"
+                                        onClick={handleClose}
+                                    >
+                                        Cancel
+                                    </Button>
+                                </DialogClose>
+                                <Button
+                                    type="submit"
+                                    disabled={pending || !selectedRole}
+                                >
+                                    {pending ? "Saving…" : "Add Role"}
                                 </Button>
-                            </DialogClose>
-                            <Button
-                                type="submit"
-                                disabled={pending || !selectedRole}
-                            >
-                                {pending ? "Saving…" : "Add Role"}
-                            </Button>
-                        </Field>
-                    </FieldGroup>
+                            </Field>
+                        </DialogFooter>
+                    </Stack>
                 </form>
             </DialogContent>
         </Dialog>

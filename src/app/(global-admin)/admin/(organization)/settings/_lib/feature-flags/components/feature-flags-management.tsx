@@ -1,6 +1,6 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/ui/card";
+import { Card, CardContent } from "@/ui/card";
 import { OrganizationExtended } from "@/dto/organizations";
 import { OrgFeatureFlags } from "@/dto/feature-flags";
 import { Field, FieldGroup, FieldLabel } from "@/ui/field";
@@ -98,85 +98,91 @@ export const FeatureFlagsManagement = ({
     }, [featureFlags]);
 
     return (
-        <Card className="w-full">
-            <CardHeader>
-                <CardTitle>Feature Flags</CardTitle>
-            </CardHeader>
-            <CardContent>
-                <form action={formAction}>
-                    {state.isError && (
-                        <div className="text-red-500">{state.message}</div>
-                    )}
-
-                    <input
-                        type="hidden"
-                        name={nameof<OrganizationExtended>("orgId")}
-                        value={org.orgId}
-                    />
-                    <input
-                        type="hidden"
-                        name={nameof<OrganizationExtended>("name")}
-                        value={org.name}
-                    />
-                    <input type="hidden" name="tab" value={currentTab} />
-
-                    <FieldGroup>
-                        {groupedFlags.length > 0 ? (
-                            <div className="space-y-4">
-                                {groupedFlags.map((group) => (
-                                    <div
-                                        key={group.namespace}
-                                        className="rounded-lg border p-4"
-                                    >
-                                        <h4 className="mb-3 text-lg font-semibold">
-                                            {group.namespaceLabel}
-                                        </h4>
-                                        <div className="grid grid-cols-1 gap-3">
-                                            {group.flags.map((flag) => (
-                                                <Field
-                                                    key={flag.key}
-                                                    orientation="horizontal"
-                                                >
-                                                    <input
-                                                        type="hidden"
-                                                        name={flag.key}
-                                                        value="off"
-                                                    />
-                                                    <Checkbox
-                                                        defaultChecked={
-                                                            flag.enabled
-                                                        }
-                                                        id={flag.key}
-                                                        name={flag.key}
-                                                        value="on"
-                                                    />
-                                                    <FieldLabel
-                                                        htmlFor={flag.key}
-                                                    >
-                                                        {flag.label}
-                                                    </FieldLabel>
-                                                </Field>
-                                            ))}
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        ) : (
-                            <p className="text-muted-foreground text-sm">
-                                No feature flags configured
-                            </p>
+        <div className="space-y-4">
+            <h1 className="text-2xl font-semibold">Feature Flags</h1>
+            <p className="text-muted-foreground text-sm">
+                Enable or disable features for this organization. Changes take
+                effect immediately and can affect live timing, registration, and
+                display. Toggle only what you need; unnecessary flags may expose
+                incomplete or experimental behavior.
+            </p>
+            <Card className="w-full">
+                <CardContent>
+                    <form action={formAction}>
+                        {state.isError && (
+                            <div className="text-red-500">{state.message}</div>
                         )}
-                        <Field orientation="horizontal" className="mt-6">
-                            <Button variant="outline" type="button">
-                                Cancel
-                            </Button>
-                            <Button type="submit" disabled={pending}>
-                                {pending ? "Saving…" : "Save"}
-                            </Button>
-                        </Field>
-                    </FieldGroup>
-                </form>
-            </CardContent>
-        </Card>
+
+                        <input
+                            type="hidden"
+                            name={nameof<OrganizationExtended>("orgId")}
+                            value={org.orgId}
+                        />
+                        <input
+                            type="hidden"
+                            name={nameof<OrganizationExtended>("name")}
+                            value={org.name}
+                        />
+                        <input type="hidden" name="tab" value={currentTab} />
+
+                        <FieldGroup>
+                            {groupedFlags.length > 0 ? (
+                                <div className="space-y-4">
+                                    {groupedFlags.map((group) => (
+                                        <div
+                                            key={group.namespace}
+                                            className="rounded-lg border p-4"
+                                        >
+                                            <h4 className="mb-3 text-lg font-semibold">
+                                                {group.namespaceLabel}
+                                            </h4>
+                                            <div className="grid grid-cols-1 gap-3">
+                                                {group.flags.map((flag) => (
+                                                    <Field
+                                                        key={flag.key}
+                                                        orientation="horizontal"
+                                                    >
+                                                        <input
+                                                            type="hidden"
+                                                            name={flag.key}
+                                                            value="off"
+                                                        />
+                                                        <Checkbox
+                                                            defaultChecked={
+                                                                flag.enabled
+                                                            }
+                                                            id={flag.key}
+                                                            name={flag.key}
+                                                            value="on"
+                                                        />
+                                                        <FieldLabel
+                                                            htmlFor={flag.key}
+                                                        >
+                                                            {flag.label}
+                                                        </FieldLabel>
+                                                    </Field>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            ) : (
+                                <p className="text-muted-foreground text-sm">
+                                    No feature flags configured
+                                </p>
+                            )}
+                            <div className="flex justify-end gap-2 pt-6">
+                                <Button variant="outline" type="button">
+                                    Cancel
+                                </Button>
+                                <Button type="submit" disabled={pending}>
+                                    {pending ? "Saving…" : "Save"}
+                                </Button>
+                            </div>
+                        </FieldGroup>
+                    </form>
+                </CardContent>
+            </Card>
+        </div>
     );
 };

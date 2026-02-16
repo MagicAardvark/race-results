@@ -2,22 +2,21 @@
 
 import {
     Dialog,
+    DialogClose,
     DialogContent,
     DialogDescription,
+    DialogFooter,
     DialogHeader,
     DialogTitle,
 } from "@/ui/dialog";
-import { FieldGroup } from "@/ui/field";
+import { Field, FieldGroup } from "@/ui/field";
+import { Button } from "@/ui/button";
+import { Stack } from "@/app/components/shared/stack";
 import { useState } from "react";
 import z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-    DefaultFormActions,
-    Form,
-    FormError,
-    FormInput,
-} from "@/app/components/forms/form";
+import { Form, FormError, FormInput } from "@/app/components/forms/form";
 import { FormResponse } from "@/types/forms";
 import { createOrganization } from "@/app/(global-admin)/admin/(organization)/(general)/_lib/actions/create-org";
 import { toast } from "sonner";
@@ -78,38 +77,54 @@ export const CreateOrgDialog = ({ setOpen, open }: CreateOrgDialogProps) => {
                 }
             }}
         >
-            <DialogContent>
+            <DialogContent size="large">
                 <Form onSubmit={form.handleSubmit(onSumit)}>
-                    <DialogHeader>
-                        <DialogTitle>Create Organization</DialogTitle>
-                        <DialogDescription>
-                            Please enter the name of the new organization.
-                        </DialogDescription>
-                    </DialogHeader>
+                    <Stack>
+                        <DialogHeader>
+                            <DialogTitle>Create Organization</DialogTitle>
+                            <DialogDescription>
+                                Enter the name of the new organization.
+                            </DialogDescription>
+                        </DialogHeader>
 
-                    {error?.isError && (
-                        <FormError
-                            isError={error.isError}
-                            messages={error.errors}
-                        />
-                    )}
+                        {error?.isError && (
+                            <FormError
+                                isError={error.isError}
+                                messages={error.errors}
+                            />
+                        )}
 
-                    <FieldGroup>
-                        <FormInput
-                            form={form}
-                            name="name"
-                            label="Name"
-                            placeholder="Pizza Club"
-                        />
-                    </FieldGroup>
+                        <FieldGroup>
+                            <FormInput
+                                form={form}
+                                name="name"
+                                label="Name"
+                                placeholder="Pizza Club"
+                            />
+                        </FieldGroup>
 
-                    <DefaultFormActions
-                        onCancel={() => cleanup()}
-                        onSubmitDisabled={form.formState.isSubmitting}
-                        onSubmitText={
-                            form.formState.isSubmitting ? "Saving…" : "Save"
-                        }
-                    />
+                        <DialogFooter>
+                            <Field orientation="horizontal">
+                                <DialogClose asChild>
+                                    <Button
+                                        variant="outline"
+                                        type="button"
+                                        onClick={cleanup}
+                                    >
+                                        Cancel
+                                    </Button>
+                                </DialogClose>
+                                <Button
+                                    type="submit"
+                                    disabled={form.formState.isSubmitting}
+                                >
+                                    {form.formState.isSubmitting
+                                        ? "Saving…"
+                                        : "Save"}
+                                </Button>
+                            </Field>
+                        </DialogFooter>
+                    </Stack>
                 </Form>
             </DialogContent>
         </Dialog>

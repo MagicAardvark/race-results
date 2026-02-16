@@ -114,6 +114,7 @@ const mapOrganization = (data: OrganizationAdminDTO): OrganizationExtended => {
         motorsportregOrgId: data.motorsportregOrgId,
         description: data.description,
         headerImageUrl: data.headerImageUrl ?? null,
+        profileIconUrl: data.profileIconUrl ?? null,
         isPublic: data.isPublic,
         createdAt: data.createdAt,
         updatedAt: data.updatedAt,

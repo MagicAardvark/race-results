@@ -91,6 +91,30 @@ describe("updateOrganization", () => {
         );
     });
 
+    it("passes profileIconUrl null when removeProfileIcon is on", async () => {
+        vi.mocked(
+            organizationAdminService.updateOrganization
+        ).mockResolvedValue("test-org");
+
+        const formData = new FormData();
+        formData.append("orgId", "org-1");
+        formData.append("name", "Test Org");
+        formData.append("isPublic", "on");
+        formData.append("removeProfileIcon", "on");
+
+        await expect(
+            updateOrganization({ isError: false, message: "" }, formData)
+        ).rejects.toThrow("redirect called");
+
+        expect(
+            organizationAdminService.updateOrganization
+        ).toHaveBeenCalledWith(
+            expect.objectContaining({
+                profileIconUrl: null,
+            })
+        );
+    });
+
     it("returns error when orgId is missing", async () => {
         const formData = new FormData();
         formData.append("name", "Test Org");

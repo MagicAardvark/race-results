@@ -13,7 +13,7 @@ __tests__/
 │   ├── mock-db.ts       # Database mocks
 │   ├── mock-handlers.ts # MSW API handlers
 │   ├── mock-server.ts   # MSW server setup
-│   ├── mock-tenants.ts  # Reusable tenant mocks
+│   ├── mock-users.ts    # User and org-with-roles mocks
 │   ├── mock-class-results.ts  # Class results mock data
 │   ├── mock-pax-results.ts    # PAX results mock data
 │   ├── mock-raw-results.ts    # Raw results mock data
@@ -67,7 +67,7 @@ vi.mock("@/db");
 import { renderWithProviders } from "@/__tests__/test-utils";
 
 // ✅ Good - Reusable mocks
-import { mockValidTenant } from "@/__tests__/mocks/mock-tenants";
+import { mockAdminUser } from "@/__tests__/mocks/mock-users";
 import { mockClerk } from "@/__tests__/mocks/mock-clerk";
 ```
 
@@ -79,46 +79,26 @@ All reusable mocks are in `src/__tests__/mocks/`:
 - `mock-db.ts` - Database mocks
 - `mock-handlers.ts` - MSW API request handlers
 - `mock-server.ts` - MSW server configuration
-- `mock-tenants.ts` - Reusable tenant mocks (ValidTenant, GlobalTenant, InvalidTenant)
+- `mock-users.ts` - User and admin mocks (`mockUser`, `mockAdminUser`, `createMockUserWithExtendedDetails`); uses `defaultOrg` from test-utils for org shape
 - `mock-class-results.ts` - Class results mock data
 - `mock-pax-results.ts` - PAX results mock data
 - `mock-raw-results.ts` - Raw results mock data
 - `mock-run-work.ts` - Run/work order mock data
 
-#### Using Mock Tenants
-
-The `mock-tenants.ts` file provides properly typed tenant mocks for testing:
-
-```typescript
-import {
-    mockValidTenant,
-    mockGlobalTenant,
-    mockInvalidTenant,
-} from "@/__tests__/mocks/mock-tenants";
-
-// Use predefined mocks
-const tenant = mockValidTenant;
-
-// Or create custom tenants
-import { createMockValidTenant } from "@/__tests__/mocks/mock-tenants";
-const customTenant = createMockValidTenant({
-    name: "Custom Org",
-    slug: "custom-org",
-});
-```
+For tenant/org context tests, use `defaultOrg` from `@/__tests__/test-utils` (e.g. in TenantContext, layout, or tenant service tests).
 
 ### 6. Co-locate test files
 
 Test files should be placed next to the files they test:
 
-```typescript
-// ✅ Good - Test file next to component
-src / components / my - component.tsx;
-src / components / my - component.test.tsx;
+```
+# ✅ Good - Test file next to component
+src/components/my-component.tsx
+src/components/my-component.test.tsx
 
-// ❌ Avoid - Separate __tests__ directory
-src / components / my - component.tsx;
-src / components / __tests__ / my - component.test.tsx;
+# ❌ Avoid - Separate __tests__ directory
+src/components/my-component.tsx
+src/components/__tests__/my-component.test.tsx
 ```
 
 ## Usage Examples

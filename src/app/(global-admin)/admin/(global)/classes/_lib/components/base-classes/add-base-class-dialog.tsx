@@ -10,7 +10,7 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/ui/dialog";
-import { Button } from "@/ui/button-wrapper";
+import { Button } from "@/ui/button";
 import { Field, FieldSeparator } from "@/ui/field";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -68,7 +68,7 @@ export const AddBaseClassDialog = ({
 
         toast.success(result.message);
         cleanup();
-        router.push(`/admin/classes/${result.data?.classId}`);
+        router.push(`/admin/classes?edit=${result.data?.classId}`);
     };
 
     const cleanup = () => {
@@ -96,7 +96,7 @@ export const AddBaseClassDialog = ({
                 <Button>Add Class</Button>
             </DialogTrigger>
 
-            <DialogContent>
+            <DialogContent size="large">
                 <Form onSubmit={form.handleSubmit(onSubmit)}>
                     <Stack>
                         <DialogHeader>

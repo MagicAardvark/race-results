@@ -5,6 +5,7 @@ import {
     formatDateRange,
     getDateString,
 } from "@/app/(tenants)/t/[orgSlug]/_lib/utils/date-utils";
+import { ProfileIconImage } from "@/app/components/profile-icon-image";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/ui/button";
@@ -161,7 +162,16 @@ export default async function Page() {
                                     </div>
                                     <CardHeader className="flex-1 space-y-3 py-2">
                                         <CardTitle className="flex items-center gap-2 text-lg">
-                                            {org.name}
+                                            {org.profileIconUrl ? (
+                                                <ProfileIconImage
+                                                    src={org.profileIconUrl}
+                                                    alt=""
+                                                    className="size-8 shrink-0 overflow-hidden rounded-lg"
+                                                />
+                                            ) : null}
+                                            <span className="min-w-0 flex-1 truncate">
+                                                {org.name}
+                                            </span>
                                             <ArrowRightIcon className="h-4 w-4 shrink-0 opacity-0 transition-all group-hover:translate-x-0.5 group-hover:opacity-100" />
                                         </CardTitle>
                                         <CardDescription className="line-clamp-2">

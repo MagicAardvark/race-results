@@ -13,6 +13,7 @@ export type UserOrgRoleWithOrgDTO = UserOrgRoleDTO & {
         orgId: string;
         name: string;
         slug: string;
+        profileIconUrl: string | null;
     };
 };
 
@@ -52,6 +53,7 @@ export interface OrgWithRoles {
         orgId: string;
         name: string;
         slug: string;
+        profileIconUrl: string | null;
     };
     roles: UserRole[];
 }

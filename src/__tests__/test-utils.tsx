@@ -50,6 +50,7 @@ export const defaultOrg: Organization = {
     motorsportregOrgId: null,
     description: "Test description",
     headerImageUrl: null,
+    profileIconUrl: null,
     isPublic: true,
     createdAt: new Date(),
     updatedAt: new Date(),
