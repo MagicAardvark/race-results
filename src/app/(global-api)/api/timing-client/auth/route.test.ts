@@ -46,6 +46,7 @@ const mockOrg = {
     motorsportregOrgId: null,
     description: "",
     headerImageUrl: null,
+    profileIconUrl: null,
     isPublic: true,
     createdAt: new Date(),
     updatedAt: new Date(),

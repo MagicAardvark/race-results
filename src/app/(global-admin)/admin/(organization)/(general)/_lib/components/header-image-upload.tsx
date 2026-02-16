@@ -16,8 +16,7 @@ const INPUT_NAME = "headerImage";
 
 const PREVIEW_CONTAINER_CLASS =
     "bg-muted group relative aspect-[2/1] w-full max-w-xl overflow-hidden rounded-lg border text-left";
-const CHANGE_LABEL_CLASS =
-    "rounded-md px-4 py-2 text-sm font-medium shadow-sm";
+const CHANGE_LABEL_CLASS = "rounded-md px-4 py-2 text-sm font-medium shadow-sm";
 
 interface HeaderImageUploadProps {
     headerImageUrl: string | null;

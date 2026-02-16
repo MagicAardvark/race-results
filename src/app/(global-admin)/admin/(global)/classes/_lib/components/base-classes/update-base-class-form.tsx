@@ -1,9 +1,6 @@
 "use client";
 
-import {
-    FormInput,
-    FormSelect,
-} from "@/app/components/forms/form";
+import { FormInput, FormSelect } from "@/app/components/forms/form";
 import { FormCheckbox } from "@/app/components/forms/form-checkbox";
 import { FormError } from "@/app/components/forms/form-error";
 import { Stack } from "@/app/components/shared/stack";
@@ -56,10 +53,7 @@ export function EditBaseClassFormFields({
             </div>
 
             {error?.isError && (
-                <FormError
-                    isError={error.isError}
-                    messages={error.errors}
-                />
+                <FormError isError={error.isError} messages={error.errors} />
             )}
 
             <FormInput
@@ -104,11 +98,7 @@ export function EditBaseClassFormFields({
                 ]}
             />
 
-            <FormCheckbox
-                form={form}
-                name="isEnabled"
-                label="Is Enabled"
-            />
+            <FormCheckbox form={form} name="isEnabled" label="Is Enabled" />
 
             {isEnabledOriginal !== watchIsEnabled && (
                 <div className="flex items-center gap-2 rounded bg-yellow-200 p-2 text-sm text-yellow-900">

@@ -61,7 +61,7 @@ export const EditBaseClassDialog = ({
     useEffect(() => {
         if (editingBaseClass) {
             form.reset(getDefaultValues(editingBaseClass));
-            setError(null);
+            queueMicrotask(() => setError(null));
         }
     }, [editingBaseClass, form]);
 

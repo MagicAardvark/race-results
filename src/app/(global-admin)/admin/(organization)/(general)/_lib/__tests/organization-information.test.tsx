@@ -18,6 +18,7 @@ describe("OrganizationInformation", () => {
         motorsportregOrgId: "msr-123",
         description: "Test description",
         headerImageUrl: null,
+        profileIconUrl: null,
         isPublic: true,
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -35,6 +36,7 @@ describe("OrganizationInformation", () => {
         renderWithProviders(<OrganizationInformation org={mockOrg} />);
 
         expect(screen.getByText("Header Image")).toBeVisible();
+        expect(screen.getByText("Profile Icon")).toBeVisible();
         expect(screen.getByLabelText("Name")).toBeVisible();
         expect(screen.getByLabelText("URL Slug")).toBeVisible();
         expect(screen.getByLabelText("MotorsportReg Org ID")).toBeVisible();
@@ -64,6 +66,22 @@ describe("OrganizationInformation", () => {
         renderWithProviders(<OrganizationInformation org={orgWithImage} />);
 
         expect(screen.getByRole("button", { name: "Remove" })).toBeVisible();
+    });
+
+    it("shows profile icon when profileIconUrl is set", () => {
+        const orgWithProfileIcon: OrganizationExtended = {
+            ...mockOrg,
+            profileIconUrl: "https://example.com/icon.png",
+        };
+        renderWithProviders(
+            <OrganizationInformation org={orgWithProfileIcon} />
+        );
+
+        const img = screen.getByRole("img", {
+            name: /test organization profile icon/i,
+        });
+        expect(img).toBeVisible();
+        expect(img).toHaveAttribute("src", "https://example.com/icon.png");
     });
 
     it("pre-fills form with organization data", () => {

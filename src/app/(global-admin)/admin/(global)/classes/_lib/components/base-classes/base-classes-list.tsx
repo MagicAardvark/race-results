@@ -74,7 +74,7 @@ export const BaseClassesList = ({ baseClasses }: BaseClassesListProps) => {
                                 )}
                             </div>
                         </TableCell>
-                        <TableCell className="w-0 whitespace-nowrap text-right">
+                        <TableCell className="w-0 text-right whitespace-nowrap">
                             <div className="flex justify-end">
                                 <LinkButton
                                     variant="outline"

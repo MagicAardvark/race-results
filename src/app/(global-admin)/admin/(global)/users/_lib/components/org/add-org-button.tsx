@@ -73,7 +73,11 @@ export const AddOrgButton = ({ user, orgs }: AddOrgButtonProps) => {
                             <div className="text-red-500">{state.message}</div>
                         )}
 
-                        <input type="hidden" name="userId" value={user.userId} />
+                        <input
+                            type="hidden"
+                            name="userId"
+                            value={user.userId}
+                        />
 
                         <FieldGroup>
                             <Field>

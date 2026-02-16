@@ -194,6 +194,6 @@ describe("ClassGroupsList", () => {
             />
         );
 
-        expect(screen.getByText(/No class groups found/i)).toBeVisible();
+        expect(screen.getByText(/No class groups yet/i)).toBeVisible();
     });
 });

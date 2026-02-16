@@ -169,7 +169,8 @@ export const CreateEventDialog = ({
                                                             ? "Loading events…"
                                                             : isMsrError
                                                               ? "Error loading events"
-                                                              : msrEvents?.length === 0
+                                                              : msrEvents?.length ===
+                                                                  0
                                                                 ? "No events available"
                                                                 : "Select an event"
                                                     }
@@ -178,12 +179,12 @@ export const CreateEventDialog = ({
                                                             ? []
                                                             : msrEvents
                                                               ? msrEvents.map(
-                                                                        (
-                                                                            event
-                                                                        ) => ({
-                                                                            value: event.id,
-                                                                            label: event.name,
-                                                                        })
+                                                                    (
+                                                                        event
+                                                                    ) => ({
+                                                                        value: event.id,
+                                                                        label: event.name,
+                                                                    })
                                                                 )
                                                               : []
                                                     }
@@ -232,9 +233,9 @@ export const CreateEventDialog = ({
                                         form.formState.isSubmitting
                                     }
                                     onSubmitText={
-form.formState.isSubmitting
-                                        ? "Saving…"
-                                        : "Save"
+                                        form.formState.isSubmitting
+                                            ? "Saving…"
+                                            : "Save"
                                     }
                                 />
                             </>

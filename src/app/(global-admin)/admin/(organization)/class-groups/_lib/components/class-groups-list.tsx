@@ -70,7 +70,9 @@ export const ClassGroupsList = ({
                         <TableHead className="w-1 text-center">
                             Status
                         </TableHead>
-                        <TableHead className="w-0 text-right">Actions</TableHead>
+                        <TableHead className="w-0 text-right">
+                            Actions
+                        </TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -109,7 +111,7 @@ export const ClassGroupsList = ({
                                     )}
                                 </div>
                             </TableCell>
-                            <TableCell className="w-0 whitespace-nowrap text-right">
+                            <TableCell className="w-0 text-right whitespace-nowrap">
                                 <div className="flex justify-end gap-2">
                                     <Button
                                         variant="outline"

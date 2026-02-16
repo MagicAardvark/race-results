@@ -35,7 +35,9 @@ export default function LinkMsrEventDialog({
     eventId,
 }: LinkMsrEventDialogProps) {
     const form = useForm<z.infer<typeof linkMsrEventSchema>>({
-        resolver: zodResolver(linkMsrEventSchema),
+        // @hookform/resolvers v5.2.2 types don't fully support Zod v4 yet, but runtime works correctly
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        resolver: zodResolver(linkMsrEventSchema as any),
         defaultValues: {
             msrEventId: "",
         },

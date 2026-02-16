@@ -12,7 +12,9 @@ export default async function FeatureFlagsPage() {
         return null;
     }
 
-    const featureFlags = await featureFlagsService.getOrgFeatureFlags(org.orgId);
+    const featureFlags = await featureFlagsService.getOrgFeatureFlags(
+        org.orgId
+    );
 
     return (
         <div className="space-y-4">

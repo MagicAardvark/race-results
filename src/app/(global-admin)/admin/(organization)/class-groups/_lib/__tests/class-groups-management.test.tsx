@@ -112,7 +112,7 @@ describe("ClassGroupsManagement", () => {
         );
 
         expect(
-            screen.getByRole("button", { name: /Add Group/i })
+            screen.getByRole("button", { name: /Add Class Group/i })
         ).toBeVisible();
     });
 
@@ -140,7 +140,7 @@ describe("ClassGroupsManagement", () => {
         );
 
         const createButton = screen.getByRole("button", {
-            name: /Add Group/i,
+            name: /Add Class Group/i,
         });
         await user.click(createButton);
 
@@ -158,7 +158,7 @@ describe("ClassGroupsManagement", () => {
         );
 
         const createButton = screen.getByRole("button", {
-            name: /Add Group/i,
+            name: /Add Class Group/i,
         });
         await user.click(createButton);
 
@@ -181,7 +181,7 @@ describe("ClassGroupsManagement", () => {
         );
 
         const createButton = screen.getByRole("button", {
-                name: /Add Group/i,
+            name: /Add Class Group/i,
         });
         await user.click(createButton);
 

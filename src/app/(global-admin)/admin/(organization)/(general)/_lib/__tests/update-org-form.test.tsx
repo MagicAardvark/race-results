@@ -19,6 +19,7 @@ describe("UpdateOrgForm", () => {
         motorsportregOrgId: "msr-123",
         description: "Test description",
         headerImageUrl: null,
+        profileIconUrl: null,
         isPublic: true,
         createdAt: new Date(),
         updatedAt: new Date(),

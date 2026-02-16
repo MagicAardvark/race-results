@@ -166,7 +166,7 @@ export default async function Page() {
                                                 <ProfileIconImage
                                                     src={org.profileIconUrl}
                                                     alt=""
-                                                    className="size-8 shrink-0 overflow-hidden rounded-lg bg-muted"
+                                                    className="size-8 shrink-0 overflow-hidden rounded-lg"
                                                 />
                                             ) : null}
                                             <span className="min-w-0 flex-1 truncate">

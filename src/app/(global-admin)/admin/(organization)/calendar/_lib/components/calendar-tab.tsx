@@ -134,9 +134,7 @@ export function CalendarTab({
                             orgId={orgId}
                             seasons={seasons}
                             onChange={(seasonSlug: string) => {
-                                router.push(
-                                    `/admin/calendar/${seasonSlug}`
-                                );
+                                router.push(`/admin/calendar/${seasonSlug}`);
                             }}
                         />
                         {selectedSeason.isCurrent && (
@@ -183,7 +181,7 @@ export function CalendarTab({
                                                 event.endDate
                                             )}
                                         </TableCell>
-                                        <TableCell className="w-0 whitespace-nowrap text-right">
+                                        <TableCell className="w-0 text-right whitespace-nowrap">
                                             <div className="flex justify-end gap-2">
                                                 <Button
                                                     asChild

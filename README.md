@@ -43,21 +43,14 @@ This platform enables motorsports organizations to:
 
 ### Administration
 
-- **Global Admin** - Platform-wide administration
-    - Organization management
-    - **Organization Calendar** - Create, edit, and delete org events (Calendar tab per org); schedule is shown on the org’s tenant page and merged with MotorsportReg when configured
-    - User management
-        - View all users
-        - Edit user display names
-        - Manage user roles (assign/remove global roles)
-        - Delete users (soft delete)
-    - Feature flag configuration per organization
-    - API key management for organizations
-- **Tenant Admin** - Organization-specific administration
-    - Organization settings
-    - User management within organization
-    - Feature flag toggles (PAX Results, Work/Run Order)
-
+- **Global Admin** (`/admin`) - Platform-wide administration with org-scoped sidebar
+    - **Organization** (`/admin`) - Org dashboard: Organization Information (name, slug, description, header image, profile icon, MotorsportReg ID, public visibility). Profile icon appears in the sidebar org switcher and on public/tenant pages.
+    - **Calendar** (`/admin/calendar`) - Create, edit, and delete org events; link to MotorsportReg events; schedule shown on the org's tenant page and merged with MotorsportReg when configured
+    - **Users** (`/admin/users`) - View all users; edit display names; assign/remove global roles; delete users (soft delete)
+    - **API Keys** (`/admin/api-keys`) - Generate, disable, and view API key history per organization
+    - **Feature Flags** (`/admin/feature-flags`) - Toggle PAX Results and Work/Run Order per organization
+    - **Base Classes** (`/admin/classes`) - Global car class configuration (admin only)
+    - **Class Groups** (`/admin/class-groups`) - Group base classes per organization for event registration and results
 ### API Access
 
 - **API Key Management** - Secure API access for organizations
@@ -96,17 +89,17 @@ src/
 ├── app/                         # Next.js App Router
 │   ├── (global-admin)/         # Global admin routes
 │   │   └── admin/
-│   │       ├── components/     # Admin page components
-│   │       │   └── organizations/
-│   │       │       ├── api-key-management/  # API key management UI
-│   │       │       ├── create-org-dialog.tsx
-│   │       │       ├── organization-entry.tsx
-│   │       │       └── update-org-form.tsx
-│   │       ├── organizations/
-│   │       │   ├── [slug]/page.tsx
-│   │       │   └── _lib/components/
-│   │       │       └── calendar-tab.tsx  # Org events CRUD
-│   │       └── users/
+│   │       ├── _lib/components/    # Sidebar, create-org-dialog
+│   │       ├── (organization)/     # Org-scoped: same slug from layout
+│   │       │   ├── page.tsx        # Organization dashboard (General)
+│   │       │   ├── (general)/      # Org info, header + profile icon upload
+│   │       │   ├── calendar/       # Org events CRUD, seasons, link MSR
+│   │       │   ├── api-keys/      # API key management
+│   │       │   ├── feature-flags/ # Feature flag toggles
+│   │       │   └── class-groups/  # Class groups for org
+│   │       └── (global)/           # Platform-wide (admin only)
+│   │           ├── users/          # All users, roles
+│   │           └── classes/       # Base classes
 │   ├── (global-api)/           # Global API routes (no auth required)
 │   │   └── api/
 │   │       └── ingest/         # Data ingestion endpoints
@@ -136,6 +129,7 @@ src/
 │   │               ├── events/      # merge-events.ts (org + MotorsportReg)
 │   │               └── utils/       # date-utils.ts
 │   └── components/              # App-level shared components
+│       ├── profile-icon-image.tsx  # Shared org profile icon (sidebar, cards, tenant header)
 │       ├── confirmation-dialog.tsx
 │       └── shared/
 │           └── layout/          # Shared layout components
@@ -370,11 +364,12 @@ Navigate to [http://localhost:3000](http://localhost:3000)
 5. Delete events: click the trash icon and confirm (errors such as "Event not found or access denied" are shown in the dialog)
 6. The schedule is shown on the organization’s tenant page (`/t/[orgSlug]`) and merged with MotorsportReg when the org has a MotorsportReg ID
 
-#### Managing Organization Settings
+#### Managing Organization Information (header & profile icon)
 
-1. Navigate to tenant admin: `/t/[orgSlug]/admin`
-2. Update organization settings
-3. Manage users within the organization
+1. Navigate to global admin: `/admin` and select an organization (sidebar org switcher)
+2. On the **Organization** dashboard, update name, description, MotorsportReg Org ID, and public visibility
+3. **Header image**: Upload or remove; used on the public org card and tenant pages
+4. **Profile icon**: Upload or remove; shown in the admin sidebar org switcher, public org cards, and tenant page header
 
 #### Managing Users (Global Admin)
 
@@ -389,8 +384,8 @@ Navigate to [http://localhost:3000](http://localhost:3000)
 
 #### Configuring Feature Flags
 
-1. Navigate to global admin: `/admin`
-2. Scroll to the "Feature Flags" section
+1. Navigate to global admin: `/admin` and select an organization
+2. Open the **Feature Flags** tab (or sidebar item)
 3. Toggle features on/off for the organization:
  - **Enable PAX Results** - Shows PAX navigation and statistics
  - **Enable Work/Run Order** - Shows Work/Run navigation and assignments
@@ -398,8 +393,8 @@ Navigate to [http://localhost:3000](http://localhost:3000)
 
 #### Managing API Keys
 
-1. Navigate to global admin: `/admin`
-2. Scroll to the "API Keys" section
+1. Navigate to global admin: `/admin` and select an organization
+2. Open the **API Keys** tab (or sidebar item)
 3. **Generate New Key**: Creates a new API key and disables the previous one
 4. **Disable Access**: Generates a new disabled key, revoking API access
 5. **View History**: See all previous API keys for the organization
@@ -505,7 +500,7 @@ pnpm drizzle-kit push
 
 #### Schema
 
-- **Organizations** (`orgs`): Organization data
+- **Organizations** (`orgs`): Organization data; `header_image_url` and `profile_icon_url` store Vercel Blob URLs for header and profile icon
 - **Organization Events** (`org_events`): Per-organization event schedule (name, start_at, end_at); shown on tenant page and merged with MotorsportReg when org has MotorsportReg ID
 - **Users** (`users`): User accounts (soft-deletable via `deletedAt`)
 - **Roles** (`roles`): User roles and permissions
@@ -699,23 +694,13 @@ The e2e tests are configured to automatically start the development server befor
 
 The project includes reusable mock data in `src/__tests__/mocks/`:
 
-- **`mock-tenants.ts`** - Reusable tenant mocks (ValidTenant, GlobalTenant, InvalidTenant)
+- **`mock-users.ts`** - User and admin mocks (`mockUser`, `mockAdminUser`, `createMockUserWithExtendedDetails`); uses `defaultOrg` from test-utils for org shape in `user.orgs`
 - **`mock-clerk.tsx`** - Clerk authentication mocks
 - **`mock-db.ts`** - Database mocks
 - **`mock-handlers.ts`** - MSW API request handlers
 - **`mock-server.ts`** - MSW server configuration
 
-Example usage:
-
-```typescript
-import {
-    mockValidTenant,
-    mockGlobalTenant,
-} from "@/__tests__/mocks/mock-tenants";
-
-// Use in tests
-const tenant = mockValidTenant;
-```
+For tenant/org context tests, use `defaultOrg` from `@/__tests__/test-utils`.
 
 See `src/__tests__/README.md` for detailed testing guidelines.
 
@@ -742,6 +727,8 @@ See `src/__tests__/README.md` for detailed testing guidelines.
 - [ ] API key disable/enable functionality works
 - [ ] API key validation works for API requests (checks enabled status)
 - [ ] Previous API keys are displayed correctly
+- [ ] Organization profile icon uploads and displays in sidebar, public cards, and tenant header
+- [ ] Organization header image uploads and displays on public org cards
 - [ ] User management works correctly
 - [ ] User roles can be assigned and removed
 - [ ] User deletion works (soft delete)

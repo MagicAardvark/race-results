@@ -86,7 +86,7 @@ export default async function Page() {
                         <ProfileIconImage
                             src={org.profileIconUrl}
                             alt=""
-                            className="size-28 shrink-0 overflow-hidden rounded-xl bg-muted sm:size-32"
+                            className="size-28 shrink-0 overflow-hidden rounded-xl sm:size-32"
                         />
                     ) : null}
                 </div>

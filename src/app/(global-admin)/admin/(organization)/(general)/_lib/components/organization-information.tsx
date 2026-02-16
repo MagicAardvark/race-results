@@ -27,9 +27,7 @@ export const OrganizationInformation = ({
 
     return (
         <div className="space-y-4">
-            <h1 className="text-2xl font-semibold">
-                Organization Information
-            </h1>
+            <h1 className="text-2xl font-semibold">Organization Information</h1>
             <p className="text-muted-foreground text-sm">
                 Update your organization&apos;s name, description, and public
                 visibility. The URL slug is derived from the name and cannot be

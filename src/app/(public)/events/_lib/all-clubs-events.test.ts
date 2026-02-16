@@ -47,6 +47,7 @@ function org(overrides: Partial<Organization> = {}): Organization {
         motorsportregOrgId: null,
         description: null,
         headerImageUrl: null,
+        profileIconUrl: null,
         isPublic: true,
         createdAt: new Date(),
         updatedAt: new Date(),

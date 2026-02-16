@@ -62,20 +62,20 @@ export const ClassGroupsManagement = ({
                 </CardHeader>
                 <CardContent>
                     <ClassGroupsList
-                    orgId={orgId}
-                    classGroups={classGroups}
-                    availableBaseClasses={availableBaseClasses}
-                    onUpdate={handleClassGroupUpdated}
-                    onDelete={handleClassGroupDeleted}
-                />
-                <CreateClassGroupDialog
-                    orgId={orgId}
-                    availableBaseClasses={availableBaseClasses}
-                    open={isCreateDialogOpen}
-                    onOpenChange={setIsCreateDialogOpen}
-                    onSuccess={handleClassGroupCreated}
-                />
-                    </CardContent>
+                        orgId={orgId}
+                        classGroups={classGroups}
+                        availableBaseClasses={availableBaseClasses}
+                        onUpdate={handleClassGroupUpdated}
+                        onDelete={handleClassGroupDeleted}
+                    />
+                    <CreateClassGroupDialog
+                        orgId={orgId}
+                        availableBaseClasses={availableBaseClasses}
+                        open={isCreateDialogOpen}
+                        onOpenChange={setIsCreateDialogOpen}
+                        onSuccess={handleClassGroupCreated}
+                    />
+                </CardContent>
             </Card>
         </div>
     );

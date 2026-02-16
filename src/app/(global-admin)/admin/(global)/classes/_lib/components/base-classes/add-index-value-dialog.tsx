@@ -131,7 +131,7 @@ export const AddIndexValueDialog = ({
                                     type="submit"
                                     disabled={form.formState.isSubmitting}
                                 >
-                                    {                                    form.formState.isSubmitting
+                                    {form.formState.isSubmitting
                                         ? "Saving…"
                                         : "Save"}
                                 </Button>

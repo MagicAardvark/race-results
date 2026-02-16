@@ -47,8 +47,8 @@ export function ProfileIconUpload({
         <Field>
             <FieldLabel>Profile Icon</FieldLabel>
             <p className="text-muted-foreground mb-2 text-sm">
-                Shown in various places in the app, including the sidebar. Square
-                images work best.
+                Shown in various places in the app, including the sidebar.
+                Square images work best.
             </p>
             {removeChecked && (
                 <input type="hidden" name="removeProfileIcon" value="on" />

@@ -42,10 +42,10 @@ export default async function Page() {
                                     <TableCell>
                                         {user.roles.map((r) => r).join(", ")}
                                     </TableCell>
-                                    <TableCell className="w-0 whitespace-nowrap text-right">
+                                    <TableCell className="w-0 text-right whitespace-nowrap">
                                         <div className="flex justify-end">
                                             <LinkButton
-                                            variant="outline"
+                                                variant="outline"
                                                 href={`/admin/users/${user.userId}`}
                                             >
                                                 <PencilIcon />
