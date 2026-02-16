@@ -2,7 +2,7 @@
 
 import { HeaderImageUpload } from "./header-image-upload";
 import { Button } from "@/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/ui/card";
+import { Card, CardContent } from "@/ui/card";
 import { Checkbox } from "@/ui/checkbox";
 import { Field, FieldGroup, FieldLabel } from "@/ui/field";
 import { Input } from "@/ui/input";
@@ -12,11 +12,13 @@ import { nameof } from "@/lib/utils";
 import { useActionState } from "react";
 import { updateOrganization } from "@/app/(global-admin)/admin/(organization)/(general)/_lib/actions/update-org";
 
-interface GeneralTabProps {
+interface OrganizationInformationProps {
     org: OrganizationExtended;
 }
 
-export const GeneralTab = ({ org }: GeneralTabProps) => {
+export const OrganizationInformation = ({
+    org,
+}: OrganizationInformationProps) => {
     const [state, formAction, pending] = useActionState(updateOrganization, {
         isError: false,
         message: "",
@@ -24,11 +26,17 @@ export const GeneralTab = ({ org }: GeneralTabProps) => {
 
     return (
         <div className="space-y-4">
+            <h1 className="text-2xl font-semibold">
+                Organization Information
+            </h1>
+            <p className="text-muted-foreground text-sm">
+                Update your organization&apos;s name, description, and public
+                visibility. The URL slug is derived from the name and cannot be
+                changed here. Set MotorsportReg Org ID to pull events from
+                MotorsportReg into the calendar.
+            </p>
             <Card className="w-full">
-                <CardHeader>
-                    <CardTitle>Organization Information</CardTitle>
-                </CardHeader>
-                <CardContent>
+                <CardContent className="pt-6">
                     <form action={formAction}>
                         {state.isError && (
                             <div className="text-red-500">{state.message}</div>
@@ -146,14 +154,14 @@ export const GeneralTab = ({ org }: GeneralTabProps) => {
                                     </FieldLabel>
                                 </Field>
                             </div>
-                            <Field orientation="horizontal">
+                            <div className="flex justify-end gap-2 pt-6">
                                 <Button variant="outline" type="button">
                                     Cancel
                                 </Button>
                                 <Button type="submit" disabled={pending}>
                                     {pending ? "Saving…" : "Save"}
                                 </Button>
-                            </Field>
+                            </div>
                         </FieldGroup>
                     </form>
                 </CardContent>

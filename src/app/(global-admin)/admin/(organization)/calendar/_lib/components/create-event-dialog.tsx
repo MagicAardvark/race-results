@@ -169,17 +169,23 @@ export const CreateEventDialog = ({
                                                             ? "Loading events…"
                                                             : isMsrError
                                                               ? "Error loading events"
-                                                              : "Select an event"
+                                                              : msrEvents?.length === 0
+                                                                ? "No events available"
+                                                                : "Select an event"
                                                     }
                                                     items={
-                                                        msrEvents
-                                                            ? msrEvents.map(
-                                                                  (event) => ({
-                                                                      value: event.id,
-                                                                      label: event.name,
-                                                                  })
-                                                              )
-                                                            : []
+                                                        msrEvents?.length === 0
+                                                            ? []
+                                                            : msrEvents
+                                                              ? msrEvents.map(
+                                                                        (
+                                                                            event
+                                                                        ) => ({
+                                                                            value: event.id,
+                                                                            label: event.name,
+                                                                        })
+                                                                )
+                                                              : []
                                                     }
                                                 />
                                             )}

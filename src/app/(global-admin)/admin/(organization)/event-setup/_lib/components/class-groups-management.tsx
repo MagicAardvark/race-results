@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/ui/card";
+import { Card, CardContent, CardHeader } from "@/ui/card";
 import { Button } from "@/ui/button-wrapper";
 import { ClassGroupWithClasses } from "@/dto/class-groups";
 import { ClassGroupsList } from "./class-groups-list";
@@ -45,16 +45,22 @@ export const ClassGroupsManagement = ({
     };
 
     return (
-        <Card>
-            <CardHeader>
-                <div className="flex items-center justify-between">
-                    <CardTitle>Class Groups</CardTitle>
+        <div className="space-y-4">
+            <h1 className="text-2xl font-semibold">Class Groups</h1>
+            <p className="text-muted-foreground text-sm">
+                Group base classes for event registration and results (e.g.
+                &quot;Street&quot;, &quot;PAX&quot;). Assign class groups to
+                events so drivers can register. Reordering or deleting a group
+                does not change historical results, but removing classes from a
+                group can affect future events that use it.
+            </p>
+            <Card className="w-full">
+                <CardHeader className="flex flex-row items-center justify-end space-y-0">
                     <Button onClick={() => setIsCreateDialogOpen(true)}>
-                        Create Group
+                        Add Group
                     </Button>
-                </div>
-            </CardHeader>
-            <CardContent>
+                </CardHeader>
+                <CardContent>
                 <ClassGroupsList
                     orgId={orgId}
                     classGroups={classGroups}
@@ -69,7 +75,8 @@ export const ClassGroupsManagement = ({
                     onOpenChange={setIsCreateDialogOpen}
                     onSuccess={handleClassGroupCreated}
                 />
-            </CardContent>
-        </Card>
+                </CardContent>
+            </Card>
+        </div>
     );
 };

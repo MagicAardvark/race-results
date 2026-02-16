@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
 import { renderWithProviders, screen, userEvent } from "@/__tests__/test-utils";
-import { GeneralTab } from "../components/general-tab";
+import { OrganizationInformation } from "../components/organization-information";
 import type { OrganizationExtended } from "@/dto/organizations";
 
 vi.mock(
@@ -10,7 +10,7 @@ vi.mock(
     })
 );
 
-describe("GeneralTab", () => {
+describe("OrganizationInformation", () => {
     const mockOrg: OrganizationExtended = {
         orgId: "org-1",
         name: "Test Organization",
@@ -26,13 +26,13 @@ describe("GeneralTab", () => {
     };
 
     it("renders organization information card", () => {
-        renderWithProviders(<GeneralTab org={mockOrg} />);
+        renderWithProviders(<OrganizationInformation org={mockOrg} />);
 
         expect(screen.getByText("Organization Information")).toBeVisible();
     });
 
     it("renders all organization fields", () => {
-        renderWithProviders(<GeneralTab org={mockOrg} />);
+        renderWithProviders(<OrganizationInformation org={mockOrg} />);
 
         expect(screen.getByText("Header Image")).toBeVisible();
         expect(screen.getByLabelText("Name")).toBeVisible();
@@ -47,7 +47,7 @@ describe("GeneralTab", () => {
             ...mockOrg,
             headerImageUrl: "https://example.com/header.jpg",
         };
-        renderWithProviders(<GeneralTab org={orgWithImage} />);
+        renderWithProviders(<OrganizationInformation org={orgWithImage} />);
 
         const img = screen.getByRole("img", {
             name: /test organization header/i,
@@ -61,13 +61,13 @@ describe("GeneralTab", () => {
             ...mockOrg,
             headerImageUrl: "https://example.com/header.jpg",
         };
-        renderWithProviders(<GeneralTab org={orgWithImage} />);
+        renderWithProviders(<OrganizationInformation org={orgWithImage} />);
 
         expect(screen.getByRole("button", { name: "Remove" })).toBeVisible();
     });
 
     it("pre-fills form with organization data", () => {
-        renderWithProviders(<GeneralTab org={mockOrg} />);
+        renderWithProviders(<OrganizationInformation org={mockOrg} />);
 
         expect(screen.getByLabelText("Name")).toHaveValue("Test Organization");
         expect(screen.getByLabelText("URL Slug")).toHaveValue("test-org");
@@ -78,7 +78,7 @@ describe("GeneralTab", () => {
     });
 
     it("renders slug as read-only", () => {
-        renderWithProviders(<GeneralTab org={mockOrg} />);
+        renderWithProviders(<OrganizationInformation org={mockOrg} />);
 
         const slugInput = screen.getByLabelText("URL Slug");
         expect(slugInput).toHaveAttribute("readonly");
@@ -86,7 +86,7 @@ describe("GeneralTab", () => {
 
     it("allows editing organization name", async () => {
         const user = userEvent.setup();
-        renderWithProviders(<GeneralTab org={mockOrg} />);
+        renderWithProviders(<OrganizationInformation org={mockOrg} />);
 
         const nameInput = screen.getByLabelText("Name");
         await user.clear(nameInput);
@@ -97,7 +97,7 @@ describe("GeneralTab", () => {
 
     it("allows toggling public visibility", async () => {
         const user = userEvent.setup();
-        renderWithProviders(<GeneralTab org={mockOrg} />);
+        renderWithProviders(<OrganizationInformation org={mockOrg} />);
 
         const publicCheckbox = screen.getByLabelText("Publicly Viewable");
         expect(publicCheckbox).toBeChecked();
@@ -107,7 +107,7 @@ describe("GeneralTab", () => {
     });
 
     it("renders save and cancel buttons", () => {
-        renderWithProviders(<GeneralTab org={mockOrg} />);
+        renderWithProviders(<OrganizationInformation org={mockOrg} />);
 
         expect(screen.getByRole("button", { name: /Save/i })).toBeVisible();
         expect(screen.getByRole("button", { name: /Cancel/i })).toBeVisible();

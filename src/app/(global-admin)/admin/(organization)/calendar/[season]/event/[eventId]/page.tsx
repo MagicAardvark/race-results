@@ -25,7 +25,11 @@ export default async function Page({
     }
 
     return (
-        <div>
+        <div className="space-y-4">
+            <h1 className="text-2xl font-semibold">Edit Event</h1>
+            <p className="text-muted-foreground text-sm">
+                Update event details and link to MotorsportReg.
+            </p>
             <UpdateEventForm org={org} event={event} season={season} />
         </div>
     );

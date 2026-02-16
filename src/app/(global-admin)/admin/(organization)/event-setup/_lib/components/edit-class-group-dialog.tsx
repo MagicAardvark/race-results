@@ -143,7 +143,7 @@ export const EditClassGroupDialog = ({
                     <DialogHeader>
                         <DialogTitle>Edit Class Group</DialogTitle>
                         <DialogDescription asChild>
-                            <div className="text-destructive py-8 text-center">
+                            <div className="text-destructive py-6 text-center">
                                 Class group not found
                             </div>
                         </DialogDescription>

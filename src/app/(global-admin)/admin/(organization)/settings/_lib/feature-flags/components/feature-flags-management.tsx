@@ -1,6 +1,6 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/ui/card";
+import { Card, CardContent } from "@/ui/card";
 import { OrganizationExtended } from "@/dto/organizations";
 import { OrgFeatureFlags } from "@/dto/feature-flags";
 import { Field, FieldGroup, FieldLabel } from "@/ui/field";
@@ -98,12 +98,17 @@ export const FeatureFlagsManagement = ({
     }, [featureFlags]);
 
     return (
-        <Card className="w-full">
-            <CardHeader>
-                <CardTitle>Feature Flags</CardTitle>
-            </CardHeader>
-            <CardContent>
-                <form action={formAction}>
+        <div className="space-y-4">
+            <h1 className="text-2xl font-semibold">Feature Flags</h1>
+            <p className="text-muted-foreground text-sm">
+                Enable or disable features for this organization. Changes take
+                effect immediately and can affect live timing, registration, and
+                display. Toggle only what you need; unnecessary flags may
+                expose incomplete or experimental behavior.
+            </p>
+            <Card className="w-full">
+                <CardContent className="pt-6">
+                    <form action={formAction}>
                     {state.isError && (
                         <div className="text-red-500">{state.message}</div>
                     )}
@@ -166,17 +171,18 @@ export const FeatureFlagsManagement = ({
                                 No feature flags configured
                             </p>
                         )}
-                        <Field orientation="horizontal" className="mt-6">
+                        <div className="flex justify-end gap-2 pt-6">
                             <Button variant="outline" type="button">
                                 Cancel
                             </Button>
                             <Button type="submit" disabled={pending}>
                                 {pending ? "Saving…" : "Save"}
                             </Button>
-                        </Field>
+                        </div>
                     </FieldGroup>
                 </form>
-            </CardContent>
-        </Card>
+                </CardContent>
+            </Card>
+        </div>
     );
 };

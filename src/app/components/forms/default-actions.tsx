@@ -27,15 +27,17 @@ export function DefaultFormActions({
         );
 
     return (
-        <FormActions align="left">
-            {cancelButton}
-            <Button
-                type="submit"
-                disabled={onSubmitDisabled}
-                onClick={onSubmit}
-            >
-                {onSubmitText}
-            </Button>
-        </FormActions>
+        <div className="pt-6">
+            <FormActions align="right">
+                {cancelButton}
+                <Button
+                    type="submit"
+                    disabled={onSubmitDisabled}
+                    onClick={onSubmit}
+                >
+                    {onSubmitText}
+                </Button>
+            </FormActions>
+        </div>
     );
 }

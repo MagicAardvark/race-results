@@ -105,19 +105,25 @@ export default function LinkMsrEventDialog({
                                     form={form}
                                     name="msrEventId"
                                     label="MotorsportReg Event"
-                                    placeholder="Select an event to link"
-                                    items={[
-                                        {
-                                            value: "NO_EVENT",
-                                            label: isLoading
-                                                ? "Loading events..."
-                                                : "Select an event to link",
-                                        },
-                                        ...msrEvents.map((e) => ({
-                                            value: e.id,
-                                            label: e.name,
-                                        })),
-                                    ]}
+                                    placeholder={
+                                        msrEvents.length === 0
+                                            ? "No events available"
+                                            : "Select an event to link"
+                                    }
+                                    items={
+                                        msrEvents.length === 0
+                                            ? []
+                                            : [
+                                                  {
+                                                      value: "NO_EVENT",
+                                                      label: "Select an event to link",
+                                                  },
+                                                  ...msrEvents.map((e) => ({
+                                                      value: e.id,
+                                                      label: e.name,
+                                                  })),
+                                              ]
+                                    }
                                 />
 
                                 <DefaultFormActions

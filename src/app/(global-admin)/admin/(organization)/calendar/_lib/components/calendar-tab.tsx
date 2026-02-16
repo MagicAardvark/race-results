@@ -84,7 +84,7 @@ export function CalendarTab({
 
     if (seasons.length === 0 || !selectedSeason) {
         return (
-            <div className="space-y-6">
+            <div className="space-y-4">
                 <Card>
                     <CardHeader>
                         <CardTitle>Events</CardTitle>
@@ -114,45 +114,42 @@ export function CalendarTab({
     }
 
     return (
-        <div className="space-y-6">
-            <Card>
-                <CardHeader>
-                    <div className="flex items-center justify-between">
-                        <CardTitle>
-                            <Stack
-                                orientation="horizontal"
-                                className="items-center"
-                            >
-                                <div>{selectedSeason.name}</div>
-                                <div>
-                                    <ChangeSeasonDialog
-                                        orgId={orgId}
-                                        seasons={seasons}
-                                        onChange={(seasonSlug: string) => {
-                                            router.push(
-                                                `/admin/calendar/${seasonSlug}`
-                                            );
-                                        }}
-                                    />
-                                </div>
-                                {selectedSeason.isCurrent && (
-                                    <div className="rounded-full bg-green-200 px-2 py-1 text-xs leading-relaxed">
-                                        Active Season
-                                    </div>
-                                )}
-                            </Stack>
-                        </CardTitle>
-                        <CreateEventDialog
+        <div className="space-y-4">
+            <h1 className="text-2xl font-semibold">Calendar</h1>
+            <p className="text-muted-foreground text-sm">
+                View and manage events by season. Add single-day or multi-day
+                events. If MotorsportReg Org ID is set for this org, you can
+                link events to import from MotorsportReg.
+            </p>
+            <Card className="w-full">
+                <CardHeader className="flex flex-row flex-wrap items-center justify-between gap-4 space-y-0">
+                    <Stack
+                        orientation="horizontal"
+                        className="items-center gap-2"
+                    >
+                        <span className="font-medium">
+                            {selectedSeason.name}
+                        </span>
+                        <ChangeSeasonDialog
                             orgId={orgId}
-                            isMsrConfigured={isMsrConfigured}
-                            seasonId={selectedSeason.seasonId}
+                            seasons={seasons}
+                            onChange={(seasonSlug: string) => {
+                                router.push(
+                                    `/admin/calendar/${seasonSlug}`
+                                );
+                            }}
                         />
-                    </div>
-                    <CardDescription>
-                        <p className="leading-relaxed">
-                            The events for the {selectedSeason.name} season.
-                        </p>
-                    </CardDescription>
+                        {selectedSeason.isCurrent && (
+                            <span className="rounded-full bg-green-200 px-2 py-1 text-xs leading-relaxed">
+                                Active Season
+                            </span>
+                        )}
+                    </Stack>
+                    <CreateEventDialog
+                        orgId={orgId}
+                        isMsrConfigured={isMsrConfigured}
+                        seasonId={selectedSeason.seasonId}
+                    />
                 </CardHeader>
                 <CardContent>
                     {events.length === 0 ? (

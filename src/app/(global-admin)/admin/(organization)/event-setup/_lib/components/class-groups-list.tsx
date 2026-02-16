@@ -53,7 +53,7 @@ export const ClassGroupsList = ({
 
     if (classGroups.length === 0) {
         return (
-            <div className="text-muted-foreground py-8 text-center">
+            <div className="text-muted-foreground py-6 text-center">
                 No class groups found. Create one to get started.
             </div>
         );
