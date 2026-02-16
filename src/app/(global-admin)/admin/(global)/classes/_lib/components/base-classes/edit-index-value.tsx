@@ -17,7 +17,7 @@ import {
     DialogTrigger,
 } from "@/ui/dialog";
 import { Field } from "@/ui/field";
-import { zodResolver } from "@hookform/resolvers/zod/dist/zod.js";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { PencilIcon } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -70,7 +70,7 @@ export const EditIndexValueDialog = ({
                     <PencilIcon size={16} />
                 </Button>
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent size="large">
                 <Form onSubmit={form.handleSubmit(onSubmit)}>
                     <Stack>
                         <DialogHeader>

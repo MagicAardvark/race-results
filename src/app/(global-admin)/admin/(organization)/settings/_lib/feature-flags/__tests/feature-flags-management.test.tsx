@@ -16,6 +16,7 @@ describe("FeatureFlagsManagement", () => {
         motorsportregOrgId: null,
         description: null,
         headerImageUrl: null,
+        profileIconUrl: null,
         isPublic: false,
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -47,7 +48,9 @@ describe("FeatureFlagsManagement", () => {
             />
         );
 
-        expect(screen.getByText(/Live Timing/i)).toBeVisible();
+        expect(
+            screen.getByRole("heading", { name: /Live Timing/i })
+        ).toBeVisible();
         expect(screen.getByLabelText(/Pax Enabled/i)).toBeVisible();
         expect(screen.getByLabelText(/Work Run Enabled/i)).toBeVisible();
     });

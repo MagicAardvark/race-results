@@ -6,7 +6,7 @@ import {
 } from "../context/api-key-management-context";
 import { CurrentApiKeyDisplay } from "./current-api-key-display";
 import { Button } from "@/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/ui/card";
+import { Card, CardContent } from "@/ui/card";
 import {
     Empty,
     EmptyContent,
@@ -88,18 +88,25 @@ const ApiKeyList = () => {
 export const ApiKeyManagement = ({ org }: { org: OrganizationExtended }) => {
     return (
         <ApiKeyManagementProvider org={org}>
-            <Card className="w-full">
-                <CardHeader>
-                    <CardTitle>API Keys</CardTitle>
-                </CardHeader>
-                <CardContent>
-                    {org.orgApiKeys.length === 0 ? (
-                        <NoApiKeys />
-                    ) : (
-                        <ApiKeyList />
-                    )}
-                </CardContent>
-            </Card>
+            <div className="space-y-4">
+                <h1 className="text-2xl font-semibold">API Keys</h1>
+                <p className="text-muted-foreground text-sm">
+                    Generate and manage API keys for this organization. Keys
+                    allow external systems to authenticate. Store keys securely
+                    and rotate them if compromised. Generating a new key does
+                    not invalidate the current one until you disable or replace
+                    it.
+                </p>
+                <Card className="w-full">
+                    <CardContent>
+                        {org.orgApiKeys.length === 0 ? (
+                            <NoApiKeys />
+                        ) : (
+                            <ApiKeyList />
+                        )}
+                    </CardContent>
+                </Card>
+            </div>
         </ApiKeyManagementProvider>
     );
 };

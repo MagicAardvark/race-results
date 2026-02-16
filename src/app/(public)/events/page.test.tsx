@@ -17,6 +17,7 @@ vi.mock("@/services/organizations/organization.service", () => ({
                 motorsportregOrgId: "mr-1",
                 description: null,
                 headerImageUrl: null,
+                profileIconUrl: null,
                 isPublic: true,
                 createdAt: new Date(),
                 updatedAt: new Date(),

@@ -27,7 +27,7 @@ import { useState } from "react";
 import { FormDatePicker } from "@/app/components/forms/form-date-picker";
 import { toast } from "sonner";
 import { createEvent } from "@/app/(global-admin)/admin/(organization)/calendar/_lib/actions/create-event";
-import { Button } from "@/ui/button-wrapper";
+import { Button } from "@/ui/button";
 import { useOrgMsrEvents } from "@/hooks/msr/use-org-msr-events";
 import { AlertTriangle } from "lucide-react";
 import { addDays, format } from "date-fns";
@@ -106,13 +106,13 @@ export const CreateEventDialog = ({
             }}
         >
             <DialogTrigger asChild>
-                <Button>Create event</Button>
+                <Button>Create Event</Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-md">
+            <DialogContent size="large">
                 <Form onSubmit={form.handleSubmit(onSubmit)}>
                     <Stack>
                         <DialogHeader>
-                            <DialogTitle>Create event</DialogTitle>
+                            <DialogTitle>Create Event</DialogTitle>
                             <DialogDescription asChild>
                                 <Stack>
                                     <span className="leading-relaxed">
@@ -169,17 +169,24 @@ export const CreateEventDialog = ({
                                                             ? "Loading events…"
                                                             : isMsrError
                                                               ? "Error loading events"
-                                                              : "Select an event"
+                                                              : msrEvents?.length ===
+                                                                  0
+                                                                ? "No events available"
+                                                                : "Select an event"
                                                     }
                                                     items={
-                                                        msrEvents
-                                                            ? msrEvents.map(
-                                                                  (event) => ({
-                                                                      value: event.msrEventId,
-                                                                      label: event.name,
-                                                                  })
-                                                              )
-                                                            : []
+                                                        msrEvents?.length === 0
+                                                            ? []
+                                                            : msrEvents
+                                                              ? msrEvents.map(
+                                                                    (
+                                                                        event
+                                                                    ) => ({
+                                                                        value: event.id,
+                                                                        label: event.name,
+                                                                    })
+                                                                )
+                                                              : []
                                                     }
                                                 />
                                             )}

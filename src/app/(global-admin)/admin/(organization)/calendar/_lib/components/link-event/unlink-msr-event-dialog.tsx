@@ -12,7 +12,7 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/ui/alert-dialog";
-import { Button } from "@/ui/button-wrapper";
+import { Button } from "@/ui/button";
 import { useState } from "react";
 import { toast } from "sonner";
 

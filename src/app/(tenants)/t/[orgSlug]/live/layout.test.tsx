@@ -64,6 +64,7 @@ describe("LiveLayout", () => {
             motorsportregOrgId: null,
             description: null,
             headerImageUrl: null,
+            profileIconUrl: null,
             isPublic: true,
             createdAt: new Date(),
             updatedAt: new Date(),

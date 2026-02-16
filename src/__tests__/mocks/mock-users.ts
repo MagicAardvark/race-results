@@ -1,7 +1,9 @@
 import type { User, UserWithExtendedDetails } from "@/dto/users";
+import { defaultOrg } from "../test-utils";
 
 /**
- * Reusable mock user data for testing
+ * Reusable mock user data for testing.
+ * Uses defaultOrg from test-utils as the canonical org shape for user.orgs.
  */
 
 export const mockUser: User = {
@@ -19,9 +21,7 @@ export const mockUserWithExtendedDetails: UserWithExtendedDetails = {
     orgs: [
         {
             org: {
-                orgId: "org-123",
-                name: "Test Org",
-                slug: "test-org",
+                ...defaultOrg,
             },
             roles: [
                 {
@@ -42,9 +42,7 @@ export const mockAdminUser: UserWithExtendedDetails = {
     orgs: [
         {
             org: {
-                orgId: "org-123",
-                name: "Test Org",
-                slug: "test-org",
+                ...defaultOrg,
             },
             roles: [
                 {

@@ -37,6 +37,16 @@ const ADMIN_NAVIGATION = [
                 href: "/admin/users",
                 roles: [ROLES.admin],
             },
+            {
+                text: "API Keys",
+                href: "/admin/api-keys",
+                roles: [ROLES.admin, ROLES.orgOwner],
+            },
+            {
+                text: "Feature Flags",
+                href: "/admin/feature-flags",
+                roles: [ROLES.admin, ROLES.orgManager, ROLES.orgOwner],
+            },
         ],
     },
     {
@@ -49,7 +59,7 @@ const ADMIN_NAVIGATION = [
             },
             {
                 text: "Class Groups",
-                href: "/admin/event-setup",
+                href: "/admin/class-groups",
                 roles: [ROLES.admin, ROLES.orgManager, ROLES.orgOwner],
             },
         ],

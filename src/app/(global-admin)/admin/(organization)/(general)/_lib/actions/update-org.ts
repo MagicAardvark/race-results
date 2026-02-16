@@ -76,6 +76,31 @@ export async function updateOrganization(
         }
     }
 
+    let profileIconUrl: string | null | undefined = undefined;
+    const removeProfileIcon = formData.get("removeProfileIcon") === "on";
+    const profileIconFile = formData.get("profileIcon") as File | null;
+
+    if (removeProfileIcon) {
+        profileIconUrl = null;
+    } else if (profileIconFile && profileIconFile.size > 0) {
+        try {
+            const blob = await put(
+                `org-profile-icons/${orgId}/${profileIconFile.name}`,
+                profileIconFile,
+                { access: "public" }
+            );
+            profileIconUrl = blob.url;
+        } catch (err) {
+            return {
+                isError: true,
+                message:
+                    err instanceof Error
+                        ? err.message
+                        : "Failed to upload profile icon",
+            };
+        }
+    }
+
     let slug = null;
 
     try {
@@ -85,6 +110,7 @@ export async function updateOrganization(
             motorsportregOrgId,
             description,
             ...(headerImageUrl !== undefined && { headerImageUrl }),
+            ...(profileIconUrl !== undefined && { profileIconUrl }),
             isPublic,
             featureFlags:
                 Object.keys(featureFlags).length > 0 ? featureFlags : undefined,

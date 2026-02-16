@@ -1,4 +1,4 @@
-import { Button } from "@/ui/button-wrapper";
+import { Button } from "@/ui/button";
 import { ConfirmationDialog } from "@/app/components/confirmation-dialog";
 import { RefreshCw, ShieldBan } from "lucide-react";
 

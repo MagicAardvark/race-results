@@ -2,24 +2,22 @@
 
 import { updateEventLink } from "@/app/(global-admin)/admin/(organization)/calendar/_lib/actions/link-event/update-event-link";
 import { linkMsrEventSchema } from "@/app/(global-admin)/admin/(organization)/calendar/_lib/schema";
-import {
-    DefaultFormActions,
-    Form,
-    FormError,
-    FormSelect,
-} from "@/app/components/forms/form";
+import { Form, FormError, FormSelect } from "@/app/components/forms/form";
 import { Stack } from "@/app/components/shared/stack";
 import { useOrgMsrEvents } from "@/hooks/msr/use-org-msr-events";
 import { FormResponse } from "@/types/forms";
-import { Button } from "@/ui/button-wrapper";
+import { Button } from "@/ui/button";
 import {
     Dialog,
+    DialogClose,
     DialogContent,
     DialogDescription,
+    DialogFooter,
     DialogHeader,
     DialogTitle,
     DialogTrigger,
 } from "@/ui/dialog";
+import { Field } from "@/ui/field";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AlertTriangle } from "lucide-react";
 import { useState } from "react";
@@ -37,7 +35,9 @@ export default function LinkMsrEventDialog({
     eventId,
 }: LinkMsrEventDialogProps) {
     const form = useForm<z.infer<typeof linkMsrEventSchema>>({
-        resolver: zodResolver(linkMsrEventSchema),
+        // @hookform/resolvers v5.2.2 types don't fully support Zod v4 yet, but runtime works correctly
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        resolver: zodResolver(linkMsrEventSchema as any),
         defaultValues: {
             msrEventId: "",
         },
@@ -61,7 +61,7 @@ export default function LinkMsrEventDialog({
             <DialogTrigger asChild>
                 <Button>Link Event</Button>
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent size="large">
                 <Form onSubmit={form.handleSubmit(onSubmit)}>
                     <Stack className="relative">
                         <DialogHeader>
@@ -105,32 +105,46 @@ export default function LinkMsrEventDialog({
                                     form={form}
                                     name="msrEventId"
                                     label="MotorsportReg Event"
-                                    placeholder="Select an event to link"
-                                    items={[
-                                        {
-                                            value: "NO_EVENT",
-                                            label: isLoading
-                                                ? "Loading events..."
-                                                : "Select an event to link",
-                                        },
-                                        ...msrEvents.map((e) => ({
-                                            value: e.msrEventId,
-                                            label: e.name,
-                                        })),
-                                    ]}
+                                    placeholder={
+                                        msrEvents.length === 0
+                                            ? "No events available"
+                                            : "Select an event to link"
+                                    }
+                                    items={
+                                        msrEvents.length === 0
+                                            ? []
+                                            : [
+                                                  {
+                                                      value: "NO_EVENT",
+                                                      label: "Select an event to link",
+                                                  },
+                                                  ...msrEvents.map((e) => ({
+                                                      value: e.id,
+                                                      label: e.name,
+                                                  })),
+                                              ]
+                                    }
                                 />
 
-                                <DefaultFormActions
-                                    onCancel={() => {}}
-                                    onSubmitDisabled={
-                                        form.formState.isSubmitting
-                                    }
-                                    onSubmitText={
-                                        form.formState.isSubmitting
-                                            ? "Saving…"
-                                            : "Link Event"
-                                    }
-                                />
+                                <DialogFooter>
+                                    <Field orientation="horizontal">
+                                        <DialogClose asChild>
+                                            <Button variant="outline">
+                                                Cancel
+                                            </Button>
+                                        </DialogClose>
+                                        <Button
+                                            type="submit"
+                                            disabled={
+                                                form.formState.isSubmitting
+                                            }
+                                        >
+                                            {form.formState.isSubmitting
+                                                ? "Saving…"
+                                                : "Save"}
+                                        </Button>
+                                    </Field>
+                                </DialogFooter>
                             </>
                         )}
                     </Stack>

@@ -51,9 +51,12 @@ function DialogContent({
     className,
     children,
     showCloseButton = true,
+    size = "default",
     ...props
 }: React.ComponentProps<typeof DialogPrimitive.Content> & {
     showCloseButton?: boolean;
+    /** "default" = compact; "large" = larger min width for add/edit flows, still full-width on mobile */
+    size?: "default" | "large";
 }) {
     return (
         <DialogPortal>
@@ -61,7 +64,9 @@ function DialogContent({
             <DialogPrimitive.Content
                 data-slot="dialog-content"
                 className={cn(
-                    "bg-background data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 ring-foreground/10 fixed top-1/2 left-1/2 z-50 grid w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 gap-4 rounded-xl p-4 text-sm ring-1 duration-100 sm:max-w-sm",
+                    "bg-background data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 ring-foreground/10 fixed top-1/2 left-1/2 z-50 grid w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 gap-4 rounded-xl p-4 text-sm ring-1 duration-100",
+                    size === "default" && "sm:max-w-sm",
+                    size === "large" && "sm:max-w-2xl sm:min-w-[32rem]",
                     className
                 )}
                 {...props}
