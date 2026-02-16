@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/ui/button-wrapper";
+import { Button } from "@/ui/button";
 import { Calendar } from "@/ui/calendar";
 import { Field, FieldLabel, FieldError } from "@/ui/field";
 import { Popover, PopoverContent, PopoverTrigger } from "@/ui/popover";

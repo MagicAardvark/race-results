@@ -6,7 +6,7 @@ import { Form, FormError, FormSelect } from "@/app/components/forms/form";
 import { Stack } from "@/app/components/shared/stack";
 import { useOrgMsrEvents } from "@/hooks/msr/use-org-msr-events";
 import { FormResponse } from "@/types/forms";
-import { Button } from "@/ui/button-wrapper";
+import { Button } from "@/ui/button";
 import {
     Dialog,
     DialogClose,

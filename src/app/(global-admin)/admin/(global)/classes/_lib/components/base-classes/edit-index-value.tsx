@@ -5,7 +5,7 @@ import { updateIndexValueSchema } from "@/app/(global-admin)/admin/(global)/clas
 import { Form, FormError, FormInput } from "@/app/components/forms/form";
 import { Stack } from "@/app/components/shared/stack";
 import { FormResponse } from "@/types/forms";
-import { Button } from "@/ui/button-wrapper";
+import { Button } from "@/ui/button";
 import {
     Dialog,
     DialogClose,

@@ -9,7 +9,7 @@ import {
 import { CreateNewSeasonForm } from "@/app/(global-admin)/admin/(organization)/calendar/_lib/components/seasons/create-new-season-form";
 import { useState } from "react";
 import { Season } from "@/dto/events/seasons";
-import { Button } from "@/ui/button-wrapper";
+import { Button } from "@/ui/button";
 import { Plus } from "lucide-react";
 
 type CreateNewSeasonDialogProps = {

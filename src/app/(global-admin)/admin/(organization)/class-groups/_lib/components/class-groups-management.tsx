@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Card, CardContent, CardHeader } from "@/ui/card";
-import { Button } from "@/ui/button-wrapper";
+import { Button } from "@/ui/button";
 import { ClassGroupWithClasses } from "@/dto/class-groups";
 import { ClassGroupsList } from "./class-groups-list";
 import { CreateClassGroupDialog } from "./create-class-group-dialog";

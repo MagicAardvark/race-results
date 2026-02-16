@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
 import { renderWithProviders, screen, userEvent } from "@/__tests__/test-utils";
-import { Button } from "./button-wrapper";
+import { Button } from "./button";
 
 describe("Button", () => {
     it("renders children", () => {
@@ -14,10 +14,10 @@ describe("Button", () => {
         expect(button).toBeVisible();
     });
 
-    it("applies flex and cursor-pointer classes", () => {
+    it("applies cursor-pointer and items-center classes", () => {
         renderWithProviders(<Button>Test</Button>);
         const button = screen.getByRole("button", { name: /test/i });
-        expect(button).toHaveClass("flex", "cursor-pointer", "items-center");
+        expect(button).toHaveClass("cursor-pointer", "items-center");
     });
 
     it("passes through button props", () => {

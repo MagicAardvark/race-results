@@ -4,7 +4,7 @@ import { addUserOrganizationRole } from "@/app/actions/user.actions";
 import { Stack } from "@/app/components/shared/stack";
 import { AvailableRole } from "@/dto/roles";
 import { OrgWithRoles } from "@/dto/users";
-import { Button } from "@/ui/button-wrapper";
+import { Button } from "@/ui/button";
 import {
     Dialog,
     DialogClose,

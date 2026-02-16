@@ -27,7 +27,7 @@ import { useState } from "react";
 import { FormDatePicker } from "@/app/components/forms/form-date-picker";
 import { toast } from "sonner";
 import { createEvent } from "@/app/(global-admin)/admin/(organization)/calendar/_lib/actions/create-event";
-import { Button } from "@/ui/button-wrapper";
+import { Button } from "@/ui/button";
 import { useOrgMsrEvents } from "@/hooks/msr/use-org-msr-events";
 import { AlertTriangle } from "lucide-react";
 import { addDays, format } from "date-fns";

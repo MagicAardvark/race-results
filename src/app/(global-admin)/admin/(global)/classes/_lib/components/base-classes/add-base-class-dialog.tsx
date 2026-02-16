@@ -10,7 +10,7 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/ui/dialog";
-import { Button } from "@/ui/button-wrapper";
+import { Button } from "@/ui/button";
 import { Field, FieldSeparator } from "@/ui/field";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";

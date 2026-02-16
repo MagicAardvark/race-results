@@ -8,7 +8,7 @@ import {
     PathValue,
 } from "react-hook-form";
 import { Field, FieldLabel } from "@/ui/field";
-import { Button } from "@/ui/button-wrapper";
+import { Button } from "@/ui/button";
 import { Checkbox } from "@/ui/checkbox";
 import { AvailableBaseClass } from "@/app/(global-admin)/admin/(organization)/class-groups/_lib/types";
 

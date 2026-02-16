@@ -10,7 +10,7 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/ui/alert-dialog";
-import { Button } from "@/ui/button-wrapper";
+import { Button } from "@/ui/button";
 import { TrashIcon } from "lucide-react";
 import { useState } from "react";
 import { deleteEvent } from "@/app/(global-admin)/admin/(organization)/calendar/_lib/actions/delete-event";

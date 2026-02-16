@@ -8,7 +8,7 @@ import { Stack } from "@/app/components/shared/stack";
 import { EventDTO } from "@/dto/events";
 import { Season } from "@/dto/events/seasons";
 import { OrganizationExtended } from "@/dto/organizations";
-import { Button } from "@/ui/button-wrapper";
+import { Button } from "@/ui/button";
 import {
     Card,
     CardContent,

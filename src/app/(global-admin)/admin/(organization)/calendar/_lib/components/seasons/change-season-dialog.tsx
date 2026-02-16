@@ -2,7 +2,7 @@ import { CREATE_NEW_SEASON_VALUE } from "@/app/(global-admin)/admin/(organizatio
 import { CreateNewSeasonForm } from "@/app/(global-admin)/admin/(organization)/calendar/_lib/components/seasons/create-new-season-form";
 import { SelectSeason } from "@/app/(global-admin)/admin/(organization)/calendar/_lib/components/seasons/select-season";
 import { Season } from "@/dto/events/seasons";
-import { Button } from "@/ui/button-wrapper";
+import { Button } from "@/ui/button";
 import {
     Dialog,
     DialogContent,

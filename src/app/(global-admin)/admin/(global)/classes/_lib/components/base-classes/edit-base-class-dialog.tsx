@@ -18,7 +18,7 @@ import {
     DialogTitle,
 } from "@/ui/dialog";
 import { Field } from "@/ui/field";
-import { Button } from "@/ui/button-wrapper";
+import { Button } from "@/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/ui/tabs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";

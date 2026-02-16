@@ -10,7 +10,7 @@ import {
     DialogTitle,
 } from "@/ui/dialog";
 import { Field, FieldGroup } from "@/ui/field";
-import { Button } from "@/ui/button-wrapper";
+import { Button } from "@/ui/button";
 import { Stack } from "@/app/components/shared/stack";
 import { useState } from "react";
 import z from "zod";

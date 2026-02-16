@@ -9,7 +9,7 @@ import {
     TableRow,
 } from "@/ui/table";
 import { ClassGroupWithClasses } from "@/dto/class-groups";
-import { Button } from "@/ui/button-wrapper";
+import { Button } from "@/ui/button";
 import { PencilIcon, TrashIcon, Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import { EditClassGroupDialog } from "./edit-class-group-dialog";
