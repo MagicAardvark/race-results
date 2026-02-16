@@ -10,19 +10,19 @@ const upcomingClass =
 const pastClass = "gap-2 border-muted/50 bg-muted/20 p-4";
 
 export type EventCardProps = {
-    name: string;
+    title: string;
+    subTitle: string | null;
     dateLabel: string;
-    venue?: string;
-    organization?: string;
+    venue: string | null;
     action?: React.ReactNode;
     variant: "upcoming" | "past";
 };
 
 export function EventCard({
-    name,
+    title,
+    subTitle,
     dateLabel,
     venue,
-    organization,
     action,
     variant,
 }: EventCardProps) {
@@ -36,9 +36,9 @@ export function EventCard({
                         isPast ? "text-muted-foreground" : "text-foreground"
                     )}
                 >
-                    {organization ?? name}
+                    {title}
                 </p>
-                {organization && (
+                {subTitle && (
                     <p
                         className={cn(
                             "text-xs font-medium tracking-wide uppercase",
@@ -47,7 +47,7 @@ export function EventCard({
                                 : "text-muted-foreground"
                         )}
                     >
-                        {name}
+                        {subTitle}
                     </p>
                 )}
                 <p

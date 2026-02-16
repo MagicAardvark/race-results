@@ -6,6 +6,7 @@ import {
     EventDTO,
     UpdateEventData,
 } from "@/dto/events";
+import { publicCalendarService } from "@/services/calendar/public-calendar.service";
 
 interface IEventsService {
     getEventConfiguration(): Promise<EventConfiguration>;
@@ -36,8 +37,8 @@ export class EventsService implements IEventsService {
         });
     }
 
-    async getEvents(orgId: string, seasonSlug: string): Promise<EventDetail[]> {
-        const events = await eventsRepository.getEvents(orgId, seasonSlug);
+    async getEvents(orgId: string, seasonId: string): Promise<EventDetail[]> {
+        const events = await eventsRepository.getEvents(orgId, seasonId);
 
         return this.mapEvents(events);
     }
@@ -59,33 +60,47 @@ export class EventsService implements IEventsService {
         const eventEndDate =
             event.isMultiDay && event.endDate ? event.endDate : event.startDate;
 
-        return this.mapEvent(
-            await eventsRepository.create({
-                orgId: event.orgId,
-                seasonId: event.seasonId,
-                name: event.name,
-                startDate: event.startDate,
-                endDate: eventEndDate,
-                msrEventId: event.msrEventId,
-            })
-        );
+        const created = await eventsRepository.create({
+            orgId: event.orgId,
+            seasonId: event.seasonId,
+            name: event.name,
+            startDate: event.startDate,
+            endDate: eventEndDate,
+            msrEventId: event.msrEventId,
+        });
+
+        await publicCalendarService.updateCacheForOrg(event.orgId);
+
+        return this.mapEvent(created);
     }
 
     async updateEvent(event: UpdateEventData): Promise<EventDetail> {
         const eventEndDate =
             event.isMultiDay && event.endDate ? event.endDate : event.startDate;
 
-        return this.mapEvent(
-            await eventsRepository.update(event.eventId, event.orgId, {
+        const updated = await eventsRepository.update(
+            event.eventId,
+            event.orgId,
+            {
                 name: event.name,
                 startDate: event.startDate,
                 endDate: eventEndDate,
-            })
+            }
         );
+
+        await publicCalendarService.updateCacheForOrg(event.orgId);
+
+        return this.mapEvent(updated);
     }
 
     async deleteEvent(eventId: string, orgId: string): Promise<boolean> {
-        return await eventsRepository.delete(eventId, orgId);
+        const result = await eventsRepository.delete(eventId, orgId);
+
+        if (result) {
+            await publicCalendarService.updateCacheForOrg(orgId);
+        }
+
+        return result;
     }
 
     async linkEventToMsrEvent(
@@ -94,6 +109,7 @@ export class EventsService implements IEventsService {
         msrEventId: string
     ): Promise<void> {
         await eventsRepository.linkToMsrEvent(orgId, eventId, msrEventId);
+        await publicCalendarService.updateCacheForOrg(orgId);
     }
 
     async unlinkEventFromMsrEvent(
@@ -101,6 +117,7 @@ export class EventsService implements IEventsService {
         eventId: string
     ): Promise<void> {
         await eventsRepository.linkToMsrEvent(orgId, eventId, null);
+        await publicCalendarService.updateCacheForOrg(orgId);
     }
 
     private mapEvents(events: EventDTO[]): EventDetail[] {

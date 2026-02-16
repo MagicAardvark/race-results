@@ -13,6 +13,7 @@ export interface StoredMsrEventDTO {
     registrationEndTime?: string | null;
     detailUri: string;
     venueId: string;
+    venue?: StoredMsrEventVenueDTO | null;
 }
 
 export interface StoredMsrEventVenueDTO {

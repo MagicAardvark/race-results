@@ -29,7 +29,9 @@ export class EventsRepository implements IEventsRepository {
 
         const rows = await db.query.events.findMany({
             with: {
-                msrEvent: true,
+                msrEvent: {
+                    with: { venue: true },
+                },
             },
             where: { orgId, seasonId, deletedAt: { isNull: true } },
             orderBy: (events, { asc }) => [asc(events.startDate)],
