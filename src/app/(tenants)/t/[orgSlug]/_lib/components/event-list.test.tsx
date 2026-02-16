@@ -68,6 +68,12 @@ describe("EventList", () => {
                 mrEvent: {
                     ...baseMrEvent,
                     detailuri: "https://motorsportreg.com/event/1",
+                    venue: {
+                        id: "v1",
+                        uri: "https://example.com/venue/1",
+                        city: "Boston",
+                        region: "MA",
+                    },
                 },
             }),
         ];
@@ -83,7 +89,18 @@ describe("EventList", () => {
 
     it("renders MR-only event with link", () => {
         const items: EventListItem[] = [
-            createMrItem({ event: { ...baseMrEvent, name: "MR Only Event" } }),
+            createMrItem({
+                event: {
+                    ...baseMrEvent,
+                    name: "MR Only Event",
+                    venue: {
+                        id: "v1",
+                        uri: "https://example.com/venue/1",
+                        city: "Boston",
+                        region: "MA",
+                    },
+                },
+            }),
         ];
         render(<EventList items={items} variant="upcoming" />);
 
@@ -96,7 +113,16 @@ describe("EventList", () => {
     it("renders past variant with View event label", () => {
         const items: EventListItem[] = [
             createMrItem({
-                event: { ...baseMrEvent, name: "Past MR Event" },
+                event: {
+                    ...baseMrEvent,
+                    name: "Past MR Event",
+                    venue: {
+                        id: "v1",
+                        uri: "https://example.com/venue/1",
+                        city: "Boston",
+                        region: "MA",
+                    },
+                },
             }),
         ];
         render(<EventList items={items} variant="past" />);

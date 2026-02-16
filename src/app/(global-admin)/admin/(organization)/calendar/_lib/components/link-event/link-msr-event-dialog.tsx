@@ -114,7 +114,7 @@ export default function LinkMsrEventDialog({
                                                 : "Select an event to link",
                                         },
                                         ...msrEvents.map((e) => ({
-                                            value: e.id,
+                                            value: e.msrEventId,
                                             label: e.name,
                                         })),
                                     ]}

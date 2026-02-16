@@ -4,7 +4,6 @@ import { updateEvent } from "@/app/(global-admin)/admin/(organization)/calendar/
 import LinkMsrEventDialog from "@/app/(global-admin)/admin/(organization)/calendar/_lib/components/link-event/link-msr-event-dialog";
 import UnlinkMsrEventDialog from "@/app/(global-admin)/admin/(organization)/calendar/_lib/components/link-event/unlink-msr-event-dialog";
 import { baseEventSchema } from "@/app/(global-admin)/admin/(organization)/calendar/_lib/schema";
-import { isSameDay } from "date-fns";
 import {
     DefaultFormActions,
     Form,
@@ -14,13 +13,15 @@ import {
 import { FormCheckbox } from "@/app/components/forms/form-checkbox";
 import { FormDatePicker } from "@/app/components/forms/form-date-picker";
 import { Stack } from "@/app/components/shared/stack";
-import { EventDTO } from "@/dto/events";
+import { EventDetail } from "@/dto/events";
 import { OrganizationExtended } from "@/dto/organizations";
 import { FormResponse } from "@/types/forms";
+import { Button } from "@/ui/button-wrapper";
 import { Card, CardContent, CardHeader, CardTitle } from "@/ui/card";
 import { FieldGroup } from "@/ui/field";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AlertTriangle } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
@@ -29,7 +30,7 @@ import z from "zod";
 type UpdateEventDialogProps = {
     org: OrganizationExtended;
     season: string;
-    event: EventDTO;
+    event: EventDetail;
 };
 
 export const UpdateEventForm = ({
@@ -48,7 +49,7 @@ export const UpdateEventForm = ({
             name: event.name,
             startDate: event.startDate,
             // Single-day events are stored with start 00:00, end 23:59 — same calendar day = single-day
-            isMultiDay: !isSameDay(event.startDate, event.endDate),
+            isMultiDay: event.isMultiDay,
             endDate: event.endDate || undefined,
         },
     });
@@ -147,22 +148,50 @@ export const UpdateEventForm = ({
             {isMsrConfigured && (
                 <Card className={`${event.msrEventId ? "" : "bg-red-50"}`}>
                     <CardHeader>
-                        <CardTitle>Linked MSR Event</CardTitle>
+                        <CardTitle className="flex items-center justify-between">
+                            <div>Linked MSR Event</div>
+                            {event.msrEventId && (
+                                <UnlinkMsrEventDialog
+                                    orgId={orgId}
+                                    eventId={event.eventId}
+                                />
+                            )}
+                        </CardTitle>
                     </CardHeader>
                     <CardContent>
                         {event.msrEventId ? (
                             <Stack>
                                 <div>
-                                    This event has been linked to an MSR event.
+                                    <div className="mb-2 font-medium">
+                                        MSR Event Link
+                                    </div>
+                                    <div className="flex">
+                                        <div>
+                                            {event.msrEvent?.detailUri ? (
+                                                <Button asChild>
+                                                    <Link
+                                                        href={
+                                                            event.msrEvent
+                                                                .detailUri
+                                                        }
+                                                        target="_blank"
+                                                    >
+                                                        View on MSR
+                                                    </Link>
+                                                </Button>
+                                            ) : null}
+                                        </div>
+                                    </div>
                                 </div>
                                 <div>
-                                    TODO: Show linked MSR event details here.
+                                    <div className="mb-2 font-medium">Name</div>
+                                    <div>{event.msrEvent?.name}</div>
                                 </div>
                                 <div>
-                                    <UnlinkMsrEventDialog
-                                        orgId={orgId}
-                                        eventId={event.eventId}
-                                    />
+                                    <div className="mb-2 font-medium">
+                                        Description
+                                    </div>
+                                    <div>{event.msrEvent?.description}</div>
                                 </div>
                             </Stack>
                         ) : (

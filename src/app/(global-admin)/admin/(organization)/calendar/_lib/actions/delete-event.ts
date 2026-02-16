@@ -1,8 +1,8 @@
 "use server";
 
 import { ROLES } from "@/constants/global";
-import { orgEventsRepository } from "@/db/repositories/org-events.repo";
 import { requireOrgRole } from "@/lib/auth/require-org-role";
+import { eventsService } from "@/services/events/events.service";
 import { FormResponse } from "@/types/forms";
 import { revalidatePath } from "next/cache";
 
@@ -20,7 +20,7 @@ export async function deleteEvent(
     }
 
     try {
-        const deleted = await orgEventsRepository.delete(eventId, orgId);
+        const deleted = await eventsService.deleteEvent(eventId, orgId);
         if (!deleted) {
             return {
                 isError: true,

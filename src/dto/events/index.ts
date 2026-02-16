@@ -1,3 +1,5 @@
+import { StoredMsrEventDTO } from "@/dto/motorsportreg/stored";
+
 export type ScoringModes = "singlebest";
 
 export type TrophyModes = "topn" | "percentage";
@@ -26,6 +28,11 @@ export interface EventDTO {
     msrEventId: string | null;
     createdAt: Date;
     updatedAt: Date;
+    msrEvent?: StoredMsrEventDTO | null;
+}
+
+export interface EventDetail extends EventDTO {
+    isMultiDay: boolean;
 }
 
 export interface CreateEventData {

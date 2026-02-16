@@ -175,7 +175,7 @@ export const CreateEventDialog = ({
                                                         msrEvents
                                                             ? msrEvents.map(
                                                                   (event) => ({
-                                                                      value: event.id,
+                                                                      value: event.msrEventId,
                                                                       label: event.name,
                                                                   })
                                                               )

@@ -39,7 +39,7 @@ function mrEvent(overrides: Partial<MotorsportRegEvent>): MotorsportRegEvent {
         start: "2026-06-10",
         end: "2026-06-10",
         detailuri: "https://example.com/event",
-        venue: { id: "v1", city: "Boston", region: "MA" },
+        venue: { id: "v1", city: "Boston", region: "MA", uri: "venue-1" },
         ...overrides,
     };
 }
@@ -48,6 +48,7 @@ describe("formatVenue", () => {
     it("joins name, city, and region", () => {
         const venue: Venue = {
             id: "v1",
+            uri: "venue-1",
             city: "Ayer",
             region: "MA",
         };
@@ -57,6 +58,7 @@ describe("formatVenue", () => {
     it("filters out empty parts", () => {
         const venue: Venue = {
             id: "v1",
+            uri: "venue-1",
             city: "",
             region: "MA",
         };

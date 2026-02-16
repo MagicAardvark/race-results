@@ -5,7 +5,7 @@ import { DeleteEventDialog } from "@/app/(global-admin)/admin/(organization)/cal
 import { ChangeSeasonDialog } from "@/app/(global-admin)/admin/(organization)/calendar/_lib/components/seasons/change-season-dialog";
 import { CreateNewSeasonDialog } from "@/app/(global-admin)/admin/(organization)/calendar/_lib/components/seasons/create-new-season-dialog";
 import { Stack } from "@/app/components/shared/stack";
-import { EventDTO } from "@/dto/events";
+import { EventDetail } from "@/dto/events";
 import { Season } from "@/dto/events/seasons";
 import { OrganizationExtended } from "@/dto/organizations";
 import { Button } from "@/ui/button-wrapper";
@@ -24,6 +24,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/ui/table";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/tooltip";
 import { Pencil } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -44,29 +45,20 @@ function formatEventDate(d: Date): string {
     });
 }
 
-function isSingleDayEvent(start: string, end: string): boolean {
-    const startDate = new Date(start);
-    const endDate = new Date(end);
-
-    const sameUtcDay =
-        startDate.getUTCFullYear() === endDate.getUTCFullYear() &&
-        startDate.getUTCMonth() === endDate.getUTCMonth() &&
-        startDate.getUTCDate() === endDate.getUTCDate();
-    const within24Hours =
-        endDate.getTime() - startDate.getTime() < 24 * 60 * 60 * 1000;
-    return sameUtcDay || within24Hours;
-}
-
-function eventDateRange(start: string, end: string): string {
+function eventDateRange(
+    isMultiDay: boolean,
+    start: string,
+    end: string
+): string {
     const startStr = formatEventDate(new Date(start));
-    if (isSingleDayEvent(start, end)) return startStr;
+    if (!isMultiDay) return startStr;
     const endStr = formatEventDate(new Date(end));
     return `${startStr} – ${endStr}`;
 }
 
 type CalendarTabProps = {
     org: OrganizationExtended;
-    events: EventDTO[];
+    events: EventDetail[];
     seasons: Season[];
     selectedSeason: Season | undefined;
 };
@@ -136,7 +128,7 @@ export function CalendarTab({
                                     />
                                 </div>
                                 {selectedSeason.isCurrent && (
-                                    <div className="rounded-full bg-green-200 px-2 py-1 text-xs leading-relaxed">
+                                    <div className="rounded-full bg-green-200 px-2 py-0.5 text-xs leading-relaxed">
                                         Active Season
                                     </div>
                                 )}
@@ -177,11 +169,29 @@ export function CalendarTab({
                             <TableBody>
                                 {events.map((event) => (
                                     <TableRow key={event.eventId}>
-                                        <TableCell className="font-medium">
-                                            {event.name}
+                                        <TableCell>
+                                            <div className="flex h-full items-center gap-2">
+                                                <div className="font-medium">
+                                                    {event.name}
+                                                </div>
+                                                {event.msrEventId && (
+                                                    <Tooltip>
+                                                        <TooltipTrigger asChild>
+                                                            <div className="cursor-pointer rounded-full bg-green-200 px-2 py-0.5 text-[10px] leading-relaxed">
+                                                                MSR
+                                                            </div>
+                                                        </TooltipTrigger>
+                                                        <TooltipContent>
+                                                            This event is linked
+                                                            to an MSR event.
+                                                        </TooltipContent>
+                                                    </Tooltip>
+                                                )}
+                                            </div>
                                         </TableCell>
                                         <TableCell>
                                             {eventDateRange(
+                                                event.isMultiDay,
                                                 event.startDate,
                                                 event.endDate
                                             )}
