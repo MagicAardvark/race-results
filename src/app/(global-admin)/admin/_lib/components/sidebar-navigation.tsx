@@ -12,6 +12,7 @@ import {
     SidebarMenuItem,
 } from "@/ui/sidebar";
 import { NavGroup } from "@/lib/shared/layout/configuration/navigation";
+import { ProfileIconImage } from "@/app/components/profile-icon-image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -40,7 +41,12 @@ export const SidebarNavigation = ({
     roles: Set<string>;
     navItems: NavGroup[];
     organizations: OrgWithRoles[];
-    currentOrg: { orgId: string; name: string; slug: string };
+    currentOrg: {
+        orgId: string;
+        name: string;
+        slug: string;
+        profileIconUrl: string | null;
+    };
 }) => {
     const pathname = usePathname();
     const router = useRouter();
@@ -78,8 +84,16 @@ export const SidebarNavigation = ({
                                     size="lg"
                                     className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
                                 >
-                                    <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
-                                        <Earth className="size-4" />
+                                    <div className="bg-sidebar-primary text-sidebar-primary-foreground relative flex aspect-square size-8 shrink-0 items-center justify-center overflow-hidden rounded-lg">
+                                        {currentOrg.profileIconUrl ? (
+                                            <ProfileIconImage
+                                                src={currentOrg.profileIconUrl}
+                                                alt=""
+                                                className="size-8 overflow-hidden rounded-lg"
+                                            />
+                                        ) : (
+                                            <Earth className="size-4" />
+                                        )}
                                     </div>
                                     <div className="grid flex-1 text-left text-sm leading-tight">
                                         <span className="truncate font-medium">
@@ -100,7 +114,20 @@ export const SidebarNavigation = ({
                                             handleSelectOrg(org.org.slug)
                                         }
                                     >
-                                        {org.org.name}
+                                        <div className="bg-sidebar-primary text-sidebar-primary-foreground relative flex aspect-square size-6 shrink-0 items-center justify-center overflow-hidden rounded-md">
+                                            {org.org.profileIconUrl ? (
+                                                <ProfileIconImage
+                                                    src={org.org.profileIconUrl}
+                                                    alt=""
+                                                    className="size-6 overflow-hidden rounded-md"
+                                                />
+                                            ) : (
+                                                <Earth className="size-3" />
+                                            )}
+                                        </div>
+                                        <span className="ml-2">
+                                            {org.org.name}
+                                        </span>
                                     </DropdownMenuItem>
                                 ))}
                                 {roles.has(ROLES.admin) && (

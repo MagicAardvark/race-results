@@ -1,0 +1,1 @@
+ALTER TABLE "orgs" ADD COLUMN "profile_icon_url" text;

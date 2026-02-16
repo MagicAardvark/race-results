@@ -1,5 +1,6 @@
 "use client";
 
+import { ProfileIconImage } from "@/app/components/profile-icon-image";
 import {
     ACCEPT_IMAGE,
     ImageUploadActions,
@@ -10,24 +11,22 @@ import { useImageFileUpload } from "@/app/(global-admin)/admin/(organization)/(g
 import { Field, FieldLabel } from "@/ui/field";
 import { cn } from "@/lib/utils";
 import { ImagePlusIcon } from "lucide-react";
-import Image from "next/image";
 
-const INPUT_NAME = "headerImage";
+const INPUT_NAME = "profileIcon";
 
 const PREVIEW_CONTAINER_CLASS =
-    "bg-muted group relative aspect-[2/1] w-full max-w-xl overflow-hidden rounded-lg border text-left";
-const CHANGE_LABEL_CLASS =
-    "rounded-md px-4 py-2 text-sm font-medium shadow-sm";
+    "bg-muted group relative flex aspect-square w-16 items-center justify-center overflow-hidden rounded-lg border text-left";
+const CHANGE_LABEL_CLASS = "rounded px-2 py-1 text-xs font-medium shadow-sm";
 
-interface HeaderImageUploadProps {
-    headerImageUrl: string | null;
+interface ProfileIconUploadProps {
+    profileIconUrl: string | null;
     orgName: string;
 }
 
-export function HeaderImageUpload({
-    headerImageUrl,
+export function ProfileIconUpload({
+    profileIconUrl,
     orgName,
-}: HeaderImageUploadProps) {
+}: ProfileIconUploadProps) {
     const {
         fileInputRef,
         inputId,
@@ -42,28 +41,30 @@ export function HeaderImageUpload({
         handleDragLeave,
         handleRemove,
         openFilePicker,
-    } = useImageFileUpload(headerImageUrl);
+    } = useImageFileUpload(profileIconUrl);
 
     return (
         <Field>
-            <FieldLabel>Header Image</FieldLabel>
+            <FieldLabel>Profile Icon</FieldLabel>
+            <p className="text-muted-foreground mb-2 text-sm">
+                Shown in various places in the app, including the sidebar. Square
+                images work best.
+            </p>
             {removeChecked && (
-                <input type="hidden" name="removeHeaderImage" value="on" />
+                <input type="hidden" name="removeProfileIcon" value="on" />
             )}
-            <div className="mt-2 space-y-3">
+            <div className="space-y-3">
                 {displayUrl && (
                     <button
                         type="button"
                         onClick={openFilePicker}
                         className={PREVIEW_CONTAINER_CLASS}
-                        aria-label="Change header image"
+                        aria-label="Change profile icon"
                     >
-                        <Image
+                        <ProfileIconImage
                             src={displayUrl}
-                            alt={`${orgName} header`}
-                            fill
-                            className="object-cover"
-                            unoptimized
+                            alt={`${orgName} profile icon`}
+                            className="aspect-square w-16 rounded-lg"
                         />
                         <ImageUploadChangeOverlay
                             changeLabelClassName={CHANGE_LABEL_CLASS}
@@ -74,27 +75,15 @@ export function HeaderImageUpload({
                 {!displayUrl && (
                     <label
                         htmlFor={inputId}
-                        className="border-border bg-muted/30 hover:bg-muted/50 has-[:focus-visible]:ring-ring flex min-h-[140px] w-full max-w-xl cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border border-dashed px-6 py-8 transition-colors has-[:focus-visible]:ring-2"
+                        className={cn(
+                            "border-border bg-muted/30 hover:bg-muted/50 has-[:focus-visible]:ring-ring flex aspect-square w-16 cursor-pointer flex-col items-center justify-center gap-1 rounded-lg border border-dashed transition-colors has-[:focus-visible]:ring-2",
+                            isDragging && "bg-primary/10"
+                        )}
                         onDrop={handleDrop}
                         onDragOver={handleDragOver}
                         onDragLeave={handleDragLeave}
                     >
-                        <div
-                            className={cn(
-                                "flex size-14 items-center justify-center rounded-full transition-colors",
-                                isDragging
-                                    ? "bg-primary/10 text-primary"
-                                    : "text-muted-foreground bg-muted"
-                            )}
-                        >
-                            <ImagePlusIcon className="size-8" />
-                        </div>
-                        <span className="text-foreground font-medium">
-                            Select image to upload
-                        </span>
-                        <span className="text-muted-foreground text-sm">
-                            or drag and drop
-                        </span>
+                        <ImagePlusIcon className="text-muted-foreground size-6" />
                     </label>
                 )}
 

@@ -1,7 +1,7 @@
 import { orgEventsRepository } from "@/db/repositories/org-events.repo";
-import { MAIN_SITE_URL } from "@/constants/global";
 import { tenantService } from "@/services/tenants/tenant.service";
 import { motorsportRegService } from "@/services/motorsportreg/motorsportreg.service";
+import { ProfileIconImage } from "@/app/components/profile-icon-image";
 import Link from "next/link";
 import { Button } from "@/ui/button";
 import { ArrowLeftIcon } from "lucide-react";
@@ -54,7 +54,7 @@ export default async function Page() {
                 role="banner"
             >
                 <Button variant="ghost" size="sm" asChild>
-                    <Link href={MAIN_SITE_URL}>
+                    <Link href="/">
                         <ArrowLeftIcon className="mr-2 h-4 w-4" />
                         Back to Organizations
                     </Link>
@@ -71,19 +71,23 @@ export default async function Page() {
             </header>
 
             <main className="contents">
-                <div className="mb-8">
-                    <h1 className="text-3xl font-bold sm:text-4xl">
-                        {org.name}
-                    </h1>
-                    {org.description ? (
-                        <p className="text-muted-foreground mt-2 max-w-2xl">
-                            {org.description}
-                        </p>
-                    ) : org.motorsportregOrgId ? (
-                        <p className="text-muted-foreground mt-2">
-                            View upcoming events and results for this
-                            organization
-                        </p>
+                <div className="mb-8 flex items-start gap-4">
+                    <div className="min-w-0 flex-1">
+                        <h1 className="text-3xl font-bold sm:text-4xl">
+                            {org.name}
+                        </h1>
+                        {org.description ? (
+                            <p className="text-muted-foreground mt-2 max-w-2xl">
+                                {org.description}
+                            </p>
+                        ) : null}
+                    </div>
+                    {org.profileIconUrl ? (
+                        <ProfileIconImage
+                            src={org.profileIconUrl}
+                            alt=""
+                            className="size-28 shrink-0 overflow-hidden rounded-xl bg-muted sm:size-32"
+                        />
                     ) : null}
                 </div>
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { HeaderImageUpload } from "./header-image-upload";
+import { ProfileIconUpload } from "./profile-icon-upload";
 import { Button } from "@/ui/button";
 import { Card, CardContent } from "@/ui/card";
 import { Checkbox } from "@/ui/checkbox";
@@ -51,6 +52,10 @@ export const OrganizationInformation = ({
                         <FieldGroup>
                             <HeaderImageUpload
                                 headerImageUrl={org.headerImageUrl}
+                                orgName={org.name}
+                            />
+                            <ProfileIconUpload
+                                profileIconUrl={org.profileIconUrl}
                                 orgName={org.name}
                             />
                             <div className="grid grid-cols-2 gap-4">

@@ -77,6 +77,7 @@ export class UserService implements IUserService {
                         orgId: org.orgId,
                         name: org.name,
                         slug: org.slug,
+                        profileIconUrl: org.profileIconUrl ?? null,
                     },
                     roles: user.assignedGlobalRoles.map((role) => ({
                         roleId: role.roleId,
@@ -98,6 +99,7 @@ export class UserService implements IUserService {
                     orgId: org.orgId,
                     name: org.name,
                     slug: org.slug,
+                    profileIconUrl: org.profileIconUrl ?? null,
                 },
                 roles: value.map((value) => ({
                     roleId: value.roleId,
