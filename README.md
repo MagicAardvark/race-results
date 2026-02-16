@@ -51,6 +51,7 @@ This platform enables motorsports organizations to:
     - **Feature Flags** (`/admin/feature-flags`) - Toggle PAX Results and Work/Run Order per organization
     - **Base Classes** (`/admin/classes`) - Global car class configuration (admin only)
     - **Class Groups** (`/admin/class-groups`) - Group base classes per organization for event registration and results
+
 ### API Access
 
 - **API Key Management** - Secure API access for organizations

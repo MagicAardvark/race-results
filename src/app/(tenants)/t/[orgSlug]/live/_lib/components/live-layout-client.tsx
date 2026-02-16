@@ -3,26 +3,23 @@
 import { usePathname, useRouter } from "next/navigation";
 import { Button } from "@/ui/button";
 import { RefreshCw } from "lucide-react";
-import { getNavigationPages } from "../utils/navigation";
-import { useLiveData } from "../hooks/useLiveData";
-import { useState, useMemo, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { ClientTenantLink } from "@/app/(tenants)/t/_lib/components/client-tenant-link";
+import type { NavigationPage } from "../utils/navigation";
 
 export function LiveLayoutClient({
     children,
     basePath,
+    navigationPages,
 }: {
     children: React.ReactNode;
     basePath: string;
+    /** Nav items computed on server from feature flags (SSR). */
+    navigationPages: NavigationPage[];
 }) {
     const pathname = usePathname();
     const router = useRouter();
-    const { featureFlags } = useLiveData();
     const [isRefreshing, setIsRefreshing] = useState(false);
-    const navigationPages = useMemo(
-        () => getNavigationPages(featureFlags),
-        [featureFlags]
-    );
 
     const handleRefresh = useCallback(async () => {
         setIsRefreshing(true);

@@ -118,9 +118,7 @@ export const ClassGroupsList = ({
                                         variant="outline"
                                         size="sm"
                                         aria-label={`Edit ${group.shortName}`}
-                                        onClick={() =>
-                                            setEditingGroup(group)
-                                        }
+                                        onClick={() => setEditingGroup(group)}
                                     >
                                         <PencilIcon size={16} />
                                     </Button>
