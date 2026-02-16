@@ -16,7 +16,7 @@ import { Stack } from "@/app/components/shared/stack";
 import { EventDetail } from "@/dto/events";
 import { OrganizationExtended } from "@/dto/organizations";
 import { FormResponse } from "@/types/forms";
-import { Button } from "@/ui/button-wrapper";
+import { Button } from "@/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/ui/card";
 import { FieldGroup } from "@/ui/field";
 import { zodResolver } from "@hookform/resolvers/zod";
