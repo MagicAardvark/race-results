@@ -127,8 +127,7 @@ src/
 │   │       └── page.tsx        # Tenant home page (Upcoming / Past events)
 │   │           └── _lib/
 │   │               ├── components/  # EventCard, EventList, EventsSection, etc.
-│   │               ├── events/      # merge-events.ts (org + MotorsportReg)
-│   │               └── utils/       # date-utils.ts
+│   │               └── events/      # merge-events.ts (org + MotorsportReg)
 │   └── components/              # App-level shared components
 │       ├── profile-icon-image.tsx  # Shared org profile icon (sidebar, cards, tenant header)
 │       ├── confirmation-dialog.tsx
@@ -153,9 +152,11 @@ src/
 │   ├── tenants/                 # Tenant service
 │   └── users/                   # User service
 ├── hooks/                       # Custom React hooks
-│   └── admin/
-│       └── use-api-key-actions.ts  # API key management hook
 ├── lib/                         # Shared utilities
+│   ├── date-utils.ts            # Date formatting (formatDate, formatDateRange, getDateString, formatWithDateAndTime, getEffectiveDateRangeForYear)
+│   ├── generate-slug.ts
+│   ├── middleware/              # Request routing (used by src/proxy.ts)
+│   └── ...                      # Auth, errors, mask, etc.
 └── context/                     # React Context providers
 ```
 
@@ -189,7 +190,7 @@ src/
 - **Public events**: `/events` - All organizations’ events in one list
 - **Global admin**: `/(global-admin)/admin/*`
 - **Global API**: `/(global-api)/api/*` - Public API endpoints for data ingestion
-- **Route guards**: Enforced in `layout.tsx` files as well as `proxy.ts`
+- **Route guards**: Enforced in `layout.tsx` files as well as `src/proxy.ts` (Next.js 16 proxy convention)
 
 ### Shared Layout System
 
@@ -266,7 +267,7 @@ The application uses a consistent header across all pages for unified navigation
 
 `users.json` seeding data requires `.env` variables containing the values for `authProviderId`.
 
-Envrionment variables will be matched in the format of `AUTHPROVIDER_ID_DisplayName`.
+Environment variables will be matched in the format of `AUTHPROVIDER_ID_DisplayName`.
 
 Example:
 
@@ -484,6 +485,7 @@ These checks help maintain code quality and prevent broken code from being commi
 - **Tenant Context**: Always passed via headers, never inferred from URL
 - **Import Conventions**:
     - Design system: `@/ui/*`
+    - Shared lib (date, slug, auth, etc.): `@/lib/*`
     - Page components: `@/app/(route-group)/path/components/*`
     - Shared components: `@/app/components/shared/*`
 
