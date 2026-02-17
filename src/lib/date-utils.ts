@@ -6,20 +6,28 @@ const DATE_DISPLAY_OPTIONS: Intl.DateTimeFormatOptions = {
 };
 
 /**
- * Formats a date string to a human-readable format (e.g. "Thu, June 10, 2024")
- * Handles date strings in YYYY-MM-DD format without timezone issues
+ * Parses a date string to a local Date. Prefer YYYY-MM-DD to avoid timezone shifts.
  */
-export function formatDate(dateString: string): string {
+function parseToDate(dateString: string): Date {
     const parts = dateString.split("-");
     if (parts.length === 3) {
         const year = parseInt(parts[0]!, 10);
         const month = parseInt(parts[1]!, 10) - 1;
         const day = parseInt(parts[2]!, 10);
-        const date = new Date(year, month, day);
-        return date.toLocaleDateString("en-US", DATE_DISPLAY_OPTIONS);
+        return new Date(year, month, day);
     }
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", DATE_DISPLAY_OPTIONS);
+    return new Date(dateString);
+}
+
+/**
+ * Formats a date string to a human-readable format (e.g. "Thu, June 10, 2024")
+ * Handles date strings in YYYY-MM-DD format without timezone issues
+ */
+export function formatDate(dateString: string): string {
+    return parseToDate(dateString).toLocaleDateString(
+        "en-US",
+        DATE_DISPLAY_OPTIONS
+    );
 }
 
 /**
@@ -52,7 +60,33 @@ export function formatDateRange(
 ): string {
     const startStr = getDateString(start);
     const endStr = getDateString(end);
-    const startFormatted = formatDate(startStr);
-    if (startStr === endStr) return startFormatted;
-    return `${startFormatted} – ${formatDate(endStr)}`;
+    const [startFormatted, endFormatted] = [startStr, endStr].map(formatDate);
+    return startStr === endStr
+        ? startFormatted
+        : `${startFormatted} – ${endFormatted}`;
+}
+
+const DATE_AND_TIME_OPTIONS: Intl.DateTimeFormatOptions = {
+    dateStyle: "medium",
+    timeStyle: "short",
+};
+
+/**
+ * Formats a Date for display with date and time (e.g. "Jan 15, 2024, 2:30 PM")
+ */
+export function formatWithDateAndTime(date: Date): string {
+    return new Intl.DateTimeFormat("en-US", DATE_AND_TIME_OPTIONS).format(date);
+}
+
+/**
+ * Returns the effective date range for a calendar year in EST (Jan 1 00:00:00 – Dec 31 23:59:59).
+ * Used for class index values and other year-bounded effective dates.
+ */
+export function getEffectiveDateRangeForYear(year: number): {
+    effectiveFrom: Date;
+    effectiveTo: Date;
+} {
+    const effectiveFrom = new Date(`${year}-01-01T00:00:00-05:00`);
+    const effectiveTo = new Date(`${year}-12-31T23:59:59-05:00`);
+    return { effectiveFrom, effectiveTo };
 }

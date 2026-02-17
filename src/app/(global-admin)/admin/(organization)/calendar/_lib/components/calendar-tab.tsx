@@ -28,33 +28,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/tooltip";
 import { Pencil } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-
-function formatEventDate(d: Date): string {
-    const parts = d.toISOString().slice(0, 10).split("-");
-    if (parts.length !== 3) return d.toLocaleDateString();
-    const [y, m, day] = parts;
-    const date = new Date(
-        parseInt(y!, 10),
-        parseInt(m!, 10) - 1,
-        parseInt(day!, 10)
-    );
-    return date.toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-    });
-}
-
-function eventDateRange(
-    isMultiDay: boolean,
-    start: string,
-    end: string
-): string {
-    const startStr = formatEventDate(new Date(start));
-    if (!isMultiDay) return startStr;
-    const endStr = formatEventDate(new Date(end));
-    return `${startStr} – ${endStr}`;
-}
+import { formatDateRange } from "@/lib/date-utils";
 
 type CalendarTabProps = {
     org: OrganizationExtended;
@@ -182,8 +156,7 @@ export function CalendarTab({
                                             </div>
                                         </TableCell>
                                         <TableCell>
-                                            {eventDateRange(
-                                                event.isMultiDay,
+                                            {formatDateRange(
                                                 event.startDate,
                                                 event.endDate
                                             )}
