@@ -14,7 +14,7 @@ const gapClasses: Record<string, string> = {
 
 const orientationClasses: Record<string, string> = {
     vertical: "flex-col",
-    horizontal: "flex-row",
+    horizontal: "flex-row items-center",
 };
 
 export const Stack = ({

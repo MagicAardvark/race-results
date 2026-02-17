@@ -46,6 +46,20 @@ export const OrganizationInformation = ({
                             name={nameof<OrganizationExtended>("orgId")}
                             value={org.orgId}
                         />
+                        {org.headerImageUrl && (
+                            <input
+                                type="hidden"
+                                name="currentHeaderImageUrl"
+                                value={org.headerImageUrl}
+                            />
+                        )}
+                        {org.profileIconUrl && (
+                            <input
+                                type="hidden"
+                                name="currentProfileIconUrl"
+                                value={org.profileIconUrl}
+                            />
+                        )}
 
                         <FieldGroup>
                             <HeaderImageUpload
