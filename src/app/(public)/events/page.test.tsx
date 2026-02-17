@@ -1,35 +1,31 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@/__tests__/test-utils";
 import EventsPage from "./page";
+import { publicCalendarService } from "@/services/calendar/public-calendar.service";
 
-vi.mock("@/db/repositories/org-events.repo", () => ({
-    orgEventsRepository: {
-        listByOrgId: vi.fn().mockResolvedValue([]),
-    },
-}));
-vi.mock("@/services/organizations/organization.service", () => ({
-    organizationService: {
-        getAllOrganizations: vi.fn().mockResolvedValue([
-            {
-                orgId: "org-1",
-                name: "Test Org",
-                slug: "test-org",
-                motorsportregOrgId: "mr-1",
-                description: null,
-                headerImageUrl: null,
-                profileIconUrl: null,
-                isPublic: true,
-                createdAt: new Date(),
-                updatedAt: new Date(),
-                deletedAt: null,
-            },
-        ]),
-    },
-}));
-vi.mock("@/services/motorsportreg/motorsportreg.service", () => ({
-    motorsportRegService: {
-        getOrganizationCalendar: vi.fn().mockResolvedValue({
-            response: { events: [] },
+vi.mock("@/services/calendar/public-calendar.service", () => ({
+    publicCalendarService: {
+        getPublicCalendar: vi.fn().mockResolvedValue({
+            past: [],
+            upcoming: [
+                {
+                    eventId: "evt-1",
+                    org: {
+                        orgId: "org-1",
+                        name: "Test Org",
+                        slug: "test-org",
+                    },
+                    slug: "org-event",
+                    name: "Org Event",
+                    description: null,
+                    startDate: "2026-06-10",
+                    startTime: "00:00:00",
+                    endDate: "2026-06-10",
+                    endTime: "23:59:59",
+                    msrEventLink: null,
+                    location: null,
+                },
+            ],
         }),
     },
 }));
@@ -48,12 +44,18 @@ describe("Events page", () => {
     });
 
     it("renders Upcoming Events section", async () => {
+        vi.mocked(publicCalendarService.getPublicCalendar).mockResolvedValue({
+            past: [],
+            upcoming: [],
+        });
+
         const jsx = await EventsPage();
         render(jsx);
 
         expect(
             screen.getByRole("heading", { name: "Upcoming Events" })
         ).toBeVisible();
+
         expect(
             screen.getByText("No upcoming events scheduled. Check back soon.")
         ).toBeVisible();

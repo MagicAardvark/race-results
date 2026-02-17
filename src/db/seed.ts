@@ -9,6 +9,8 @@ import {
     userGlobalRoles,
     users,
     seasons,
+    msrEvents,
+    msrEventVenues,
 } from "./schema";
 import {
     baseClasses,
@@ -20,6 +22,8 @@ import {
 } from "@/db/tables/classes";
 import { generateApiKey } from "@/lib/auth/generate-api-key";
 import { generateSlug } from "@/lib/generate-slug";
+import { motorsportRegService } from "@/services/motorsportreg/motorsportreg.service";
+import { Venue } from "@/dto/motorsportreg";
 
 /**
  * Feature flag configuration for organizations
@@ -122,6 +126,7 @@ export async function configureOrgs() {
 
     const orgDefaultFeatureFlags = [];
     const orgDefaultApiKeys = [];
+    const msrOrgIds = [];
 
     for (const org of insertedOrgs) {
         const flags = getOrgFeatureFlags(org.slug);
@@ -133,11 +138,19 @@ export async function configureOrgs() {
             orgId: org.orgId,
             apiKey: generateApiKey(),
         });
+
+        if (org.motorsportregOrgId) {
+            msrOrgIds.push({
+                orgId: org.orgId,
+                motorsportregOrgId: org.motorsportregOrgId,
+            });
+        }
     }
 
     await db.insert(featureFlags).values(orgDefaultFeatureFlags);
     await db.insert(orgApiKeys).values(orgDefaultApiKeys);
     await configureOrgEvents(insertedOrgs);
+    await importMsrEvents(msrOrgIds);
 }
 
 export async function configureOrgEvents(
@@ -192,6 +205,54 @@ export async function configureOrgEvents(
             await db.insert(events).values(values);
         }
     }
+}
+
+export async function importMsrEvents(
+    msrOrgIds: { orgId: string; motorsportregOrgId: string }[]
+) {
+    await db.delete(msrEvents);
+    await db.delete(msrEventVenues);
+
+    const events = [];
+    const venues = new Map<string, Venue>();
+
+    for (const msrOrgId of msrOrgIds) {
+        const msrEvents = await motorsportRegService
+            .getOrganizationCalendar(msrOrgId.motorsportregOrgId)
+            .then((r) => r.response.events);
+
+        for (const event of msrEvents) {
+            events.push({
+                msrEventId: event.id,
+                orgId: msrOrgId.orgId,
+                name: event.name,
+                description: event.description,
+                image: event.image?.standard ?? null,
+                type: event.type,
+                start: event.start,
+                end: event.end,
+                detailUri: event.detailuri,
+                venueId: event.venue.uri,
+            });
+
+            if (event.venue && !venues.has(event.venue.uri)) {
+                venues.set(event.venue.uri, event.venue);
+            }
+        }
+    }
+
+    const venuesMapped = Array.from(venues.values()).map((v) => ({
+        msrEventVenueId: v.uri,
+        city: v.city,
+        region: v.region,
+        country: v.country,
+        postalCode: v.postalCode,
+        lat: (v.geo?.coordinates?.[0] ?? null)?.toString(),
+        lng: (v.geo?.coordinates?.[1] ?? null)?.toString(),
+    }));
+
+    await db.insert(msrEventVenues).values(venuesMapped);
+    await db.insert(msrEvents).values(events);
 }
 
 export async function configureUsers() {

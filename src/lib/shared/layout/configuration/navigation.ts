@@ -64,6 +64,16 @@ const ADMIN_NAVIGATION = [
             },
         ],
     },
+    {
+        name: "Backend",
+        items: [
+            {
+                text: "Calendar Cache",
+                href: "/admin/public-calendar",
+                roles: [ROLES.admin],
+            },
+        ],
+    },
 ];
 
 export const getNavigationConfiguration = (roles: string[]): NavGroup[] => {

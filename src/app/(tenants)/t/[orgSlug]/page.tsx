@@ -1,51 +1,22 @@
-import { orgEventsRepository } from "@/db/repositories/org-events.repo";
 import { tenantService } from "@/services/tenants/tenant.service";
-import { motorsportRegService } from "@/services/motorsportreg/motorsportreg.service";
 import { ProfileIconImage } from "@/app/components/profile-icon-image";
 import Link from "next/link";
 import { Button } from "@/ui/button";
 import { ArrowLeftIcon } from "lucide-react";
 import { CgMediaLive as LiveIcon } from "react-icons/cg";
 import { LIVE_TIMING_LABEL } from "@/app/components/shared/live-timing";
-import type { Event as MotorsportRegEvent } from "@/dto/motorsportreg";
-import { getDateString } from "./_lib/utils/date-utils";
-import { mergeOrgAndMrEvents } from "./_lib/events/merge-events";
 import { EventsSection } from "./_lib/components/events-section";
 import { EventList } from "./_lib/components/event-list";
 import { ClientTenantLink } from "@/app/(tenants)/t/_lib/components/client-tenant-link";
 import { getTenantBasePath } from "@/app/(tenants)/t/_lib/utils/get-tenant-base-path";
-import { seasonsService } from "@/services/events/seasons.service";
+import { publicCalendarService } from "@/services/calendar/public-calendar.service";
 
 export default async function Page() {
     const org = await tenantService.getTenant();
     const basePath = await getTenantBasePath();
-    const currentSeason = (
-        await seasonsService.getSeasonsForOrg(org.orgId)
-    ).filter((season) => season.isCurrent)[0];
-
-    const [orgEvents, events] = await Promise.all([
-        orgEventsRepository.listByOrgIdAndSeasonId(
-            currentSeason.seasonId,
-            org.orgId
-        ),
-        org.motorsportregOrgId
-            ? motorsportRegService
-                  .getOrganizationCalendar(org.motorsportregOrgId, {
-                      exclude_cancelled: true,
-                  })
-                  .then((r) => r.response.events)
-                  .catch((err) => {
-                      console.error(
-                          "Failed to fetch MotorsportReg events:",
-                          err
-                      );
-                      return [] as MotorsportRegEvent[];
-                  })
-            : Promise.resolve([] as MotorsportRegEvent[]),
-    ]);
-
-    const today = getDateString(new Date());
-    const { upcoming, past } = mergeOrgAndMrEvents(orgEvents, events, today);
+    const { past, upcoming } = await publicCalendarService.getPublicCalendar(
+        org.slug
+    );
 
     return (
         <div className="container mx-auto px-4 py-8">
@@ -100,7 +71,11 @@ export default async function Page() {
                 />
                 {upcoming.length > 0 && (
                     <div className="mt-6 sm:mt-8">
-                        <EventList items={upcoming} variant="upcoming" />
+                        <EventList
+                            items={upcoming}
+                            variant="upcoming"
+                            displayMode="single-org"
+                        />
                     </div>
                 )}
 
@@ -113,7 +88,11 @@ export default async function Page() {
                             hasItems
                         />
                         <div className="mt-6 sm:mt-8">
-                            <EventList items={past} variant="past" />
+                            <EventList
+                                items={past}
+                                variant="past"
+                                displayMode="single-org"
+                            />
                         </div>
                     </>
                 )}

@@ -1,12 +1,14 @@
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@/__tests__/test-utils";
-import { EventCard } from "./event-card";
+import { EventCard } from "@/app/(tenants)/t/[orgSlug]/_lib/components";
 
 describe("EventCard", () => {
     it("renders name and dateLabel", () => {
         render(
             <EventCard
-                name="Test Event"
+                title="Test Event"
+                subTitle={null}
+                venue={null}
                 dateLabel="Mon, June 10, 2026"
                 variant="upcoming"
             />
@@ -19,7 +21,8 @@ describe("EventCard", () => {
     it("renders venue when provided", () => {
         render(
             <EventCard
-                name="Test Event"
+                title="Test Event"
+                subTitle={null}
                 dateLabel="Mon, June 10, 2026"
                 venue="Devens, Ayer, MA"
                 variant="upcoming"
@@ -29,12 +32,13 @@ describe("EventCard", () => {
         expect(screen.getByText("Devens, Ayer, MA")).toBeVisible();
     });
 
-    it("renders organization when provided (all-clubs view)", () => {
+    it("renders title and subtitle when provided", () => {
         render(
             <EventCard
-                name="Event 1"
+                title="Boston BMW CCA"
+                subTitle="Event 1"
                 dateLabel="Mon, June 10, 2026"
-                organization="Boston BMW CCA"
+                venue={null}
                 variant="upcoming"
             />
         );
@@ -46,7 +50,9 @@ describe("EventCard", () => {
     it("renders action when provided", () => {
         render(
             <EventCard
-                name="Test Event"
+                title="Test Event"
+                subTitle={null}
+                venue={null}
                 dateLabel="Mon, June 10, 2026"
                 action={<button type="button">View event</button>}
                 variant="upcoming"
@@ -61,7 +67,9 @@ describe("EventCard", () => {
     it("renders as list item", () => {
         const { container } = render(
             <EventCard
-                name="Test Event"
+                title="Test Event"
+                subTitle={null}
+                venue={null}
                 dateLabel="Mon, June 10, 2026"
                 variant="past"
             />
@@ -69,18 +77,5 @@ describe("EventCard", () => {
 
         const li = container.querySelector("li");
         expect(li).toBeInTheDocument();
-    });
-
-    it("does not show organization label when organization is not provided", () => {
-        render(
-            <EventCard
-                name="Single Event"
-                dateLabel="Mon, June 10, 2026"
-                variant="upcoming"
-            />
-        );
-
-        expect(screen.getByText("Single Event")).toBeVisible();
-        expect(screen.queryByText(/Boston/)).not.toBeInTheDocument();
     });
 });

@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@/__tests__/test-utils";
-import { EventsSection } from "./events-section";
+import { EventsSection } from "@/app/(tenants)/t/[orgSlug]/_lib/components";
 
 describe("EventsSection", () => {
     it("renders title and uses id for aria-labelledby", () => {

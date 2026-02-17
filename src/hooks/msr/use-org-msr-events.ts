@@ -1,11 +1,10 @@
+import { StoredMsrEventDTO } from "@/dto/motorsportreg/stored";
 import { useEffect, useState } from "react";
 
 export const useOrgMsrEvents = (isMsrConfigured: boolean) => {
     const [isLoading, setIsLoading] = useState(true);
     const [isError, setIsError] = useState(false);
-    const [msrEvents, setMsrEvents] = useState<{ id: string; name: string }[]>(
-        []
-    );
+    const [msrEvents, setMsrEvents] = useState<StoredMsrEventDTO[]>([]);
 
     useEffect(() => {
         const fetchData = async () => {

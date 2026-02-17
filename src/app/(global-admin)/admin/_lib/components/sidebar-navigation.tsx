@@ -29,8 +29,7 @@ import { CreateOrgDialog } from "@/app/(global-admin)/admin/_lib/components/orga
 import { useState } from "react";
 import { ROLES } from "@/constants/global";
 import { useRouter } from "next/navigation";
-import { Badge } from "@/ui/badge";
-import { Spinner } from "@/ui/spinner";
+import { Loading } from "@/app/components/shared/loading";
 
 export const SidebarNavigation = ({
     roles,
@@ -66,15 +65,10 @@ export const SidebarNavigation = ({
 
     return (
         <Sidebar>
-            <div
-                className={`fixed inset-0 z-50 flex items-center justify-center transition-opacity duration-300 ease-in-out ${switchingOrg ? "opacity-100" : "pointer-events-none opacity-0"}`}
-            >
-                <div className="fixed inset-0 z-55 flex items-center justify-center bg-white opacity-80"></div>
-                <Badge className="z-60">
-                    <Spinner data-icon="inline-start" />
-                    <span>Switching Organization...</span>
-                </Badge>
-            </div>
+            <Loading
+                loading={switchingOrg}
+                message="Switching organization..."
+            />
             <SidebarHeader>
                 <SidebarMenu>
                     <SidebarMenuItem>
