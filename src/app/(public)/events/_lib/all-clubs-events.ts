@@ -1,7 +1,7 @@
 import type { EventDTO } from "@/dto/events";
 import type { Event as MotorsportRegEvent } from "@/dto/motorsportreg";
 import type { Organization } from "@/dto/organizations";
-import { getDateString } from "@/app/(tenants)/t/[orgSlug]/_lib/utils/date-utils";
+import { getDateString } from "@/lib/date-utils";
 import {
     mergeOrgAndMrEvents,
     type MergedEventItem,

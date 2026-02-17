@@ -1,7 +1,7 @@
 import { orgEventsRepository } from "@/db/repositories/org-events.repo";
 import { organizationService } from "@/services/organizations/organization.service";
 import { motorsportRegService } from "@/services/motorsportreg/motorsportreg.service";
-import { getDateString } from "@/app/(tenants)/t/[orgSlug]/_lib/utils/date-utils";
+import { getDateString } from "@/lib/date-utils";
 import { EventsSection } from "@/app/(tenants)/t/[orgSlug]/_lib/components/events-section";
 import { EventList } from "@/app/(tenants)/t/[orgSlug]/_lib/components/event-list";
 import { mergeAllClubsEvents } from "./_lib/all-clubs-events";
