@@ -7,6 +7,7 @@ import { Field, FieldGroup, FieldLabel } from "@/ui/field";
 import { Input } from "@/ui/input";
 import { Button } from "@/ui/button";
 import { User } from "@/dto/users";
+import { INITIAL_ACTION_STATE } from "@/types/forms";
 
 type UserInfoFormProps = {
     user: User;
@@ -15,10 +16,7 @@ type UserInfoFormProps = {
 export const UserInfoForm = ({ user }: UserInfoFormProps) => {
     const [userInfoState, userInfoFormAction] = useActionState(
         updateUserInformation,
-        {
-            isError: false,
-            message: "",
-        }
+        INITIAL_ACTION_STATE
     );
 
     return (

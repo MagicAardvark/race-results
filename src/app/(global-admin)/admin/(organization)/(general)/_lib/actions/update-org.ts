@@ -7,17 +7,16 @@ import { nameof } from "@/lib/utils";
 import { organizationAdminService } from "@/services/organizations/organization.admin.service";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { SimpleActionState } from "@/types/forms";
 import {
     ORG_IMAGE_FIELDS,
     processImageField,
 } from "../process-org-image-fields";
 
-type ActionState = { isError: boolean; message: string };
-
 export async function updateOrganization(
-    _: ActionState,
+    _: SimpleActionState,
     formData: FormData
-): Promise<ActionState> {
+): Promise<SimpleActionState> {
     await requireRole(ROLES.admin);
 
     const orgId = formData.get(nameof<Organization>("orgId"))?.toString();

@@ -4,6 +4,7 @@ import {
     updateUserGlobalRoles,
     updateUserInformation,
 } from "./user.actions";
+import { INITIAL_ACTION_STATE } from "@/types/forms";
 import { userService } from "@/services/users/user.service";
 import {
     mockAdminUser,
@@ -97,7 +98,7 @@ describe("user.actions", () => {
             formData.set("displayName", "  John Doe  ");
 
             await expect(
-                updateUserInformation({ isError: false, message: "" }, formData)
+                updateUserInformation(INITIAL_ACTION_STATE, formData)
             ).rejects.toThrow("redirect called");
 
             expect(userService.updateUser).toHaveBeenCalledWith("user-1", {
@@ -111,7 +112,7 @@ describe("user.actions", () => {
             formData.set("displayName", "   ");
 
             await expect(
-                updateUserInformation({ isError: false, message: "" }, formData)
+                updateUserInformation(INITIAL_ACTION_STATE, formData)
             ).rejects.toThrow("redirect called");
 
             expect(userService.updateUser).toHaveBeenCalledWith("user-1", {
@@ -140,7 +141,7 @@ describe("user.actions", () => {
             // Note: 'user' role NOT checked
 
             await expect(
-                updateUserGlobalRoles({ isError: false, message: "" }, formData)
+                updateUserGlobalRoles(INITIAL_ACTION_STATE, formData)
             ).rejects.toThrow("redirect called");
 
             expect(userService.updateUserGlobalRoles).toHaveBeenCalledWith(
@@ -155,7 +156,7 @@ describe("user.actions", () => {
             formData.set("role.user", "on");
 
             await expect(
-                updateUserGlobalRoles({ isError: false, message: "" }, formData)
+                updateUserGlobalRoles(INITIAL_ACTION_STATE, formData)
             ).rejects.toThrow("redirect called");
 
             expect(userService.updateUserGlobalRoles).toHaveBeenCalledWith(

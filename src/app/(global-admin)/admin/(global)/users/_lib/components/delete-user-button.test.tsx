@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { renderWithProviders, screen, userEvent } from "@/__tests__/test-utils";
 import { DeleteUserButton } from "./delete-user-button";
 import { deleteUser } from "@/app/actions/user.actions";
+import { INITIAL_ACTION_STATE } from "@/types/forms";
 import { toast } from "sonner";
 
 vi.mock("@/app/actions/user.actions", () => ({
@@ -125,7 +126,7 @@ describe("DeleteUserButton", () => {
             isError: boolean;
             message: string;
         }>((resolve) => {
-            resolveDelete = () => resolve({ isError: false, message: "" });
+            resolveDelete = () => resolve(INITIAL_ACTION_STATE);
         });
         vi.mocked(deleteUser).mockReturnValue(deletePromise);
 

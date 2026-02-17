@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/ui/card";
 import { Checkbox } from "@/ui/checkbox";
 import { Field, FieldGroup, FieldLabel } from "@/ui/field";
 import { useActionState } from "react";
+import { INITIAL_ACTION_STATE } from "@/types/forms";
 
 type GlobalRolesProps = {
     user: User;
@@ -20,10 +21,7 @@ export const GlobalRoles = ({
 }: GlobalRolesProps) => {
     const [userRolesState, userRolesFormAction] = useActionState(
         updateUserGlobalRoles,
-        {
-            isError: false,
-            message: "",
-        }
+        INITIAL_ACTION_STATE
     );
 
     return (

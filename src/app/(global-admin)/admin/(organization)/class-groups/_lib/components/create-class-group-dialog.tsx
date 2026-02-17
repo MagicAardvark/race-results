@@ -19,6 +19,7 @@ import { createClassGroup } from "@/app/(global-admin)/admin/(organization)/clas
 import { useState } from "react";
 import { FormResponse } from "@/types/forms";
 import { Form, FormError } from "@/app/components/forms/form";
+import { handleFormActionResult } from "@/app/components/forms/handle-form-action-result";
 import { createClassGroupSchema } from "@/app/(global-admin)/admin/(organization)/class-groups/_lib/schema/class-groups";
 import { ClassGroupWithClasses } from "@/dto/class-groups";
 import { toast } from "sonner";
@@ -57,16 +58,8 @@ export const CreateClassGroupDialog = ({
 
         try {
             const result = await createClassGroup(orgId, data);
+            if (!handleFormActionResult(result, setError)) return;
 
-            if (result.isError) {
-                setError(result);
-                toast.error(
-                    result.errors?.[0] || "Failed to create class group"
-                );
-                return;
-            }
-
-            toast.success(result.message);
             onSuccess(result.data!);
             form.reset();
             setError(null);
