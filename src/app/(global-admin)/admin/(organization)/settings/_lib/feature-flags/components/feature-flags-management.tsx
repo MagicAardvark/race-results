@@ -1,5 +1,6 @@
 "use client";
 
+import { FormError } from "@/app/components/forms/form-error";
 import { Card, CardContent } from "@/ui/card";
 import { OrganizationExtended } from "@/dto/organizations";
 import { OrgFeatureFlags } from "@/dto/feature-flags";
@@ -7,10 +8,11 @@ import { Field, FieldGroup, FieldLabel } from "@/ui/field";
 import { Checkbox } from "@/ui/checkbox";
 import { useMemo, useEffect } from "react";
 import { useActionState } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { useSearchParams } from "next/navigation";
 import { Button } from "@/ui/button";
 import { nameof } from "@/lib/utils";
-import { toast } from "sonner";
+import { INITIAL_ACTION_STATE } from "@/types/forms";
 import { updateOrganization } from "@/app/(global-admin)/admin/(organization)/(general)/_lib/actions/update-org";
 
 type FeatureFlagGroup = {
@@ -39,28 +41,18 @@ export const FeatureFlagsManagement = ({
     featureFlags: OrgFeatureFlags;
 }) => {
     const searchParams = useSearchParams();
-    const router = useRouter();
     const currentTab = searchParams.get("tab") || "general";
 
-    const [state, formAction, pending] = useActionState(updateOrganization, {
-        isError: false,
-        message: "",
-    });
+    const [state, formAction, pending] = useActionState(
+        updateOrganization,
+        INITIAL_ACTION_STATE
+    );
 
-    // Show success toast when redirected after save
     useEffect(() => {
-        const saved = searchParams.get("saved");
-        if (saved === "true") {
-            toast.success("Feature flags saved successfully");
-            const params = new URLSearchParams(searchParams.toString());
-            params.delete("saved");
-            router.replace(
-                params.toString()
-                    ? `${window.location.pathname}?${params.toString()}`
-                    : window.location.pathname
-            );
+        if (state.isError && state.message) {
+            toast.error(state.message);
         }
-    }, [searchParams, router]);
+    }, [state.isError, state.message]);
 
     // Group feature flags by namespace
     const groupedFlags = useMemo(() => {
@@ -109,9 +101,10 @@ export const FeatureFlagsManagement = ({
             <Card className="w-full">
                 <CardContent>
                     <form action={formAction}>
-                        {state.isError && (
-                            <div className="text-red-500">{state.message}</div>
-                        )}
+                        <FormError
+                            isError={state.isError}
+                            messages={state.message}
+                        />
 
                         <input
                             type="hidden"

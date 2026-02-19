@@ -8,7 +8,7 @@ import {
     ClassCategory,
     ClassType,
 } from "@/dto/classes-admin";
-import { getEffectiveDateRangeForYear } from "@/lib/effective-date-utils";
+import { getEffectiveDateRangeForYear } from "@/lib/date-utils";
 import { ValidationError } from "@/lib/errors/app-errors";
 
 interface IClassesAdminService {

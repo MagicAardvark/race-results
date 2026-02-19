@@ -5,12 +5,15 @@ import { ProfileIconUpload } from "./profile-icon-upload";
 import { Button } from "@/ui/button";
 import { Card, CardContent } from "@/ui/card";
 import { Checkbox } from "@/ui/checkbox";
+import { FormError } from "@/app/components/forms/form-error";
 import { Field, FieldGroup, FieldLabel } from "@/ui/field";
 import { Input } from "@/ui/input";
 import { Textarea } from "@/ui/textarea";
 import { OrganizationExtended } from "@/dto/organizations";
 import { nameof } from "@/lib/utils";
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
+import { toast } from "sonner";
+import { INITIAL_ACTION_STATE } from "@/types/forms";
 import { updateOrganization } from "@/app/(global-admin)/admin/(organization)/(general)/_lib/actions/update-org";
 
 interface OrganizationInformationProps {
@@ -20,10 +23,16 @@ interface OrganizationInformationProps {
 export const OrganizationInformation = ({
     org,
 }: OrganizationInformationProps) => {
-    const [state, formAction, pending] = useActionState(updateOrganization, {
-        isError: false,
-        message: "",
-    });
+    const [state, formAction, pending] = useActionState(
+        updateOrganization,
+        INITIAL_ACTION_STATE
+    );
+
+    useEffect(() => {
+        if (state.isError && state.message) {
+            toast.error(state.message);
+        }
+    }, [state.isError, state.message]);
 
     return (
         <div className="space-y-4">
@@ -37,15 +46,30 @@ export const OrganizationInformation = ({
             <Card className="w-full">
                 <CardContent>
                     <form action={formAction}>
-                        {state.isError && (
-                            <div className="text-red-500">{state.message}</div>
-                        )}
+                        <FormError
+                            isError={state.isError}
+                            messages={state.message}
+                        />
 
                         <input
                             type="hidden"
                             name={nameof<OrganizationExtended>("orgId")}
                             value={org.orgId}
                         />
+                        {org.headerImageUrl && (
+                            <input
+                                type="hidden"
+                                name="currentHeaderImageUrl"
+                                value={org.headerImageUrl}
+                            />
+                        )}
+                        {org.profileIconUrl && (
+                            <input
+                                type="hidden"
+                                name="currentProfileIconUrl"
+                                value={org.profileIconUrl}
+                            />
+                        )}
 
                         <FieldGroup>
                             <HeaderImageUpload

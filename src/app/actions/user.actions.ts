@@ -6,16 +6,12 @@ import { redirect } from "next/navigation";
 import { rolesService } from "@/services/roles/roles.service";
 import { ROLES } from "@/constants/global";
 import { requireRole } from "@/lib/auth/require-role";
-
-type ActionState = {
-    isError: boolean;
-    message: string;
-};
+import { SimpleActionState } from "@/types/forms";
 
 export async function updateUserInformation(
-    _: ActionState,
+    _: SimpleActionState,
     formData: FormData
-): Promise<ActionState> {
+): Promise<SimpleActionState> {
     await requireRole(ROLES.admin);
 
     const userId = formData.get("userId")?.toString();
@@ -45,9 +41,9 @@ export async function updateUserInformation(
 }
 
 export async function updateUserGlobalRoles(
-    _: ActionState,
+    _: SimpleActionState,
     formData: FormData
-): Promise<ActionState> {
+): Promise<SimpleActionState> {
     const userId = formData.get("userId")?.toString();
 
     if (!userId) {
@@ -84,7 +80,7 @@ export async function updateUserGlobalRoles(
     redirect(`/admin/users/${userId}`);
 }
 
-export async function deleteUser(userId: string): Promise<ActionState> {
+export async function deleteUser(userId: string): Promise<SimpleActionState> {
     const currentUser = await requireRole(ROLES.admin);
 
     // Prevent deleting yourself
@@ -112,9 +108,9 @@ export async function deleteUser(userId: string): Promise<ActionState> {
 }
 
 export async function addUserToOrganization(
-    _: ActionState,
+    _: SimpleActionState,
     formData: FormData
-): Promise<ActionState> {
+): Promise<SimpleActionState> {
     await requireRole(ROLES.admin);
 
     const userId = formData.get("userId")?.toString();
@@ -145,9 +141,9 @@ export async function addUserToOrganization(
 }
 
 export async function addUserOrganizationRole(
-    _: ActionState,
+    _: SimpleActionState,
     formData: FormData
-): Promise<ActionState> {
+): Promise<SimpleActionState> {
     await requireRole(ROLES.admin);
 
     const userId = formData.get("userId")?.toString();

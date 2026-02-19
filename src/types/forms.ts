@@ -1,3 +1,11 @@
+/** Used with useActionState for server actions that return { isError, message }. */
+export type SimpleActionState = { isError: boolean; message: string };
+
+export const INITIAL_ACTION_STATE: SimpleActionState = {
+    isError: false,
+    message: "",
+};
+
 type FormResponseBase<T = void> = {
     isError: boolean;
     data?: T | null;

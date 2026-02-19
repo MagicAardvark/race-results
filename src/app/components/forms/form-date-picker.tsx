@@ -4,6 +4,7 @@ import { Button } from "@/ui/button";
 import { Calendar } from "@/ui/calendar";
 import { Field, FieldLabel, FieldError } from "@/ui/field";
 import { Popover, PopoverContent, PopoverTrigger } from "@/ui/popover";
+import { getDateString } from "@/lib/date-utils";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { useState } from "react";
@@ -66,7 +67,7 @@ export function FormDatePicker<T extends FieldValues>({
                                     selected={selectedDate}
                                     onSelect={(date) => {
                                         const dateString = date
-                                            ? format(date, "yyyy-MM-dd")
+                                            ? getDateString(date)
                                             : undefined;
                                         field.onChange(dateString);
                                         setOpen(false);

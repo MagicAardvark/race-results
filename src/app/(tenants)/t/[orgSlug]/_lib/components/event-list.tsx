@@ -1,4 +1,4 @@
-import { formatDateRange } from "../utils/date-utils";
+import { formatDateRange } from "@/lib/date-utils";
 import { EventCard } from "./event-card";
 import { EventExternalLink, ComingSoonBadge } from "./event-action";
 import { CalendarEvent } from "@/dto/calendar";
