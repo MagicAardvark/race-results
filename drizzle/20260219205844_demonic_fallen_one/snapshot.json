@@ -1,9 +1,9 @@
 {
   "version": "8",
   "dialect": "postgres",
-  "id": "634400a7-a43d-4917-a62e-075f7775c432",
+  "id": "b29bc563-a9c5-468b-9cad-1b59ed9718dd",
   "prevIds": [
-    "217b55dd-f315-4f49-8aaf-cfe271fe9946"
+    "19727d45-6a92-43b9-a172-18788e5941b6"
   ],
   "ddl": [
     {
@@ -356,6 +356,19 @@
       "generated": null,
       "identity": null,
       "name": "header_image_url",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "orgs"
+    },
+    {
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "profile_icon_url",
       "entityType": "columns",
       "schema": "public",
       "table": "orgs"
@@ -954,6 +967,19 @@
       "generated": null,
       "identity": null,
       "name": "long_name",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "classes_groups"
+    },
+    {
+      "type": "boolean",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "false",
+      "generated": null,
+      "identity": null,
+      "name": "prepend_with_group_short_name",
       "entityType": "columns",
       "schema": "public",
       "table": "classes_groups"
