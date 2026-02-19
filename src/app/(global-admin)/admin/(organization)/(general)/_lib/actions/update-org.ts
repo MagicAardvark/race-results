@@ -5,14 +5,14 @@ import { Organization } from "@/dto/organizations";
 import { requireRole } from "@/lib/auth/require-role";
 import { nameof } from "@/lib/utils";
 import { organizationAdminService } from "@/services/organizations/organization.admin.service";
-import { put } from "@vercel/blob";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import {
+    ORG_IMAGE_FIELDS,
+    processImageField,
+} from "../process-org-image-fields";
 
-type ActionState = {
-    isError: boolean;
-    message: string;
-};
+type ActionState = { isError: boolean; message: string };
 
 export async function updateOrganization(
     _: ActionState,
@@ -35,7 +35,6 @@ export async function updateOrganization(
     if (!orgId) {
         return { isError: true, message: "Organization ID is required" };
     }
-
     if (!name) {
         return { isError: true, message: "Name cannot be empty" };
     }
@@ -43,66 +42,22 @@ export async function updateOrganization(
     const featureFlags: Record<string, boolean> = {};
     for (const [key] of formData.entries()) {
         if (key.startsWith("feature.")) {
-            // If checkbox is checked, it sends "on" (which overrides hidden "off")
-            // If checkbox is unchecked, only hidden input sends "off"
-            // Use getAll to check all values - if "on" is present, flag is true
-            const allValues = formData.getAll(key);
-            featureFlags[key] = allValues.includes("on");
+            featureFlags[key] = formData.getAll(key).includes("on");
         }
     }
 
-    let headerImageUrl: string | null | undefined = undefined;
-    const removeHeaderImage = formData.get("removeHeaderImage") === "on";
-    const headerImageFile = formData.get("headerImage") as File | null;
+    const [headerResult, profileResult] = await Promise.all(
+        ORG_IMAGE_FIELDS.map((config) =>
+            processImageField(formData, orgId, config)
+        )
+    );
+    if (!headerResult.ok) return headerResult.error;
+    if (!profileResult.ok) return profileResult.error;
 
-    if (removeHeaderImage) {
-        headerImageUrl = null;
-    } else if (headerImageFile && headerImageFile.size > 0) {
-        try {
-            const blob = await put(
-                `org-headers/${orgId}/${headerImageFile.name}`,
-                headerImageFile,
-                { access: "public" }
-            );
-            headerImageUrl = blob.url;
-        } catch (err) {
-            return {
-                isError: true,
-                message:
-                    err instanceof Error
-                        ? err.message
-                        : "Failed to upload header image",
-            };
-        }
-    }
+    const headerImageUrl = headerResult.url;
+    const profileIconUrl = profileResult.url;
 
-    let profileIconUrl: string | null | undefined = undefined;
-    const removeProfileIcon = formData.get("removeProfileIcon") === "on";
-    const profileIconFile = formData.get("profileIcon") as File | null;
-
-    if (removeProfileIcon) {
-        profileIconUrl = null;
-    } else if (profileIconFile && profileIconFile.size > 0) {
-        try {
-            const blob = await put(
-                `org-profile-icons/${orgId}/${profileIconFile.name}`,
-                profileIconFile,
-                { access: "public" }
-            );
-            profileIconUrl = blob.url;
-        } catch (err) {
-            return {
-                isError: true,
-                message:
-                    err instanceof Error
-                        ? err.message
-                        : "Failed to upload profile icon",
-            };
-        }
-    }
-
-    let slug = null;
-
+    let slug: string | null = null;
     try {
         slug = await organizationAdminService.updateOrganization({
             orgId,
@@ -132,14 +87,13 @@ export async function updateOrganization(
         };
     }
 
-    const tab = formData.get("tab")?.toString();
     const params = new URLSearchParams();
+    params.set("saved", "true");
+    const tab = formData.get("tab")?.toString();
     if (tab && tab !== "general") {
         params.set("tab", tab);
     }
-    params.set("saved", "true");
-    const queryString = params.toString();
 
     revalidatePath("/admin");
-    redirect(`/admin/?${queryString}`);
+    redirect(`/admin/?${params.toString()}`);
 }

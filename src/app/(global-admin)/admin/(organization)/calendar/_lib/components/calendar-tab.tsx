@@ -115,10 +115,7 @@ export function CalendarTab({
             </p>
             <Card className="w-full">
                 <CardHeader className="flex flex-row flex-wrap items-center justify-between gap-4 space-y-0">
-                    <Stack
-                        orientation="horizontal"
-                        className="items-center gap-2"
-                    >
+                    <Stack orientation="horizontal" gap="small">
                         <span className="font-medium">
                             {selectedSeason.name}
                         </span>
