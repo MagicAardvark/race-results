@@ -180,4 +180,30 @@ describe("updateOrganization", () => {
             "https://abc123.public.vercel-storage.com/icon.png",
         ]);
     });
+
+    it("deletes blob from store when profile icon is removed and current URL provided", async () => {
+        const { del } = await import("@vercel/blob");
+        vi.mocked(
+            organizationAdminService.updateOrganization
+        ).mockResolvedValue("test-org");
+
+        const formData = new FormData();
+        formData.append("orgId", "org-1");
+        formData.append("name", "Test Org");
+        formData.append("slug", "test-org");
+        formData.append("isPublic", "on");
+        formData.append("removeProfileIcon", "on");
+        formData.append(
+            "currentProfileIconUrl",
+            "https://abc123.public.vercel-storage.com/icon.png"
+        );
+
+        await expect(
+            updateOrganization({ isError: false, message: "" }, formData)
+        ).rejects.toThrow("redirect called");
+
+        expect(del).toHaveBeenCalledWith([
+            "https://abc123.public.vercel-storage.com/icon.png",
+        ]);
+    });
 });

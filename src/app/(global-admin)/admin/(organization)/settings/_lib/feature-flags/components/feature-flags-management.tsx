@@ -6,7 +6,7 @@ import { OrganizationExtended } from "@/dto/organizations";
 import { OrgFeatureFlags } from "@/dto/feature-flags";
 import { Field, FieldGroup, FieldLabel } from "@/ui/field";
 import { Checkbox } from "@/ui/checkbox";
-import { useMemo, useEffect } from "react";
+import { useMemo } from "react";
 import { useActionState } from "react";
 import { toast } from "sonner";
 import { useSearchParams } from "next/navigation";
