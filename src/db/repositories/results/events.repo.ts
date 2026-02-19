@@ -1,5 +1,6 @@
 import { db, events } from "@/db";
 import { CreateEventDTO, EventDTO, UpdateEventDTO } from "@/dto/events";
+import { getDateString } from "@/lib/date-utils";
 import { generateSlug } from "@/lib/generate-slug";
 import { and, eq } from "drizzle-orm";
 
@@ -66,8 +67,8 @@ export class EventsRepository implements IEventsRepository {
         const currentEvent = await db.query.events.findFirst({
             where: {
                 orgId: { eq: orgId },
-                startDate: { lte: new Date().toISOString().split("T")[0] },
-                endDate: { gte: new Date().toISOString().split("T")[0] },
+                startDate: { lte: getDateString(new Date()) },
+                endDate: { gte: getDateString(new Date()) },
                 deletedAt: { isNull: true },
             },
         });
