@@ -8,7 +8,7 @@ import {
     TableRow,
 } from "@/ui/table";
 import { API_KEY_PREFIX } from "@/lib/auth/generate-api-key";
-import { formatWithDateAndTime } from "@/lib/date-format";
+import { formatWithDateAndTime } from "@/lib/date-utils";
 import { mask } from "@/lib/mask";
 
 type PreviousApiKeysTableProps = {

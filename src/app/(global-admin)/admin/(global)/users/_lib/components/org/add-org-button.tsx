@@ -24,6 +24,7 @@ import {
     SelectValue,
 } from "@/ui/select";
 import { useActionState, useState } from "react";
+import { INITIAL_ACTION_STATE } from "@/types/forms";
 
 type AddOrgButtonProps = {
     user: UserWithExtendedDetails;
@@ -31,10 +32,10 @@ type AddOrgButtonProps = {
 };
 
 export const AddOrgButton = ({ user, orgs }: AddOrgButtonProps) => {
-    const [state, formAction, pending] = useActionState(addUserToOrganization, {
-        isError: false,
-        message: "",
-    });
+    const [state, formAction, pending] = useActionState(
+        addUserToOrganization,
+        INITIAL_ACTION_STATE
+    );
 
     const [selectedOrg, setSelectedOrg] = useState<string>("");
 

@@ -10,6 +10,7 @@ import { getCurrentUserCached } from "@/services/users/user.service.cached";
 import { updateOrganization } from "@/app/(global-admin)/admin/(organization)/(general)/_lib/actions/update-org";
 import { requireRole } from "@/lib/auth/require-role";
 import { ROLES } from "@/constants/global";
+import { INITIAL_ACTION_STATE } from "@/types/forms";
 
 vi.mock("@/services/organizations/organization.admin.service");
 vi.mock("@/services/users/user.service.cached", () => ({
@@ -51,7 +52,7 @@ describe("updateOrganization", () => {
         formData.append("isPublic", "on");
 
         await expect(
-            updateOrganization({ isError: false, message: "" }, formData)
+            updateOrganization(INITIAL_ACTION_STATE, formData)
         ).rejects.toThrow("redirect called");
 
         expect(requireRole).toHaveBeenCalledWith(ROLES.admin);
@@ -81,7 +82,7 @@ describe("updateOrganization", () => {
         formData.append("feature.liveTiming.workRunEnabled", "on");
 
         await expect(
-            updateOrganization({ isError: false, message: "" }, formData)
+            updateOrganization(INITIAL_ACTION_STATE, formData)
         ).rejects.toThrow("redirect called");
 
         expect(
@@ -108,7 +109,7 @@ describe("updateOrganization", () => {
         formData.append("removeProfileIcon", "on");
 
         await expect(
-            updateOrganization({ isError: false, message: "" }, formData)
+            updateOrganization(INITIAL_ACTION_STATE, formData)
         ).rejects.toThrow("redirect called");
 
         expect(
@@ -124,10 +125,7 @@ describe("updateOrganization", () => {
         const formData = new FormData();
         formData.append("name", "Test Org");
 
-        const result = await updateOrganization(
-            { isError: false, message: "" },
-            formData
-        );
+        const result = await updateOrganization(INITIAL_ACTION_STATE, formData);
 
         expect(result.isError).toBe(true);
         expect(result.message).toBe("Organization ID is required");
@@ -137,10 +135,7 @@ describe("updateOrganization", () => {
         const formData = new FormData();
         formData.append("orgId", "org-1");
 
-        const result = await updateOrganization(
-            { isError: false, message: "" },
-            formData
-        );
+        const result = await updateOrganization(INITIAL_ACTION_STATE, formData);
 
         expect(result.isError).toBe(true);
         expect(result.message).toBe("Name cannot be empty");
@@ -156,8 +151,34 @@ describe("updateOrganization", () => {
         formData.append("name", "Test Org");
 
         await expect(
-            updateOrganization({ isError: false, message: "" }, formData)
+            updateOrganization(INITIAL_ACTION_STATE, formData)
         ).rejects.toThrow("redirect called");
+    });
+
+    it("deletes blob from store when profile icon is removed and current URL provided", async () => {
+        const { del } = await import("@vercel/blob");
+        vi.mocked(
+            organizationAdminService.updateOrganization
+        ).mockResolvedValue("test-org");
+
+        const formData = new FormData();
+        formData.append("orgId", "org-1");
+        formData.append("name", "Test Org");
+        formData.append("slug", "test-org");
+        formData.append("isPublic", "on");
+        formData.append("removeProfileIcon", "on");
+        formData.append(
+            "currentProfileIconUrl",
+            "https://abc123.public.vercel-storage.com/icon.png"
+        );
+
+        await expect(
+            updateOrganization(INITIAL_ACTION_STATE, formData)
+        ).rejects.toThrow("redirect called");
+
+        expect(del).toHaveBeenCalledWith([
+            "https://abc123.public.vercel-storage.com/icon.png",
+        ]);
     });
 
     it("deletes blob from store when profile icon is removed and current URL provided", async () => {

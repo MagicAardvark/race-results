@@ -22,6 +22,7 @@ import {
 } from "@/db/tables/classes";
 import { generateApiKey } from "@/lib/auth/generate-api-key";
 import { generateSlug } from "@/lib/generate-slug";
+import { getEffectiveDateRangeForYear } from "@/lib/date-utils";
 import { motorsportRegService } from "@/services/motorsportreg/motorsportreg.service";
 import { Venue } from "@/dto/motorsportreg";
 
@@ -359,8 +360,7 @@ export async function configureClasses() {
     const indexValueInserts = baseClassData.flatMap((bc) =>
         bc.indexValues.map((v) => ({
             classId: bc.classId,
-            effectiveFrom: new Date(`${v.year}-01-01T00:00:00-05:00`),
-            effectiveTo: new Date(`${v.year}-12-31T23:59:59-05:00`),
+            ...getEffectiveDateRangeForYear(v.year),
             indexValue: v.value.toString(),
         }))
     );

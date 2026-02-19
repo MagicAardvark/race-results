@@ -19,10 +19,10 @@ import { updateClassGroup } from "@/app/(global-admin)/admin/(organization)/clas
 import { useState, useEffect } from "react";
 import { FormResponse } from "@/types/forms";
 import { Form, FormError } from "@/app/components/forms/form";
+import { handleFormActionResult } from "@/app/components/forms/handle-form-action-result";
 import { FormCheckbox } from "@/app/components/forms/form-checkbox";
 import { updateClassGroupSchema } from "@/app/(global-admin)/admin/(organization)/class-groups/_lib/schema/class-groups";
 import { ClassGroupWithClasses } from "@/dto/class-groups";
-import { toast } from "sonner";
 import { ClassGroupDialogProps } from "../types";
 import { FormattedInput } from "../form-fields";
 import { ClassSelectionField } from "../class-selection-field";
@@ -73,13 +73,8 @@ export const EditClassGroupDialog = ({
 
     const onSubmit = async (data: FormData) => {
         const result = await updateClassGroup(orgId, data);
+        if (!handleFormActionResult(result, setError)) return;
 
-        if (result.isError) {
-            setError(result);
-            return;
-        }
-
-        toast.success(result.message);
         onSuccess(result.data!);
         setError(null);
         onOpenChange(false);

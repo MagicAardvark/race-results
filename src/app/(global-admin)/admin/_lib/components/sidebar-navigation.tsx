@@ -14,7 +14,7 @@ import {
 import { NavGroup } from "@/lib/shared/layout/configuration/navigation";
 import { ProfileIconImage } from "@/app/components/profile-icon-image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -28,7 +28,6 @@ import { switchTenant } from "@/app/(global-admin)/admin/_lib/actions/switch-ten
 import { CreateOrgDialog } from "@/app/(global-admin)/admin/_lib/components/organizations/create-org-dialog";
 import { useState } from "react";
 import { ROLES } from "@/constants/global";
-import { useRouter } from "next/navigation";
 import { Loading } from "@/app/components/shared/loading";
 
 export const SidebarNavigation = ({
@@ -48,7 +47,7 @@ export const SidebarNavigation = ({
     };
 }) => {
     const pathname = usePathname();
-    const router = useRouter();
+    const searchParams = useSearchParams();
     const [open, setOpen] = useState(false);
     const [createOrgDialogOpen, setCreateOrgDialogOpen] = useState(false);
     const [switchingOrg, setSwitchingOrg] = useState(false);
@@ -58,9 +57,12 @@ export const SidebarNavigation = ({
         await switchTenant(orgSlug);
         // Add a small delay to make the UI switch less jarring
         await new Promise((resolve) => setTimeout(resolve, 1000));
-        // Force a navigation to the current path to refetch server component data
-        router.replace(pathname);
         setSwitchingOrg(false);
+
+        const query = searchParams.toString();
+        const nextUrl = query ? `${pathname}?${query}` : pathname;
+        // Force a full reload to ensure server data is fetched with the new tenant
+        window.location.assign(nextUrl);
     };
 
     return (

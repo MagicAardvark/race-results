@@ -5,7 +5,7 @@ import {
     InputGroupInput,
 } from "@/ui/input-group";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
-import { formatWithDateAndTime } from "@/lib/date-format";
+import { formatWithDateAndTime } from "@/lib/date-utils";
 import { CircleCheck, Copy, CopyCheck, TriangleAlert } from "lucide-react";
 import { toast } from "sonner";
 

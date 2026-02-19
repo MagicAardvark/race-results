@@ -24,6 +24,7 @@ import {
     SelectValue,
 } from "@/ui/select";
 import { useActionState, useState } from "react";
+import { INITIAL_ACTION_STATE } from "@/types/forms";
 
 type AddOrgRoleButtonProps = {
     userId: string;
@@ -42,10 +43,7 @@ export const AddOrgRoleButton = ({
 }: AddOrgRoleButtonProps) => {
     const [state, formAction, pending] = useActionState(
         addUserOrganizationRole,
-        {
-            isError: false,
-            message: "",
-        }
+        INITIAL_ACTION_STATE
     );
 
     const [selectedRole, setSelectedRole] = useState<string>("");
