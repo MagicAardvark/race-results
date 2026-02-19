@@ -1,8 +1,8 @@
 import { CalendarTab } from "@/app/(global-admin)/admin/(organization)/calendar/_lib/components/calendar-tab";
-import { orgEventsRepository } from "@/db/repositories/org-events.repo";
-import { EventDTO } from "@/dto/events";
+import { EventDetail } from "@/dto/events";
 import { Season } from "@/dto/events/seasons";
 import { requireOrgAccess } from "@/lib/auth/require-org-access";
+import { eventsService } from "@/services/events/events.service";
 import { seasonsService } from "@/services/events/seasons.service";
 import { organizationAdminService } from "@/services/organizations/organization.admin.service";
 
@@ -17,7 +17,7 @@ export default async function Page() {
 
     const seasons = await seasonsService.getSeasonsForOrg(org.orgId);
 
-    let events: EventDTO[] = [];
+    let events: EventDetail[] = [];
     let selectedSeason: Season | undefined;
 
     if (seasons.length > 0) {
@@ -25,9 +25,9 @@ export default async function Page() {
     }
 
     if (selectedSeason) {
-        events = await orgEventsRepository.listByOrgIdAndSeasonId(
-            selectedSeason.seasonId,
-            org.orgId
+        events = await eventsService.getEvents(
+            org.orgId,
+            selectedSeason.seasonId
         );
     }
 

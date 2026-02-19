@@ -1,6 +1,9 @@
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@/__tests__/test-utils";
-import { EventExternalLink, ComingSoonBadge } from "./event-action";
+import {
+    ComingSoonBadge,
+    EventExternalLink,
+} from "@/app/(tenants)/t/[orgSlug]/_lib/components";
 
 describe("EventExternalLink", () => {
     it("renders label and links to href", () => {

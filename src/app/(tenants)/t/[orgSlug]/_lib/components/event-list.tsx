@@ -1,18 +1,12 @@
 import { formatDateRange } from "../utils/date-utils";
-import { formatVenue } from "../events/merge-events";
-import type { MergedEventItem } from "../events/merge-events";
 import { EventCard } from "./event-card";
 import { EventExternalLink, ComingSoonBadge } from "./event-action";
-
-/** MergedEventItem with optional org context (e.g. for all-clubs Events page) */
-export type EventListItem = MergedEventItem & {
-    orgName?: string;
-    orgSlug?: string;
-};
+import { CalendarEvent } from "@/dto/calendar";
 
 type EventListProps = {
-    items: EventListItem[];
+    items: CalendarEvent[];
     variant: "upcoming" | "past";
+    displayMode: "combined" | "single-org";
 };
 
 const VARIANT_CONFIG = {
@@ -34,69 +28,43 @@ const VARIANT_CONFIG = {
     },
 } as const;
 
-function getDateLabel(item: MergedEventItem): string {
-    if (item.source === "org") {
-        return formatDateRange(item.orgEvent.startDate, item.orgEvent.endDate);
-    }
-    return formatDateRange(item.event.start, item.event.end);
+function getDateLabel(item: CalendarEvent): string {
+    return formatDateRange(item.startDate, item.endDate);
 }
 
-function getVenue(item: MergedEventItem): string | undefined {
-    if (item.source === "mr" && item.event.venue) {
-        return formatVenue(item.event.venue);
-    }
-    return undefined;
-}
-
-function getItemKey(item: EventListItem): string {
-    if (item.source === "org") return item.orgEvent.eventId;
-    return item.orgSlug ? `${item.event.id}-${item.orgSlug}` : item.event.id;
-}
-
-export function EventList({ items, variant }: EventListProps) {
+export function EventList({ items, variant, displayMode }: EventListProps) {
     const config = VARIANT_CONFIG[variant];
 
     return (
         <ul className={config.listClassName} role="list">
             {items.map((item) => {
-                const name =
-                    item.source === "org"
-                        ? item.orgEvent.name
-                        : item.event.name;
+                const title =
+                    displayMode === "combined" ? item.org.name : item.name;
+                const subTitle = displayMode === "combined" ? item.name : null;
                 const dateLabel = getDateLabel(item);
-                const venue = getVenue(item);
+                const venue = item.location;
 
-                const action =
-                    item.source === "org" ? (
-                        item.mrEvent ? (
-                            <EventExternalLink
-                                href={item.mrEvent.detailuri}
-                                label={config.linkLabel}
-                                variant={config.buttonVariant}
-                                className={config.buttonClassName}
-                            />
-                        ) : (
-                            <ComingSoonBadge
-                                label={config.comingSoonLabel}
-                                size={config.badgeSize}
-                            />
-                        )
-                    ) : (
-                        <EventExternalLink
-                            href={item.event.detailuri}
-                            label={config.linkLabel}
-                            variant={config.buttonVariant}
-                            className={config.buttonClassName}
-                        />
-                    );
+                const action = item.msrEventLink ? (
+                    <EventExternalLink
+                        href={item.msrEventLink}
+                        label={config.linkLabel}
+                        variant={config.buttonVariant}
+                        className={config.buttonClassName}
+                    />
+                ) : (
+                    <ComingSoonBadge
+                        label={config.comingSoonLabel}
+                        size={config.badgeSize}
+                    />
+                );
 
                 return (
                     <EventCard
-                        key={getItemKey(item)}
-                        name={name}
+                        key={item.eventId}
+                        title={title}
+                        subTitle={subTitle}
                         dateLabel={dateLabel}
                         venue={venue}
-                        organization={item.orgName}
                         action={action}
                         variant={variant}
                     />

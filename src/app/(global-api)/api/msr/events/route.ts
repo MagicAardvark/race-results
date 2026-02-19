@@ -1,7 +1,7 @@
 import { getStoredTenant } from "@/app/(global-admin)/admin/_lib/get-stored-tenant";
 import { ROLES } from "@/constants/global";
+import { msrEventsRepository } from "@/db/repositories/msr/msr-events.repo";
 import { hasAnyOrgRole } from "@/lib/auth/has-org-role";
-import { motorsportRegService } from "@/services/motorsportreg/motorsportreg.service";
 import { organizationService } from "@/services/organizations/organization.service";
 
 export async function GET() {
@@ -26,9 +26,7 @@ export async function GET() {
         return new Response("Organization not found", { status: 404 });
     }
 
-    const events = await motorsportRegService
-        .getOrganizationCalendar(org.motorsportregOrgId)
-        .then((r) => r.response.events);
+    const events = await msrEventsRepository.getEvents(org.orgId);
 
     if (!events) {
         return new Response("No events found", { status: 404 });

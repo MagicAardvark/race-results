@@ -4,6 +4,7 @@ import { organizationsRepository } from "@/db/repositories/organizations.repo";
 interface IOrganizationService {
     getAllOrganizations(publicOnly?: boolean): Promise<Organization[]>;
     getOrganizationBySlug(slug: string): Promise<Organization | null>;
+    getOrganization(orgId: string): Promise<Organization | null>;
 }
 
 export class OrganizationService implements IOrganizationService {
@@ -13,6 +14,12 @@ export class OrganizationService implements IOrganizationService {
         return mapOrganizations(
             await organizationsRepository.findAll(publicOnly)
         );
+    }
+
+    async getOrganization(orgId: string): Promise<Organization | null> {
+        const org = await organizationsRepository.findById(orgId);
+
+        return org ? mapOrganization(org) : null;
     }
 
     async getOrganizationBySlug(slug: string): Promise<Organization | null> {

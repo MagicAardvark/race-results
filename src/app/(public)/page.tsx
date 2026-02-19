@@ -1,5 +1,4 @@
 import { Card, CardDescription, CardHeader, CardTitle } from "@/ui/card";
-import { orgEventsRepository } from "@/db/repositories/org-events.repo";
 import { organizationService } from "@/services/organizations/organization.service";
 import {
     formatDateRange,
@@ -11,6 +10,7 @@ import Image from "next/image";
 import { Button } from "@/ui/button";
 import { ArrowRightIcon, CalendarIcon } from "lucide-react";
 import { LiveTimingLink } from "@/app/components/shared/live-timing";
+import { publicCalendarService } from "@/services/calendar/public-calendar.service";
 
 /** Default image for org cards when the org has not set a header. */
 const DEFAULT_ORG_HEADER_IMAGE = "/hero-header.svg";
@@ -19,42 +19,24 @@ const HERO_IMAGE = "/hero-header.svg";
 
 export default async function Page() {
     const orgs = await organizationService.getAllOrganizations();
-    const orgEventsByOrg = await Promise.all(
-        orgs.map((org) => orgEventsRepository.listByOrgId(org.orgId))
-    );
+    const orgEvents = (
+        await Promise.all(
+            orgs.map(async (org) => ({
+                slug: org.slug,
+                events: await publicCalendarService.getPublicCalendar(org.slug),
+            }))
+        )
+    ).map((details) => ({
+        ...details,
+        org: orgs.find((o) => o.slug === details.slug)!,
+        upcomingCount: details.events.upcoming.length,
+        nextEvent:
+            details.events.upcoming.length > 0
+                ? details.events.upcoming[0]
+                : null,
+    }));
 
     const today = getDateString(new Date());
-    const upcomingCountByOrgId = orgs.reduce<Record<string, number>>(
-        (acc, org, i) => {
-            const events = orgEventsByOrg[i] ?? [];
-            acc[org.orgId] = events.filter(
-                (e) => getDateString(e.endDate) >= today
-            ).length;
-            return acc;
-        },
-        {}
-    );
-
-    const nextEventByOrgId = orgs.reduce<
-        Record<string, { name: string; startDate: Date; endDate: Date } | null>
-    >((acc, org, i) => {
-        const events = (orgEventsByOrg[i] ?? [])
-            .filter((e) => getDateString(e.endDate) >= today)
-            .sort(
-                (a, b) =>
-                    new Date(a.startDate).getTime() -
-                    new Date(b.startDate).getTime()
-            );
-        acc[org.orgId] =
-            events.length > 0
-                ? {
-                      name: events[0]!.name,
-                      startDate: new Date(events[0]!.startDate),
-                      endDate: new Date(events[0]!.endDate),
-                  }
-                : null;
-        return acc;
-    }, {});
 
     return (
         <div className="flex flex-col">
@@ -65,7 +47,7 @@ export default async function Page() {
                 aria-label="Hero"
             >
                 <div
-                    className="absolute inset-0 bg-gradient-to-t from-slate-950 from-0% via-slate-950/40 to-transparent"
+                    className="absolute inset-0 bg-linear-to-t from-slate-950 from-0% via-slate-950/40 to-transparent"
                     aria-hidden
                 />
                 <div className="absolute inset-x-0 bottom-0 z-10 w-full px-4 pt-6 pb-8 sm:pt-8 sm:pb-10">
@@ -73,14 +55,14 @@ export default async function Page() {
                         <h1 className="mb-2 text-3xl font-bold tracking-tight text-white sm:text-4xl md:text-5xl">
                             Live Timing & Results
                         </h1>
-                        <p className="text-muted-foreground mb-6 text-base text-white/90 sm:text-lg">
+                        <p className="text-muted-foreground mb-6 text-base sm:text-lg">
                             Track motorsports results and live timing across all
                             your organizations
                         </p>
                         <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
                             <Button size="lg" asChild>
                                 <Link href="#organizations">
-                                    Browse organizations
+                                    Browse Organizations
                                 </Link>
                             </Button>
                             <Button
@@ -120,29 +102,27 @@ export default async function Page() {
                 </div>
 
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                    {orgs.map((org) => {
+                    {orgEvents.map(({ org, nextEvent, upcomingCount }) => {
                         const headerSrc =
                             org.headerImageUrl ?? DEFAULT_ORG_HEADER_IMAGE;
                         const isExternal =
                             headerSrc.startsWith("http://") ||
                             headerSrc.startsWith("https://");
-                        const next = nextEventByOrgId[org.orgId];
                         const isNextToday =
-                            next &&
-                            getDateString(next.startDate) <= today &&
-                            getDateString(next.endDate) >= today;
-
+                            nextEvent &&
+                            getDateString(nextEvent.startDate) <= today &&
+                            getDateString(nextEvent.endDate) >= today;
                         return (
                             <Card
                                 key={org.orgId}
-                                className={`flex h-full flex-col overflow-hidden pt-0 transition-shadow hover:shadow-md ${next ? "pb-0" : ""}`}
+                                className={`flex h-full flex-col overflow-hidden pt-0 transition-shadow hover:shadow-md ${nextEvent ? "pb-0" : ""}`}
                             >
                                 <Link
                                     href={`/t/${org.slug}`}
                                     className="group flex flex-1 flex-col"
                                     aria-label={`View ${org.name}`}
                                 >
-                                    <div className="bg-muted relative aspect-[800/300] w-full shrink-0 overflow-hidden rounded-t-xl">
+                                    <div className="bg-muted relative aspect-800/300 w-full shrink-0 overflow-hidden rounded-t-xl">
                                         {isExternal ? (
                                             // eslint-disable-next-line @next/next/no-img-element -- external header URLs are not in remotePatterns
                                             <img
@@ -183,37 +163,36 @@ export default async function Page() {
                                                 className="h-4 w-4 shrink-0"
                                                 aria-hidden
                                             />
-                                            {upcomingCountByOrgId[org.orgId] ===
-                                            0
+                                            {upcomingCount === 0
                                                 ? "No upcoming events"
-                                                : `${upcomingCountByOrgId[org.orgId]} upcoming ${upcomingCountByOrgId[org.orgId] === 1 ? "event" : "events"}`}
+                                                : `${upcomingCount} upcoming ${upcomingCount === 1 ? "event" : "events"}`}
                                         </p>
                                     </CardHeader>
-                                    {next && !isNextToday && (
+                                    {nextEvent && !isNextToday && (
                                         <div className="bg-muted/50 rounded-b-xl border-t px-4 py-3 text-sm">
                                             <p className="text-muted-foreground font-medium">
                                                 Next event
                                             </p>
                                             <p className="mt-0.5 font-medium">
-                                                {next.name}
+                                                {nextEvent.name}
                                             </p>
                                             <p className="text-muted-foreground mt-0.5 text-xs">
                                                 {formatDateRange(
-                                                    next.startDate,
-                                                    next.endDate
+                                                    nextEvent.startDate,
+                                                    nextEvent.endDate
                                                 )}
                                             </p>
                                         </div>
                                     )}
                                 </Link>
-                                {next && isNextToday && (
+                                {nextEvent && isNextToday && (
                                     <div className="bg-muted/50 flex flex-col gap-3 rounded-b-xl border-t px-4 py-3 text-sm sm:flex-row sm:items-center sm:justify-between sm:gap-4">
                                         <div>
                                             <p className="text-muted-foreground font-medium">
                                                 Live now
                                             </p>
                                             <p className="mt-0.5 font-medium">
-                                                {next.name}
+                                                {nextEvent.name}
                                             </p>
                                         </div>
                                         <Button

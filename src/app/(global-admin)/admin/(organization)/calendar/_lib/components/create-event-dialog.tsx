@@ -182,7 +182,7 @@ export const CreateEventDialog = ({
                                                                     (
                                                                         event
                                                                     ) => ({
-                                                                        value: event.id,
+                                                                        value: event.msrEventId,
                                                                         label: event.name,
                                                                     })
                                                                 )

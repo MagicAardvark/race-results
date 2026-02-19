@@ -1,7 +1,5 @@
-import { db, events } from "@/db";
-import type { CreateEventDTO, EventDTO, UpdateEventDTO } from "@/dto/events";
-import { generateSlug } from "@/lib/generate-slug";
-import { eq, and } from "drizzle-orm";
+import { db } from "@/db";
+import type { EventDTO } from "@/dto/events";
 
 interface IOrgEventsRepository {
     listByOrgId(orgId: string): Promise<EventDTO[]>;
@@ -10,13 +8,6 @@ interface IOrgEventsRepository {
         orgId: string
     ): Promise<EventDTO[]>;
     findById(eventId: string): Promise<EventDTO | null>;
-    create(dto: CreateEventDTO): Promise<EventDTO>;
-    update(
-        eventId: string,
-        orgId: string,
-        dto: UpdateEventDTO
-    ): Promise<EventDTO>;
-    delete(eventId: string, orgId: string): Promise<boolean>;
 }
 
 export class OrgEventsRepository implements IOrgEventsRepository {
@@ -47,58 +38,6 @@ export class OrgEventsRepository implements IOrgEventsRepository {
             },
         });
         return row ?? null;
-    }
-
-    async create(dto: CreateEventDTO): Promise<EventDTO> {
-        const [row] = await db
-            .insert(events)
-            .values({
-                orgId: dto.orgId,
-                seasonId: dto.seasonId,
-                name: dto.name,
-                slug: generateSlug(dto.name),
-                startDate: dto.startDate,
-                startTime: "00:00:00",
-                endDate: dto.endDate,
-                endTime: "23:59:59",
-                timezone: "America/New_York",
-                msrEventId: dto.msrEventId ?? null,
-            })
-            .returning();
-
-        if (!row) {
-            throw new Error("Failed to create org event");
-        }
-
-        return row;
-    }
-
-    async update(
-        eventId: string,
-        orgId: string,
-        dto: UpdateEventDTO
-    ): Promise<EventDTO> {
-        const [row] = await db
-            .update(events)
-            .set({
-                name: dto.name,
-                startDate: dto.startDate,
-                endDate: dto.endDate,
-                updatedAt: new Date(),
-            })
-            .where(and(eq(events.eventId, eventId), eq(events.orgId, orgId)))
-            .returning();
-
-        return row;
-    }
-
-    async delete(eventId: string, orgId: string): Promise<boolean> {
-        const result = await db
-            .update(events)
-            .set({ deletedAt: new Date() })
-            .where(and(eq(events.eventId, eventId), eq(events.orgId, orgId)));
-
-        return (result.rowCount ?? 0) > 0;
     }
 }
 
