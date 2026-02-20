@@ -27,6 +27,12 @@ export class ClassConfigurationRepository implements IClassConfigurationReposito
                             orgId: org.orgId,
                         },
                     ],
+                    AND: [
+                        { effectiveFrom: { lte: new Date() } },
+                        {
+                            effectiveTo: { gte: new Date() },
+                        },
+                    ],
                 },
             }
         );

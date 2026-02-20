@@ -25,7 +25,15 @@ export class ClassConfigurationService implements IClassConfigurationService {
                 indexValue: Number.parseFloat(cls.indexValue),
             };
 
+            // If we haven't seen this class before, add it to the map
             if (!classConfigMap.has(cls.shortName)) {
+                classConfigMap.set(cls.shortName, classDto);
+            }
+            // If we have seen this class before, but the new record has a class group associated with it, use the group record
+            else if (
+                classConfigMap.has(cls.shortName) &&
+                classDto.classGroupId !== null
+            ) {
                 classConfigMap.set(cls.shortName, classDto);
             }
         }
