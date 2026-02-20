@@ -13,6 +13,10 @@ export const createClassGroupSchema = z.object({
         .string()
         .min(1, "Long Name is required")
         .transform((val) => toTitleCase(val)),
+    identificationMode: z
+        .enum(["BASE_CLASS_ONLY", "GROUP_PLUS_BASE_CLASS"])
+        .optional()
+        .default("BASE_CLASS_ONLY"),
     classIds: z
         .array(z.union([z.string(), z.null(), z.undefined()]))
         .optional()
@@ -33,6 +37,10 @@ export const updateClassGroupSchema = z.object({
         .string()
         .min(1, "Long Name is required")
         .transform((val) => toTitleCase(val)),
+    identificationMode: z
+        .enum(["BASE_CLASS_ONLY", "GROUP_PLUS_BASE_CLASS"])
+        .optional()
+        .default("BASE_CLASS_ONLY"),
     classIds: z
         .array(z.union([z.string(), z.null(), z.undefined()]))
         .optional()

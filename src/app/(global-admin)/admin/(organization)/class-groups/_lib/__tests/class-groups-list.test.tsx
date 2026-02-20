@@ -49,23 +49,48 @@ describe("ClassGroupsList", () => {
             longName: "Super Street",
             orgId: null,
         },
+        {
+            classId: "class-2",
+            shortName: "AS",
+            longName: "A Street",
+            orgId: null,
+        },
+        {
+            classId: "class-3",
+            shortName: "BS",
+            longName: "B Street",
+            orgId: null,
+        },
     ];
 
     const mockClassGroups: ClassGroupWithClasses[] = [
         {
             classGroupId: "group-1",
-            shortName: "SSM",
-            longName: "Super Street Modified",
+            shortName: "S1",
+            longName: "Street 1",
+            identificationMode: "BASE_CLASS_ONLY",
             isEnabled: true,
             orgId: "org-1",
-            classIds: ["class-1"],
+            classIds: ["class-1", "class-2"],
             createdAt: new Date(),
             updatedAt: new Date(),
         },
         {
             classGroupId: "group-2",
-            shortName: "STR",
-            longName: "Street Touring R",
+            shortName: "G2",
+            longName: "Everything Group",
+            identificationMode: "BASE_CLASS_ONLY",
+            isEnabled: true,
+            orgId: "org-1",
+            classIds: ["class-1", "class-2", "class-3"],
+            createdAt: new Date(),
+            updatedAt: new Date(),
+        },
+        {
+            classGroupId: "group-3",
+            shortName: "G3",
+            longName: "Empty Group",
+            identificationMode: "BASE_CLASS_ONLY",
             isEnabled: false,
             orgId: "org-1",
             classIds: [],
@@ -92,10 +117,10 @@ describe("ClassGroupsList", () => {
             />
         );
 
-        expect(screen.getByText("SSM")).toBeVisible();
-        expect(screen.getByText("Super Street Modified")).toBeVisible();
-        expect(screen.getByText("STR")).toBeVisible();
-        expect(screen.getByText("Street Touring R")).toBeVisible();
+        expect(screen.getByText("S1")).toBeVisible();
+        expect(screen.getByText("Street 1")).toBeVisible();
+        expect(screen.getByText("G2")).toBeVisible();
+        expect(screen.getByText("Everything Group")).toBeVisible();
     });
 
     it("shows enabled status with eye icon", () => {
@@ -110,7 +135,7 @@ describe("ClassGroupsList", () => {
         );
 
         // First group is enabled, should show Eye icon
-        const enabledRow = screen.getByText("SSM").closest("tr");
+        const enabledRow = screen.getByText("S1").closest("tr");
         expect(enabledRow).toBeVisible();
     });
 
@@ -126,7 +151,7 @@ describe("ClassGroupsList", () => {
         );
 
         // Second group is disabled, should show EyeOff icon
-        const disabledRow = screen.getByText("STR").closest("tr");
+        const disabledRow = screen.getByText("G3").closest("tr");
         expect(disabledRow).toBeVisible();
     });
 
@@ -141,8 +166,9 @@ describe("ClassGroupsList", () => {
             />
         );
 
-        expect(screen.getByText("1 class")).toBeVisible(); // group-1 has 1 class
-        expect(screen.getByText("No classes")).toBeVisible(); // group-2 has 0 classes
+        expect(screen.getByText("SS, AS")).toBeVisible(); // group-1 has 2 classes
+        expect(screen.getByText("All classes")).toBeVisible(); // group-2 has 3 classes
+        expect(screen.getByText("No classes")).toBeVisible(); // group-3 has 0 classes
     });
 
     it("renders edit and delete buttons for each group", () => {
@@ -177,12 +203,14 @@ describe("ClassGroupsList", () => {
             />
         );
 
-        // Find edit button by aria-label (e.g., "Edit SSM")
-        const editButton = screen.getByRole("button", { name: /Edit SSM/i });
+        // Find edit button by aria-label (e.g., "Edit Street 1")
+        const editButton = screen.getByRole("button", {
+            name: /Edit S1/i,
+        });
         await user.click(editButton);
 
         expect(screen.getByTestId("edit-dialog")).toBeVisible();
-        expect(screen.getByText(/Edit Dialog for SSM/i)).toBeVisible();
+        expect(screen.getByText(/Edit Dialog for S1/i)).toBeVisible();
     });
 
     it("shows empty state when no class groups", () => {

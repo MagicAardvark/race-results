@@ -33,6 +33,13 @@ export class ClassGroupsRepository implements IClassGroupsRepository {
         orgId: string | null
     ): Promise<ClassGroupWithClasses[]> {
         const groups = await db.query.classGroups.findMany({
+            with: {
+                classes: {
+                    columns: {
+                        classId: true,
+                    },
+                },
+            },
             where:
                 orgId === null
                     ? { orgId: { isNull: true } }
@@ -42,17 +49,17 @@ export class ClassGroupsRepository implements IClassGroupsRepository {
             orderBy: (cg) => [cg.shortName],
         });
 
-        const result: ClassGroupWithClasses[] = [];
-
-        for (const group of groups) {
-            const classIds = await this.getClassIdsForGroup(group.classGroupId);
-            result.push({
-                ...group,
-                classIds,
-            });
-        }
-
-        return result;
+        return groups.map((g) => ({
+            classGroupId: g.classGroupId,
+            shortName: g.shortName,
+            longName: g.longName,
+            identificationMode: g.identificationMode,
+            isEnabled: g.isEnabled,
+            orgId: g.orgId,
+            classIds: g.classes.map((c) => c.classId),
+            createdAt: g.createdAt,
+            updatedAt: g.updatedAt,
+        }));
     }
 
     async getClassGroup(
@@ -60,6 +67,13 @@ export class ClassGroupsRepository implements IClassGroupsRepository {
         orgId: string | null
     ): Promise<ClassGroupWithClasses | null> {
         const group = await db.query.classGroups.findFirst({
+            with: {
+                classes: {
+                    columns: {
+                        classId: true,
+                    },
+                },
+            },
             where: {
                 classGroupId,
                 ...(orgId === null
@@ -74,7 +88,7 @@ export class ClassGroupsRepository implements IClassGroupsRepository {
             return null;
         }
 
-        const classIds = await this.getClassIdsForGroup(classGroupId);
+        const classIds = group.classes.map((c) => c.classId);
 
         return {
             ...group,
@@ -129,6 +143,7 @@ export class ClassGroupsRepository implements IClassGroupsRepository {
             .values({
                 shortName: data.shortName,
                 longName: data.longName,
+                identificationMode: data.identificationMode,
                 orgId: data.orgId,
                 isEnabled: true,
             })
@@ -218,6 +233,7 @@ export class ClassGroupsRepository implements IClassGroupsRepository {
             .set({
                 shortName: data.shortName,
                 longName: data.longName,
+                identificationMode: data.identificationMode,
                 isEnabled: data.isEnabled,
             })
             .where(eq(classGroups.classGroupId, data.classGroupId));
@@ -285,16 +301,6 @@ export class ClassGroupsRepository implements IClassGroupsRepository {
         await db
             .delete(classGroups)
             .where(eq(classGroups.classGroupId, classGroupId));
-    }
-
-    private async getClassIdsForGroup(classGroupId: string): Promise<string[]> {
-        const associations = await db.query.classGroupClasses.findMany({
-            where: {
-                classGroupId,
-            },
-        });
-
-        return associations.map((a) => a.classId);
     }
 }
 

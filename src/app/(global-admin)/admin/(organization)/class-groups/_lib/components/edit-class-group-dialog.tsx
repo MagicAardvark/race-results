@@ -10,7 +10,7 @@ import {
     DialogTitle,
 } from "@/ui/dialog";
 import { Button } from "@/ui/button";
-import { Field } from "@/ui/field";
+import { Field, FieldDescription, FieldLegend, FieldSet } from "@/ui/field";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -26,6 +26,7 @@ import { ClassGroupWithClasses } from "@/dto/class-groups";
 import { ClassGroupDialogProps } from "../types";
 import { FormattedInput } from "../form-fields";
 import { ClassSelectionField } from "../class-selection-field";
+import { FormRadioGroup } from "@/app/components/forms/form-radio-group";
 
 interface EditClassGroupDialogProps extends ClassGroupDialogProps {
     /** Class group to edit. Passed from server-fed list to avoid client fetch (SSR). */
@@ -53,6 +54,7 @@ export const EditClassGroupDialog = ({
             classGroupId: "",
             shortName: "",
             longName: "",
+            identificationMode: "BASE_CLASS_ONLY",
             isEnabled: true,
             classIds: [],
         },
@@ -65,6 +67,7 @@ export const EditClassGroupDialog = ({
                 classGroupId: classGroup.classGroupId,
                 shortName: classGroup.shortName,
                 longName: classGroup.longName,
+                identificationMode: classGroup.identificationMode,
                 isEnabled: classGroup.isEnabled,
                 classIds: classGroup.classIds,
             });
@@ -139,33 +142,64 @@ export const EditClassGroupDialog = ({
                             />
                         )}
 
-                        <FormattedInput
-                            form={form}
-                            name="shortName"
-                            label="Short Name"
-                            placeholder="e.g. SSM"
-                            format="uppercase"
-                        />
-
-                        <FormattedInput
-                            form={form}
-                            name="longName"
-                            label="Long Name"
-                            placeholder="e.g. Super Street Modified"
-                            format="titleCase"
-                        />
-
                         <FormCheckbox<z.infer<typeof updateClassGroupSchema>>
                             form={form}
                             name="isEnabled"
                             label="Is Enabled"
                         />
 
-                        <ClassSelectionField
+                        <FieldSet>
+                            <FieldLegend>Group Identifiers</FieldLegend>
+                            <FieldDescription>
+                                How this group will be identified.
+                            </FieldDescription>
+
+                            <FormattedInput
+                                form={form}
+                                name="shortName"
+                                label="Short Name"
+                                placeholder="e.g. P or N"
+                                format="uppercase"
+                            />
+
+                            <FormattedInput
+                                form={form}
+                                name="longName"
+                                label="Long Name"
+                                placeholder="e.g. Pro or Novice"
+                                format="titleCase"
+                            />
+                        </FieldSet>
+
+                        <FormRadioGroup
                             form={form}
-                            name="classIds"
-                            availableClasses={availableBaseClasses}
+                            name="identificationMode"
+                            groupLabel="Car Identification"
+                            groupDescription="Will cars in this class have their regular class
+                            identifiers prepended with the group identifier?"
+                            options={[
+                                {
+                                    title: "No, cars will run with their regular class identifiers only (most common)",
+                                    value: "BASE_CLASS_ONLY",
+                                },
+                                {
+                                    title: "Yes, cars will run with the group identifier, i.e. PAS or NAS",
+                                    value: "GROUP_PLUS_BASE_CLASS",
+                                },
+                            ]}
                         />
+
+                        <FieldSet>
+                            <FieldLegend>Included Classes</FieldLegend>
+                            <FieldDescription>
+                                Selected classes will be included in this group.
+                            </FieldDescription>
+                            <ClassSelectionField
+                                form={form}
+                                name="classIds"
+                                availableClasses={availableBaseClasses}
+                            />
+                        </FieldSet>
 
                         <DialogFooter>
                             <Field orientation="horizontal">

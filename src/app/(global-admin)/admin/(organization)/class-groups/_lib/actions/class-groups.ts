@@ -83,13 +83,19 @@ export async function createClassGroup(
         };
     }
 
-    const { shortName, longName, classIds: rawClassIds } = result.data;
+    const {
+        shortName,
+        longName,
+        classIds: rawClassIds,
+        identificationMode,
+    } = result.data;
     const classIds = filterValidClassIds(rawClassIds || []);
 
     try {
         const newClassGroup = await classGroupsService.createClassGroup({
             shortName,
             longName,
+            identificationMode,
             orgId,
             classIds,
         });
@@ -130,6 +136,7 @@ export async function updateClassGroup(
         longName,
         isEnabled,
         classIds: rawClassIds,
+        identificationMode,
     } = result.data;
     const classIds = filterValidClassIds(rawClassIds || []);
 
@@ -138,6 +145,7 @@ export async function updateClassGroup(
             classGroupId,
             shortName,
             longName,
+            identificationMode,
             isEnabled,
             classIds,
         });

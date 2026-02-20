@@ -25,8 +25,9 @@ describe("class-groups actions", () => {
     const validGroupId = "770e8400-e29b-41d4-a716-446655440002";
     const mockClassGroup: ClassGroupWithClasses = {
         classGroupId: validGroupId,
-        shortName: "SSM",
-        longName: "Super Street Modified",
+        shortName: "S1",
+        longName: "Street 1",
+        identificationMode: "BASE_CLASS_ONLY",
         isEnabled: true,
         orgId: orgId,
         createdAt: new Date("2024-01-01"),
@@ -46,8 +47,9 @@ describe("class-groups actions", () => {
             );
 
             const result = await createClassGroup(orgId, {
-                shortName: "SSM",
-                longName: "Super Street Modified",
+                shortName: "S1",
+                longName: "Street 1",
+                identificationMode: "BASE_CLASS_ONLY",
                 classIds: [validClassId1, validClassId2],
             });
 
@@ -58,8 +60,9 @@ describe("class-groups actions", () => {
             }
             expect(requireOrgRole).toHaveBeenCalledWith(orgId, ROLES.orgOwner);
             expect(classGroupsService.createClassGroup).toHaveBeenCalledWith({
-                shortName: "SSM",
-                longName: "Super Street Modified",
+                shortName: "S1",
+                longName: "Street 1",
+                identificationMode: "BASE_CLASS_ONLY",
                 orgId,
                 classIds: [validClassId1, validClassId2],
             });
@@ -73,8 +76,9 @@ describe("class-groups actions", () => {
 
             const validUuid = "550e8400-e29b-41d4-a716-446655440000";
             const result = await createClassGroup(orgId, {
-                shortName: "SSM",
-                longName: "Super Street Modified",
+                shortName: "S1",
+                longName: "Street 1",
+                identificationMode: "BASE_CLASS_ONLY",
                 classIds: [
                     validUuid,
                     "invalid",
@@ -89,8 +93,9 @@ describe("class-groups actions", () => {
                 expect(
                     classGroupsService.createClassGroup
                 ).toHaveBeenCalledWith({
-                    shortName: "SSM",
-                    longName: "Super Street Modified",
+                    shortName: "S1",
+                    longName: "Street 1",
+                    identificationMode: "BASE_CLASS_ONLY",
                     orgId,
                     classIds: [validUuid],
                 });
@@ -101,6 +106,7 @@ describe("class-groups actions", () => {
             const result = await createClassGroup(orgId, {
                 shortName: "",
                 longName: "",
+                identificationMode: "BASE_CLASS_ONLY",
                 classIds: [],
             });
 
@@ -121,8 +127,9 @@ describe("class-groups actions", () => {
             );
 
             const result = await createClassGroup(orgId, {
-                shortName: "SSM",
-                longName: "Super Street Modified",
+                shortName: "S1",
+                longName: "Street 1",
+                identificationMode: "BASE_CLASS_ONLY",
                 classIds: [],
             });
 
@@ -141,8 +148,9 @@ describe("class-groups actions", () => {
             );
 
             const result = await createClassGroup(orgId, {
-                shortName: "SSM",
-                longName: "Super Street Modified",
+                shortName: "S1",
+                longName: "Street 1",
+                identificationMode: "BASE_CLASS_ONLY",
                 classIds: [],
             });
 
@@ -171,6 +179,7 @@ describe("class-groups actions", () => {
                 classGroupId: validGroupId,
                 shortName: "UPDATED",
                 longName: "Updated Name",
+                identificationMode: "BASE_CLASS_ONLY",
                 isEnabled: true,
                 classIds: [validClassId1],
             });
@@ -185,6 +194,7 @@ describe("class-groups actions", () => {
                 classGroupId: validGroupId,
                 shortName: "UPDATED",
                 longName: "Updated Name",
+                identificationMode: "BASE_CLASS_ONLY",
                 isEnabled: true,
                 classIds: [validClassId1],
             });
@@ -199,8 +209,9 @@ describe("class-groups actions", () => {
             const validUuid = "550e8400-e29b-41d4-a716-446655440000";
             const result = await updateClassGroup(orgId, {
                 classGroupId: validGroupId,
-                shortName: "SSM",
-                longName: "Super Street Modified",
+                shortName: "S1",
+                longName: "Street 1",
+                identificationMode: "BASE_CLASS_ONLY",
                 isEnabled: true,
                 classIds: [validUuid, "invalid", "", null as unknown as string],
             });
@@ -211,8 +222,9 @@ describe("class-groups actions", () => {
                     classGroupsService.updateClassGroup
                 ).toHaveBeenCalledWith({
                     classGroupId: validGroupId,
-                    shortName: "SSM",
-                    longName: "Super Street Modified",
+                    shortName: "S1",
+                    longName: "Street 1",
+                    identificationMode: "BASE_CLASS_ONLY",
                     isEnabled: true,
                     classIds: [validUuid],
                 });
@@ -224,6 +236,7 @@ describe("class-groups actions", () => {
                 classGroupId: "invalid-uuid",
                 shortName: "",
                 longName: "",
+                identificationMode: "BASE_CLASS_ONLY",
                 isEnabled: true,
                 classIds: [],
             });
@@ -246,8 +259,9 @@ describe("class-groups actions", () => {
 
             const result = await updateClassGroup(orgId, {
                 classGroupId: validGroupId,
-                shortName: "SSM",
-                longName: "Super Street Modified",
+                shortName: "S1",
+                longName: "Street 1",
+                identificationMode: "BASE_CLASS_ONLY",
                 isEnabled: true,
                 classIds: [],
             });

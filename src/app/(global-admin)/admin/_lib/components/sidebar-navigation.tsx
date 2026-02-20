@@ -66,7 +66,7 @@ export const SidebarNavigation = ({
     };
 
     return (
-        <Sidebar>
+        <Sidebar className="h-dvh">
             <Loading
                 loading={switchingOrg}
                 message="Switching organization..."

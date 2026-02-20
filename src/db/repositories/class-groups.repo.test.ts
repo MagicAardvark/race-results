@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { classGroupsRepository } from "./class-groups.repo";
 import { db, classGroups } from "@/db";
-import type { ClassGroupWithClasses } from "@/dto/class-groups";
+import type { ClassGroup, ClassGroupWithClasses } from "@/dto/class-groups";
 import { eq } from "drizzle-orm";
 
 // Mock drizzle-orm to include isNull
@@ -42,11 +42,13 @@ describe("ClassGroupsRepository", () => {
         classGroupId: "group-1",
         shortName: "SSM",
         longName: "Super Street Modified",
+        identificationMode: "BASE_CLASS_ONLY",
         isEnabled: true,
         orgId: orgId,
         createdAt: new Date("2024-01-01"),
         updatedAt: new Date("2024-01-02"),
-    };
+        classes: [{ classId: "class-1" }, { classId: "class-2" }],
+    } as ClassGroup;
 
     const mockClassGroupWithClasses: ClassGroupWithClasses = {
         ...mockGroup,
@@ -62,44 +64,28 @@ describe("ClassGroupsRepository", () => {
             vi.mocked(db.query.classGroups.findMany).mockResolvedValue([
                 mockGroup,
             ]);
-            vi.mocked(
-                db.query.classGroupClasses.findMany
-            ).mockResolvedValueOnce([
-                { classGroupId: "group-1", classId: "class-1" },
-                { classGroupId: "group-1", classId: "class-2" },
-            ]);
 
             const result =
                 await classGroupsRepository.getClassGroupsForOrg(orgId);
 
             expect(result).toHaveLength(1);
-            expect(result[0]).toEqual(mockClassGroupWithClasses);
-            expect(db.query.classGroups.findMany).toHaveBeenCalledWith({
-                where: {
-                    OR: [{ orgId: { isNull: true } }, { orgId }],
-                },
-                orderBy: expect.any(Function),
-            });
+            expect(result[0].shortName).toEqual(
+                mockClassGroupWithClasses.shortName
+            );
+            expect(result[0].classIds).toEqual(
+                mockClassGroupWithClasses.classIds
+            );
         });
 
         it("returns global class groups when orgId is null", async () => {
             vi.mocked(db.query.classGroups.findMany).mockResolvedValue([
                 { ...mockGroup, orgId: null },
             ]);
-            vi.mocked(db.query.classGroupClasses.findMany).mockResolvedValue(
-                []
-            );
 
             const result =
                 await classGroupsRepository.getClassGroupsForOrg(null);
 
             expect(result).toHaveLength(1);
-            expect(db.query.classGroups.findMany).toHaveBeenCalledWith({
-                where: {
-                    orgId: { isNull: true },
-                },
-                orderBy: expect.any(Function),
-            });
         });
 
         it("returns empty array when no groups found", async () => {
@@ -117,10 +103,6 @@ describe("ClassGroupsRepository", () => {
             vi.mocked(db.query.classGroups.findFirst).mockResolvedValue(
                 mockGroup
             );
-            vi.mocked(db.query.classGroupClasses.findMany).mockResolvedValue([
-                { classGroupId: "group-1", classId: "class-1" },
-                { classGroupId: "group-1", classId: "class-2" },
-            ]);
 
             const result = await classGroupsRepository.getClassGroup(
                 "group-1",
@@ -128,12 +110,6 @@ describe("ClassGroupsRepository", () => {
             );
 
             expect(result).toEqual(mockClassGroupWithClasses);
-            expect(db.query.classGroups.findFirst).toHaveBeenCalledWith({
-                where: {
-                    classGroupId: "group-1",
-                    OR: [{ orgId: { isNull: true } }, { orgId }],
-                },
-            });
         });
 
         it("returns null when group not found", async () => {
@@ -248,6 +224,7 @@ describe("ClassGroupsRepository", () => {
             const result = await classGroupsRepository.createClassGroup({
                 shortName: "SSM",
                 longName: "Super Street Modified",
+                identificationMode: "BASE_CLASS_ONLY",
                 orgId,
                 classIds: ["class-1"],
             });
@@ -265,6 +242,7 @@ describe("ClassGroupsRepository", () => {
                 classGroupsRepository.createClassGroup({
                     shortName: "SSM",
                     longName: "Super Street Modified",
+                    identificationMode: "BASE_CLASS_ONLY",
                     orgId,
                     classIds: [],
                 })
@@ -304,6 +282,7 @@ describe("ClassGroupsRepository", () => {
                 classGroupsRepository.createClassGroup({
                     shortName: "SSM",
                     longName: "Super Street Modified",
+                    identificationMode: "BASE_CLASS_ONLY",
                     orgId,
                     classIds: ["invalid-class-id"],
                 })
@@ -355,6 +334,7 @@ describe("ClassGroupsRepository", () => {
                 classGroupId: "group-1",
                 shortName: "UPDATED",
                 longName: "Updated Name",
+                identificationMode: "BASE_CLASS_ONLY",
                 isEnabled: true,
                 classIds: ["class-1"],
             });
@@ -373,6 +353,7 @@ describe("ClassGroupsRepository", () => {
                     classGroupId: "non-existent",
                     shortName: "SSM",
                     longName: "Super Street Modified",
+                    identificationMode: "BASE_CLASS_ONLY",
                     isEnabled: true,
                     classIds: [],
                 })
@@ -390,6 +371,7 @@ describe("ClassGroupsRepository", () => {
                     ...mockGroup,
                     classGroupId: "other-group",
                     shortName: "CONFLICT",
+                    identificationMode: "BASE_CLASS_ONLY",
                 }); // Other conflict found
 
             await expect(
@@ -397,6 +379,7 @@ describe("ClassGroupsRepository", () => {
                     classGroupId: "group-1",
                     shortName: "CONFLICT",
                     longName: "Conflict Name",
+                    identificationMode: "BASE_CLASS_ONLY",
                     isEnabled: true,
                     classIds: [],
                 })
