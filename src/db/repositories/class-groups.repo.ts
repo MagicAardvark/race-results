@@ -33,6 +33,7 @@ export class ClassGroupsRepository implements IClassGroupsRepository {
         orgId: string | null
     ): Promise<ClassGroupWithClasses[]> {
         const groups = await db.query.classGroups.findMany({
+            with: {},
             where:
                 orgId === null
                     ? { orgId: { isNull: true } }
@@ -129,6 +130,7 @@ export class ClassGroupsRepository implements IClassGroupsRepository {
             .values({
                 shortName: data.shortName,
                 longName: data.longName,
+                identificationMode: data.identificationMode,
                 orgId: data.orgId,
                 isEnabled: true,
             })
@@ -218,6 +220,7 @@ export class ClassGroupsRepository implements IClassGroupsRepository {
             .set({
                 shortName: data.shortName,
                 longName: data.longName,
+                identificationMode: data.identificationMode,
                 isEnabled: data.isEnabled,
             })
             .where(eq(classGroups.classGroupId, data.classGroupId));

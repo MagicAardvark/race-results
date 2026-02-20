@@ -10,7 +10,7 @@ import {
     DialogTitle,
 } from "@/ui/dialog";
 import { Button } from "@/ui/button";
-import { Field } from "@/ui/field";
+import { Field, FieldDescription, FieldLegend, FieldSet } from "@/ui/field";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -26,6 +26,7 @@ import { toast } from "sonner";
 import { ClassGroupDialogProps } from "../types";
 import { FormattedInput } from "../form-fields";
 import { ClassSelectionField } from "../class-selection-field";
+import { FormRadioGroup } from "@/app/components/forms/form-radio-group";
 
 type CreateClassGroupDialogProps = ClassGroupDialogProps;
 
@@ -46,6 +47,7 @@ export const CreateClassGroupDialog = ({
         defaultValues: {
             shortName: "",
             longName: "",
+            identificationMode: "BASE_CLASS_ONLY",
             classIds: [],
         },
     });
@@ -108,8 +110,8 @@ export const CreateClassGroupDialog = ({
                             <DialogTitle>Create Class Group</DialogTitle>
                             <DialogDescription>
                                 Create a new class group for this organization.
-                                You can add base classes to the group (global or
-                                org-specific).
+                                Base classes, global or org-specific, are added
+                                to the group.
                             </DialogDescription>
                         </DialogHeader>
 
@@ -120,27 +122,62 @@ export const CreateClassGroupDialog = ({
                             />
                         )}
 
-                        <FormattedInput
+                        <FieldSet>
+                            <FieldLegend>Group Identifiers</FieldLegend>
+                            <FieldDescription>
+                                How this group will be identified.
+                            </FieldDescription>
+
+                            <FormattedInput
+                                form={form}
+                                name="shortName"
+                                label="Short Name"
+                                placeholder="e.g. P or N"
+                                format="uppercase"
+                            />
+
+                            <FormattedInput
+                                form={form}
+                                name="longName"
+                                label="Long Name"
+                                placeholder="e.g. Pro or Novice"
+                                format="titleCase"
+                            />
+                        </FieldSet>
+
+                        <FormRadioGroup
                             form={form}
-                            name="shortName"
-                            label="Short Name"
-                            placeholder="e.g. SSM"
-                            format="uppercase"
+                            name="identificationMode"
+                            groupLabel="Car Identification"
+                            groupDescription="Will cars in this class have their regular class
+                            identifiers prepended with the group identifier?"
+                            options={[
+                                {
+                                    title: "Entries register as base class only (most common)",
+                                    description:
+                                        "Cars will run with their base class identifiers, e.g. AS",
+                                    value: "BASE_CLASS_ONLY",
+                                },
+                                {
+                                    title: "Entries register as part of the group along with their base class",
+                                    description:
+                                        "Cars will run with both the group identifier and their base class identifiers, e.g. PAS or NAS",
+                                    value: "GROUP_PLUS_BASE_CLASS",
+                                },
+                            ]}
                         />
 
-                        <FormattedInput
-                            form={form}
-                            name="longName"
-                            label="Long Name"
-                            placeholder="e.g. Super Street Modified"
-                            format="titleCase"
-                        />
-
-                        <ClassSelectionField
-                            form={form}
-                            name="classIds"
-                            availableClasses={availableBaseClasses}
-                        />
+                        <FieldSet>
+                            <FieldLegend>Included Classes</FieldLegend>
+                            <FieldDescription>
+                                Selected classes will be included in this group.
+                            </FieldDescription>
+                            <ClassSelectionField
+                                form={form}
+                                name="classIds"
+                                availableClasses={availableBaseClasses}
+                            />
+                        </FieldSet>
 
                         <DialogFooter>
                             <Field orientation="horizontal">

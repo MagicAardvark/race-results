@@ -103,6 +103,11 @@ export const classGroups = pgTable(
         classGroupId: uuid("id").primaryKey().defaultRandom(),
         shortName: text("short_name").unique().notNull(),
         longName: text("long_name").unique().notNull(),
+        identificationMode: text("identification_mode", {
+            enum: ["BASE_CLASS_ONLY", "GROUP_PLUS_BASE_CLASS"],
+        })
+            .notNull()
+            .default("BASE_CLASS_ONLY"),
         isEnabled: boolean("is_enabled").notNull().default(true),
         // Null means global
         orgId: uuid("org_id").references(() => orgs.orgId, {

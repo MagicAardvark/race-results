@@ -60,18 +60,20 @@ export const ClassGroupsList = ({
         );
     }
 
+    const classMap = new Map(availableBaseClasses.map((c) => [c.classId, c]));
+
     return (
         <>
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead>Short Name</TableHead>
-                        <TableHead>Long Name</TableHead>
+                        <TableHead className="w-1">Short Name</TableHead>
+                        <TableHead className="w-1">Long Name</TableHead>
                         <TableHead>Classes</TableHead>
                         <TableHead className="w-1 text-center">
                             Status
                         </TableHead>
-                        <TableHead className="w-0 text-right">
+                        <TableHead className="w-1 text-right">
                             Actions
                         </TableHead>
                     </TableRow>
@@ -79,23 +81,49 @@ export const ClassGroupsList = ({
                 <TableBody>
                     {classGroups.map((group) => (
                         <TableRow key={group.classGroupId}>
-                            <TableCell className="font-medium">
+                            <TableCell className="w-1 font-medium">
                                 {group.shortName}
                             </TableCell>
-                            <TableCell>{group.longName}</TableCell>
+                            <TableCell className="w-1">
+                                {group.longName}
+                            </TableCell>
                             <TableCell>
-                                {group.classIds.length === 0 ? (
+                                {group.classIds.length === 0 && (
                                     <span className="text-muted-foreground">
                                         No classes
                                     </span>
-                                ) : (
-                                    <span className="text-sm">
-                                        {group.classIds.length} class
-                                        {group.classIds.length !== 1
-                                            ? "es"
-                                            : ""}
-                                    </span>
                                 )}
+
+                                {group.classIds.length ===
+                                    availableBaseClasses.length && (
+                                    <span className="text-sm">All classes</span>
+                                )}
+
+                                {group.classIds.length > 0 &&
+                                    group.classIds.length <
+                                        availableBaseClasses.length && (
+                                        <>
+                                            <span className="text-sm">
+                                                {group.classIds
+                                                    .slice(0, 6)
+                                                    .map(
+                                                        (id) =>
+                                                            classMap.get(id)
+                                                                ?.shortName
+                                                    )
+                                                    .join(", ")}
+                                            </span>
+                                            {group.classIds.length >= 6 && (
+                                                <span className="text-sm">
+                                                    {" "}
+                                                    plus{" "}
+                                                    {group.classIds.length -
+                                                        6}{" "}
+                                                    more
+                                                </span>
+                                            )}
+                                        </>
+                                    )}
                             </TableCell>
                             <TableCell className="w-1 text-center whitespace-nowrap">
                                 <div className="flex items-center justify-center">
@@ -118,6 +146,7 @@ export const ClassGroupsList = ({
                                         variant="outline"
                                         size="sm"
                                         aria-label={`Edit ${group.shortName}`}
+                                        title={`Edit ${group.shortName}`}
                                         onClick={() => setEditingGroup(group)}
                                     >
                                         <PencilIcon size={16} />
@@ -126,6 +155,7 @@ export const ClassGroupsList = ({
                                         variant="outline"
                                         size="sm"
                                         aria-label={`Delete ${group.shortName}`}
+                                        title={`Delete ${group.shortName}`}
                                         onClick={() =>
                                             handleDelete(group.classGroupId)
                                         }

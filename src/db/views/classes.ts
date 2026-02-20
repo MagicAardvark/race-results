@@ -49,7 +49,8 @@ SELECT
     cgc.class_id,
     cg.org_id,
     cg.short_name as group_short_name,
-    cg.long_name as group_long_name
+    cg.long_name as group_long_name,
+    cg.identification_mode
 FROM classes_groups cg
 INNER JOIN classes_group_classes cgc
     ON cg.id = cgc.class_group_id
@@ -75,8 +76,18 @@ export const effectiveClassGroupIndexValues = pgView(
 ).as(sql`
 SELECT
     base.class_id,
-    CONCAT(cgc.group_short_name, base.short_name) as short_name,
-    CONCAT(cgc.group_long_name, ' ', base.long_name) as long_name,
+    CASE
+      WHEN cgc.identification_mode = 'GROUP_PLUS_BASE_CLASS' THEN
+        CONCAT(cgc.group_short_name, base.short_name)
+      ELSE
+        base.short_name
+    END as short_name,
+    CASE
+      WHEN cgc.identification_mode = 'BASE_CLASS_ONLY' THEN
+        CONCAT(cgc.group_long_name, ' ', base.long_name)
+      ELSE 
+        base.long_name
+    END as long_name,
     base.index_value,
     cgc.org_id,
     base.effective_from,
