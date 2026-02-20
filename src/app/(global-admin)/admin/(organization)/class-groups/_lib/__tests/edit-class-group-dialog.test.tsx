@@ -40,6 +40,7 @@ describe("EditClassGroupDialog", () => {
         classGroupId: "group-1",
         shortName: "SSM",
         longName: "Super Street Modified",
+        identificationMode: "BASE_CLASS_ONLY",
         isEnabled: true,
         orgId: mockOrgId,
         classIds: ["class-1"],

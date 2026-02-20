@@ -23,6 +23,7 @@ describe("ClassGroupsService", () => {
         classGroupId: "group-1",
         shortName: "SSM",
         longName: "Super Street Modified",
+        identificationMode: "BASE_CLASS_ONLY",
         isEnabled: true,
         orgId: "org-1",
         classIds: ["class-1"],
@@ -126,6 +127,7 @@ describe("ClassGroupsService", () => {
             const createDTO: ClassGroupCreateDTO = {
                 shortName: "SSM",
                 longName: "Super Street Modified",
+                identificationMode: "BASE_CLASS_ONLY",
                 orgId: "org-1",
                 classIds: ["class-1"],
             };
@@ -149,6 +151,7 @@ describe("ClassGroupsService", () => {
                 classGroupId: "group-1",
                 shortName: "SSM",
                 longName: "Super Street Modified",
+                identificationMode: "BASE_CLASS_ONLY",
                 isEnabled: true,
                 classIds: ["class-1"],
             };
