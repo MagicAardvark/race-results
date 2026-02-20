@@ -25,7 +25,7 @@ describe("LiveLayoutClient", () => {
     it("renders navigation links", () => {
         renderWithProviders(
             <LiveLayoutClient
-                basePath="/t/test-org/live"
+                basePath="/t/test-org"
                 navigationPages={defaultNavigationPages}
             >
                 <div>Test Content</div>
@@ -39,7 +39,7 @@ describe("LiveLayoutClient", () => {
     it("renders refresh button", () => {
         renderWithProviders(
             <LiveLayoutClient
-                basePath="/t/test-org/live"
+                basePath="/t/test-org"
                 navigationPages={defaultNavigationPages}
             >
                 <div>Test Content</div>
@@ -54,7 +54,7 @@ describe("LiveLayoutClient", () => {
         const user = userEvent.setup();
         renderWithProviders(
             <LiveLayoutClient
-                basePath="/t/test-org/live"
+                basePath="/t/test-org"
                 navigationPages={defaultNavigationPages}
             >
                 <div>Test Content</div>
@@ -70,7 +70,7 @@ describe("LiveLayoutClient", () => {
     it("renders children", () => {
         renderWithProviders(
             <LiveLayoutClient
-                basePath="/t/test-org/live"
+                basePath="/t/test-org"
                 navigationPages={defaultNavigationPages}
             >
                 <div data-testid="test-content">Test Content</div>
