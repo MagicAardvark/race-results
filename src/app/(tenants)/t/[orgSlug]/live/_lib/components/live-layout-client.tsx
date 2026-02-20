@@ -5,6 +5,7 @@ import { Button } from "@/ui/button";
 import { RefreshCw } from "lucide-react";
 import { useState, useCallback } from "react";
 import { ClientTenantLink } from "@/app/(tenants)/t/_lib/components/client-tenant-link";
+import { joinTenantPath } from "@/app/(tenants)/t/_lib/utils/join-tenant-path";
 import type { NavigationPage } from "../utils/navigation";
 
 export function LiveLayoutClient({
@@ -33,9 +34,11 @@ export function LiveLayoutClient({
             <nav className="mt-4 mb-2 flex w-full max-w-7xl items-center justify-between gap-2 px-4">
                 <div className="flex flex-wrap items-center gap-2">
                     {navigationPages.map((page) => {
-                        const isActive =
-                            pathname === page.link ||
-                            (page.link === basePath && pathname === basePath);
+                        const pageFullPath = joinTenantPath(
+                            basePath,
+                            page.link
+                        );
+                        const isActive = pathname === pageFullPath;
                         return (
                             <Button
                                 key={page.link}
