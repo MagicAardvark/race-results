@@ -36,19 +36,16 @@ A comprehensive live timing system for race events, allowing real-time viewing o
 - Only available on the day of the event
 - Clear instructions for multi-heat events
 
-#### 5. **Personal Stats Dashboard** (`/live/me`) ⭐
+#### 5. **Personal Stats Dashboard ("Me")** (`/live/me`) ⭐
 
-- **Driver Selection**: Searchable dropdown to select yourself
-- **Position Cards**:
-    - Class position with best time
-    - PAX position and time
-    - Raw position and time
-- **Run Statistics**: Total runs, clean runs, cone count, DNF count
-- **Visualizations**:
-    - Class times distribution chart (horizontal histogram)
-    - Individual class times visualization
-- **URL-based persistence**: Driver selection stored in URL search params (encoded)
-- **Responsive design**: Optimized for both mobile and desktop
+- **Authentication**: Sign-in required; the header sign-in control is hidden on `/live` so the Me page owns the sign-in flow.
+- **Driver linking**: If the user has not linked a driver (`motorsportregId` / `driverLinkedAt`), they see a warning and a dropdown of event drivers; choosing **This is me** calls `linkDriverToCurrentUser` (from `@/app/actions/user-profile`) and saves the link. Once linked, the page shows MyStats.
+- **Position Cards** (when linked): Class position with best time; PAX position and time; Raw position and time.
+- **Run Statistics**: Total runs, clean runs, cone count, DNF count.
+- **Visualizations**: Class times distribution chart (horizontal histogram); individual class times visualization.
+- **MotorsportReg sync**: If linked but no MotorsportReg ID is present, a collapsible callout explains and offers a retry (same driver dropdown).
+- **Reusable components**: `DriverLinkForm`, `DriverLinkWarning`, `DriverLinkEmptyState` (in `_lib/components/`); `CollapsibleCallout` in `@/ui`.
+- **Responsive design**: Optimized for both mobile and desktop.
 
 ### Shared Components & Features
 
@@ -116,7 +113,8 @@ live/
 ├── _lib/            # Page-specific code (underscore prefix prevents Next.js routing)
 │   ├── components/   # React components (page-specific)
 │   │   ├── class-results/    # Class results display
-│   │   ├── my-stats/         # Personal stats dashboard
+│   │   ├── driver-link-form.tsx, driver-link-warning.tsx, driver-link-empty-state.tsx  # Me page driver linking
+│   │   ├── my-stats/         # Personal stats dashboard (when linked)
 │   │   ├── pax-results/      # PAX results display
 │   │   ├── raw-results/      # Raw results display
 │   │   ├── shared/           # Shared components within live timing
@@ -139,7 +137,8 @@ live/
 │       └── tenant-guard.ts       # Tenant validation
 ├── layout.tsx       # Server layout (data fetching)
 ├── page.tsx         # Class results page
-├── me/              # Personal stats page
+├── me/              # Personal stats page (sign-in, driver link, MyStats)
+│   └── _lib/        # me-page-client.tsx, tests
 ├── pax/             # PAX results page
 ├── raw/             # Raw results page
 └── workrun/         # Work/run order page

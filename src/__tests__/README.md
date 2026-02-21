@@ -79,7 +79,7 @@ All reusable mocks are in `src/__tests__/mocks/`:
 - `mock-db.ts` - Database mocks
 - `mock-handlers.ts` - MSW API request handlers
 - `mock-server.ts` - MSW server configuration
-- `mock-users.ts` - User and admin mocks (`mockUser`, `mockAdminUser`, `createMockUserWithExtendedDetails`); uses `defaultOrg` from test-utils for org shape
+- `mock-users.ts` - User and admin mocks (`mockUser`, `mockAdminUser`, `createMockUserWithExtendedDetails`); includes profile fields (`first_name`, `last_name`, `email`, `motorsportreg_id`, `driver_linked_at`) for driver-linking and admin tests; uses `defaultOrg` from test-utils for org shape
 - `mock-class-results.ts` - Class results mock data
 - `mock-pax-results.ts` - PAX results mock data
 - `mock-raw-results.ts` - Raw results mock data
