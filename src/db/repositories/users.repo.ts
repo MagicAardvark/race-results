@@ -12,7 +12,15 @@ interface IUserRepository {
     findByAuthProviderId(authProviderId: string): Promise<UserDTO | null>;
     findByUserId(userId: string): Promise<UserDTO | null>;
     findOrgRoles(userId: string): Promise<UserOrgRoleWithOrgDTO[]>;
-    create(authProviderId: string, displayName?: string): Promise<UserDTO>;
+    create(
+        authProviderId: string,
+        displayName?: string,
+        profile?: {
+            firstName?: string | null;
+            lastName?: string | null;
+            email?: string | null;
+        }
+    ): Promise<UserDTO>;
     update(userId: string, data: UserDetailsDTO): Promise<void>;
     updateUserGlobalRoles(userId: string, roleKeys: string[]): Promise<void>;
     delete(userId: string): Promise<void>;
@@ -86,12 +94,21 @@ export class UsersRepository implements IUserRepository {
 
     async create(
         authProviderId: string,
-        displayName?: string
+        displayName?: string,
+        profile?: {
+            firstName?: string | null;
+            lastName?: string | null;
+            email?: string | null;
+        }
     ): Promise<UserDTO> {
         const existingUser = await this.findExistingUser(authProviderId);
         const user = existingUser
-            ? await this.revalidateExistingUser(existingUser, displayName)
-            : await this.insertNewUser(authProviderId, displayName);
+            ? await this.revalidateExistingUser(
+                  existingUser,
+                  displayName,
+                  profile
+              )
+            : await this.insertNewUser(authProviderId, displayName, profile);
 
         await this.ensureUserRole(user.userId);
 
@@ -99,12 +116,19 @@ export class UsersRepository implements IUserRepository {
     }
 
     async update(userId: string, data: UserDetailsDTO): Promise<void> {
+        const updates: Record<string, unknown> = { updatedAt: new Date() };
+        if (data.displayName !== undefined)
+            updates.displayName = data.displayName;
+        if (data.firstName !== undefined) updates.firstName = data.firstName;
+        if (data.lastName !== undefined) updates.lastName = data.lastName;
+        if (data.email !== undefined) updates.email = data.email;
+        if (data.motorsportregId !== undefined)
+            updates.motorsportregId = data.motorsportregId;
+        if (data.driverLinkedAt !== undefined)
+            updates.driverLinkedAt = data.driverLinkedAt;
         await db
             .update(users)
-            .set({
-                displayName: data.displayName,
-                updatedAt: new Date(),
-            })
+            .set(updates as Partial<typeof users.$inferSelect>)
             .where(eq(users.userId, userId));
     }
 
@@ -219,17 +243,18 @@ export class UsersRepository implements IUserRepository {
 
     private async revalidateExistingUser(
         existingUser: Awaited<ReturnType<typeof this.findExistingUser>>,
-        displayName?: string
+        displayName?: string,
+        profile?: {
+            firstName?: string | null;
+            lastName?: string | null;
+            email?: string | null;
+        }
     ) {
         if (!existingUser) {
             throw new Error("Cannot update non-existent user");
         }
 
-        const updates: {
-            deletedAt?: null;
-            displayName?: string | null;
-            updatedAt: Date;
-        } = {
+        const updates: Record<string, unknown> = {
             updatedAt: new Date(),
         };
 
@@ -240,22 +265,41 @@ export class UsersRepository implements IUserRepository {
             updates.displayName = displayName;
         }
 
+        if (profile) {
+            if (profile.firstName !== undefined)
+                updates.firstName = profile.firstName;
+            if (profile.lastName !== undefined)
+                updates.lastName = profile.lastName;
+            if (profile.email !== undefined) updates.email = profile.email;
+        }
+
         if (Object.keys(updates).length > 1) {
             await db
                 .update(users)
-                .set(updates)
+                .set(updates as Partial<typeof users.$inferSelect>)
                 .where(eq(users.userId, existingUser.userId));
         }
 
         return existingUser;
     }
 
-    private async insertNewUser(authProviderId: string, displayName?: string) {
+    private async insertNewUser(
+        authProviderId: string,
+        displayName?: string,
+        profile?: {
+            firstName?: string | null;
+            lastName?: string | null;
+            email?: string | null;
+        }
+    ) {
         const [newUser] = await db
             .insert(users)
             .values({
                 authProviderId,
                 displayName: displayName ?? null,
+                firstName: profile?.firstName ?? null,
+                lastName: profile?.lastName ?? null,
+                email: profile?.email ?? null,
             })
             .returning();
 

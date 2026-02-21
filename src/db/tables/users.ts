@@ -10,6 +10,7 @@ import {
     pgTable,
     primaryKey,
     text,
+    timestamp,
     uniqueIndex,
     uuid,
 } from "drizzle-orm/pg-core";
@@ -23,6 +24,11 @@ export const users = pgTable(
         updatedAt: updatedAt,
         deletedAt: deletedAt,
         displayName: text("display_name"),
+        firstName: text("first_name"),
+        lastName: text("last_name"),
+        email: text("email"),
+        motorsportregId: text("motorsportreg_id"),
+        driverLinkedAt: timestamp("driver_linked_at", { withTimezone: true }),
     },
     (table) => [uniqueIndex("auth_provider_idx").on(table.authProviderId)]
 );

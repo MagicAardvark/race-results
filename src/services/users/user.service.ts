@@ -15,7 +15,16 @@ interface IUserService {
     getCurrentUser(): Promise<UserWithExtendedDetails | null>;
     getUserById(userId: string): Promise<UserWithExtendedDetails | null>;
     getUserOrgsWithPermissions(user: UserDTO): Promise<OrgWithRoles[]>;
-    updateUser(userId: string, data: { displayName?: string }): Promise<void>;
+    updateUser(
+        userId: string,
+        data: {
+            displayName?: string;
+            firstName?: string | null;
+            lastName?: string | null;
+            email?: string | null;
+            motorsportregId?: string | null;
+        }
+    ): Promise<void>;
     deleteUser(userId: string): Promise<void>;
     addUserToOrganization(userId: string, orgId: string): Promise<void>;
     addUserOrganizationRole(
@@ -114,12 +123,24 @@ export class UserService implements IUserService {
 
     async updateUser(
         userId: string,
-        data: { displayName?: string }
+        data: {
+            displayName?: string;
+            firstName?: string | null;
+            lastName?: string | null;
+            email?: string | null;
+            motorsportregId?: string | null;
+            driverLinkedAt?: Date | null;
+        }
     ): Promise<void> {
-        if (data.displayName !== undefined) {
-            await usersRepository.update(userId, {
-                displayName: data.displayName,
-            });
+        const hasUpdate =
+            data.displayName !== undefined ||
+            data.firstName !== undefined ||
+            data.lastName !== undefined ||
+            data.email !== undefined ||
+            data.motorsportregId !== undefined ||
+            data.driverLinkedAt !== undefined;
+        if (hasUpdate) {
+            await usersRepository.update(userId, data);
         }
     }
 
@@ -224,6 +245,11 @@ const mapUser = (data: UserDTO) => {
         createdAt: data.createdAt,
         updatedAt: data.updatedAt,
         deletedAt: data.deletedAt,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
+        motorsportregId: data.motorsportregId,
+        driverLinkedAt: data.driverLinkedAt,
         roles: [
             ...data.assignedGlobalRoles.map(
                 (assignedRole) => assignedRole.roleKey

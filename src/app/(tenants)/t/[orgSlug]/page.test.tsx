@@ -40,6 +40,14 @@ vi.mock("@/services/motorsportreg/motorsportreg.service", () => ({
         }),
     },
 }));
+vi.mock("@/services/calendar/public-calendar.service", () => ({
+    publicCalendarService: {
+        getPublicCalendar: vi.fn().mockResolvedValue({
+            past: [],
+            upcoming: [],
+        }),
+    },
+}));
 
 vi.mock("next/headers", () => ({
     headers: vi.fn().mockResolvedValue({

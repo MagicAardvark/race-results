@@ -38,15 +38,10 @@ export function EventExternalLink({
 
 type ComingSoonBadgeProps = {
     label: string;
-    size?: "sm" | "xs";
     className?: string;
 };
 
-export function ComingSoonBadge({
-    label,
-    size = "sm",
-    className,
-}: ComingSoonBadgeProps) {
+export function ComingSoonBadge({ label, className }: ComingSoonBadgeProps) {
     return (
         <span
             className={cn(

@@ -11,6 +11,10 @@ export type DriverIdentifier = {
     carClass: string;
     car: string;
     color: string;
+    /** MotorsportReg ID from event results; used to link user profile */
+    msrId: string;
+    /** Email from event results; used when linking user profile */
+    email: string;
 };
 
 function createDriverId(driver: {
@@ -45,6 +49,8 @@ function getAllDrivers(
                         carClass: entry.class,
                         car: entry.carModel,
                         color: entry.carColor,
+                        msrId: entry.msrId ?? "",
+                        email: entry.email ?? "",
                     });
                 }
             });
@@ -67,6 +73,8 @@ function getAllDrivers(
                     carClass: entry.class,
                     car: entry.carModel,
                     color: entry.carColor,
+                    msrId: entry.msrId ?? "",
+                    email: entry.email ?? "",
                 });
             }
         });
@@ -88,6 +96,8 @@ function getAllDrivers(
                     carClass: entry.class,
                     car: entry.carModel,
                     color: entry.carColor,
+                    msrId: entry.msrId ?? "",
+                    email: entry.email ?? "",
                 });
             }
         });

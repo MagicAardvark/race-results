@@ -1,5 +1,6 @@
-import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
+import { SignedIn } from "@clerk/nextjs";
 import { UserButtonClient } from "./user-button-client";
+import { HeaderSignIn } from "./header-sign-in";
 import Link from "next/link";
 import { Button } from "@/ui/button";
 import { CgMediaLive } from "react-icons/cg";
@@ -68,11 +69,7 @@ export async function AppHeader({
                             <Link href="/admin">Admin</Link>
                         </Button>
                     )}
-                    <SignedOut>
-                        <SignInButton>
-                            <Button size="sm">Sign In</Button>
-                        </SignInButton>
-                    </SignedOut>
+                    <HeaderSignIn />
                     <SignedIn>
                         <UserButtonClient />
                     </SignedIn>

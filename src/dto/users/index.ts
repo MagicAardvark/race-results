@@ -24,6 +24,11 @@ export type UserDTO = {
     updatedAt: Date;
     deletedAt: Date | null;
     displayName: string | null;
+    firstName: string | null;
+    lastName: string | null;
+    email: string | null;
+    motorsportregId: string | null;
+    driverLinkedAt: Date | null;
     assignedOrgRoles: UserOrgRoleDTO[];
     assignedGlobalRoles: UserGlobalRoleDTO[];
 };
@@ -41,6 +46,11 @@ export interface User {
     updatedAt: Date;
     deletedAt: Date | null;
     displayName: string | null;
+    firstName: string | null;
+    lastName: string | null;
+    email: string | null;
+    motorsportregId: string | null;
+    driverLinkedAt: Date | null;
     roles: string[];
 }
 
@@ -60,4 +70,9 @@ export interface OrgWithRoles {
 
 export interface UserDetailsDTO {
     displayName?: string;
+    firstName?: string | null;
+    lastName?: string | null;
+    email?: string | null;
+    motorsportregId?: string | null;
+    driverLinkedAt?: Date | null;
 }

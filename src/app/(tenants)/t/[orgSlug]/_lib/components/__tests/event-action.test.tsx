@@ -44,8 +44,8 @@ describe("ComingSoonBadge", () => {
         expect(screen.getByText("Sign up coming soon")).toBeVisible();
     });
 
-    it("renders with xs size", () => {
-        render(<ComingSoonBadge label="Event details coming soon" size="xs" />);
+    it("renders with custom label", () => {
+        render(<ComingSoonBadge label="Event details coming soon" />);
 
         expect(screen.getByText("Event details coming soon")).toBeVisible();
     });

@@ -11,6 +11,8 @@ describe("DriverSelect", () => {
             number: "1",
             car: "Car A",
             color: "Red",
+            msrId: "",
+            email: "",
         },
         {
             id: "driver-2",
@@ -19,6 +21,8 @@ describe("DriverSelect", () => {
             number: "25",
             car: "Car B",
             color: "Blue",
+            msrId: "",
+            email: "",
         },
     ];
 

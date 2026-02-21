@@ -28,6 +28,11 @@ describe("UserService", () => {
         updatedAt: new Date("2024-01-02"),
         deletedAt: null,
         displayName: "Test User",
+        firstName: null,
+        lastName: null,
+        email: null,
+        motorsportregId: null,
+        driverLinkedAt: null,
         assignedOrgRoles: [],
         assignedGlobalRoles: [],
     };

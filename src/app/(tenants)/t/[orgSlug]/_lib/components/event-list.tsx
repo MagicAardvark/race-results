@@ -15,7 +15,6 @@ const VARIANT_CONFIG = {
         comingSoonLabel: "Sign up coming soon",
         buttonVariant: "default" as const,
         buttonClassName: undefined as string | undefined,
-        badgeSize: "sm" as const,
         listClassName: "list-none space-y-4 p-0",
     },
     past: {
@@ -23,7 +22,6 @@ const VARIANT_CONFIG = {
         comingSoonLabel: "Event details coming soon",
         buttonVariant: "outline" as const,
         buttonClassName: "text-muted-foreground",
-        badgeSize: "xs" as const,
         listClassName: "list-none space-y-3 p-0",
     },
 } as const;
@@ -52,10 +50,7 @@ export function EventList({ items, variant, displayMode }: EventListProps) {
                         className={config.buttonClassName}
                     />
                 ) : (
-                    <ComingSoonBadge
-                        label={config.comingSoonLabel}
-                        size={config.badgeSize}
-                    />
+                    <ComingSoonBadge label={config.comingSoonLabel} />
                 );
 
                 return (

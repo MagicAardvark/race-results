@@ -3,6 +3,21 @@ import { headers } from "next/headers";
 import { WebhookEvent } from "@clerk/nextjs/server";
 import { usersRepository } from "@/db/repositories/users.repo";
 
+/**
+ * Primary email from Clerk user webhook payload (snake_case per https://clerk.com/docs/webhooks/overview).
+ */
+function getPrimaryEmail(data: {
+    email_addresses?: Array<{ id: string; email_address: string }>;
+    primary_email_address_id?: string | null;
+}): string | null {
+    const emails = data.email_addresses;
+    if (!emails?.length) return null;
+    const primary = data.primary_email_address_id
+        ? emails.find((e) => e.id === data.primary_email_address_id)
+        : null;
+    return (primary ?? emails[0])?.email_address ?? null;
+}
+
 export async function POST(req: Request) {
     // Get the Svix headers for verification
     const headerPayload = await headers();
@@ -44,24 +59,46 @@ export async function POST(req: Request) {
     const eventType = evt.type;
 
     if (eventType === "user.created") {
-        const { id, first_name, last_name, email_addresses } = evt.data;
+        const { id, first_name, last_name } = evt.data;
+        const primaryEmail = getPrimaryEmail(evt.data);
 
-        // Create display name from user data
         const displayName =
             first_name && last_name
-                ? `${first_name} ${last_name}`.trim()
-                : first_name ||
-                  last_name ||
-                  email_addresses[0]?.email_address ||
-                  undefined;
+                ? `${first_name.trim()} ${last_name.trim()[0]}`.trim()
+                : first_name || last_name || primaryEmail || undefined;
 
         try {
-            // Create user in database (automatically assigns 'user' role)
-            await usersRepository.create(id, displayName);
+            await usersRepository.create(id, displayName, {
+                firstName: first_name ?? null,
+                lastName: last_name ?? null,
+                email: primaryEmail,
+            });
         } catch (error) {
             console.error("Error creating user from webhook:", error);
             // Don't return error - webhook should still return 200
             // to prevent Clerk from retrying
+        }
+    }
+
+    if (eventType === "user.updated") {
+        const { id, first_name, last_name } = evt.data;
+        const primaryEmail = getPrimaryEmail(evt.data);
+
+        try {
+            const existing = await usersRepository.findByAuthProviderId(id);
+            if (existing) {
+                await usersRepository.update(existing.userId, {
+                    displayName:
+                        first_name && last_name
+                            ? `${first_name.trim()} ${last_name.trim()[0]}`.trim()
+                            : first_name || last_name || undefined,
+                    firstName: first_name ?? null,
+                    lastName: last_name ?? null,
+                    email: primaryEmail,
+                });
+            }
+        } catch (error) {
+            console.error("Error updating user from webhook:", error);
         }
     }
 

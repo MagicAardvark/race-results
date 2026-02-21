@@ -103,10 +103,14 @@ describe("user.actions", () => {
 
             expect(userService.updateUser).toHaveBeenCalledWith("user-1", {
                 displayName: "John Doe",
+                firstName: null,
+                lastName: null,
+                email: null,
+                motorsportregId: null,
             });
         });
 
-        it("converts empty string to undefined", async () => {
+        it("converts empty string to undefined for displayName", async () => {
             const formData = new FormData();
             formData.set("userId", "user-1");
             formData.set("displayName", "   ");
@@ -117,7 +121,68 @@ describe("user.actions", () => {
 
             expect(userService.updateUser).toHaveBeenCalledWith("user-1", {
                 displayName: undefined,
+                firstName: null,
+                lastName: null,
+                email: null,
+                motorsportregId: null,
             });
+        });
+
+        it("passes firstName, lastName, email, motorsportregId to updateUser", async () => {
+            const formData = new FormData();
+            formData.set("userId", "user-1");
+            formData.set("displayName", "Display");
+            formData.set("firstName", "Jane");
+            formData.set("lastName", "Smith");
+            formData.set("email", "jane@example.com");
+            formData.set("motorsportregId", "msr-123");
+
+            await expect(
+                updateUserInformation(INITIAL_ACTION_STATE, formData)
+            ).rejects.toThrow("redirect called");
+
+            expect(userService.updateUser).toHaveBeenCalledWith("user-1", {
+                displayName: "Display",
+                firstName: "Jane",
+                lastName: "Smith",
+                email: "jane@example.com",
+                motorsportregId: "msr-123",
+            });
+        });
+
+        it("trims new fields and converts empty strings to null", async () => {
+            const formData = new FormData();
+            formData.set("userId", "user-1");
+            formData.set("firstName", "  Jane  ");
+            formData.set("lastName", "  ");
+            formData.set("email", "");
+            formData.set("motorsportregId", "  msr-1  ");
+
+            await expect(
+                updateUserInformation(INITIAL_ACTION_STATE, formData)
+            ).rejects.toThrow("redirect called");
+
+            expect(userService.updateUser).toHaveBeenCalledWith("user-1", {
+                displayName: undefined,
+                firstName: "Jane",
+                lastName: null,
+                email: null,
+                motorsportregId: "msr-1",
+            });
+        });
+
+        it("returns error when userId is missing", async () => {
+            const formData = new FormData();
+            formData.set("displayName", "Test");
+
+            const result = await updateUserInformation(
+                INITIAL_ACTION_STATE,
+                formData
+            );
+
+            expect(result.isError).toBe(true);
+            expect(result.message).toBe("User ID is required");
+            expect(userService.updateUser).not.toHaveBeenCalled();
         });
     });
 

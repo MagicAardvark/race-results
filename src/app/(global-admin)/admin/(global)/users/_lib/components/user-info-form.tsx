@@ -46,6 +46,49 @@ export const UserInfoForm = ({ user }: UserInfoFormProps) => {
                                 defaultValue={user.displayName || ""}
                             />
                         </Field>
+                        <Field>
+                            <FieldLabel htmlFor="firstName">
+                                First Name
+                            </FieldLabel>
+                            <Input
+                                type="text"
+                                id="firstName"
+                                name="firstName"
+                                defaultValue={user.firstName || ""}
+                            />
+                        </Field>
+                        <Field>
+                            <FieldLabel htmlFor="lastName">
+                                Last Name
+                            </FieldLabel>
+                            <Input
+                                type="text"
+                                id="lastName"
+                                name="lastName"
+                                defaultValue={user.lastName || ""}
+                            />
+                        </Field>
+                        <Field>
+                            <FieldLabel htmlFor="email">Email</FieldLabel>
+                            <Input
+                                type="email"
+                                id="email"
+                                name="email"
+                                defaultValue={user.email || ""}
+                            />
+                        </Field>
+                        <Field>
+                            <FieldLabel htmlFor="motorsportregId">
+                                MotorsportReg ID
+                            </FieldLabel>
+                            <Input
+                                type="text"
+                                id="motorsportregId"
+                                name="motorsportregId"
+                                defaultValue={user.motorsportregId || ""}
+                                placeholder="MSR account id"
+                            />
+                        </Field>
                     </FieldGroup>
 
                     <div className="mt-6 flex">

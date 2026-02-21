@@ -48,6 +48,7 @@ describe("updateOrganization", () => {
 
         const formData = new FormData();
         formData.append("orgId", "org-1");
+        formData.append("slug", "test-org");
         formData.append("name", "Updated Name");
         formData.append("isPublic", "on");
 
@@ -77,6 +78,7 @@ describe("updateOrganization", () => {
 
         const formData = new FormData();
         formData.append("orgId", "org-1");
+        formData.append("slug", "test-org");
         formData.append("name", "Test Org");
         formData.append("feature.liveTiming.paxEnabled", "on");
         formData.append("feature.liveTiming.workRunEnabled", "on");
@@ -104,6 +106,7 @@ describe("updateOrganization", () => {
 
         const formData = new FormData();
         formData.append("orgId", "org-1");
+        formData.append("slug", "test-org");
         formData.append("name", "Test Org");
         formData.append("isPublic", "on");
         formData.append("removeProfileIcon", "on");
@@ -134,6 +137,7 @@ describe("updateOrganization", () => {
     it("returns error when name is empty", async () => {
         const formData = new FormData();
         formData.append("orgId", "org-1");
+        formData.append("slug", "test-org");
 
         const result = await updateOrganization(INITIAL_ACTION_STATE, formData);
 
@@ -148,6 +152,7 @@ describe("updateOrganization", () => {
 
         const formData = new FormData();
         formData.append("orgId", "org-1");
+        formData.append("slug", "test-org");
         formData.append("name", "Test Org");
 
         await expect(

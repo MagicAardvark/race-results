@@ -20,11 +20,12 @@ This platform enables motorsports organizations to:
 - **PAX Results** - PAX-adjusted standings across all classes (configurable per organization)
 - **Raw Results** - Raw time standings for all drivers
 - **Work/Run Order** - Display work and run assignments by class (configurable per organization)
-- **Personal Stats Dashboard** - Individual driver statistics with visualizations
+- **Personal Stats Dashboard ("Me")** - Sign-in required. Users link their account to an event driver (choose "This is me" from the event driver list); once linked, view individual driver statistics with visualizations
     - Position tracking (Class, PAX, Raw)
     - Run statistics (total runs, clean runs, cones, DNFs)
     - Time distribution charts
     - Class times visualization
+    - If linked but MotorsportReg ID is missing, a collapsible message explains and offers retry
 - **Feature Flags** - Organization-level feature toggles for customizing available functionality
 
 ### Multi-Tenancy
@@ -46,7 +47,7 @@ This platform enables motorsports organizations to:
 - **Global Admin** (`/admin`) - Platform-wide administration with org-scoped sidebar
     - **Organization** (`/admin`) - Org dashboard: Organization Information (name, slug, description, header image, profile icon, MotorsportReg ID, public visibility). Profile icon appears in the sidebar org switcher and on public/tenant pages.
     - **Calendar** (`/admin/calendar`) - Create, edit, and delete org events; link to MotorsportReg events; schedule shown on the org's tenant page and merged with MotorsportReg when configured
-    - **Users** (`/admin/users`) - View all users; edit display names; assign/remove global roles; delete users (soft delete)
+    - **Users** (`/admin/users`) - View all users; edit display name, first name, last name, email, and MotorsportReg ID; assign/remove global roles; delete users (soft delete)
     - **API Keys** (`/admin/api-keys`) - Generate, disable, and view API key history per organization
     - **Feature Flags** (`/admin/feature-flags`) - Toggle PAX Results and Work/Run Order per organization
     - **Base Classes** (`/admin/classes`) - Global car class configuration (admin only)
@@ -86,6 +87,7 @@ src/
 │   ├── link-button.tsx
 │   ├── card.tsx
 │   ├── dialog.tsx
+│   ├── collapsible-callout.tsx  # Collapsible callout (e.g. Me page MotorsportReg sync message)
 │   └── ...                     # All design system components
 ├── app/                         # Next.js App Router
 │   ├── (global-admin)/         # Global admin routes
@@ -128,6 +130,7 @@ src/
 │   │           └── _lib/
 │   │               ├── components/  # EventCard, EventList, EventsSection, etc.
 │   │               └── events/      # merge-events.ts (org + MotorsportReg)
+│   ├── actions/                 # Server actions (e.g. user-profile: linkDriverToCurrentUser for Me page driver linking)
 │   └── components/              # App-level shared components
 │       ├── profile-icon-image.tsx  # Shared org profile icon (sidebar, cards, tenant header)
 │       ├── confirmation-dialog.tsx
@@ -198,7 +201,7 @@ The application uses a consistent header across all pages for unified navigation
 
 - **AppHeader** (`app/components/shared/layout/app-header.tsx`):
     - Shared header component used by all layouts
-    - Includes branding, navigation links, admin button, and user authentication
+    - Includes branding, navigation links, admin button, and user authentication (via **HeaderSignIn**, which hides the sign-in control on `/live` so the Me page owns the sign-in flow there)
     - Supports optional sidebar trigger for mobile navigation
 - **Layout Structure**:
     - **Public Layout**: Header + Footer (for public pages)
@@ -333,14 +336,15 @@ Navigate to [http://localhost:3000](http://localhost:3000)
 2. View upcoming and past events from **all** organizations in one list
 3. Each event shows its organization name; use the links to go to the org page or event details
 
-#### Personal Stats Dashboard
+#### Personal Stats Dashboard (Me)
 
-1. Navigate to `/t/[orgSlug]/live/me`
-2. Select your name from the dropdown
-3. View your:
+1. Navigate to `/t/[orgSlug]/live/me` (sign-in required)
+2. If you haven’t linked a driver yet: choose **This is me** from the event driver list; your account is then linked to that driver
+3. Once linked, view your:
  - Positions in class, PAX, and raw
  - Run statistics
  - Time distribution visualizations
+4. If linked but sync with MotorsportReg isn’t available, a collapsible message explains and lets you retry
 
 #### Class Filtering
 
@@ -378,10 +382,10 @@ Navigate to [http://localhost:3000](http://localhost:3000)
 1. Navigate to global admin: `/admin/users`
 2. View all users in the system
 3. Click on a user to edit:
-    - Update display name
+    - Update display name, first name, last name, email, and MotorsportReg ID
     - Assign or remove roles (Standard User, Admin, etc.)
     - Delete user (soft delete - prevents self-deletion)
-4. Users are automatically created when they register via Clerk webhook
+4. Users are automatically created when they register via Clerk webhook (Clerk syncs first name, last name, and primary email; display name is set from "FirstName L")
 5. All new users are automatically assigned the 'user' role
 
 #### Configuring Feature Flags
@@ -505,7 +509,7 @@ pnpm drizzle-kit push
 
 - **Organizations** (`orgs`): Organization data; `header_image_url` and `profile_icon_url` store Vercel Blob URLs for header and profile icon
 - **Organization Events** (`org_events`): Per-organization event schedule (name, start_at, end_at); shown on tenant page and merged with MotorsportReg when org has MotorsportReg ID
-- **Users** (`users`): User accounts (soft-deletable via `deletedAt`)
+- **Users** (`users`): User accounts (soft-deletable via `deletedAt`). Profile fields: `first_name`, `last_name`, `email`, `motorsportreg_id`, `driver_linked_at` (for linking the signed-in user to an event driver on the Me page)
 - **Roles** (`roles`): User roles and permissions
 - **User Global Roles** (`user_global_roles`): Global role assignments for users
 - **User Org Roles** (`user_org_roles`): Organization-specific role assignments
@@ -697,7 +701,7 @@ The e2e tests are configured to automatically start the development server befor
 
 The project includes reusable mock data in `src/__tests__/mocks/`:
 
-- **`mock-users.ts`** - User and admin mocks (`mockUser`, `mockAdminUser`, `createMockUserWithExtendedDetails`); uses `defaultOrg` from test-utils for org shape in `user.orgs`
+- **`mock-users.ts`** - User and admin mocks (`mockUser`, `mockAdminUser`, `createMockUserWithExtendedDetails`); includes profile fields for driver-linking and admin tests; uses `defaultOrg` from test-utils for org shape in `user.orgs`
 - **`mock-clerk.tsx`** - Clerk authentication mocks
 - **`mock-db.ts`** - Database mocks
 - **`mock-handlers.ts`** - MSW API request handlers
@@ -732,7 +736,9 @@ See `src/__tests__/README.md` for detailed testing guidelines.
 - [ ] Previous API keys are displayed correctly
 - [ ] Organization profile icon uploads and displays in sidebar, public cards, and tenant header
 - [ ] Organization header image uploads and displays on public org cards
-- [ ] User management works correctly
+- [ ] Me page requires sign-in and shows driver link flow when not linked
+- [ ] Driver linking ("This is me") saves and shows MyStats after link
+- [ ] User management works correctly (including first name, last name, email, MotorsportReg ID)
 - [ ] User roles can be assigned and removed
 - [ ] User deletion works (soft delete)
 - [ ] Self-deletion is prevented

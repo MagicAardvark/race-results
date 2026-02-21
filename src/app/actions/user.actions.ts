@@ -17,6 +17,11 @@ export async function updateUserInformation(
     const userId = formData.get("userId")?.toString();
     const displayNameInput = formData.get("displayName")?.toString().trim();
     const displayName = displayNameInput || undefined;
+    const firstName = formData.get("firstName")?.toString().trim() ?? null;
+    const lastName = formData.get("lastName")?.toString().trim() ?? null;
+    const email = formData.get("email")?.toString().trim() ?? null;
+    const motorsportregId =
+        formData.get("motorsportregId")?.toString().trim() ?? null;
 
     if (!userId) {
         return { isError: true, message: "User ID is required" };
@@ -25,6 +30,10 @@ export async function updateUserInformation(
     try {
         await userService.updateUser(userId, {
             displayName,
+            firstName: firstName || null,
+            lastName: lastName || null,
+            email: email || null,
+            motorsportregId: motorsportregId || null,
         });
     } catch (error) {
         return {
