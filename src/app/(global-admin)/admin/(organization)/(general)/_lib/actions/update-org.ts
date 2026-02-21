@@ -20,6 +20,7 @@ export async function updateOrganization(
     await requireRole(ROLES.admin);
 
     const orgId = formData.get(nameof<Organization>("orgId"))?.toString();
+    const orgSlug = formData.get("slug")?.toString().trim();
     const name = formData.get(nameof<Organization>("name"))?.toString().trim();
     const motorsportregOrgId =
         formData
@@ -34,6 +35,9 @@ export async function updateOrganization(
     if (!orgId) {
         return { isError: true, message: "Organization ID is required" };
     }
+    if (!orgSlug) {
+        return { isError: true, message: "Organization slug is required" };
+    }
     if (!name) {
         return { isError: true, message: "Name cannot be empty" };
     }
@@ -47,7 +51,7 @@ export async function updateOrganization(
 
     const [headerResult, profileResult] = await Promise.all(
         ORG_IMAGE_FIELDS.map((config) =>
-            processImageField(formData, orgId, config)
+            processImageField(formData, orgSlug, config)
         )
     );
     if (!headerResult.ok) return headerResult.error;

@@ -51,7 +51,7 @@ export function ComingSoonBadge({
         <span
             className={cn(
                 comingSoonClass,
-                size === "xs" ? "px-3 py-1.5 text-xs" : "px-3 py-1.5 text-sm",
+                "inline-flex h-7 items-center justify-center px-2.5 text-[0.8rem]",
                 className
             )}
         >
